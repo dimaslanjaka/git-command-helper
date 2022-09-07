@@ -1,0 +1,7 @@
+{
+  "recommendations": [
+    "liximomo.sftp",
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode"
+  ]
+}
