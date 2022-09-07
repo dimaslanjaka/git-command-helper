@@ -20,6 +20,7 @@ const submodule_1 = __importDefault(require("./submodule"));
  */
 class git {
     constructor(dir) {
+        this.latestCommit = latestCommit_1.latestCommit;
         this.cwd = dir;
         this.submodule = new submodule_1.default(dir);
         this.isExist();
@@ -50,13 +51,6 @@ class git {
         if (force)
             args = args.concat('-f');
         return (0, hexo_util_1.spawn)('git', args, this.spawnOpt(optionSpawn));
-    }
-    async info() {
-        return {
-            latest: {
-                commit: await (0, latestCommit_1.latestCommit)(null, { cwd: this.cwd })
-            }
-        };
     }
     spawnOpt(opt = {}) {
         return Object.assign({ cwd: this.cwd }, opt);

@@ -12,7 +12,7 @@ export type GetLatestCommitHashOptions = Partial<SpawnOptions> & {
  * * git log --pretty=tformat:%h -n 1 path
  * * git rev-parse HEAD
  * * git rev-parse --short HEAD
- * @param path specific folder
+ * @param path get latest commit of specific folder, retain null for process.cwd()
  * @returns
  */
 export const latestCommit = async (

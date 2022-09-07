@@ -24,6 +24,7 @@ export class git {
   branch: string;
   private exist: boolean;
   cwd: string;
+  latestCommit = latestCommit;
 
   constructor(dir: string) {
     this.cwd = dir;
@@ -57,17 +58,6 @@ export class git {
     let args = ['push'];
     if (force) args = args.concat('-f');
     return spawn('git', args, this.spawnOpt(optionSpawn));
-  }
-
-  async info() {
-    return {
-      latest: {
-        commit: await latestCommit(null, { cwd: this.cwd })
-      },
-      commit: {
-        chimeraland: await latestCommit('chimeraland', { cwd: this.cwd })
-      }
-    };
   }
 
   private spawnOpt(opt: SpawnOptions = {}) {

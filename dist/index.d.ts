@@ -16,6 +16,7 @@ export declare class git {
     branch: string;
     private exist;
     cwd: string;
+    latestCommit: (path?: string, options?: Partial<import("./latestCommit").GetLatestCommitHashOptions>) => Promise<string>;
     constructor(dir: string);
     fetch(arg?: string[], optionSpawn?: SpawnOptions): Promise<string>;
     pull(arg?: string[], optionSpawn?: SpawnOptions): Promise<string>;
@@ -27,11 +28,6 @@ export declare class git {
      */
     commit(msg: string, optionSpawn?: SpawnOptions): Promise<string>;
     push(force?: boolean, optionSpawn?: SpawnOptions): Promise<string>;
-    info(): Promise<{
-        latest: {
-            commit: string;
-        };
-    }>;
     private spawnOpt;
     /**
      * git add

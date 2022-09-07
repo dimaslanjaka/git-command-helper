@@ -12,16 +12,15 @@ const spawner_1 = __importDefault(require("./spawner"));
  * * git log --pretty=tformat:%h -n 1 path
  * * git rev-parse HEAD
  * * git rev-parse --short HEAD
- * @param path specific folder
+ * @param path get latest commit of specific folder, retain null for process.cwd()
  * @returns
  */
 const latestCommit = async (path, options = {}) => {
     const default_options = {
-        short: true,
         cwd: process.cwd()
     };
     options = (0, deepmerge_ts_1.deepmerge)(default_options, options);
-    const short = options.short;
+    const short = options.short || true;
     const args = [];
     if (!path) {
         args.push('rev-parse');
