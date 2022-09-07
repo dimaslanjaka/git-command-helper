@@ -3,7 +3,7 @@ import { deepmerge } from 'deepmerge-ts';
 import spawner from './spawner';
 
 export type GetLatestCommitHashOptions = Partial<SpawnOptions> & {
-  short: boolean;
+  short?: boolean;
 };
 
 /**
@@ -20,11 +20,10 @@ export const latestCommit = async (
   options: Partial<GetLatestCommitHashOptions> = {}
 ) => {
   const default_options: GetLatestCommitHashOptions = {
-    short: true,
     cwd: process.cwd()
   };
   options = deepmerge(default_options, options);
-  const short = options.short;
+  const short = options.short || true;
   const args: string[] = [];
   if (!path) {
     args.push('rev-parse');

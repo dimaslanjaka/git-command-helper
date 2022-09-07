@@ -63,6 +63,9 @@ export class git {
     return {
       latest: {
         commit: await latestCommit(null, { cwd: this.cwd })
+      },
+      commit: {
+        chimeraland: await latestCommit('chimeraland', { cwd: this.cwd })
       }
     };
   }
