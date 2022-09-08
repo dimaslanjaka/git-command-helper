@@ -3,4 +3,4 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const path_1 = require("path");
 const _1 = require(".");
 const git = new _1.gitHelper((0, path_1.join)(__dirname, '..'));
-git.isExist();
+git.status().then(console.log);

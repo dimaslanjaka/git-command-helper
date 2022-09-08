@@ -36,6 +36,10 @@ export declare class git {
      * @returns
      */
     add(path: string, optionSpawn?: SpawnOptions): Promise<string>;
+    status(): Promise<{
+        changes: string;
+        path: string;
+    }[]>;
     /**
      * git init
      * @returns

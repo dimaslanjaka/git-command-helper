@@ -80,6 +80,25 @@ export class git {
     return spawn('git', ['add', path], this.spawnOpt(optionSpawn));
   }
 
+  async status() {
+    const response = await spawn(
+      'git',
+      ['status'],
+      this.spawnOpt({ stdio: 'pipe' })
+    );
+    return response
+      .split('\n')
+      .map((str) => str.trim())
+      .filter((str_1) => /^(modified|added|deleted|untracked):/.test(str_1))
+      .map((str) => {
+        const split = str.split(/:\s+/);
+        return {
+          changes: split[0],
+          path: split[1]
+        };
+      });
+  }
+
   /**
    * git init
    * @returns
