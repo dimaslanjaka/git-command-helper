@@ -6,10 +6,10 @@
 
 import { SpawnOptions } from 'child_process';
 import { existsSync } from 'fs';
-import { spawn } from 'hexo-util';
 import { join } from 'path';
 import { latestCommit } from './latestCommit';
 import { shell } from './shell';
+import { spawn } from './spawner';
 import submodule from './submodule';
 
 // module 'git-command-helper';
@@ -42,6 +42,9 @@ export class git {
   pull(arg?: string[], optionSpawn: SpawnOptions = { stdio: 'inherit' }) {
     let args = [];
     if (Array.isArray(arg)) args = args.concat(arg);
+    if (args.length === 0) {
+      args.push('origin', this.branch);
+    }
     return spawn('git', ['pull'].concat(args), this.spawnOpt(optionSpawn));
   }
 
@@ -80,7 +83,7 @@ export class git {
    * @returns
    */
   async init() {
-    return spawn('git', ['init'], this.spawnOpt({ stdio: 'ignore' }));
+    return spawn('git', ['init'], this.spawnOpt());
   }
 
   async isExist() {
@@ -111,6 +114,11 @@ export class git {
 
   public setremote(v: string | URL) {
     this.remote = v instanceof URL ? v.toString() : v;
+    return shell(
+      'git',
+      ['remote', 'add', 'origin', this.remote],
+      this.spawnOpt()
+    );
   }
 
   public setbranch(v: string) {

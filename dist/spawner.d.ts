@@ -15,7 +15,9 @@ export declare class spawner {
     static promise(options: null | SpawnOptions, cmd: string, ...args: string[]): Promise<{
         code: number;
         stdout: string[] | Readable;
-        stderr: any;
+        stderr: string[] | Readable;
     }>;
+    static spawn(cmd: string, args: string[], options?: SpawnOptions): Promise<string>;
 }
 export default spawner;
+export declare const spawn: typeof spawner.spawn;

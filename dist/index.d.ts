@@ -45,7 +45,7 @@ export declare class git {
     setcwd(v: string): void;
     setemail(v: string): void;
     setuser(v: string): void;
-    setremote(v: string | URL): void;
+    setremote(v: string | URL): Promise<string | void>;
     setbranch(v: string): void;
     /**
      * Reset to latest commit of remote branch

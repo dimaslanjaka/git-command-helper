@@ -10,10 +10,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.gitCommandHelper = exports.gitHelper = exports.git = void 0;
 const fs_1 = require("fs");
-const hexo_util_1 = require("hexo-util");
 const path_1 = require("path");
 const latestCommit_1 = require("./latestCommit");
 const shell_1 = require("./shell");
+const spawner_1 = require("./spawner");
 const submodule_1 = __importDefault(require("./submodule"));
 // module 'git-command-helper';
 /**
@@ -30,13 +30,16 @@ class git {
         let args = [];
         if (Array.isArray(arg))
             args = args.concat(arg);
-        return (0, hexo_util_1.spawn)('git', ['fetch'].concat(args), this.spawnOpt(optionSpawn));
+        return (0, spawner_1.spawn)('git', ['fetch'].concat(args), this.spawnOpt(optionSpawn));
     }
     pull(arg, optionSpawn = { stdio: 'inherit' }) {
         let args = [];
         if (Array.isArray(arg))
             args = args.concat(arg);
-        return (0, hexo_util_1.spawn)('git', ['pull'].concat(args), this.spawnOpt(optionSpawn));
+        if (args.length === 0) {
+            args.push('origin', this.branch);
+        }
+        return (0, spawner_1.spawn)('git', ['pull'].concat(args), this.spawnOpt(optionSpawn));
     }
     /**
      * git commit
@@ -45,13 +48,13 @@ class git {
      * @returns
      */
     commit(msg, optionSpawn = { stdio: 'inherit' }) {
-        return (0, hexo_util_1.spawn)('git', ['commit', '-m', msg], this.spawnOpt(optionSpawn));
+        return (0, spawner_1.spawn)('git', ['commit', '-m', msg], this.spawnOpt(optionSpawn));
     }
     push(force = false, optionSpawn = { stdio: 'inherit' }) {
         let args = ['push'];
         if (force)
             args = args.concat('-f');
-        return (0, hexo_util_1.spawn)('git', args, this.spawnOpt(optionSpawn));
+        return (0, spawner_1.spawn)('git', args, this.spawnOpt(optionSpawn));
     }
     spawnOpt(opt = {}) {
         return Object.assign({ cwd: this.cwd }, opt);
@@ -63,18 +66,18 @@ class git {
      * @returns
      */
     add(path, optionSpawn = { stdio: 'inherit' }) {
-        return (0, hexo_util_1.spawn)('git', ['add', path], this.spawnOpt(optionSpawn));
+        return (0, spawner_1.spawn)('git', ['add', path], this.spawnOpt(optionSpawn));
     }
     /**
      * git init
      * @returns
      */
     async init() {
-        return (0, hexo_util_1.spawn)('git', ['init'], this.spawnOpt({ stdio: 'ignore' }));
+        return (0, spawner_1.spawn)('git', ['init'], this.spawnOpt());
     }
     async isExist() {
         const folderExist = (0, fs_1.existsSync)((0, path_1.join)(this.cwd, '.git'));
-        const result = await (0, hexo_util_1.spawn)('git', ['status'], this.spawnOpt({ stdio: 'pipe' }));
+        const result = await (0, spawner_1.spawn)('git', ['status'], this.spawnOpt({ stdio: 'pipe' }));
         const match1 = /changes not staged for commit/gim.test(result);
         this.exist = match1 && folderExist;
         return this.exist;
@@ -92,6 +95,7 @@ class git {
     }
     setremote(v) {
         this.remote = v instanceof URL ? v.toString() : v;
+        return (0, shell_1.shell)('git', ['remote', 'add', 'origin', this.remote], this.spawnOpt());
     }
     setbranch(v) {
         this.branch = v;
