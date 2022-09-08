@@ -10,8 +10,8 @@ export declare class submodule {
      * @param optionSpawn
      * @returns
      */
-    update(optionSpawn?: SpawnOptions): Promise<string>;
-    status(optionSpawn?: SpawnOptions): Promise<string>;
+    update(optionSpawn?: SpawnOptions): import("bluebird")<string>;
+    status(optionSpawn?: SpawnOptions): import("bluebird")<string>;
     /**
      * get submodule informations
      * @returns

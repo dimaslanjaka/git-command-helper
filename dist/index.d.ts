@@ -2,10 +2,9 @@
  * NodeJS GitHub Helper
  * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
  */
-/// <reference types="node" />
 import Bluebird from 'bluebird';
-import { SpawnOptions } from 'child_process';
 import { shell } from './shell';
+import { SpawnOptions } from './spawn';
 import submodule from './submodule';
 import { StatusResult } from './types';
 /**
@@ -22,8 +21,14 @@ export declare class git {
     latestCommit: (path?: string, options?: Partial<import("./latestCommit").GetLatestCommitHashOptions>) => Promise<string>;
     shell: typeof shell;
     constructor(dir: string);
-    fetch(arg?: string[], optionSpawn?: SpawnOptions): Promise<string>;
-    pull(arg?: string[], optionSpawn?: SpawnOptions): Promise<string>;
+    /**
+     * git fetch
+     * @param arg argument git-fetch, ex ['--all']
+     * @param optionSpawn
+     * @returns
+     */
+    fetch(arg?: string[], optionSpawn?: SpawnOptions): Bluebird<string>;
+    pull(arg?: string[], optionSpawn?: SpawnOptions): Bluebird<string>;
     /**
      * git commit
      * @param mode -am, -m, etc
@@ -32,7 +37,7 @@ export declare class git {
      * @returns
      */
     commit(msg: string, mode?: 'am' | 'm' | string, optionSpawn?: SpawnOptions): Bluebird<string>;
-    push(force?: boolean, optionSpawn?: SpawnOptions): Promise<string>;
+    push(force?: boolean, optionSpawn?: SpawnOptions): Bluebird<string>;
     private spawnOpt;
     /**
      * git add
@@ -40,7 +45,7 @@ export declare class git {
      * @param optionSpawn
      * @returns
      */
-    add(path: string, optionSpawn?: SpawnOptions): Promise<string>;
+    add(path: string, optionSpawn?: SpawnOptions): Bluebird<unknown>;
     /**
      * git status
      * @returns
@@ -66,13 +71,13 @@ export declare class git {
      * // custom name
      * git add remote customName https://
      */
-    setremote(v: string | URL, name?: string): Promise<string>;
+    setremote(v: string | URL, name?: string): Bluebird<string>;
     setbranch(v: string): void;
     /**
      * Reset to latest commit of remote branch
      * @param branch
      */
-    reset(branch?: string): Promise<string>;
+    reset(branch?: string): Bluebird<string>;
 }
 export default git;
 export declare const gitHelper: typeof git;

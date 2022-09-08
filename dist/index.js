@@ -14,7 +14,7 @@ const fs_1 = require("fs");
 const path_1 = require("path");
 const latestCommit_1 = require("./latestCommit");
 const shell_1 = require("./shell");
-const spawner_1 = require("./spawner");
+const spawn_1 = require("./spawn");
 const submodule_1 = __importDefault(require("./submodule"));
 // module 'git-command-helper';
 /**
@@ -28,6 +28,12 @@ class git {
         this.submodule = new submodule_1.default(dir);
         this.isExist();
     }
+    /**
+     * git fetch
+     * @param arg argument git-fetch, ex ['--all']
+     * @param optionSpawn
+     * @returns
+     */
     fetch(arg, optionSpawn = { stdio: 'inherit' }) {
         let args = [];
         if (Array.isArray(arg))
@@ -35,7 +41,7 @@ class git {
         if (args.length === 0) {
             args.push('origin', this.branch);
         }
-        return (0, spawner_1.spawn)('git', ['fetch'].concat(args), this.spawnOpt(optionSpawn));
+        return (0, spawn_1.spawn)('git', ['fetch'].concat(args), this.spawnOpt(optionSpawn));
     }
     pull(arg, optionSpawn = { stdio: 'inherit' }) {
         let args = [];
@@ -44,7 +50,7 @@ class git {
         if (args.length === 0) {
             args.push('origin', this.branch);
         }
-        return (0, spawner_1.spawn)('git', ['pull'].concat(args), this.spawnOpt(optionSpawn));
+        return (0, spawn_1.spawn)('git', ['pull'].concat(args), this.spawnOpt(optionSpawn));
     }
     /**
      * git commit
@@ -58,7 +64,7 @@ class git {
             mode = '-' + mode;
         return new bluebird_1.default((resolve, reject) => {
             const opt = this.spawnOpt(optionSpawn);
-            const child = (0, spawner_1.spawn)('git', ['commit', mode, msg], opt);
+            const child = (0, spawn_1.spawn)('git', ['commit', mode, msg], opt);
             if (opt.stdio !== 'inherit') {
                 child.then((str) => {
                     resolve(str);
@@ -74,7 +80,7 @@ class git {
         let args = ['push'];
         if (force)
             args = args.concat('-f');
-        return (0, spawner_1.spawn)('git', args, this.spawnOpt(optionSpawn));
+        return (0, spawn_1.spawn)('git', args, this.spawnOpt(optionSpawn));
     }
     spawnOpt(opt = {}) {
         return Object.assign({ cwd: this.cwd, stdio: 'pipe' }, opt);
@@ -86,7 +92,11 @@ class git {
      * @returns
      */
     add(path, optionSpawn = { stdio: 'inherit' }) {
-        return (0, spawner_1.spawn)('git', ['add', path], this.spawnOpt(optionSpawn));
+        return new bluebird_1.default((resolve, reject) => {
+            const child = (0, spawn_1.spawn)('git', ['add', path], this.spawnOpt(optionSpawn));
+            child.then(resolve);
+            child.catch(reject);
+        });
     }
     /**
      * git status
@@ -94,7 +104,7 @@ class git {
      */
     status() {
         return new bluebird_1.default((resolve, reject) => {
-            (0, spawner_1.spawn)('git', ['status'], this.spawnOpt({ stdio: 'pipe' }))
+            (0, spawn_1.spawn)('git', ['status'], this.spawnOpt({ stdio: 'pipe' }))
                 .then((response) => {
                 const result = response
                     .split('\n')
@@ -117,11 +127,11 @@ class git {
      * @returns
      */
     async init() {
-        return (0, spawner_1.spawn)('git', ['init'], this.spawnOpt());
+        return (0, spawn_1.spawn)('git', ['init'], this.spawnOpt());
     }
     async isExist() {
         const folderExist = (0, fs_1.existsSync)((0, path_1.join)(this.cwd, '.git'));
-        const result = await (0, spawner_1.spawn)('git', ['status'], this.spawnOpt({ stdio: 'pipe' }));
+        const result = await (0, spawn_1.spawn)('git', ['status'], this.spawnOpt({ stdio: 'pipe' }));
         const match1 = /changes not staged for commit/gim.test(result);
         this.exist = match1 && folderExist;
         return this.exist;
@@ -131,11 +141,11 @@ class git {
     }
     setemail(v) {
         this.email = v;
-        (0, spawner_1.spawn)('git', ['config', 'user.email', this.email], this.spawnOpt());
+        (0, spawn_1.spawn)('git', ['config', 'user.email', this.email], this.spawnOpt());
     }
     setuser(v) {
         this.user = v;
-        (0, spawner_1.spawn)('git', ['config', 'user.name', this.user], this.spawnOpt());
+        (0, spawn_1.spawn)('git', ['config', 'user.name', this.user], this.spawnOpt());
     }
     /**
      * set remote url
@@ -151,10 +161,10 @@ class git {
     setremote(v, name) {
         this.remote = v instanceof URL ? v.toString() : v;
         try {
-            return (0, spawner_1.spawn)('git', ['remote', 'add', name || 'origin', this.remote], this.spawnOpt());
+            return (0, spawn_1.spawn)('git', ['remote', 'add', name || 'origin', this.remote], this.spawnOpt());
         }
         catch (_) {
-            return (0, spawner_1.spawn)('git', ['remote', 'set-url', name || 'origin', this.remote], this.spawnOpt());
+            return (0, spawn_1.spawn)('git', ['remote', 'set-url', name || 'origin', this.remote], this.spawnOpt());
         }
     }
     setbranch(v) {
@@ -165,7 +175,7 @@ class git {
      * @param branch
      */
     reset(branch = this.branch) {
-        return (0, spawner_1.spawn)('git', ['reset', '--hard', 'origin/' + branch || this.branch], {
+        return (0, spawn_1.spawn)('git', ['reset', '--hard', 'origin/' + branch || this.branch], {
             stdio: 'inherit',
             cwd: this.cwd
         });

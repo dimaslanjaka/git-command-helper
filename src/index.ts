@@ -5,12 +5,11 @@
  */
 
 import Bluebird from 'bluebird';
-import { SpawnOptions } from 'child_process';
 import { existsSync } from 'fs';
 import { join } from 'path';
 import { latestCommit } from './latestCommit';
 import { shell } from './shell';
-import { spawn } from './spawner';
+import { spawn, SpawnOptions } from './spawn';
 import submodule from './submodule';
 import { StatusResult } from './types';
 
@@ -36,6 +35,12 @@ export class git {
     this.isExist();
   }
 
+  /**
+   * git fetch
+   * @param arg argument git-fetch, ex ['--all']
+   * @param optionSpawn
+   * @returns
+   */
   fetch(arg?: string[], optionSpawn: SpawnOptions = { stdio: 'inherit' }) {
     let args = [];
     if (Array.isArray(arg)) args = args.concat(arg);
@@ -98,7 +103,11 @@ export class git {
    * @returns
    */
   add(path: string, optionSpawn: SpawnOptions = { stdio: 'inherit' }) {
-    return spawn('git', ['add', path], this.spawnOpt(optionSpawn));
+    return new Bluebird((resolve, reject) => {
+      const child = spawn('git', ['add', path], this.spawnOpt(optionSpawn));
+      child.then(resolve);
+      child.catch(reject);
+    });
   }
 
   /**

@@ -1,7 +1,9 @@
 /// <reference types="node" />
 import { SpawnOptions } from 'child_process';
 import { Readable } from 'stream';
+import promiseSpawn from './spawn';
 export declare class spawner {
+    static spawn: typeof promiseSpawn;
     /**
      * promises spawn
      * @param options
@@ -17,7 +19,6 @@ export declare class spawner {
         stdout: string[] | Readable;
         stderr: string[] | Readable;
     }>;
-    static spawn(cmd: string, args: string[], options?: SpawnOptions): Promise<string>;
 }
 export default spawner;
-export declare const spawn: typeof spawner.spawn;
+export declare const spawn: typeof promiseSpawn;

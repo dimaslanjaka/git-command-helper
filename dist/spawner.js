@@ -1,8 +1,11 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.spawn = exports.spawner = void 0;
 const child_process_1 = require("child_process");
-const stream_1 = require("./stream");
+const spawn_1 = __importDefault(require("./spawn"));
 class spawner {
     /**
      * promises spawn
@@ -56,28 +59,8 @@ class spawner {
             });
         });
     }
-    static async spawn(cmd, args, options) {
-        const child = await spawner.promise(options, cmd, ...args);
-        if ('stderr' in child && child.stderr !== null) {
-            //if (Array.isArray(child.stderr)) throw new Error(child.stderr.join('\n'));
-            //throw new Error(await streamToString(child.stderr));
-            let msg;
-            if (Array.isArray(child.stderr)) {
-                msg = child.stderr.join('\n');
-            }
-            else {
-                msg = await (0, stream_1.streamToString)(child.stderr);
-            }
-            return msg;
-        }
-        if ('stdout' in child && child.stdout !== null) {
-            if (Array.isArray(child.stdout))
-                return child.stdout.join('\n');
-            return await (0, stream_1.streamToString)(child.stdout);
-        }
-        return null;
-    }
 }
 exports.spawner = spawner;
+spawner.spawn = spawn_1.default;
 exports.default = spawner;
 exports.spawn = spawner.spawn;

@@ -1,8 +1,9 @@
 import { spawn as spawnSys, SpawnOptions } from 'child_process';
 import { Readable } from 'stream';
-import { streamToString } from './stream';
+import promiseSpawn from './spawn';
 
 export class spawner {
+  static spawn = promiseSpawn;
   /**
    * promises spawn
    * @param options
@@ -70,8 +71,10 @@ export class spawner {
     );
   }
 
-  static async spawn(cmd: string, args: string[], options?: SpawnOptions) {
+  /*static async spawn(cmd: string, args: string[], options?: SpawnOptions) {
+    //console.log(options, cmd, ...args);
     const child = await spawner.promise(options, cmd, ...args);
+    //const child = await spawner.promise.call(options, cmd, ...args);
     if ('stderr' in child && child.stderr !== null) {
       //if (Array.isArray(child.stderr)) throw new Error(child.stderr.join('\n'));
       //throw new Error(await streamToString(child.stderr));
@@ -88,7 +91,7 @@ export class spawner {
       return await streamToString(child.stdout);
     }
     return null;
-  }
+  }*/
 }
 
 export default spawner;
