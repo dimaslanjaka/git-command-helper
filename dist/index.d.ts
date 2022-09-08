@@ -40,6 +40,10 @@ export declare class git {
      * @returns
      */
     add(path: string, optionSpawn?: SpawnOptions): Promise<string>;
+    /**
+     * git status
+     * @returns
+     */
     status(): Bluebird<StatusResult[]>;
     /**
      * git init

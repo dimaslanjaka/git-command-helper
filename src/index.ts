@@ -84,6 +84,10 @@ export class git {
     return spawn('git', ['add', path], this.spawnOpt(optionSpawn));
   }
 
+  /**
+   * git status
+   * @returns
+   */
   status() {
     return new Bluebird((resolve: (result: StatusResult[]) => any, reject) => {
       spawn('git', ['status'], this.spawnOpt({ stdio: 'pipe' }))

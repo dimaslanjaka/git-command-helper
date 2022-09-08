@@ -73,6 +73,10 @@ class git {
     add(path, optionSpawn = { stdio: 'inherit' }) {
         return (0, spawner_1.spawn)('git', ['add', path], this.spawnOpt(optionSpawn));
     }
+    /**
+     * git status
+     * @returns
+     */
     status() {
         return new bluebird_1.default((resolve, reject) => {
             (0, spawner_1.spawn)('git', ['status'], this.spawnOpt({ stdio: 'pipe' }))
