@@ -7,6 +7,7 @@
 import { SpawnOptions } from 'child_process';
 import { existsSync } from 'fs';
 import { spawn } from 'hexo-util';
+import { join } from 'path';
 import { latestCommit } from './latestCommit';
 import { shell } from './shell';
 import submodule from './submodule';
@@ -74,9 +75,15 @@ export class git {
     return spawn('git', ['add', path], this.spawnOpt(optionSpawn));
   }
 
-  isExist() {
-    this.exist = existsSync(this.cwd);
-    return this.exist;
+  async isExist() {
+    const folderExist = existsSync(join(this.cwd, '.git'));
+    const result = await spawn(
+      'git',
+      ['status'],
+      this.spawnOpt({ stdio: 'pipe' })
+    );
+    const match1 = /changes not staged for commit/gim.test(result);
+    return match1 && folderExist;
   }
 
   public setcwd(v: string) {

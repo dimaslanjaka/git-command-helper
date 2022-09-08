@@ -11,6 +11,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.gitCommandHelper = exports.gitHelper = exports.git = void 0;
 const fs_1 = require("fs");
 const hexo_util_1 = require("hexo-util");
+const path_1 = require("path");
 const latestCommit_1 = require("./latestCommit");
 const shell_1 = require("./shell");
 const submodule_1 = __importDefault(require("./submodule"));
@@ -64,9 +65,11 @@ class git {
     add(path, optionSpawn = { stdio: 'inherit' }) {
         return (0, hexo_util_1.spawn)('git', ['add', path], this.spawnOpt(optionSpawn));
     }
-    isExist() {
-        this.exist = (0, fs_1.existsSync)(this.cwd);
-        return this.exist;
+    async isExist() {
+        const folderExist = (0, fs_1.existsSync)((0, path_1.join)(this.cwd, '.git'));
+        const result = await (0, hexo_util_1.spawn)('git', ['status'], this.spawnOpt({ stdio: 'pipe' }));
+        const match1 = /changes not staged for commit/gim.test(result);
+        return match1 && folderExist;
     }
     setcwd(v) {
         this.cwd = v;
