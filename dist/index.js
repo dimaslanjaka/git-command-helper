@@ -9,9 +9,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.gitCommandHelper = exports.gitHelper = exports.git = void 0;
+const bluebird_1 = __importDefault(require("bluebird"));
 const fs_1 = require("fs");
 const path_1 = require("path");
 const latestCommit_1 = require("./latestCommit");
+const shell_1 = require("./shell");
 const spawner_1 = require("./spawner");
 const submodule_1 = __importDefault(require("./submodule"));
 // module 'git-command-helper';
@@ -21,6 +23,7 @@ const submodule_1 = __importDefault(require("./submodule"));
 class git {
     constructor(dir) {
         this.latestCommit = latestCommit_1.latestCommit;
+        this.shell = shell_1.shell;
         this.cwd = dir;
         this.submodule = new submodule_1.default(dir);
         this.isExist();
@@ -70,18 +73,24 @@ class git {
     add(path, optionSpawn = { stdio: 'inherit' }) {
         return (0, spawner_1.spawn)('git', ['add', path], this.spawnOpt(optionSpawn));
     }
-    async status() {
-        const response = await (0, spawner_1.spawn)('git', ['status'], this.spawnOpt({ stdio: 'pipe' }));
-        return response
-            .split('\n')
-            .map((str) => str.trim())
-            .filter((str_1) => /^(modified|added|deleted|untracked):/.test(str_1))
-            .map((str) => {
-            const split = str.split(/:\s+/);
-            return {
-                changes: split[0],
-                path: split[1]
-            };
+    status() {
+        return new bluebird_1.default((resolve, reject) => {
+            (0, spawner_1.spawn)('git', ['status'], this.spawnOpt({ stdio: 'pipe' }))
+                .then((response) => {
+                const result = response
+                    .split('\n')
+                    .map((str) => str.trim())
+                    .filter((str_1) => /^(modified|added|deleted|untracked):/.test(str_1))
+                    .map((str) => {
+                    const split = str.split(/:\s+/);
+                    return {
+                        changes: split[0],
+                        path: split[1].replace(/\(.*\)$/, '').trim()
+                    };
+                });
+                resolve(result);
+            })
+                .catch(reject);
         });
     }
     /**

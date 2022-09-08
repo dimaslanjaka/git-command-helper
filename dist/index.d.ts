@@ -3,8 +3,11 @@
  * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
  */
 /// <reference types="node" />
+import Bluebird from 'bluebird';
 import { SpawnOptions } from 'child_process';
+import { shell } from './shell';
 import submodule from './submodule';
+import { StatusResult } from './types';
 /**
  * GitHub Command Helper For NodeJS
  */
@@ -17,6 +20,7 @@ export declare class git {
     private exist;
     cwd: string;
     latestCommit: (path?: string, options?: Partial<import("./latestCommit").GetLatestCommitHashOptions>) => Promise<string>;
+    shell: typeof shell;
     constructor(dir: string);
     fetch(arg?: string[], optionSpawn?: SpawnOptions): Promise<string>;
     pull(arg?: string[], optionSpawn?: SpawnOptions): Promise<string>;
@@ -36,10 +40,7 @@ export declare class git {
      * @returns
      */
     add(path: string, optionSpawn?: SpawnOptions): Promise<string>;
-    status(): Promise<{
-        changes: string;
-        path: string;
-    }[]>;
+    status(): Bluebird<StatusResult[]>;
     /**
      * git init
      * @returns

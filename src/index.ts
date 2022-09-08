@@ -4,12 +4,15 @@
  * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
  */
 
+import Bluebird from 'bluebird';
 import { SpawnOptions } from 'child_process';
 import { existsSync } from 'fs';
 import { join } from 'path';
 import { latestCommit } from './latestCommit';
+import { shell } from './shell';
 import { spawn } from './spawner';
 import submodule from './submodule';
+import { StatusResult } from './types';
 
 // module 'git-command-helper';
 
@@ -25,6 +28,7 @@ export class git {
   private exist: boolean;
   cwd: string;
   latestCommit = latestCommit;
+  shell = shell;
 
   constructor(dir: string) {
     this.cwd = dir;
@@ -80,23 +84,27 @@ export class git {
     return spawn('git', ['add', path], this.spawnOpt(optionSpawn));
   }
 
-  async status() {
-    const response = await spawn(
-      'git',
-      ['status'],
-      this.spawnOpt({ stdio: 'pipe' })
-    );
-    return response
-      .split('\n')
-      .map((str) => str.trim())
-      .filter((str_1) => /^(modified|added|deleted|untracked):/.test(str_1))
-      .map((str) => {
-        const split = str.split(/:\s+/);
-        return {
-          changes: split[0],
-          path: split[1]
-        };
-      });
+  status() {
+    return new Bluebird((resolve: (result: StatusResult[]) => any, reject) => {
+      spawn('git', ['status'], this.spawnOpt({ stdio: 'pipe' }))
+        .then((response) => {
+          const result = response
+            .split('\n')
+            .map((str) => str.trim())
+            .filter((str_1) =>
+              /^(modified|added|deleted|untracked):/.test(str_1)
+            )
+            .map((str) => {
+              const split = str.split(/:\s+/);
+              return {
+                changes: split[0],
+                path: split[1].replace(/\(.*\)$/, '').trim()
+              };
+            });
+          resolve(result);
+        })
+        .catch(reject);
+    });
   }
 
   /**
