@@ -83,7 +83,8 @@ export class git {
       this.spawnOpt({ stdio: 'pipe' })
     );
     const match1 = /changes not staged for commit/gim.test(result);
-    return match1 && folderExist;
+    this.exist = match1 && folderExist;
+    return this.exist;
   }
 
   public setcwd(v: string) {

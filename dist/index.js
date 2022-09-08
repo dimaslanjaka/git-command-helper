@@ -69,7 +69,8 @@ class git {
         const folderExist = (0, fs_1.existsSync)((0, path_1.join)(this.cwd, '.git'));
         const result = await (0, hexo_util_1.spawn)('git', ['status'], this.spawnOpt({ stdio: 'pipe' }));
         const match1 = /changes not staged for commit/gim.test(result);
-        return match1 && folderExist;
+        this.exist = match1 && folderExist;
+        return this.exist;
     }
     setcwd(v) {
         this.cwd = v;
