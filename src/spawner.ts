@@ -27,23 +27,27 @@ export class spawner {
         }) => any,
         reject: (returnargs: { args: string[]; err: Error }) => any
       ) => {
-        if (options === null)
+        // default option inherit
+        if (options === null) {
           options = {
             cwd: __dirname,
             stdio: 'inherit'
           };
+        }
         const stdouts: string[] = [];
         const stderrs: string[] = [];
         const child = spawnSys(cmd, args, options);
         // use event hooks to provide a callback to execute when data are available:
-        if (child.stdout !== null)
+        if (child.stdout !== null) {
           child.stdout.on('data', function (data) {
             stdouts.push(data.toString().trim());
           });
-        if (child.stderr !== null)
+        }
+        if (child.stderr !== null) {
           child.stderr.on('data', function (data) {
             stderrs.push(data.toString().trim());
           });
+        }
         child.on('close', function (code) {
           // Should probably be 'exit', not 'close'
           // *** Process completed
