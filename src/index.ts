@@ -34,7 +34,7 @@ export class git {
   constructor(dir: string) {
     this.cwd = dir;
     this.submodule = new submodule(dir);
-    helper.suppress(this.isExist);
+    helper.suppress(() => this.isExist());
   }
 
   /**

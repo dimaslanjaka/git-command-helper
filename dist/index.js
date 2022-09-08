@@ -28,7 +28,7 @@ class git {
         this.helper = helper_1.default;
         this.cwd = dir;
         this.submodule = new submodule_1.default(dir);
-        helper_1.default.suppress(this.isExist);
+        helper_1.default.suppress(() => this.isExist());
     }
     /**
      * git fetch
