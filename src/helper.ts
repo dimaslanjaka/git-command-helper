@@ -12,7 +12,7 @@ export default class helper {
     try {
       //return await Bluebird.resolve(cb).then((res) => res);
       if (this.isPromise(cb)) {
-        return (<asyncFunc>cb)();
+        return await (<asyncFunc>cb)();
       } else {
         return cb();
       }

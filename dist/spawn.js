@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.spawn = void 0;
 const bluebird_1 = __importDefault(require("bluebird"));
 const cross_spawn_1 = __importDefault(require("cross-spawn"));
+// import { spawn as sysSpawn } from 'child_process';
 const cache_stream_1 = __importDefault(require("./cache-stream"));
 function promiseSpawn(command, args = [], options = {}) {
     if (!command)

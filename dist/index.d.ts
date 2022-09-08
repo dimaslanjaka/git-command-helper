@@ -22,6 +22,7 @@ export declare class git {
     latestCommit: (path?: string, options?: Partial<import("./latestCommit").GetLatestCommitHashOptions>) => Promise<string>;
     shell: typeof shell;
     helper: typeof helper;
+    static helper: typeof helper;
     constructor(dir: string);
     /**
      * git fetch
@@ -84,7 +85,7 @@ export declare class git {
      * // custom name
      * git add remote customName https://
      */
-    setremote(v: string | URL, name?: string): Bluebird<string>;
+    setremote(v: string | URL, name?: string): Promise<any>;
     setbranch(v: string): void;
     /**
      * Reset to latest commit of remote branch

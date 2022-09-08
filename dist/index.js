@@ -185,13 +185,13 @@ class git {
      * // custom name
      * git add remote customName https://
      */
-    setremote(v, name) {
+    async setremote(v, name) {
         this.remote = v instanceof URL ? v.toString() : v;
         try {
-            return (0, spawn_1.spawn)('git', ['remote', 'add', name || 'origin', this.remote], this.spawnOpt());
+            return await (0, spawn_1.spawn)('git', ['remote', 'add', name || 'origin', this.remote], this.spawnOpt({ stdio: 'pipe' }));
         }
-        catch (_) {
-            return (0, spawn_1.spawn)('git', ['remote', 'set-url', name || 'origin', this.remote], this.spawnOpt());
+        catch (_a) {
+            return await helper_1.default.suppress(() => (0, spawn_1.spawn)('git', ['remote', 'set-url', name || 'origin', this.remote], this.spawnOpt({ stdio: 'pipe' })));
         }
     }
     setbranch(v) {
@@ -209,6 +209,7 @@ class git {
     }
 }
 exports.git = git;
+git.helper = helper_1.default;
 exports.default = git;
 exports.gitHelper = git;
 exports.gitCommandHelper = git;

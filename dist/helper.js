@@ -10,7 +10,7 @@ class helper {
         try {
             //return await Bluebird.resolve(cb).then((res) => res);
             if (this.isPromise(cb)) {
-                return cb();
+                return await cb();
             }
             else {
                 return cb();

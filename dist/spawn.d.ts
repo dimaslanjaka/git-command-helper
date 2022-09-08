@@ -1,6 +1,6 @@
 import Bluebird from 'bluebird';
-import crossSpawn from 'cross-spawn';
-declare type originalOpt = Parameters<typeof crossSpawn>[2];
+import sysSpawn from 'cross-spawn';
+declare type originalOpt = Parameters<typeof sysSpawn>[2];
 export interface SpawnOptions extends originalOpt {
     [key: string]: any;
 }

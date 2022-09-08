@@ -30,6 +30,7 @@ export class git {
   latestCommit = latestCommit;
   shell = shell;
   helper = helper;
+  static helper = helper;
 
   constructor(dir: string) {
     this.cwd = dir;
@@ -212,19 +213,21 @@ export class git {
    * // custom name
    * git add remote customName https://
    */
-  public setremote(v: string | URL, name?: string) {
+  public async setremote(v: string | URL, name?: string) {
     this.remote = v instanceof URL ? v.toString() : v;
     try {
-      return spawn(
+      return await spawn(
         'git',
         ['remote', 'add', name || 'origin', this.remote],
-        this.spawnOpt()
+        this.spawnOpt({ stdio: 'pipe' })
       );
-    } catch (_) {
-      return spawn(
-        'git',
-        ['remote', 'set-url', name || 'origin', this.remote],
-        this.spawnOpt()
+    } catch {
+      return await helper.suppress(() =>
+        spawn(
+          'git',
+          ['remote', 'set-url', name || 'origin', this.remote],
+          this.spawnOpt({ stdio: 'pipe' })
+        )
       );
     }
   }

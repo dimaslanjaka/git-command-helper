@@ -1,10 +1,11 @@
 'use strict';
 
 import Bluebird from 'bluebird';
-import crossSpawn from 'cross-spawn';
+import sysSpawn from 'cross-spawn';
+// import { spawn as sysSpawn } from 'child_process';
 import CacheStream from './cache-stream';
 
-type originalOpt = Parameters<typeof crossSpawn>[2];
+type originalOpt = Parameters<typeof sysSpawn>[2];
 export interface SpawnOptions extends originalOpt {
   [key: string]: any;
 }
@@ -24,7 +25,7 @@ export default function promiseSpawn(
   }
 
   return new Bluebird((resolve: (str?: string) => any, reject) => {
-    const task = crossSpawn(command, args, options);
+    const task = sysSpawn(command, args, options);
     const verbose: boolean = options.verbose || false;
     const { encoding = 'utf8' } = options;
     const stdoutCache = new CacheStream();

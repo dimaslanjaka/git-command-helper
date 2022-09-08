@@ -1,6 +1,11 @@
 import { join } from 'path';
 import { gitHelper } from '../src';
-const git = new gitHelper(join(process.cwd(), 'tmp'));
+
+/**
+ * Supress set remote test
+ */
+
+const git = new gitHelper(join(__dirname, '..'));
 git
   .isExist()
   .then((ex) => {
