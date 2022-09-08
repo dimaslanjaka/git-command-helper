@@ -7,6 +7,7 @@
 import Bluebird from 'bluebird';
 import { existsSync } from 'fs';
 import { join } from 'path';
+import helper from './helper';
 import { latestCommit } from './latestCommit';
 import { shell } from './shell';
 import { spawn, SpawnOptions } from './spawn';
@@ -28,11 +29,12 @@ export class git {
   cwd: string;
   latestCommit = latestCommit;
   shell = shell;
+  helper = helper;
 
   constructor(dir: string) {
     this.cwd = dir;
     this.submodule = new submodule(dir);
-    this.isExist();
+    helper.suppress(this.isExist);
   }
 
   /**

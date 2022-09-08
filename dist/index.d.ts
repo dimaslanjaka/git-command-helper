@@ -3,6 +3,7 @@
  * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
  */
 import Bluebird from 'bluebird';
+import helper from './helper';
 import { shell } from './shell';
 import { SpawnOptions } from './spawn';
 import submodule from './submodule';
@@ -20,6 +21,7 @@ export declare class git {
     cwd: string;
     latestCommit: (path?: string, options?: Partial<import("./latestCommit").GetLatestCommitHashOptions>) => Promise<string>;
     shell: typeof shell;
+    helper: typeof helper;
     constructor(dir: string);
     /**
      * git fetch

@@ -12,6 +12,7 @@ exports.gitCommandHelper = exports.gitHelper = exports.git = void 0;
 const bluebird_1 = __importDefault(require("bluebird"));
 const fs_1 = require("fs");
 const path_1 = require("path");
+const helper_1 = __importDefault(require("./helper"));
 const latestCommit_1 = require("./latestCommit");
 const shell_1 = require("./shell");
 const spawn_1 = require("./spawn");
@@ -24,9 +25,10 @@ class git {
     constructor(dir) {
         this.latestCommit = latestCommit_1.latestCommit;
         this.shell = shell_1.shell;
+        this.helper = helper_1.default;
         this.cwd = dir;
         this.submodule = new submodule_1.default(dir);
-        this.isExist();
+        helper_1.default.suppress(this.isExist);
     }
     /**
      * git fetch
