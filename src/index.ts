@@ -75,6 +75,14 @@ export class git {
     return spawn('git', ['add', path], this.spawnOpt(optionSpawn));
   }
 
+  /**
+   * git init
+   * @returns
+   */
+  async init() {
+    return spawn('git', ['init'], this.spawnOpt({ stdio: 'ignore' }));
+  }
+
   async isExist() {
     const folderExist = existsSync(join(this.cwd, '.git'));
     const result = await spawn(

@@ -36,6 +36,11 @@ export declare class git {
      * @returns
      */
     add(path: string, optionSpawn?: SpawnOptions): Promise<string>;
+    /**
+     * git init
+     * @returns
+     */
+    init(): Promise<string>;
     isExist(): Promise<boolean>;
     setcwd(v: string): void;
     setemail(v: string): void;
