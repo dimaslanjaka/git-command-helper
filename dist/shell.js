@@ -21,7 +21,7 @@ async function shell(cmd, args, opt = null) {
     }
     catch (e) {
         if (e instanceof Error)
-            console.log(e.message);
+            return console.log(e.message);
         return console.trace(e);
     }
 }

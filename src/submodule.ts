@@ -2,7 +2,7 @@ import { SpawnOptions } from 'child_process';
 import { existsSync } from 'fs';
 import { join } from 'path';
 import extractSubmodule from './extract-submodule';
-import { shell } from './shell';
+import { spawn } from './spawner';
 
 export class submodule {
   cwd: string;
@@ -11,18 +11,25 @@ export class submodule {
     this.cwd = cwd;
     this.hasConfig = existsSync(join(this.cwd, '.gitmodules'));
   }
+
   private spawnOpt(opt: SpawnOptions = {}) {
-    return Object.assign({ cwd: this.cwd }, opt);
+    return Object.assign({ cwd: this.cwd, stdio: 'pipe' } as SpawnOptions, opt);
   }
+
+  /**
+   * git submodule update
+   * @param optionSpawn
+   * @returns
+   */
   update(optionSpawn: SpawnOptions = { stdio: 'inherit' }) {
-    return shell(
+    return spawn(
       'git',
       ['submodule', 'update', '-i', '-r'],
       this.spawnOpt(optionSpawn)
     );
   }
   status(optionSpawn: SpawnOptions = { stdio: 'inherit' }) {
-    return shell('git', ['submodule', 'status'], this.spawnOpt(optionSpawn));
+    return spawn('git', ['submodule', 'status'], this.spawnOpt(optionSpawn));
   }
 
   /**

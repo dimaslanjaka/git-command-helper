@@ -7,20 +7,25 @@ exports.gitSubmodule = exports.submodule = void 0;
 const fs_1 = require("fs");
 const path_1 = require("path");
 const extract_submodule_1 = __importDefault(require("./extract-submodule"));
-const shell_1 = require("./shell");
+const spawner_1 = require("./spawner");
 class submodule {
     constructor(cwd) {
         this.cwd = cwd;
         this.hasConfig = (0, fs_1.existsSync)((0, path_1.join)(this.cwd, '.gitmodules'));
     }
     spawnOpt(opt = {}) {
-        return Object.assign({ cwd: this.cwd }, opt);
+        return Object.assign({ cwd: this.cwd, stdio: 'pipe' }, opt);
     }
+    /**
+     * git submodule update
+     * @param optionSpawn
+     * @returns
+     */
     update(optionSpawn = { stdio: 'inherit' }) {
-        return (0, shell_1.shell)('git', ['submodule', 'update', '-i', '-r'], this.spawnOpt(optionSpawn));
+        return (0, spawner_1.spawn)('git', ['submodule', 'update', '-i', '-r'], this.spawnOpt(optionSpawn));
     }
     status(optionSpawn = { stdio: 'inherit' }) {
-        return (0, shell_1.shell)('git', ['submodule', 'status'], this.spawnOpt(optionSpawn));
+        return (0, spawner_1.spawn)('git', ['submodule', 'status'], this.spawnOpt(optionSpawn));
     }
     /**
      * get submodule informations

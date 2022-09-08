@@ -22,7 +22,7 @@ export async function shell(
   try {
     return await spawn(cmd, args, useOpt);
   } catch (e) {
-    if (e instanceof Error) console.log(e.message);
+    if (e instanceof Error) return console.log(e.message);
     return console.trace(e);
   }
 }

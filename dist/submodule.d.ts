@@ -5,8 +5,13 @@ export declare class submodule {
     hasConfig: boolean;
     constructor(cwd: string);
     private spawnOpt;
-    update(optionSpawn?: SpawnOptions): Promise<string | void>;
-    status(optionSpawn?: SpawnOptions): Promise<string | void>;
+    /**
+     * git submodule update
+     * @param optionSpawn
+     * @returns
+     */
+    update(optionSpawn?: SpawnOptions): Promise<string>;
+    status(optionSpawn?: SpawnOptions): Promise<string>;
     /**
      * get submodule informations
      * @returns

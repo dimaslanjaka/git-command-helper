@@ -8,7 +8,6 @@ import { SpawnOptions } from 'child_process';
 import { existsSync } from 'fs';
 import { join } from 'path';
 import { latestCommit } from './latestCommit';
-import { shell } from './shell';
 import { spawn } from './spawner';
 import submodule from './submodule';
 
@@ -36,6 +35,9 @@ export class git {
   fetch(arg?: string[], optionSpawn: SpawnOptions = { stdio: 'inherit' }) {
     let args = [];
     if (Array.isArray(arg)) args = args.concat(arg);
+    if (args.length === 0) {
+      args.push('origin', this.branch);
+    }
     return spawn('git', ['fetch'].concat(args), this.spawnOpt(optionSpawn));
   }
 
@@ -65,7 +67,7 @@ export class git {
   }
 
   private spawnOpt(opt: SpawnOptions = {}) {
-    return Object.assign({ cwd: this.cwd }, opt);
+    return Object.assign({ cwd: this.cwd, stdio: 'pipe' }, opt);
   }
 
   /**
@@ -104,21 +106,40 @@ export class git {
 
   public setemail(v: string) {
     this.email = v;
-    shell('git', ['config', 'user.email', this.email], this.spawnOpt());
+    spawn('git', ['config', 'user.email', this.email], this.spawnOpt());
   }
 
   public setuser(v: string) {
     this.user = v;
-    shell('git', ['config', 'user.name', this.user], this.spawnOpt());
+    spawn('git', ['config', 'user.name', this.user], this.spawnOpt());
   }
 
-  public setremote(v: string | URL) {
+  /**
+   * set remote url
+   * @param v
+   * @param name custom object name
+   * @returns
+   * @example
+   * // default
+   * git add remote origin https://
+   * // custom name
+   * git add remote customName https://
+   */
+  public setremote(v: string | URL, name?: string) {
     this.remote = v instanceof URL ? v.toString() : v;
-    return shell(
-      'git',
-      ['remote', 'add', 'origin', this.remote],
-      this.spawnOpt()
-    );
+    try {
+      return spawn(
+        'git',
+        ['remote', 'add', name || 'origin', this.remote],
+        this.spawnOpt()
+      );
+    } catch (_) {
+      return spawn(
+        'git',
+        ['remote', 'set-url', name || 'origin', this.remote],
+        this.spawnOpt()
+      );
+    }
   }
 
   public setbranch(v: string) {
@@ -130,10 +151,14 @@ export class git {
    * @param branch
    */
   reset(branch = this.branch) {
-    shell('git', ['reset', '--hard', 'origin/' + branch || this.branch], {
-      stdio: 'inherit',
-      cwd: this.cwd
-    });
+    return spawn(
+      'git',
+      ['reset', '--hard', 'origin/' + branch || this.branch],
+      {
+        stdio: 'inherit',
+        cwd: this.cwd
+      }
+    );
   }
 }
 

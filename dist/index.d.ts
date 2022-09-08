@@ -45,13 +45,24 @@ export declare class git {
     setcwd(v: string): void;
     setemail(v: string): void;
     setuser(v: string): void;
-    setremote(v: string | URL): Promise<string | void>;
+    /**
+     * set remote url
+     * @param v
+     * @param name custom object name
+     * @returns
+     * @example
+     * // default
+     * git add remote origin https://
+     * // custom name
+     * git add remote customName https://
+     */
+    setremote(v: string | URL, name?: string): Promise<string>;
     setbranch(v: string): void;
     /**
      * Reset to latest commit of remote branch
      * @param branch
      */
-    reset(branch?: string): void;
+    reset(branch?: string): Promise<string>;
 }
 export default git;
 export declare const gitHelper: typeof git;
