@@ -87,13 +87,17 @@ class git {
      * @returns
      */
     commits(options) {
-        const run = () => {
-            if (options.length > 0)
-                this.addAndCommit(options[0].path, options[0].msg || 'update ' + new Date()).finally(() => {
+        const self = this;
+        function run() {
+            if (options.length > 0) {
+                self
+                    .addAndCommit(options[0].path, options[0].msg || 'update ' + new Date())
+                    .finally(() => {
                     options.shift();
                     run();
                 });
-        };
+            }
+        }
         return run();
     }
     push(force = false, optionSpawn = { stdio: 'inherit' }) {

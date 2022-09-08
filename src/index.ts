@@ -100,16 +100,20 @@ export class git {
    * @returns
    */
   commits(options: { path: string; msg?: string; [key: string]: any }[]) {
-    const run = () => {
-      if (options.length > 0)
-        this.addAndCommit(
-          options[0].path,
-          options[0].msg || 'update ' + new Date()
-        ).finally(() => {
-          options.shift();
-          run();
-        });
-    };
+    const self = this;
+    function run() {
+      if (options.length > 0) {
+        self
+          .addAndCommit(
+            options[0].path,
+            options[0].msg || 'update ' + new Date()
+          )
+          .finally(() => {
+            options.shift();
+            run();
+          });
+      }
+    }
     return run();
   }
 
