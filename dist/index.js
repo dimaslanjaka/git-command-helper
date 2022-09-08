@@ -149,12 +149,17 @@ class git {
     async init() {
         return (0, spawn_1.spawn)('git', ['init'], this.spawnOpt());
     }
-    async isExist() {
-        const folderExist = (0, fs_1.existsSync)((0, path_1.join)(this.cwd, '.git'));
-        const result = await (0, spawn_1.spawn)('git', ['status'], this.spawnOpt({ stdio: 'pipe' }));
-        const match1 = /changes not staged for commit/gim.test(result);
-        this.exist = match1 && folderExist;
-        return this.exist;
+    isExist() {
+        return new bluebird_1.default((resolve, reject) => {
+            const folderExist = (0, fs_1.existsSync)((0, path_1.join)(this.cwd, '.git'));
+            (0, spawn_1.spawn)('git', ['status'], this.spawnOpt({ stdio: 'pipe' }))
+                .then((result) => {
+                const match1 = /changes not staged for commit/gim.test(result);
+                this.exist = match1 && folderExist;
+                resolve(this.exist);
+            })
+                .catch(reject);
+        });
     }
     setcwd(v) {
         this.cwd = v;

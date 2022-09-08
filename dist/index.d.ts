@@ -67,7 +67,7 @@ export declare class git {
      * @returns
      */
     init(): Promise<string>;
-    isExist(): Promise<boolean>;
+    isExist(): Bluebird<boolean>;
     setcwd(v: string): void;
     setemail(v: string): void;
     setuser(v: string): void;

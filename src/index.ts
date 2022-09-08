@@ -172,16 +172,17 @@ export class git {
     return spawn('git', ['init'], this.spawnOpt());
   }
 
-  async isExist() {
-    const folderExist = existsSync(join(this.cwd, '.git'));
-    const result = await spawn(
-      'git',
-      ['status'],
-      this.spawnOpt({ stdio: 'pipe' })
-    );
-    const match1 = /changes not staged for commit/gim.test(result);
-    this.exist = match1 && folderExist;
-    return this.exist;
+  isExist() {
+    return new Bluebird((resolve: (exists: boolean) => any, reject) => {
+      const folderExist = existsSync(join(this.cwd, '.git'));
+      spawn('git', ['status'], this.spawnOpt({ stdio: 'pipe' }))
+        .then((result) => {
+          const match1 = /changes not staged for commit/gim.test(result);
+          this.exist = match1 && folderExist;
+          resolve(this.exist);
+        })
+        .catch(reject);
+    });
   }
 
   public setcwd(v: string) {
