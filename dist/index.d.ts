@@ -37,6 +37,17 @@ export declare class git {
      * @returns
      */
     commit(msg: string, mode?: 'am' | 'm' | string, optionSpawn?: SpawnOptions): Bluebird<string>;
+    addAndCommit(path: string, msg: string): Bluebird<unknown>;
+    /**
+     * bulk add and commit
+     * @param options
+     * @returns
+     */
+    commits(options: {
+        path: string;
+        msg?: string;
+        [key: string]: any;
+    }[]): void;
     push(force?: boolean, optionSpawn?: SpawnOptions): Bluebird<string>;
     private spawnOpt;
     /**
@@ -45,7 +56,7 @@ export declare class git {
      * @param optionSpawn
      * @returns
      */
-    add(path: string, optionSpawn?: SpawnOptions): Bluebird<unknown>;
+    add(path: string, optionSpawn?: SpawnOptions): Bluebird<string>;
     /**
      * git status
      * @returns

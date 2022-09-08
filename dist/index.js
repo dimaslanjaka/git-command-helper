@@ -76,6 +76,26 @@ class git {
             child.catch(reject);
         });
     }
+    addAndCommit(path, msg) {
+        return new bluebird_1.default((resolve, reject) => {
+            this.add(path, { stdio: 'pipe' }).then((_) => this.commit(msg, 'm', { stdio: 'pipe' }).then(resolve).catch(reject));
+        });
+    }
+    /**
+     * bulk add and commit
+     * @param options
+     * @returns
+     */
+    commits(options) {
+        const run = () => {
+            if (options.length > 0)
+                this.addAndCommit(options[0].path, options[0].msg || 'update ' + new Date()).finally(() => {
+                    options.shift();
+                    run();
+                });
+        };
+        return run();
+    }
     push(force = false, optionSpawn = { stdio: 'inherit' }) {
         let args = ['push'];
         if (force)
@@ -92,11 +112,7 @@ class git {
      * @returns
      */
     add(path, optionSpawn = { stdio: 'inherit' }) {
-        return new bluebird_1.default((resolve, reject) => {
-            const child = (0, spawn_1.spawn)('git', ['add', path], this.spawnOpt(optionSpawn));
-            child.then(resolve);
-            child.catch(reject);
-        });
+        return (0, spawn_1.spawn)('git', ['add', path], this.spawnOpt(optionSpawn));
     }
     /**
      * git status

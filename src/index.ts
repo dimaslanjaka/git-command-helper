@@ -86,6 +86,33 @@ export class git {
     });
   }
 
+  addAndCommit(path: string, msg: string) {
+    return new Bluebird((resolve, reject) => {
+      this.add(path, { stdio: 'pipe' }).then((_) =>
+        this.commit(msg, 'm', { stdio: 'pipe' }).then(resolve).catch(reject)
+      );
+    });
+  }
+
+  /**
+   * bulk add and commit
+   * @param options
+   * @returns
+   */
+  commits(options: { path: string; msg?: string; [key: string]: any }[]) {
+    const run = () => {
+      if (options.length > 0)
+        this.addAndCommit(
+          options[0].path,
+          options[0].msg || 'update ' + new Date()
+        ).finally(() => {
+          options.shift();
+          run();
+        });
+    };
+    return run();
+  }
+
   push(force = false, optionSpawn: SpawnOptions = { stdio: 'inherit' }) {
     let args = ['push'];
     if (force) args = args.concat('-f');
@@ -103,11 +130,7 @@ export class git {
    * @returns
    */
   add(path: string, optionSpawn: SpawnOptions = { stdio: 'inherit' }) {
-    return new Bluebird((resolve, reject) => {
-      const child = spawn('git', ['add', path], this.spawnOpt(optionSpawn));
-      child.then(resolve);
-      child.catch(reject);
-    });
+    return spawn('git', ['add', path], this.spawnOpt(optionSpawn));
   }
 
   /**
