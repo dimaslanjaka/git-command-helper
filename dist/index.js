@@ -48,12 +48,27 @@ class git {
     }
     /**
      * git commit
+     * @param mode -am, -m, etc
      * @param msg commit messages
      * @param optionSpawn
      * @returns
      */
-    commit(msg, optionSpawn = { stdio: 'inherit' }) {
-        return (0, spawner_1.spawn)('git', ['commit', '-m', msg], this.spawnOpt(optionSpawn));
+    commit(msg, mode = 'm', optionSpawn = { stdio: 'inherit' }) {
+        if (!mode.startsWith('-'))
+            mode = '-' + mode;
+        return new bluebird_1.default((resolve, reject) => {
+            const opt = this.spawnOpt(optionSpawn);
+            const child = (0, spawner_1.spawn)('git', ['commit', mode, msg], opt);
+            if (opt.stdio !== 'inherit') {
+                child.then((str) => {
+                    resolve(str);
+                });
+            }
+            else {
+                resolve();
+            }
+            child.catch(reject);
+        });
     }
     push(force = false, optionSpawn = { stdio: 'inherit' }) {
         let args = ['push'];

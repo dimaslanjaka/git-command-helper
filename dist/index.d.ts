@@ -26,11 +26,12 @@ export declare class git {
     pull(arg?: string[], optionSpawn?: SpawnOptions): Promise<string>;
     /**
      * git commit
+     * @param mode -am, -m, etc
      * @param msg commit messages
      * @param optionSpawn
      * @returns
      */
-    commit(msg: string, optionSpawn?: SpawnOptions): Promise<string>;
+    commit(msg: string, mode?: 'am' | 'm' | string, optionSpawn?: SpawnOptions): Bluebird<string>;
     push(force?: boolean, optionSpawn?: SpawnOptions): Promise<string>;
     private spawnOpt;
     /**
