@@ -133,20 +133,42 @@ class git {
      * @returns
      */
     status() {
+        const rgMod = /^(modified|added|deleted):/gim;
+        const rgUntracked = /^untracked files:([\s\S]*?)\n\n/gim;
         return new bluebird_1.default((resolve, reject) => {
             (0, spawn_1.spawn)('git', ['status'], this.spawnOpt({ stdio: 'pipe' }))
                 .then((response) => {
-                const result = response
-                    .split('\n')
+                const isMod = rgMod.test(response);
+                if (isMod) {
+                    // modded, added, deleted
+                    const result = response
+                        .split('\n')
+                        .map((str) => str.trim())
+                        .filter((str) => rgMod.test(str))
+                        .map((str) => {
+                        const split = str.split(/:\s+/);
+                        return {
+                            changes: split[0],
+                            path: (split[1] || '').replace(/\(.*\)$/, '').trim()
+                        };
+                    });
+                    resolve(result);
+                }
+                // untracked
+                const result = Array.from(response.match(rgUntracked))[0]
+                    .split(/\n/)
                     .map((str) => str.trim())
-                    .filter((str_1) => /^(modified|added|deleted|untracked):/.test(str_1))
+                    .filter((str) => {
+                    return !/^\(use/gim.test(str) && str.length > 0;
+                })
                     .map((str) => {
-                    const split = str.split(/:\s+/);
-                    return {
-                        changes: split[0],
-                        path: split[1].replace(/\(.*\)$/, '').trim()
-                    };
-                });
+                    if (!str.includes(':'))
+                        return {
+                            changes: 'untracked',
+                            path: str
+                        };
+                })
+                    .filter((str) => typeof str === 'object');
                 resolve(result);
             })
                 .catch(reject);
