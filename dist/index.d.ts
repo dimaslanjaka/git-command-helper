@@ -60,6 +60,23 @@ export declare class git {
      * @returns
      */
     add(path: string, optionSpawn?: SpawnOptions): Bluebird<string>;
+    info(): Promise<{
+        opt: {
+            cwd: string;
+            stdio: string;
+        } & Record<string, any> & import("child_process").SpawnOptions;
+        remote: {
+            fetch: {
+                origin: string;
+                url: string;
+            };
+            push: {
+                origin: string;
+                url: string;
+            };
+        };
+        status: StatusResult[];
+    }>;
     /**
      * git status
      * @returns
@@ -85,7 +102,22 @@ export declare class git {
      * // custom name
      * git add remote customName https://
      */
-    setremote(v: string | URL, name?: string): Promise<any>;
+    setremote(v: string | URL, name?: string, spawnOpt?: SpawnOptions): Promise<any>;
+    /**
+     * get remote information
+     * @param args
+     * @returns
+     */
+    getremote(args?: string[]): Promise<{
+        fetch: {
+            origin: string;
+            url: string;
+        };
+        push: {
+            origin: string;
+            url: string;
+        };
+    }>;
     setbranch(v: string): void;
     /**
      * Reset to latest commit of remote branch

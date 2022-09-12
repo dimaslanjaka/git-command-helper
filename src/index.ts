@@ -140,6 +140,15 @@ export class git {
     return spawn('git', ['add', path], this.spawnOpt(optionSpawn));
   }
 
+  async info() {
+    const opt = this.spawnOpt({ stdio: 'pipe' });
+    return {
+      opt,
+      remote: await this.getremote(['-v']),
+      status: await this.status()
+    };
+  }
+
   /**
    * git status
    * @returns
@@ -213,22 +222,72 @@ export class git {
    * // custom name
    * git add remote customName https://
    */
-  public async setremote(v: string | URL, name?: string) {
+  public async setremote(
+    v: string | URL,
+    name?: string,
+    spawnOpt: SpawnOptions = {}
+  ) {
     this.remote = v instanceof URL ? v.toString() : v;
+    const opt = this.spawnOpt(Object.assign({ stdio: 'pipe' }, spawnOpt || {}));
     try {
       return await spawn(
         'git',
         ['remote', 'add', name || 'origin', this.remote],
-        this.spawnOpt({ stdio: 'pipe' })
+        opt
       );
     } catch {
       return await helper.suppress(() =>
-        spawn(
-          'git',
-          ['remote', 'set-url', name || 'origin', this.remote],
-          this.spawnOpt({ stdio: 'pipe' })
-        )
+        spawn('git', ['remote', 'set-url', name || 'origin', this.remote], opt)
       );
+    }
+  }
+
+  /**
+   * get remote information
+   * @param args
+   * @returns
+   */
+  public async getremote(args?: string[]) {
+    try {
+      const res = await spawn(
+        'git',
+        ['remote'].concat(args || ['-v']),
+        this.spawnOpt({ stdio: 'pipe' })
+      );
+      const result = {
+        fetch: {
+          origin: '',
+          url: ''
+        },
+        push: {
+          origin: '',
+          url: ''
+        }
+      };
+      res
+        .split(/\n/gm)
+        .filter((split) => split.length > 0)
+        .map((splitted) => {
+          let key: string;
+          const nameUrl = splitted.split(/\t/).map((str) => {
+            const rg = /\((.*)\)/gm;
+            if (rg.test(str))
+              return str
+                .replace(rg, (whole, v1) => {
+                  key = v1;
+                  return '';
+                })
+                .trim();
+            return str.trim();
+          });
+          result[key] = {
+            origin: nameUrl[0],
+            url: nameUrl[1]
+          };
+        });
+      return result;
+    } catch {
+      //
     }
   }
 

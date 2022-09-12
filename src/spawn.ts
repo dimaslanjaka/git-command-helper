@@ -6,13 +6,11 @@ import sysSpawn from 'cross-spawn';
 import CacheStream from './cache-stream';
 
 type originalOpt = Parameters<typeof sysSpawn>[2];
-export interface SpawnOptions extends originalOpt {
-  [key: string]: any;
-}
+export type SpawnOptions = Record<string, any> & originalOpt;
 
 export default function promiseSpawn(
   command: string,
-  args: string[] = [],
+  args: string[] | SpawnOptions = [],
   options: SpawnOptions = {}
 ) {
   if (!command) throw new TypeError('command is required!');
@@ -25,7 +23,7 @@ export default function promiseSpawn(
   }
 
   return new Bluebird((resolve: (str?: string) => any, reject) => {
-    const task = sysSpawn(command, args, options);
+    const task = sysSpawn(command, <string[]>args, options);
     const verbose: boolean = options.verbose || false;
     const { encoding = 'utf8' } = options;
     const stdoutCache = new CacheStream();
