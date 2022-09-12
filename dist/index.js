@@ -112,11 +112,33 @@ class git {
         }
         return run();
     }
-    push(force = false, optionSpawn = { stdio: 'inherit' }) {
+    /**
+     * git push
+     * @param force
+     * @param optionSpawn
+     * @returns
+     */
+    async push(force = false, optionSpawn = { stdio: 'inherit' }) {
         let args = ['push'];
         if (force)
             args = args.concat('-f');
-        return (0, spawn_1.spawn)('git', args, this.spawnOpt(optionSpawn));
+        const opt = this.spawnOpt(optionSpawn);
+        try {
+            return await (0, spawn_1.spawn)('git', args, opt);
+        }
+        catch (e) {
+            if (e instanceof Error) {
+                if (opt.stdio === 'inherit') {
+                    console.log(e.message);
+                }
+                //console.log(e.message);
+                if (/^error: failed to push some refs to/gim.test(e.message)) {
+                    if (/the tip of your current branch is behind/gim.test(e.message)) {
+                        return await this.push(true, opt);
+                    }
+                }
+            }
+        }
     }
     spawnOpt(opt = {}) {
         return Object.assign({ cwd: this.cwd, stdio: 'pipe' }, opt);

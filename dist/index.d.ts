@@ -51,7 +51,13 @@ export declare class git {
         msg?: string;
         [key: string]: any;
     }[]): void;
-    push(force?: boolean, optionSpawn?: SpawnOptions): Bluebird<string>;
+    /**
+     * git push
+     * @param force
+     * @param optionSpawn
+     * @returns
+     */
+    push(force?: boolean, optionSpawn?: SpawnOptions): any;
     private spawnOpt;
     /**
      * git add
