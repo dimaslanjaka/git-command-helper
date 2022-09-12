@@ -45,14 +45,24 @@ class git {
         }
         return (0, spawn_1.spawn)('git', ['fetch'].concat(args), this.spawnOpt(optionSpawn));
     }
-    pull(arg, optionSpawn = { stdio: 'inherit' }) {
+    async pull(arg, optionSpawn = { stdio: 'inherit' }) {
         let args = [];
         if (Array.isArray(arg))
             args = args.concat(arg);
         if (args.length === 0) {
             args.push('origin', this.branch);
         }
-        return (0, spawn_1.spawn)('git', ['pull'].concat(args), this.spawnOpt(optionSpawn));
+        const opt = this.spawnOpt(optionSpawn || { stdio: 'inherit' });
+        try {
+            return await (0, spawn_1.spawn)('git', ['pull'].concat(args), opt);
+        }
+        catch (e) {
+            if (e instanceof Error) {
+                if (opt.stdio === 'inherit')
+                    console.log(e.message);
+                return e.message;
+            }
+        }
     }
     /**
      * git commit

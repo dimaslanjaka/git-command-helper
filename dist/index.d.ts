@@ -31,7 +31,7 @@ export declare class git {
      * @returns
      */
     fetch(arg?: string[], optionSpawn?: SpawnOptions): Bluebird<string>;
-    pull(arg?: string[], optionSpawn?: SpawnOptions): Bluebird<string>;
+    pull(arg?: string[], optionSpawn?: SpawnOptions): Promise<string>;
     /**
      * git commit
      * @param mode -am, -m, etc

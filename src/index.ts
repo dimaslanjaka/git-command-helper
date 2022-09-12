@@ -53,13 +53,21 @@ export class git {
     return spawn('git', ['fetch'].concat(args), this.spawnOpt(optionSpawn));
   }
 
-  pull(arg?: string[], optionSpawn: SpawnOptions = { stdio: 'inherit' }) {
+  async pull(arg?: string[], optionSpawn: SpawnOptions = { stdio: 'inherit' }) {
     let args = [];
     if (Array.isArray(arg)) args = args.concat(arg);
     if (args.length === 0) {
       args.push('origin', this.branch);
     }
-    return spawn('git', ['pull'].concat(args), this.spawnOpt(optionSpawn));
+    const opt = this.spawnOpt(optionSpawn || { stdio: 'inherit' });
+    try {
+      return await spawn('git', ['pull'].concat(args), opt);
+    } catch (e) {
+      if (e instanceof Error) {
+        if (opt.stdio === 'inherit') console.log(e.message);
+        return e.message;
+      }
+    }
   }
 
   /**
