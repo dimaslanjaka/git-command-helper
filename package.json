@@ -10,7 +10,8 @@
     "src"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "update": "npx npm-check-updates -u -x chalk",
+    "patch": "npm version patch"
   },
   "repository": {
     "type": "git",
