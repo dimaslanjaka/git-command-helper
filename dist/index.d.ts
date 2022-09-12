@@ -124,7 +124,12 @@ export declare class git {
             url: string;
         };
     }>;
-    setbranch(v: string): void;
+    /**
+     * set branch (git checkout branchName)
+     * @param branchName
+     * @returns
+     */
+    setbranch(branchName: string): Promise<string>;
     /**
      * Reset to latest commit of remote branch
      * @param branch

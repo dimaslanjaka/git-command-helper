@@ -302,8 +302,14 @@ class git {
             //
         }
     }
-    setbranch(v) {
-        this.branch = v;
+    /**
+     * set branch (git checkout branchName)
+     * @param branchName
+     * @returns
+     */
+    async setbranch(branchName) {
+        this.branch = branchName;
+        return await (0, spawn_1.spawn)('git', ['checkout', this.branch], this.spawnOpt({ stdio: 'pipe' }));
     }
     /**
      * Reset to latest commit of remote branch

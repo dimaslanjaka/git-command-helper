@@ -342,8 +342,18 @@ export class git {
     }
   }
 
-  public setbranch(v: string) {
-    this.branch = v;
+  /**
+   * set branch (git checkout branchName)
+   * @param branchName
+   * @returns
+   */
+  public async setbranch(branchName: string) {
+    this.branch = branchName;
+    return await spawn(
+      'git',
+      ['checkout', this.branch],
+      this.spawnOpt({ stdio: 'pipe' })
+    );
   }
 
   /**
