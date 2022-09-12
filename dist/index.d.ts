@@ -87,6 +87,17 @@ export declare class git {
         }[];
         status: StatusResult[];
     }>;
+    /**
+     * git checkout
+     * @param branchName
+     * @param optionSpawn
+     * @returns
+     */
+    checkout(branchName: string, optionSpawn?: SpawnOptions): Promise<string>;
+    /**
+     * get current branch informations
+     * @returns
+     */
     getbranch(): Promise<{
         active: boolean;
         branch: string;

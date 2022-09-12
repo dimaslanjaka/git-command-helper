@@ -161,6 +161,19 @@ class git {
             status: await this.status()
         };
     }
+    /**
+     * git checkout
+     * @param branchName
+     * @param optionSpawn
+     * @returns
+     */
+    async checkout(branchName, optionSpawn = { stdio: 'inherit' }) {
+        return await (0, spawn_1.spawn)('git', ['checkout', branchName], this.spawnOpt(optionSpawn || {}));
+    }
+    /**
+     * get current branch informations
+     * @returns
+     */
     async getbranch() {
         return await (0, spawn_1.spawn)('git', ['branch']).then((str) => str
             .split(/\n/)

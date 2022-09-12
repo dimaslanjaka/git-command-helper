@@ -179,6 +179,27 @@ export class git {
     };
   }
 
+  /**
+   * git checkout
+   * @param branchName
+   * @param optionSpawn
+   * @returns
+   */
+  async checkout(
+    branchName: string,
+    optionSpawn: SpawnOptions = { stdio: 'inherit' }
+  ) {
+    return await spawn(
+      'git',
+      ['checkout', branchName],
+      this.spawnOpt(optionSpawn || {})
+    );
+  }
+
+  /**
+   * get current branch informations
+   * @returns
+   */
   async getbranch() {
     return await spawn('git', ['branch']).then((str) =>
       str
