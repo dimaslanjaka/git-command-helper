@@ -174,8 +174,25 @@ export class git {
     return {
       opt,
       remote: await this.getremote(['-v']),
+      branch: await this.getbranch(),
       status: await this.status()
     };
+  }
+
+  async getbranch() {
+    return await spawn('git', ['branch']).then((str) =>
+      str
+        .split(/\n/)
+        .map((str) => str.split(/\s/).map((str) => str.trim()))
+        .filter((str) => str.length > 0)
+        .map((item) => {
+          return {
+            active: item.length > 1,
+            branch: item[1]
+          };
+        })
+        .filter((item) => typeof item.branch === 'string')
+    );
   }
 
   /**

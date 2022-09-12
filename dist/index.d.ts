@@ -81,8 +81,16 @@ export declare class git {
                 url: string;
             };
         };
+        branch: {
+            active: boolean;
+            branch: string;
+        }[];
         status: StatusResult[];
     }>;
+    getbranch(): Promise<{
+        active: boolean;
+        branch: string;
+    }[]>;
     /**
      * git status
      * @returns
