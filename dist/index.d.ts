@@ -64,7 +64,7 @@ export declare class git {
         opt: {
             cwd: string;
             stdio: string;
-        } & Record<string, any> & import("child_process").SpawnOptions;
+        } & Record<string, any>;
         remote: {
             fetch: {
                 origin: string;

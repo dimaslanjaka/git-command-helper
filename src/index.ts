@@ -184,7 +184,7 @@ export class git {
             resolve(result);
           }
           // untracked
-          const result = Array.from(response.match(rgUntracked))[0]
+          const result = (Array.from(response.match(rgUntracked))[0] || '')
             .split(/\n/)
             .map((str) => str.trim())
             .filter((str) => {
