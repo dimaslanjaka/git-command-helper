@@ -24,7 +24,6 @@ const submodule_1 = __importDefault(require("./submodule"));
 class git {
     constructor(dir) {
         this.latestCommit = latestCommit_1.latestCommit;
-        this.shell = shell_1.shell;
         this.helper = helper_1.default;
         this.cwd = dir;
         this.submodule = new submodule_1.default(dir);
@@ -350,6 +349,7 @@ class git {
     }
 }
 exports.git = git;
+git.shell = shell_1.shell;
 git.helper = helper_1.default;
 exports.default = git;
 exports.gitHelper = git;

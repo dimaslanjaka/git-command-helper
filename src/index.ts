@@ -28,7 +28,7 @@ export class git {
   private exist: boolean;
   cwd: string;
   latestCommit = latestCommit;
-  shell = shell;
+  static shell = shell;
   helper = helper;
   static helper = helper;
 

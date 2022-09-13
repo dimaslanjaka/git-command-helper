@@ -20,7 +20,7 @@ export declare class git {
     private exist;
     cwd: string;
     latestCommit: (path?: string, options?: Partial<import("./latestCommit").GetLatestCommitHashOptions>) => Promise<string>;
-    shell: typeof shell;
+    static shell: typeof shell;
     helper: typeof helper;
     static helper: typeof helper;
     constructor(dir: string);
