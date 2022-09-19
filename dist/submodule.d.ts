@@ -1,4 +1,5 @@
 /// <reference types="node" />
+/// <reference types="bluebird" />
 import { SpawnOptions } from 'child_process';
 export declare class submodule {
     cwd: string;
