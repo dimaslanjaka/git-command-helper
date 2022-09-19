@@ -2,7 +2,6 @@
  * NodeJS GitHub Helper
  * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
  */
-/// <reference types="node" />
 import Bluebird from 'bluebird';
 import helper from './helper';
 import { shell } from './shell';
@@ -44,14 +43,14 @@ export declare class git {
     addAndCommit(path: string, msg: string): Bluebird<unknown>;
     /**
      * bulk add and commit
-     * @param options
+     * @param options array of `path` and `msg` commit message
      * @returns
      */
     commits(options: {
         path: string;
         msg?: string;
         [key: string]: any;
-    }[]): void;
+    }[]): Bluebird<Error[]>;
     /**
      * git push
      * @param force

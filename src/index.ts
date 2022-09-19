@@ -107,25 +107,33 @@ export class git {
 
   /**
    * bulk add and commit
-   * @param options
+   * @param options array of `path` and `msg` commit message
    * @returns
    */
-  commits(options: { path: string; msg?: string; [key: string]: any }[]) {
+  commits(options: { path: string; msg?: string;[key: string]: any }[]) {
     const self = this;
-    function run() {
+    const errors: Error[] = []
+    async function run(): Promise<any> {
       if (options.length > 0) {
-        self
-          .addAndCommit(
-            options[0].path,
-            options[0].msg || 'update ' + new Date()
-          )
-          .finally(() => {
-            options.shift();
-            run();
-          });
+        try {
+          try {
+            return await self
+              .addAndCommit(
+                options[0].path,
+                options[0].msg || 'update ' + options[0].path + ' ' + new Date()
+              );
+          } catch (e) {
+            errors.push(e);
+          }
+        } finally {
+          options.shift();
+          return await run();
+        }
       }
     }
-    return run();
+    return new Bluebird((resolve: (arg: typeof errors) => any) => {
+      run().then(() => resolve(errors))
+    })
   }
 
   /**

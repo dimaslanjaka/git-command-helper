@@ -94,22 +94,32 @@ class git {
     }
     /**
      * bulk add and commit
-     * @param options
+     * @param options array of `path` and `msg` commit message
      * @returns
      */
     commits(options) {
         const self = this;
-        function run() {
+        const errors = [];
+        async function run() {
             if (options.length > 0) {
-                self
-                    .addAndCommit(options[0].path, options[0].msg || 'update ' + new Date())
-                    .finally(() => {
+                try {
+                    try {
+                        return await self
+                            .addAndCommit(options[0].path, options[0].msg || 'update ' + options[0].path + ' ' + new Date());
+                    }
+                    catch (e) {
+                        errors.push(e);
+                    }
+                }
+                finally {
                     options.shift();
-                    run();
-                });
+                    return await run();
+                }
             }
         }
-        return run();
+        return new bluebird_1.default((resolve) => {
+            run().then(() => resolve(errors));
+        });
     }
     /**
      * git push
