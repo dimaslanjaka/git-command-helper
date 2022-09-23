@@ -393,13 +393,20 @@ export class git {
    * @param branchName
    * @returns
    */
-  public async setbranch(branchName: string) {
+  async setbranch(branchName: string) {
     this.branch = branchName;
-    return await spawn(
-      'git',
-      ['checkout', this.branch],
-      this.spawnOpt({ stdio: 'pipe' })
-    );
+    const _checkout = await spawn(
+      "git",
+      ["checkout", this.branch],
+      this.spawnOpt({ stdio: "pipe" })
+    ).catch((e) => console.log("cannot checkout", this.branch, e.message));
+    // git branch --set-upstream-to=origin/<branch> gh-pages
+    const _setUpstream = await spawn(
+      "git",
+      ["branch", "--set-upstream-to=origin/" + this.branch, this.branch],
+      this.spawnOpt({ stdio: "pipe" })
+    ).catch((e) => console.log("cannot set upstream", this.branch, e.message));
+    return _checkout;
   }
 
   /**
