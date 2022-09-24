@@ -388,6 +388,10 @@ export class git {
     }
   }
 
+  checkLock() {
+    return existsSync(join(this.cwd, '.git/index.lock'))
+  }
+
   /**
    * set branch (git checkout branchName)
    * @param branchName
@@ -406,6 +410,7 @@ export class git {
       ["branch", "--set-upstream-to=origin/" + this.branch, this.branch],
       this.spawnOpt({ stdio: "pipe" })
     ).catch((e) => console.log("cannot set upstream", this.branch, e.message));
+    //
     return _checkout;
   }
 

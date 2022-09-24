@@ -338,6 +338,9 @@ class git {
             //
         }
     }
+    checkLock() {
+        return (0, fs_1.existsSync)((0, path_1.join)(this.cwd, '.git/index.lock'));
+    }
     /**
      * set branch (git checkout branchName)
      * @param branchName
@@ -345,7 +348,11 @@ class git {
      */
     async setbranch(branchName) {
         this.branch = branchName;
-        return await (0, spawn_1.spawn)('git', ['checkout', this.branch], this.spawnOpt({ stdio: 'pipe' }));
+        const _checkout = await (0, spawn_1.spawn)("git", ["checkout", this.branch], this.spawnOpt({ stdio: "pipe" })).catch((e) => console.log("cannot checkout", this.branch, e.message));
+        // git branch --set-upstream-to=origin/<branch> gh-pages
+        const _setUpstream = await (0, spawn_1.spawn)("git", ["branch", "--set-upstream-to=origin/" + this.branch, this.branch], this.spawnOpt({ stdio: "pipe" })).catch((e) => console.log("cannot set upstream", this.branch, e.message));
+        //
+        return _checkout;
     }
     /**
      * Reset to latest commit of remote branch
