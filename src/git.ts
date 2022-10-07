@@ -311,12 +311,12 @@ export class git {
 
   public setemail(v: string) {
     this.email = v;
-    spawn('git', ['config', 'user.email', this.email], this.spawnOpt());
+    return spawn('git', ['config', 'user.email', this.email], this.spawnOpt());
   }
 
   public setuser(v: string) {
     this.user = v;
-    spawn('git', ['config', 'user.name', this.user], this.spawnOpt());
+    return spawn('git', ['config', 'user.name', this.user], this.spawnOpt());
   }
 
   /**
