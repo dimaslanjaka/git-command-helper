@@ -20,7 +20,7 @@ import { StatusResult } from './types';
  * GitHub Command Helper For NodeJS
  */
 export class git {
-  submodule: submodule;
+  submodule: typeof submodule;
   user: string;
   email: string;
   remote: string;
