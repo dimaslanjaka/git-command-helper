@@ -11,28 +11,49 @@ const spawner_1 = require("./spawner");
 class submodule {
     constructor(cwd) {
         this.cwd = cwd;
-        this.hasConfig = (0, fs_1.existsSync)((0, path_1.join)(this.cwd, '.gitmodules'));
+        this.hasConfig = (0, fs_1.existsSync)((0, path_1.join)(this.cwd, ".gitmodules"));
     }
     spawnOpt(opt = {}) {
-        return Object.assign({ cwd: this.cwd, stdio: 'pipe' }, opt);
+        return Object.assign({ cwd: this.cwd, stdio: "pipe" }, opt);
+    }
+    hasSubmodule() {
+        return (0, fs_1.existsSync)((0, path_1.join)(this.cwd, ".gitmodules"));
     }
     /**
      * git submodule update
      * @param optionSpawn
      * @returns
      */
-    update(optionSpawn = { stdio: 'inherit' }) {
-        return (0, spawner_1.spawn)('git', ['submodule', 'update', '-i', '-r'], this.spawnOpt(optionSpawn));
+    update(optionSpawn = { stdio: "inherit" }) {
+        return (0, spawner_1.spawn)("git", ["submodule", "update", "-i", "-r"], this.spawnOpt(optionSpawn));
     }
-    status(optionSpawn = { stdio: 'inherit' }) {
-        return (0, spawner_1.spawn)('git', ['submodule', 'status'], this.spawnOpt(optionSpawn));
+    /**
+     * git submodule status
+     * @param optionSpawn
+     * @returns
+     */
+    status(optionSpawn = { stdio: "inherit" }) {
+        return (0, spawner_1.spawn)("git", ["submodule", "status"], this.spawnOpt(optionSpawn));
+    }
+    /**
+     * git add all each submodule
+     * @param pathOrArg ex: `-A`
+     * @returns
+     */
+    addAll(pathOrArg) {
+        return (0, spawner_1.spawn)("git", ["submodule", "foreach", "git", "add", pathOrArg]);
+    }
+    commitAll(msg) {
+        return (0, spawner_1.spawn)("git", ["submodule", "foreach", "git", "commit", "-am", msg]);
     }
     /**
      * get submodule informations
      * @returns
      */
     async get() {
-        const extract = (0, extract_submodule_1.default)((0, path_1.join)(this.cwd, '.gitmodules'));
+        if (!this.hasSubmodule())
+            throw new Error("This directory not have submodule installed");
+        const extract = (0, extract_submodule_1.default)((0, path_1.join)(this.cwd, ".gitmodules"));
         return extract;
     }
 }

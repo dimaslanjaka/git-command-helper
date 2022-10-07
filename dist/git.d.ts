@@ -2,7 +2,6 @@
  * NodeJS GitHub Helper
  * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
  */
-/// <reference types="node" />
 import Bluebird from 'bluebird';
 import helper from './helper';
 import { shell } from './shell';
@@ -25,7 +24,16 @@ export declare class git {
     helper: typeof helper;
     static helper: typeof helper;
     constructor(dir: string);
+    /**
+     * setup merge on pull strategy
+     * @returns
+     */
     setAutoRebase(): Bluebird<string>;
+    /**
+     * setup end of line LF
+     * @link https://stackoverflow.com/a/13154031
+     * @returns
+     */
     setForceLF(): Bluebird<string>;
     /**
      * git fetch
@@ -34,6 +42,12 @@ export declare class git {
      * @returns
      */
     fetch(arg?: string[], optionSpawn?: SpawnOptions): Bluebird<string>;
+    /**
+     * git pull
+     * @param arg example: `['--recurse-submodule']`
+     * @param optionSpawn
+     * @returns
+     */
     pull(arg?: string[], optionSpawn?: SpawnOptions): Promise<string>;
     /**
      * git commit
@@ -117,8 +131,8 @@ export declare class git {
     init(): Promise<string>;
     isExist(): Bluebird<boolean>;
     setcwd(v: string): void;
-    setemail(v: string): void;
-    setuser(v: string): void;
+    setemail(v: string): Bluebird<string>;
+    setuser(v: string): Bluebird<string>;
     /**
      * set remote url
      * @param v

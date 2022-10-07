@@ -29,12 +29,18 @@ class git {
         this.submodule = new submodule_1.default(dir);
         helper_1.default.suppress(() => this.isExist());
     }
-    // setup merge on pull strategy
+    /**
+     * setup merge on pull strategy
+     * @returns
+     */
     setAutoRebase() {
         return (0, spawn_1.spawn)('git', ['config', 'pull.rebase', 'false']);
     }
-    // setup end of line LF
-    // https://stackoverflow.com/a/13154031
+    /**
+     * setup end of line LF
+     * @link https://stackoverflow.com/a/13154031
+     * @returns
+     */
     setForceLF() {
         return (0, spawn_1.spawn)('git', ['config', 'core.autocrlf', 'false']);
     }
@@ -53,6 +59,12 @@ class git {
         }
         return (0, spawn_1.spawn)('git', ['fetch'].concat(args), this.spawnOpt(optionSpawn));
     }
+    /**
+     * git pull
+     * @param arg example: `['--recurse-submodule']`
+     * @param optionSpawn
+     * @returns
+     */
     async pull(arg, optionSpawn = { stdio: 'inherit' }) {
         let args = [];
         if (Array.isArray(arg))
@@ -275,11 +287,11 @@ class git {
     }
     setemail(v) {
         this.email = v;
-        (0, spawn_1.spawn)('git', ['config', 'user.email', this.email], this.spawnOpt());
+        return (0, spawn_1.spawn)('git', ['config', 'user.email', this.email], this.spawnOpt());
     }
     setuser(v) {
         this.user = v;
-        (0, spawn_1.spawn)('git', ['config', 'user.name', this.user], this.spawnOpt());
+        return (0, spawn_1.spawn)('git', ['config', 'user.name', this.user], this.spawnOpt());
     }
     /**
      * set remote url

@@ -20,7 +20,7 @@ import { StatusResult } from './types';
  * GitHub Command Helper For NodeJS
  */
 export class git {
-  submodule: typeof submodule;
+  submodule: submodule;
   user: string;
   email: string;
   remote: string;
@@ -37,14 +37,20 @@ export class git {
     this.submodule = new submodule(dir);
     helper.suppress(() => this.isExist());
   }
-  
-  // setup merge on pull strategy
+
+  /**
+   * setup merge on pull strategy
+   * @returns
+   */
   setAutoRebase() {
     return spawn('git', ['config', 'pull.rebase', 'false']);
   }
-  
-  // setup end of line LF
-  // https://stackoverflow.com/a/13154031
+
+  /**
+   * setup end of line LF
+   * @link https://stackoverflow.com/a/13154031
+   * @returns
+   */
   setForceLF(){
     return spawn('git', ['config', 'core.autocrlf', 'false']);
   }
@@ -64,6 +70,12 @@ export class git {
     return spawn('git', ['fetch'].concat(args), this.spawnOpt(optionSpawn));
   }
 
+  /**
+   * git pull
+   * @param arg example: `['--recurse-submodule']`
+   * @param optionSpawn
+   * @returns
+   */
   async pull(arg?: string[], optionSpawn: SpawnOptions = { stdio: 'inherit' }) {
     let args = [];
     if (Array.isArray(arg)) args = args.concat(arg);
