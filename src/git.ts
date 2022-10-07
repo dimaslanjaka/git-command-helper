@@ -37,6 +37,17 @@ export class git {
     this.submodule = new submodule(dir);
     helper.suppress(() => this.isExist());
   }
+  
+  // setup merge on pull strategy
+  setAutoRebase() {
+    return spawn('git', ['config', 'pull.rebase', 'false']);
+  }
+  
+  // setup end of line LF
+  // https://stackoverflow.com/a/13154031
+  setForceLF(){
+    return spawn('git', ['config', 'core.autocrlf', 'false']);
+  }
 
   /**
    * git fetch
