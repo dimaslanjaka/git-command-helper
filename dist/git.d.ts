@@ -25,6 +25,8 @@ export declare class git {
     helper: typeof helper;
     static helper: typeof helper;
     constructor(dir: string);
+    setAutoRebase(): Bluebird<string>;
+    setForceLF(): Bluebird<string>;
     /**
      * git fetch
      * @param arg argument git-fetch, ex ['--all']
