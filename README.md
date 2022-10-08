@@ -16,5 +16,5 @@ if (git.submodule.hasSubmodule()) console.log(git.submodule.get());
 
 ## Custom Command
 ```js
-github.spawn('git', ['fetch'], { stdio: 'pipe'}).then(console.log)
+github.spawn('git', ['fetch'], { stdio: 'pipe' }).then(console.log)
 ```
