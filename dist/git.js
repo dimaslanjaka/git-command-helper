@@ -210,6 +210,16 @@ class git {
             }
         }
     }
+    /**
+     * check if can be pushed
+     */
+    async canPush() {
+        // repository is not up to date
+        const changed = !(await this.isUpToDate());
+        const staged = await this.status();
+        // return repository is not up to date
+        return changed && staged.length === 0;
+    }
     spawnOpt(opt = {}) {
         return Object.assign({ cwd: this.cwd, stdio: "pipe" }, opt);
     }
@@ -240,9 +250,6 @@ class git {
     async checkout(branchName, optionSpawn = { stdio: "inherit" }) {
         return await (0, spawn_1.spawn)("git", ["checkout", branchName], this.spawnOpt(optionSpawn || {}));
     }
-    isUpToDate() {
-        return (0, spawn_1.spawn)("git", ["fetch", "--dry-run"], this.spawnOpt({ stdio: "pipe" }));
-    }
     /**
      * get current branch informations
      * @returns
@@ -261,6 +268,18 @@ class git {
             .filter((item) => typeof item.branch === "string"));
     }
     /**
+     * Check if current repository is up to date with origin/remote
+     * @returns
+     */
+    isUpToDate() {
+        const rgUpToDate = /^your branch is up to date with/gim;
+        return new bluebird_1.default((resolve) => {
+            (0, spawn_1.spawn)("git", ["status"], this.spawnOpt({ stdio: "pipe" })).then((stdout) => {
+                resolve(rgUpToDate.test(stdout));
+            });
+        });
+    }
+    /**
      * git status
      * @returns
      */
@@ -271,8 +290,8 @@ class git {
         return new bluebird_1.default((resolve, reject) => {
             (0, spawn_1.spawn)("git", ["status"], this.spawnOpt({ stdio: "pipe" }))
                 .then((response) => {
-                const isMod = rgChanged.test(response);
-                if (isMod) {
+                // check changed
+                if (rgChanged.test(response)) {
                     // modded, added, deleted
                     const result = response
                         .split("\n")

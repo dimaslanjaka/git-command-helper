@@ -2,7 +2,6 @@
  * NodeJS GitHub Helper
  * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
  */
-/// <reference types="node" />
 import Bluebird from "bluebird";
 import helper from "./helper";
 import { shell } from "./shell";
@@ -104,6 +103,10 @@ export declare class git {
      * @returns
      */
     push(force?: boolean, optionSpawn?: SpawnOptions): any;
+    /**
+     * check if can be pushed
+     */
+    canPush(): Promise<boolean>;
     private spawnOpt;
     /**
      * git add
@@ -140,7 +143,6 @@ export declare class git {
      * @returns
      */
     checkout(branchName: string, optionSpawn?: SpawnOptions): Promise<string>;
-    isUpToDate(): Bluebird<string>;
     /**
      * get current branch informations
      * @returns
@@ -149,6 +151,11 @@ export declare class git {
         active: boolean;
         branch: string;
     }[]>;
+    /**
+     * Check if current repository is up to date with origin/remote
+     * @returns
+     */
+    isUpToDate(): Bluebird<boolean>;
     /**
      * git status
      * @returns

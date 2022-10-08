@@ -239,6 +239,17 @@ export class git {
 		}
 	}
 
+	/**
+	 * check if can be pushed
+	 */
+	async canPush() {
+		// repository is not up to date
+		const changed = !(await this.isUpToDate());
+		const staged = await this.status();
+		// return repository is not up to date
+		return changed && staged.length === 0;
+	}
+
 	private spawnOpt(opt: SpawnOptions = {}) {
 		return Object.assign({ cwd: this.cwd, stdio: "pipe" }, opt);
 	}
@@ -280,14 +291,6 @@ export class git {
 		);
 	}
 
-	isUpToDate() {
-		return spawn(
-			"git",
-			["fetch", "--dry-run"],
-			this.spawnOpt({ stdio: "pipe" })
-		);
-	}
-
 	/**
 	 * get current branch informations
 	 * @returns
@@ -309,6 +312,21 @@ export class git {
 	}
 
 	/**
+	 * Check if current repository is up to date with origin/remote
+	 * @returns
+	 */
+	isUpToDate() {
+		const rgUpToDate = /^your branch is up to date with/gim;
+		return new Bluebird((resolve: (v: boolean) => any) => {
+			spawn("git", ["status"], this.spawnOpt({ stdio: "pipe" })).then(
+				(stdout) => {
+					resolve(rgUpToDate.test(stdout));
+				}
+			);
+		});
+	}
+
+	/**
 	 * git status
 	 * @returns
 	 */
@@ -317,11 +335,12 @@ export class git {
 		const rgChanged =
 			/^\s*(changes not staged for commit|changes to be committed):/gim;
 		const rgUntracked = /^untracked files:([\s\S]*?)\n\n/gim;
+
 		return new Bluebird((resolve: (result: StatusResult[]) => any, reject) => {
 			spawn("git", ["status"], this.spawnOpt({ stdio: "pipe" }))
 				.then((response) => {
-					const isMod = rgChanged.test(response);
-					if (isMod) {
+					// check changed
+					if (rgChanged.test(response)) {
 						// modded, added, deleted
 						const result = response
 							.split("\n")
@@ -336,6 +355,7 @@ export class git {
 							});
 						resolve(result);
 					}
+
 					// untracked
 					const result = (
 						Array.from(response.match(rgUntracked) || [])[0] || ""
