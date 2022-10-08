@@ -167,10 +167,17 @@ export class git {
 		});
 	}
 
-	addAndCommit(path: string, msg: string) {
+	/**
+	 * add and commit file
+	 * @param path
+	 * @param msg
+	 * @param mode am/m
+	 * @returns
+	 */
+	addAndCommit(path: string, msg: string, mode: string = "m") {
 		return new Bluebird((resolve, reject) => {
 			this.add(path, { stdio: "pipe" }).then((_) =>
-				this.commit(msg, "m", { stdio: "pipe" }).then(resolve).catch(reject)
+				this.commit(msg, mode, { stdio: "pipe" }).then(resolve).catch(reject)
 			);
 		});
 	}
@@ -307,7 +314,8 @@ export class git {
 	 */
 	status() {
 		const rgMod = /^\s*(modified|added|deleted):/gim;
-		const rgChanged = /^\s*(changes not staged for commit|changes to be committed):/gim;
+		const rgChanged =
+			/^\s*(changes not staged for commit|changes to be committed):/gim;
 		const rgUntracked = /^untracked files:([\s\S]*?)\n\n/gim;
 		return new Bluebird((resolve: (result: StatusResult[]) => any, reject) => {
 			spawn("git", ["status"], this.spawnOpt({ stdio: "pipe" }))

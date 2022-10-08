@@ -79,7 +79,14 @@ export declare class git {
      * @returns
      */
     commit(msg: string, mode?: "am" | "m" | string, optionSpawn?: SpawnOptions): Bluebird<string>;
-    addAndCommit(path: string, msg: string): Bluebird<unknown>;
+    /**
+     * add and commit file
+     * @param path
+     * @param msg
+     * @param mode am/m
+     * @returns
+     */
+    addAndCommit(path: string, msg: string, mode?: string): Bluebird<unknown>;
     /**
      * bulk add and commit
      * @param options array of `path` and `msg` commit message

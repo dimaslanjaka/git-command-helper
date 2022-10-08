@@ -142,9 +142,16 @@ class git {
             child.catch(reject);
         });
     }
-    addAndCommit(path, msg) {
+    /**
+     * add and commit file
+     * @param path
+     * @param msg
+     * @param mode am/m
+     * @returns
+     */
+    addAndCommit(path, msg, mode = "m") {
         return new bluebird_1.default((resolve, reject) => {
-            this.add(path, { stdio: "pipe" }).then((_) => this.commit(msg, "m", { stdio: "pipe" }).then(resolve).catch(reject));
+            this.add(path, { stdio: "pipe" }).then((_) => this.commit(msg, mode, { stdio: "pipe" }).then(resolve).catch(reject));
         });
     }
     /**
