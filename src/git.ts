@@ -71,6 +71,17 @@ export class git {
 	}
 
 	/**
+	 * call spawn async
+	 * @param cmd
+	 * @param args
+	 * @param spawnOpt
+	 * @returns
+	 */
+	spawn(cmd: string, args: string[], spawnOpt: SpawnOptions) {
+		return spawn(cmd, args, this.spawnOpt(spawnOpt || { stdio: "pipe" }));
+	}
+
+	/**
 	 * setup merge on pull strategy
 	 * @returns
 	 */

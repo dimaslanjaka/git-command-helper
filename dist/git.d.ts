@@ -2,7 +2,6 @@
  * NodeJS GitHub Helper
  * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
  */
-/// <reference types="node" />
 import Bluebird from "bluebird";
 import helper from "./helper";
 import { shell } from "./shell";
@@ -38,6 +37,14 @@ export declare class git {
     helper: typeof helper;
     static helper: typeof helper;
     constructor(dir: string);
+    /**
+     * call spawn async
+     * @param cmd
+     * @param args
+     * @param spawnOpt
+     * @returns
+     */
+    spawn(cmd: string, args: string[], spawnOpt: SpawnOptions): Bluebird<string>;
     /**
      * setup merge on pull strategy
      * @returns

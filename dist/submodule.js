@@ -76,7 +76,7 @@ class submodule {
      * get submodule informations
      * @returns
      */
-    async get() {
+    get() {
         if (!this.hasSubmodule())
             throw new Error("This directory not have submodule installed");
         const extract = (0, extract_submodule_1.default)((0, path_1.join)(this.cwd, ".gitmodules"));

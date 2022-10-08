@@ -37,7 +37,7 @@ export declare class submodule {
      * get submodule informations
      * @returns
      */
-    get(): Promise<(import("./extract-submodule").Submodule & {
+    get(): Bluebird<(import("./extract-submodule").Submodule & {
         github: import("./git").git;
     })[]>;
 }

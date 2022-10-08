@@ -83,7 +83,7 @@ export class submodule {
 	 * get submodule informations
 	 * @returns
 	 */
-	async get() {
+	get() {
 		if (!this.hasSubmodule())
 			throw new Error("This directory not have submodule installed");
 

@@ -49,6 +49,16 @@ class git {
         helper_1.default.suppress(() => this.isExist());
     }
     /**
+     * call spawn async
+     * @param cmd
+     * @param args
+     * @param spawnOpt
+     * @returns
+     */
+    spawn(cmd, args, spawnOpt) {
+        return (0, spawn_1.spawn)(cmd, args, this.spawnOpt(spawnOpt || { stdio: "pipe" }));
+    }
+    /**
      * setup merge on pull strategy
      * @returns
      */
