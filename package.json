@@ -26,7 +26,10 @@
 		"doctor",
 		"command",
 		"helper",
-		"node-command-git"
+		"node-command-git",
+		"github",
+		"cli-parser",
+		"git-cli-parser"
 	],
 	"author": "Dimas Lanjaka <dimaslanjaka@gmail.com>",
 	"license": "MIT",
