@@ -9,8 +9,6 @@
 		"typings",
 		"src",
 		"LICENSE",
-		"*.md",
-		"*.json",
 		"README.md"
 	],
 	"scripts": {
