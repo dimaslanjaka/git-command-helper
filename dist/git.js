@@ -259,7 +259,7 @@ class git {
      */
     status() {
         const rgMod = /^\s*(modified|added|deleted):/gim;
-        const rgChanged = /^\s*(changes not staged for commit):/gim;
+        const rgChanged = /^\s*(changes not staged for commit|changes to be committed):/gim;
         const rgUntracked = /^untracked files:([\s\S]*?)\n\n/gim;
         return new bluebird_1.default((resolve, reject) => {
             (0, spawn_1.spawn)("git", ["status"], this.spawnOpt({ stdio: "pipe" }))
