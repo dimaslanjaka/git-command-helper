@@ -3,6 +3,10 @@ GitHub CLI Helper For NodeJS
 
 ![npm version](https://img.shields.io/npm/v/git-command-helper?style=for-the-badge)
 
+## Features
+- Submodule parser
+- Asynchronous friendly
+
 ## Installation
 Beta Version
 ```bash
