@@ -4,7 +4,7 @@ export const configTest = {
   /**
    * Git directory
    */
-  cwd: join(__dirname, '../../../.deploy_git'),
+  cwd: join(__dirname, '../tmp/project-test'),
   branch: 'master',
   remote: 'https://github.com/dimaslanjaka/dimaslanjaka.github.io.git',
   username: 'dimaslanjaka',
