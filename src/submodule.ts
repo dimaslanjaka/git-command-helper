@@ -2,6 +2,7 @@ import { SpawnOptions } from "child_process";
 import { existsSync } from "fs";
 import { join } from "path";
 import extractSubmodule from "./extract-submodule";
+import { gitHelper, setupGit } from "./git";
 import { spawn } from "./spawner";
 
 export class submodule {
@@ -22,15 +23,34 @@ export class submodule {
 
 	/**
 	 * git submodule update
+	 * @param args custom arguments
 	 * @param optionSpawn
 	 * @returns
 	 */
-	update(optionSpawn: SpawnOptions = { stdio: "inherit" }) {
-		return spawn(
-			"git",
-			["submodule", "update", "-i", "-r"],
-			this.spawnOpt(optionSpawn)
-		);
+	update(
+		args: string[] = [],
+		optionSpawn: SpawnOptions = { stdio: "inherit" }
+	) {
+		const arg = ["submodule", "update"];
+		if (Array.isArray(args)) {
+			args.forEach((str) => arg.push(str));
+		} else {
+			arg.push("-i", "-r");
+		}
+		return spawn("git", arg, this.spawnOpt(optionSpawn));
+	}
+
+	/**
+	 * Update all submodule with cd method
+	 */
+	async safeUpdate() {
+		const info = await this.get();
+		while (info.length > 0) {
+			const { url, root, branch } = info[0];
+			const github = await setupGit({ url, branch, baseDir: root });
+			await github.pull(["--recurse-submodule"]);
+			info.shift();
+		}
 	}
 
 	/**

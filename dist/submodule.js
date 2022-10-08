@@ -7,6 +7,7 @@ exports.gitSubmodule = exports.submodule = void 0;
 const fs_1 = require("fs");
 const path_1 = require("path");
 const extract_submodule_1 = __importDefault(require("./extract-submodule"));
+const git_1 = require("./git");
 const spawner_1 = require("./spawner");
 class submodule {
     constructor(cwd) {
@@ -21,11 +22,31 @@ class submodule {
     }
     /**
      * git submodule update
+     * @param args custom arguments
      * @param optionSpawn
      * @returns
      */
-    update(optionSpawn = { stdio: "inherit" }) {
-        return (0, spawner_1.spawn)("git", ["submodule", "update", "-i", "-r"], this.spawnOpt(optionSpawn));
+    update(args = [], optionSpawn = { stdio: "inherit" }) {
+        const arg = ["submodule", "update"];
+        if (Array.isArray(args)) {
+            args.forEach((str) => arg.push(str));
+        }
+        else {
+            arg.push("-i", "-r");
+        }
+        return (0, spawner_1.spawn)("git", arg, this.spawnOpt(optionSpawn));
+    }
+    /**
+     * Update all submodule with cd method
+     */
+    async safeUpdate() {
+        const info = await this.get();
+        while (info.length > 0) {
+            const { url, root, branch } = info[0];
+            const github = await (0, git_1.setupGit)({ url, branch, baseDir: root });
+            await github.pull(["--recurse-submodule"]);
+            info.shift();
+        }
     }
     /**
      * git submodule status

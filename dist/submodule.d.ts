@@ -9,10 +9,15 @@ export declare class submodule {
     hasSubmodule(): boolean;
     /**
      * git submodule update
+     * @param args custom arguments
      * @param optionSpawn
      * @returns
      */
-    update(optionSpawn?: SpawnOptions): import("bluebird")<string>;
+    update(args?: string[], optionSpawn?: SpawnOptions): import("bluebird")<string>;
+    /**
+     * Update all submodule with cd method
+     */
+    safeUpdate(): Promise<void>;
     /**
      * git submodule status
      * @param optionSpawn

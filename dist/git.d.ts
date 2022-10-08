@@ -2,12 +2,25 @@
  * NodeJS GitHub Helper
  * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
  */
-import Bluebird from 'bluebird';
-import helper from './helper';
-import { shell } from './shell';
-import { SpawnOptions } from './spawn';
-import submodule from './submodule';
-import { StatusResult } from './types';
+import Bluebird from "bluebird";
+import helper from "./helper";
+import { shell } from "./shell";
+import { SpawnOptions } from "./spawn";
+import submodule from "./submodule";
+import { StatusResult } from "./types";
+export interface GitOpt {
+    user?: string;
+    email?: string;
+    url: string;
+    branch: string;
+    baseDir: string;
+}
+/**
+ * Setup git with branch and remote url resolved automatically
+ * @param param0
+ * @returns
+ */
+export declare function setupGit({ branch, url, baseDir }: GitOpt): Promise<git>;
 /**
  * GitHub Command Helper For NodeJS
  */
@@ -56,7 +69,7 @@ export declare class git {
      * @param optionSpawn
      * @returns
      */
-    commit(msg: string, mode?: 'am' | 'm' | string, optionSpawn?: SpawnOptions): Bluebird<string>;
+    commit(msg: string, mode?: "am" | "m" | string, optionSpawn?: SpawnOptions): Bluebird<string>;
     addAndCommit(path: string, msg: string): Bluebird<unknown>;
     /**
      * bulk add and commit
@@ -166,7 +179,7 @@ export declare class git {
      * @param branchName
      * @returns
      */
-    setbranch(branchName: string): Promise<string | void>;
+    setbranch(branchName: string, spawnOpt?: SpawnOptions): Promise<string | void>;
     /**
      * Reset to latest commit of remote branch
      * @param branch

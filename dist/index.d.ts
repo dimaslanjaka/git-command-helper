@@ -1,4 +1,3 @@
-import git from './git';
-export { gitHelper } from './git';
-export { gitCommandHelper } from './git';
+import git from "./git";
+export { gitHelper, gitCommandHelper, setupGit } from "./git";
 export default git;
