@@ -22,10 +22,18 @@ const submodule_1 = __importDefault(require("./submodule"));
  * @param param0
  * @returns
  */
-async function setupGit({ branch, url, baseDir }) {
+async function setupGit({ branch, url, baseDir, email = null, user = null, }) {
     const github = new exports.gitHelper(baseDir);
+    github.remote = url;
+    if (!(await github.isExist())) {
+        await github.init();
+    }
     await github.setremote(url);
     await github.setbranch(branch);
+    if (email)
+        await github.setemail(email);
+    if (user)
+        await github.setuser(user);
     return github;
 }
 exports.setupGit = setupGit;
@@ -209,6 +217,9 @@ class git {
      */
     async checkout(branchName, optionSpawn = { stdio: "inherit" }) {
         return await (0, spawn_1.spawn)("git", ["checkout", branchName], this.spawnOpt(optionSpawn || {}));
+    }
+    isUpToDate() {
+        return (0, spawn_1.spawn)("git", ["fetch", "--dry-run"], this.spawnOpt({ stdio: "pipe" }));
     }
     /**
      * get current branch informations

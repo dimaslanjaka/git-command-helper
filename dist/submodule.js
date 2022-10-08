@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.gitSubmodule = exports.submodule = void 0;
+const bluebird_1 = __importDefault(require("bluebird"));
 const fs_1 = require("fs");
 const path_1 = require("path");
 const extract_submodule_1 = __importDefault(require("./extract-submodule"));
@@ -11,6 +12,7 @@ const git_1 = require("./git");
 const spawner_1 = require("./spawner");
 class submodule {
     constructor(cwd) {
+        this.github = [];
         this.cwd = cwd;
         this.hasConfig = (0, fs_1.existsSync)((0, path_1.join)(this.cwd, ".gitmodules"));
     }
@@ -38,12 +40,15 @@ class submodule {
     }
     /**
      * Update all submodule with cd method
+     * @param reset do git reset --hard origin/branch ?
      */
-    async safeUpdate() {
+    async safeUpdate(reset = false) {
         const info = await this.get();
         while (info.length > 0) {
-            const { url, root, branch } = info[0];
-            const github = await (0, git_1.setupGit)({ url, branch, baseDir: root });
+            const { branch, github } = info[0];
+            const currentBranch = branch || "master"; // default master branch
+            if (reset)
+                await github.reset(currentBranch);
             await github.pull(["--recurse-submodule"]);
             info.shift();
         }
@@ -75,7 +80,16 @@ class submodule {
         if (!this.hasSubmodule())
             throw new Error("This directory not have submodule installed");
         const extract = (0, extract_submodule_1.default)((0, path_1.join)(this.cwd, ".gitmodules"));
-        return extract;
+        return bluebird_1.default.all(extract).map(async (info) => {
+            const { url, root, branch } = info;
+            const currentBranch = branch || "master"; // default master branch
+            const github = await (0, git_1.setupGit)({
+                url,
+                branch: currentBranch,
+                baseDir: root,
+            });
+            return Object.assign(info, { github });
+        });
     }
 }
 exports.submodule = submodule;

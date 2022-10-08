@@ -1,3 +1,4 @@
+import Bluebird from "bluebird";
 import { SpawnOptions } from "child_process";
 import { existsSync } from "fs";
 import { join } from "path";
@@ -8,6 +9,7 @@ import { spawn } from "./spawner";
 export class submodule {
 	cwd: string;
 	hasConfig: boolean;
+	private github: typeof gitHelper[] = [];
 	constructor(cwd: string) {
 		this.cwd = cwd;
 		this.hasConfig = existsSync(join(this.cwd, ".gitmodules"));
@@ -42,12 +44,14 @@ export class submodule {
 
 	/**
 	 * Update all submodule with cd method
+	 * @param reset do git reset --hard origin/branch ?
 	 */
-	async safeUpdate() {
+	async safeUpdate(reset = false) {
 		const info = await this.get();
 		while (info.length > 0) {
-			const { url, root, branch } = info[0];
-			const github = await setupGit({ url, branch, baseDir: root });
+			const { branch, github } = info[0];
+			const currentBranch = branch || "master"; // default master branch
+			if (reset) await github.reset(currentBranch);
 			await github.pull(["--recurse-submodule"]);
 			info.shift();
 		}
@@ -84,7 +88,16 @@ export class submodule {
 			throw new Error("This directory not have submodule installed");
 
 		const extract = extractSubmodule(join(this.cwd, ".gitmodules"));
-		return extract;
+		return Bluebird.all(extract).map(async (info) => {
+			const { url, root, branch } = info;
+			const currentBranch = branch || "master"; // default master branch
+			const github = await setupGit({
+				url,
+				branch: currentBranch,
+				baseDir: root,
+			});
+			return Object.assign(info, { github });
+		});
 	}
 }
 

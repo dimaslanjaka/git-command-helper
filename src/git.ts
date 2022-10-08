@@ -29,10 +29,22 @@ export interface GitOpt {
  * @param param0
  * @returns
  */
-export async function setupGit({ branch, url, baseDir }: GitOpt) {
+export async function setupGit({
+	branch,
+	url,
+	baseDir,
+	email = null,
+	user = null,
+}: GitOpt) {
 	const github = new gitHelper(baseDir);
+	github.remote = url;
+	if (!(await github.isExist())) {
+		await github.init();
+	}
 	await github.setremote(url);
 	await github.setbranch(branch);
+	if (email) await github.setemail(email);
+	if (user) await github.setuser(user);
 	return github;
 }
 
@@ -243,6 +255,14 @@ export class git {
 			"git",
 			["checkout", branchName],
 			this.spawnOpt(optionSpawn || {})
+		);
+	}
+
+	isUpToDate() {
+		return spawn(
+			"git",
+			["fetch", "--dry-run"],
+			this.spawnOpt({ stdio: "pipe" })
 		);
 	}
 

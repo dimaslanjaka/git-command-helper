@@ -20,7 +20,7 @@ export interface GitOpt {
  * @param param0
  * @returns
  */
-export declare function setupGit({ branch, url, baseDir }: GitOpt): Promise<git>;
+export declare function setupGit({ branch, url, baseDir, email, user, }: GitOpt): Promise<git>;
 /**
  * GitHub Command Helper For NodeJS
  */
@@ -124,6 +124,7 @@ export declare class git {
      * @returns
      */
     checkout(branchName: string, optionSpawn?: SpawnOptions): Promise<string>;
+    isUpToDate(): Bluebird<string>;
     /**
      * get current branch informations
      * @returns
