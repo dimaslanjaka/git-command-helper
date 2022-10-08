@@ -306,7 +306,7 @@ export class git {
 	 * @returns
 	 */
 	status() {
-		const rgMod = /^(modified|added|deleted):/gim;
+		const rgMod = /^\s*(modified|added|deleted|changes not staged for commit):/gim;
 		const rgUntracked = /^untracked files:([\s\S]*?)\n\n/gim;
 		return new Bluebird((resolve: (result: StatusResult[]) => any, reject) => {
 			spawn("git", ["status"], this.spawnOpt({ stdio: "pipe" }))
