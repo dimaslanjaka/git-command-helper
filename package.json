@@ -10,7 +10,8 @@
 		"src",
 		"LICENSE",
 		"*.md",
-		"*.json"
+		"*.json",
+		"README.md"
 	],
 	"scripts": {
 		"build": "tsc",
