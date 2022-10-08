@@ -245,6 +245,7 @@ export class git {
 	async canPush() {
 		// repository is not up to date
 		const changed = !(await this.isUpToDate());
+		// repostory file changes status
 		const staged = await this.status();
 		// return repository is not up to date
 		return changed && staged.length === 0;
