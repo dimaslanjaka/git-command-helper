@@ -1,10 +1,12 @@
-import Bluebird from "bluebird";
 import { SpawnOptions } from "child_process";
+import debug from "debug";
 import { existsSync } from "fs";
 import { join } from "path";
 import extractSubmodule from "./extract-submodule";
-import { gitHelper, setupGit } from "./git";
+import git, { gitHelper, setupGit } from "./git";
 import { spawn } from "./spawner";
+
+const _log = debug("git-command-helper");
 
 export class submodule {
 	cwd: string;
@@ -47,12 +49,23 @@ export class submodule {
 	 * @param reset do git reset --hard origin/branch ?
 	 */
 	async safeUpdate(reset = false) {
-		const info = await this.get();
+		const info = this.get();
 		while (info.length > 0) {
-			const { branch, github } = info[0];
-			const currentBranch = branch || "master"; // default master branch
-			if (reset) await github.reset(currentBranch);
-			await github.pull(["--recurse-submodule"]);
+			let { branch, github, root, url } = info[0];
+			console.log("cd", info[0].path);
+			if (!github) {
+				github = await setupGit({
+					url,
+					branch,
+					baseDir: root,
+				});
+			}
+			if (github) {
+				if (reset) {
+					await github.reset(branch);
+				}
+				await github.pull(["--recurse-submodule"]);
+			}
 			info.shift();
 		}
 	}
@@ -88,16 +101,24 @@ export class submodule {
 			throw new Error("This directory not have submodule installed");
 
 		const extract = extractSubmodule(join(this.cwd, ".gitmodules"));
-		return Bluebird.all(extract).map(async (info) => {
-			const { url, root, branch } = info;
-			const currentBranch = branch || "master"; // default master branch
-			const github = await setupGit({
-				url,
-				branch: currentBranch,
-				baseDir: root,
-			});
-			return Object.assign(info, { github });
+		return extract.map((item) => {
+			return Object.assign({ branch: "master", github: null as git }, item);
 		});
+		/*
+		return Bluebird.all(extract).map((info) => {
+			return new Bluebird((resolve: (result: Submodule) => any) => {
+				const { url, root, branch } = info;
+				const currentBranch = branch || "master"; // default master branch
+				setupGit({
+					url,
+					branch: currentBranch,
+					baseDir: root,
+				}).then((github) => {
+					resolve(Object.assign(info, { github }));
+				});
+			});
+		});
+		*/
 	}
 }
 
