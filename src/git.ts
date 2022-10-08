@@ -306,12 +306,13 @@ export class git {
 	 * @returns
 	 */
 	status() {
-		const rgMod = /^\s*(modified|added|deleted|changes not staged for commit):/gim;
+		const rgMod = /^\s*(modified|added|deleted):/gim;
+		const rgChanged = /^\s*(changes not staged for commit):/gim;
 		const rgUntracked = /^untracked files:([\s\S]*?)\n\n/gim;
 		return new Bluebird((resolve: (result: StatusResult[]) => any, reject) => {
 			spawn("git", ["status"], this.spawnOpt({ stdio: "pipe" }))
 				.then((response) => {
-					const isMod = rgMod.test(response);
+					const isMod = rgChanged.test(response);
 					if (isMod) {
 						// modded, added, deleted
 						const result = response
@@ -323,7 +324,7 @@ export class git {
 								return {
 									changes: split[0],
 									path: (split[1] || "").replace(/\(.*\)$/, "").trim(),
-								};
+								} as StatusResult;
 							});
 						resolve(result);
 					}
@@ -341,7 +342,7 @@ export class git {
 								return {
 									changes: "untracked",
 									path: str,
-								};
+								} as StatusResult;
 						})
 						.filter((str) => typeof str === "object");
 					resolve(result);
