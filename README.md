@@ -3,7 +3,21 @@ GitHub CLI Helper For NodeJS
 
 ![npm version](https://img.shields.io/npm/v/git-command-helper?style=for-the-badge)
 
-[Main Class](https://github.com/dimaslanjaka/git-command-helper/blob/master/src/index.ts)
+## Installation
+Beta Version
+```bash
+npm i https://github.com/dimaslanjaka/git-command-helper.git
+```
+### to update beta version
+```bash
+npm update git-command-helper
+```
+Production Version
+```bash
+npm i git-command-helper
+```
+
+### [Main Class](https://github.com/dimaslanjaka/git-command-helper/blob/master/src/index.ts)
 
 Example
 ```js
