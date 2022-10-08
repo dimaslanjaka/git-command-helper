@@ -25,15 +25,20 @@ const submodule_1 = __importDefault(require("./submodule"));
 async function setupGit({ branch, url, baseDir, email = null, user = null, }) {
     const github = new exports.gitHelper(baseDir);
     github.remote = url;
-    if (!(await github.isExist())) {
-        await github.init();
+    try {
+        if (!(await github.isExist())) {
+            await github.init();
+        }
+        await github.setremote(url);
+        await github.setbranch(branch);
+        if (email)
+            await github.setemail(email);
+        if (user)
+            await github.setuser(user);
     }
-    await github.setremote(url);
-    await github.setbranch(branch);
-    if (email)
-        await github.setemail(email);
-    if (user)
-        await github.setuser(user);
+    catch (e) {
+        console.trace(e);
+    }
     return github;
 }
 exports.setupGit = setupGit;
@@ -398,9 +403,13 @@ class git {
      * @param branchName
      * @returns
      */
-    async setbranch(branchName, spawnOpt) {
+    async setbranch(branchName, force = false, spawnOpt) {
         this.branch = branchName;
-        const _checkout = await (0, spawn_1.spawn)("git", ["checkout", this.branch], this.spawnOpt(spawnOpt || { stdio: "pipe" })).catch((e) => console.log("cannot checkout", this.branch, e.message));
+        const args = ["checkout"];
+        if (force)
+            args.push("-f");
+        args.push(this.branch);
+        const _checkout = await (0, spawn_1.spawn)("git", args, this.spawnOpt(spawnOpt || { stdio: "pipe" })).catch((e) => console.log("cannot checkout", this.branch, e.message));
         // git branch --set-upstream-to=origin/<branch> gh-pages
         const _setUpstream = await (0, spawn_1.spawn)("git", ["branch", "--set-upstream-to=origin/" + this.branch, this.branch], this.spawnOpt(spawnOpt || { stdio: "pipe" })).catch((e) => console.log("cannot set upstream", this.branch, e.message));
         //

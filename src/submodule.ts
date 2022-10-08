@@ -1,9 +1,10 @@
+import Bluebird from "bluebird";
 import { SpawnOptions } from "child_process";
 import debug from "debug";
 import { existsSync } from "fs";
 import { join } from "path";
 import extractSubmodule from "./extract-submodule";
-import git, { gitHelper, setupGit } from "./git";
+import git, { gitHelper } from "./git";
 import { spawn } from "./spawner";
 
 const _log = debug("git-command-helper");
@@ -48,26 +49,53 @@ export class submodule {
 	 * Update all submodule with cd method
 	 * @param reset do git reset --hard origin/branch ?
 	 */
-	async safeUpdate(reset = false) {
-		const info = this.get();
-		while (info.length > 0) {
-			let { branch, github, root, url } = info[0];
-			console.log("cd", info[0].path);
-			if (!github) {
-				github = await setupGit({
-					url,
-					branch,
-					baseDir: root,
+	safeUpdate(reset = false) {
+		return new Bluebird((resolve) => {
+			const info = this.get();
+			const doUp = () => {
+				return new Bluebird((resolveDoUp: (...v: any[]) => any) => {
+					let { branch, github, root, url } = info[0];
+					//console.log("safe", info[0]);
+					if (!github) {
+						github = new git(root);
+					}
+					const doReset = () => github.reset(branch);
+					const doPull = () =>
+						github.pull(["origin", branch, "--recurse-submodule"]);
+					// update from remote name origin
+					github.setremote(url, "origin").then(() => {
+						// force checkout branch instead commit hash
+						github.setbranch(branch, true).then(() => {
+							if (reset) {
+								// reset then pull
+								doReset().then(doPull).then(resolveDoUp);
+							} else {
+								// pull
+								doPull().then(resolveDoUp);
+							}
+						});
+					});
 				});
+			};
+			const iterate = () => {
+				return new Bluebird((resolveIt: (...v: any[]) => any) => {
+					doUp()
+						.then(() => {
+							info.shift();
+						})
+						.then(() => {
+							if (info.length > 0) {
+								return iterate().then(resolveIt);
+							} else {
+								resolveIt();
+							}
+						});
+				});
+			};
+			if (info.length > 0) {
+				resolve(iterate());
 			}
-			if (github) {
-				if (reset) {
-					await github.reset(branch);
-				}
-				await github.pull(["--recurse-submodule"]);
-			}
-			info.shift();
-		}
+		});
 	}
 
 	/**

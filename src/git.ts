@@ -38,13 +38,17 @@ export async function setupGit({
 }: GitOpt) {
 	const github = new gitHelper(baseDir);
 	github.remote = url;
-	if (!(await github.isExist())) {
-		await github.init();
+	try {
+		if (!(await github.isExist())) {
+			await github.init();
+		}
+		await github.setremote(url);
+		await github.setbranch(branch);
+		if (email) await github.setemail(email);
+		if (user) await github.setuser(user);
+	} catch (e) {
+		console.trace(e);
 	}
-	await github.setremote(url);
-	await github.setbranch(branch);
-	if (email) await github.setemail(email);
-	if (user) await github.setuser(user);
 	return github;
 }
 
@@ -470,11 +474,14 @@ export class git {
 	 * @param branchName
 	 * @returns
 	 */
-	async setbranch(branchName: string, spawnOpt?: SpawnOptions) {
+	async setbranch(branchName: string, force = false, spawnOpt?: SpawnOptions) {
 		this.branch = branchName;
+		const args = ["checkout"];
+		if (force) args.push("-f");
+		args.push(this.branch);
 		const _checkout = await spawn(
 			"git",
-			["checkout", this.branch],
+			args,
 			this.spawnOpt(spawnOpt || { stdio: "pipe" })
 		).catch((e) => console.log("cannot checkout", this.branch, e.message));
 		// git branch --set-upstream-to=origin/<branch> gh-pages

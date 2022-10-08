@@ -1,5 +1,5 @@
 /// <reference types="node" />
-/// <reference types="bluebird" />
+import Bluebird from "bluebird";
 import { SpawnOptions } from "child_process";
 import git from "./git";
 export declare class submodule {
@@ -15,25 +15,25 @@ export declare class submodule {
      * @param optionSpawn
      * @returns
      */
-    update(args?: string[], optionSpawn?: SpawnOptions): import("bluebird")<string>;
+    update(args?: string[], optionSpawn?: SpawnOptions): Bluebird<string>;
     /**
      * Update all submodule with cd method
      * @param reset do git reset --hard origin/branch ?
      */
-    safeUpdate(reset?: boolean): Promise<void>;
+    safeUpdate(reset?: boolean): Bluebird<unknown>;
     /**
      * git submodule status
      * @param optionSpawn
      * @returns
      */
-    status(optionSpawn?: SpawnOptions): import("bluebird")<string>;
+    status(optionSpawn?: SpawnOptions): Bluebird<string>;
     /**
      * git add all each submodule
      * @param pathOrArg ex: `-A`
      * @returns
      */
-    addAll(pathOrArg: string): import("bluebird")<string>;
-    commitAll(msg: string): import("bluebird")<string>;
+    addAll(pathOrArg: string): Bluebird<string>;
+    commitAll(msg: string): Bluebird<string>;
     /**
      * get submodule informations
      * @returns

@@ -2,7 +2,6 @@
  * NodeJS GitHub Helper
  * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
  */
-/// <reference types="node" />
 import Bluebird from "bluebird";
 import helper from "./helper";
 import { shell } from "./shell";
@@ -189,7 +188,7 @@ export declare class git {
      * @param branchName
      * @returns
      */
-    setbranch(branchName: string, spawnOpt?: SpawnOptions): Promise<string | void>;
+    setbranch(branchName: string, force?: boolean, spawnOpt?: SpawnOptions): Promise<string | void>;
     /**
      * Reset to latest commit of remote branch
      * @param branch
