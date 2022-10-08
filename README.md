@@ -15,6 +15,6 @@ if (git.submodule.hasSubmodule()) console.log(git.submodule.get());
 ```
 
 ## Custom Command
-```
+```js
 github.spawn('git', ['fetch']).then(console.log)
 ```
