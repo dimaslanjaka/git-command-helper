@@ -21,5 +21,5 @@ if (git.submodule.hasSubmodule()) console.log(git.submodule.get());
 github.spawn('git', ['fetch'], { stdio: 'pipe' }).then(console.log)
 ```
 
-## Usage Example With Gulp v4
-[deploy.ts](https://github.com/dimaslanjaka/static-blog-generator-hexo/blob/master/deploy.ts)
+## Another Examples 
+- [Usage Example With Gulp v4](https://github.com/dimaslanjaka/static-blog-generator-hexo/blob/master/deploy.ts)
