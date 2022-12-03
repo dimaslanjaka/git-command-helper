@@ -143,6 +143,7 @@ export class git {
 	/**
 	 * git pull accept merge from remote (accept all incoming changes)
 	 * @see https://stackoverflow.com/a/21777677
+	 * @see https://www.folkstalk.com/tech/git-accept-incoming-changes-for-all-with-code-examples/
 	 */
 	async pullAcceptTheirs(optionSpawn: SpawnOptions = { stdio: "inherit" }) {
 		await this.pull(['-X', 'theirs'], optionSpawn);
