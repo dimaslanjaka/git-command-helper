@@ -146,6 +146,7 @@ export class git {
 	 */
 	async pullAcceptTheirs(optionSpawn: SpawnOptions = { stdio: "inherit" }) {
 		await this.pull(['-X', 'theirs'], optionSpawn);
+		await this.spawn('git', ['checkout', '--theirs', '.'], optionSpawn);
 	}
 
 	/**
