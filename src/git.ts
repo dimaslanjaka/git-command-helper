@@ -139,6 +139,14 @@ export class git {
 			}
 		}
 	}
+	
+	/**
+	 * git pull accept merge from remote (accept all incoming changes)
+	 * @see https://stackoverflow.com/a/21777677
+	 */
+	async pullAcceptTheirs(optionSpawn: SpawnOptions = { stdio: "inherit" }) {
+		await this.pull(['-X', 'theirs'], optionSpawn);
+	}
 
 	/**
 	 * git commit
