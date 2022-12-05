@@ -1,7 +1,7 @@
 /// <reference types="node" />
 /// <reference types="node" />
 import { Transform } from 'stream';
-export declare type TransformCallback = (error?: Error | null, data?: any) => void;
+export type TransformCallback = (error?: Error | null, data?: any) => void;
 export default class CacheStream extends Transform {
     private _cache;
     constructor();

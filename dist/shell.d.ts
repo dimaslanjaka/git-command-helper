@@ -1,6 +1,6 @@
 /// <reference types="node" />
 import { SpawnOptions } from 'child_process';
-export declare type ShellOptions = SpawnOptions & {
+export type ShellOptions = SpawnOptions & {
     verbose?: boolean;
     supress?: boolean;
 };

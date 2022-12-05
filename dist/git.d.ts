@@ -2,6 +2,7 @@
  * NodeJS GitHub Helper
  * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
  */
+/// <reference types="node" />
 import Bluebird from "bluebird";
 import helper from "./helper";
 import { shell } from "./shell";
@@ -70,6 +71,12 @@ export declare class git {
      * @returns
      */
     pull(arg?: string[], optionSpawn?: SpawnOptions): Promise<string>;
+    /**
+     * git pull accept merge from remote (accept all incoming changes)
+     * @see https://stackoverflow.com/a/21777677
+     * @see https://www.folkstalk.com/tech/git-accept-incoming-changes-for-all-with-code-examples/
+     */
+    pullAcceptTheirs(optionSpawn?: SpawnOptions): Promise<void>;
     /**
      * git commit
      * @param mode -am, -m, etc

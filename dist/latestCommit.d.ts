@@ -1,6 +1,6 @@
 /// <reference types="node" />
 import { SpawnOptions } from 'child_process';
-export declare type GetLatestCommitHashOptions = Partial<SpawnOptions> & {
+export type GetLatestCommitHashOptions = Partial<SpawnOptions> & {
     short?: boolean;
 };
 /**
