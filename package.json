@@ -12,7 +12,7 @@
 		"README.md"
 	],
 	"scripts": {
-		"build": "rimraf dist && tsc",
+		"build": "rimraf dist && tsc -p tsconfig.build.json",
 		"update": "npx npm-check-updates -u -x chalk",
 		"patch": "npm version patch"
 	},

@@ -59,7 +59,7 @@ class git {
      * git config --global --add safe.directory PATH_FOLDER
      */
     addSafe() {
-        return this.spawn('git', 'git config --global --add safe.directory'.split(' '), this.spawnOpt({}));
+        return this.spawn('git', 'git config --global --add safe.directory'.split(' '), { stdio: 'inherit' });
     }
     /**
      * call spawn async
