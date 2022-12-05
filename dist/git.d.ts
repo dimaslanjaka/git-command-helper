@@ -3,12 +3,12 @@
  * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
  */
 /// <reference types="node" />
-import Bluebird from "bluebird";
-import helper from "./helper";
-import { shell } from "./shell";
-import { SpawnOptions } from "./spawn";
-import submodule from "./submodule";
-import { StatusResult } from "./types";
+import Bluebird from 'bluebird';
+import helper from './helper';
+import { shell } from './shell';
+import { SpawnOptions } from './spawn';
+import submodule from './submodule';
+import { StatusResult } from './types';
 export interface GitOpt {
     user?: string;
     email?: string;
@@ -21,7 +21,7 @@ export interface GitOpt {
  * @param param0
  * @returns
  */
-export declare function setupGit({ branch, url, baseDir, email, user, }: GitOpt): Promise<git>;
+export declare function setupGit({ branch, url, baseDir, email, user }: GitOpt): Promise<git>;
 /**
  * GitHub Command Helper For NodeJS
  */
@@ -38,6 +38,7 @@ export declare class git {
     helper: typeof helper;
     static helper: typeof helper;
     constructor(dir: string);
+    addSafe(): void;
     /**
      * call spawn async
      * @param cmd
@@ -84,7 +85,7 @@ export declare class git {
      * @param optionSpawn
      * @returns
      */
-    commit(msg: string, mode?: "am" | "m" | string, optionSpawn?: SpawnOptions): Bluebird<string>;
+    commit(msg: string, mode?: 'am' | 'm' | string, optionSpawn?: SpawnOptions): Bluebird<string>;
     /**
      * add and commit file
      * @param path
