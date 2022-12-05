@@ -115,15 +115,21 @@ const saveCache = (data) => fs.writeFileSync(cacheJSON, JSON.stringify(data, nul
           stdio: 'inherit'
         });
       }
+
+      // update cache
       await updateCache();
+
       const argv = process.argv;
-      if (argv.includes('--commit')) {
-        await summon('git', ['add', 'package.json'], { cwd: __dirname, stdio: 'pipe' });
-        await summon('git', ['add', 'package-lock.json'], { cwd: __dirname, stdio: 'pipe' });
-        const stat = await summon('git', ['commit', '-m', 'Update dependencies\nDate: ' + new Date()], {
-          cwd: __dirname,
-          stdio: 'pipe'
-        });
+      if (fs.existsSync(path.join(__dirname, '.git')) && argv.includes('--commit')) {
+        await summon('git', ['add', 'package.json'], { cwd: __dirname });
+        await summon('git', ['add', 'package-lock.json'], { cwd: __dirname });
+        const status = await summon('git', ['status', '--porcelain'], { cwd: __dirname });
+        console.log({ status });
+        if (status.stdout && (status.stdout.includes('package.json') || status.stdout.includes('package-lock.json'))) {
+          await summon('git', ['commit', '-m', 'Update dependencies\nDate: ' + new Date()], {
+            cwd: __dirname
+          });
+        }
       }
     } catch (e) {
       if (e instanceof Error) console.error(e.message);
@@ -138,19 +144,44 @@ const saveCache = (data) => fs.writeFileSync(cacheJSON, JSON.stringify(data, nul
  * @param {string} cmd
  * @param {string[]} args
  * @param {Parameters<typeof spawn>[2]} opt
- * @returns {Promise<Error|null|number>}
+ * @returns {Promise<Error|{stdout:string,stderr:string}>}
  */
 function summon(cmd, args = [], opt = {}) {
+  const spawnopt = Object.assign({ cwd: __dirname }, opt || {});
   // *** Return the promise
   return new Promise(function (resolve) {
     if (typeof cmd !== 'string' || cmd.trim().length === 0) return resolve(new Error('cmd empty'));
-    const process = spawn(cmd, args, opt);
-    process.on('close', function (code) {
-      // Should probably be 'exit', not 'close'
-      // *** Process completed
-      resolve(code);
+    let stdout = '';
+    let stderr = '';
+    const child = spawn(cmd, args, spawnopt);
+    // if (spawnopt.stdio === 'ignore') child.unref();
+
+    if (child.stdout && 'on' in child.stdout) {
+      child.stdout.setEncoding('utf8');
+      child.stdout.on('data', (data) => {
+        stdout += data;
+      });
+    }
+
+    if (child.stderr && 'on' in child.stdout) {
+      child.stderr.setEncoding('utf8');
+      child.stderr.on('data', (data) => {
+        stderr += data;
+      });
+    }
+
+    // silence errors
+    child.on('error', (err) => {
+      console.log('got error', err);
     });
-    process.on('error', function (err) {
+
+    child.on('close', function (code) {
+      // Should probably be 'exit', not 'close'
+      if (code !== 0) console.log('[ERROR]', cmd, ...args, 'dies with code', code);
+      // *** Process completed
+      resolve({ stdout, stderr });
+    });
+    child.on('error', function (err) {
       // *** Process creation failed
       resolve(err);
     });
