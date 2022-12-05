@@ -1,6 +1,6 @@
 import { join } from 'path';
 
-export const configTest = {
+export const TestConfig = {
   /**
    * Git directory
    */
