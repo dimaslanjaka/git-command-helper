@@ -68,8 +68,11 @@ export class git {
     helper.suppress(() => this.isExist());
   }
 
+  /**
+   * git config --global --add safe.directory PATH_FOLDER
+   */
   addSafe() {
-    //
+    return this.spawn('git', 'git config --global --add safe.directory'.split(' '), this.spawnOpt({}));
   }
 
   /**
@@ -252,8 +255,13 @@ export class git {
     return changed && staged.length === 0;
   }
 
+  /**
+   * Spawn option default stdio pipe
+   * @param opt
+   * @returns
+   */
   private spawnOpt(opt: SpawnOptions = {}) {
-    return Object.assign({ cwd: this.cwd, stdio: 'pipe' }, opt);
+    return Object.assign({ cwd: this.cwd, stdio: 'pipe' }, opt) as SpawnOptions;
   }
 
   /**
