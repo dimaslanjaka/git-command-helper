@@ -42,7 +42,7 @@ export declare class git {
     /**
      * git config --global --add safe.directory PATH_FOLDER
      */
-    addSafe(): Bluebird<string>;
+    addSafe(): Bluebird<string | void>;
     /**
      * call spawn async
      * @param cmd
@@ -179,7 +179,11 @@ export declare class git {
      * git init
      * @returns
      */
-    init(spawnOpt?: SpawnOptions): Promise<string>;
+    init(spawnOpt?: SpawnOptions): Promise<string | void>;
+    /**
+     * Check if git folder exists
+     * @returns
+     */
     isExist(): Bluebird<boolean>;
     setcwd(v: string): void;
     setemail(v: string): Bluebird<string>;

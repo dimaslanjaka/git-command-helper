@@ -4,8 +4,10 @@ import rm from 'rimraf';
 import fs from 'fs';
 
 (async function () {
-  rm(TestConfig.cwd, fs, gitHelper.noop);
-  const git = new gitHelper(TestConfig.cwd);
-  await git.init();
-  await git.addSafe();
+  rm(TestConfig.cwd, fs, function () {
+    const github = new gitHelper(TestConfig.cwd);
+    github.isExist().then(function (exist) {
+      if (!exist) github.init().then(github.addSafe).catch(gitHelper.noop);
+    });
+  });
 })();

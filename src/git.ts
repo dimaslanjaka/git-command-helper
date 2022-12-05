@@ -75,7 +75,13 @@ export class git {
    * git config --global --add safe.directory PATH_FOLDER
    */
   addSafe() {
-    return this.spawn('git', 'git config --global --add safe.directory'.split(' '), { stdio: 'inherit' });
+    return spawn(
+      'git',
+      'git config --global --add safe.directory'.split(' ').concat([this.cwd]),
+      this.spawnOpt({ stdio: 'inherit' })
+    )
+      .catch(git.noop)
+      .finally(() => console.log(this.cwd, 'added to safe directory'));
   }
 
   /**
@@ -385,9 +391,14 @@ export class git {
    * @returns
    */
   async init(spawnOpt = this.spawnOpt({ stdio: 'inherit' })) {
-    return this.spawn('git', ['init'], this.spawnOpt(spawnOpt));
+    if (!existsSync(join(this.cwd, '.git'))) mkdirSync(join(this.cwd, '.git'));
+    return spawn('git', ['init'], this.spawnOpt(spawnOpt)).catch(noop);
   }
 
+  /**
+   * Check if git folder exists
+   * @returns
+   */
   isExist() {
     return new Bluebird((resolve: (exists: boolean) => any, reject) => {
       const folderExist = existsSync(join(this.cwd, '.git'));
