@@ -39,6 +39,7 @@
 	},
 	"homepage": "https://github.com/dimaslanjaka/git-command-helper#readme",
 	"dependencies": {
+		"@expo/spawn-async": "^1.7.0",
 		"bluebird": "^3.7.2",
 		"cross-spawn": "^7.0.3",
 		"deepmerge-ts": "^4.2.2",

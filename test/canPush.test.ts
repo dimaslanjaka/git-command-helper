@@ -1,15 +1,25 @@
-import gitHelper from '../src';
-import { TestConfig } from './config';
 import fs from 'fs';
 import path from 'path';
+import gitHelper from '../src';
+import { TestConfig } from './config';
 
 (async function () {
-  const git = new gitHelper(TestConfig.cwd);
-  await git.setremote(TestConfig.remote);
-  await git.setbranch(TestConfig.branch);
-  await git.setuser(TestConfig.username);
-  await git.setemail(TestConfig.email);
+  const github = new gitHelper(TestConfig.cwd);
+  await github.isExist().then(function (exist) {
+    if (!exist) {
+      github
+        .init()
+        .then(() => github.addSafe().catch(gitHelper.noop))
+        .then(() => github.fetch())
+        .catch(gitHelper.noop);
+    }
+  });
+  await github.fetch().catch(gitHelper.noop);
+  await github.setremote(TestConfig.remote).catch(gitHelper.noop);
+  await github.setbranch(TestConfig.branch).catch(gitHelper.noop);
+  await github.setuser(TestConfig.username).catch(gitHelper.noop);
+  await github.setemail(TestConfig.email).catch(gitHelper.noop);
   fs.writeFileSync(path.join(TestConfig.cwd, 'canPush.txt'), Math.random().toString());
-  const can = await git.canPush();
+  const can = await github.canPush().catch(gitHelper.noop);
   console.log(can);
 })();

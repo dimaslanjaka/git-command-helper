@@ -11,7 +11,7 @@ import helper from './helper';
 import { latestCommit } from './latestCommit';
 import noop from './noop';
 import { shell } from './shell';
-import { spawn, SpawnOptions } from './spawn';
+import { spawn, SpawnOptions, spawnSilent } from './spawn';
 import submodule from './submodule';
 import { StatusResult } from './types';
 
@@ -75,9 +75,9 @@ export class git {
    * git config --global --add safe.directory PATH_FOLDER
    */
   addSafe() {
-    return spawn(
+    return spawnSilent(
       'git',
-      'git config --global --add safe.directory'.split(' ').concat([this.cwd]),
+      'config --global --add safe.directory'.split(' ').concat([this.cwd]),
       this.spawnOpt({ stdio: 'inherit' })
     )
       .catch(git.noop)
@@ -398,9 +398,9 @@ export class git {
    * git init
    * @returns
    */
-  async init(spawnOpt = this.spawnOpt({ stdio: 'inherit' })) {
-    if (!existsSync(join(this.cwd, '.git'))) mkdirSync(join(this.cwd, '.git'));
-    return spawn('git', ['init'], this.spawnOpt(spawnOpt)).catch(noop);
+  async init(spawnOpt: SpawnOptions = { stdio: 'inherit' }) {
+    if (!existsSync(join(this.cwd, '.git'))) mkdirSync(join(this.cwd, '.git'), { recursive: true });
+    return spawnSilent('git', ['init'], this.spawnOpt(spawnOpt)).catch(noop);
   }
 
   /**
