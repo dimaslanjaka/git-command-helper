@@ -50,11 +50,16 @@ class git {
         this.latestCommit = latestCommit_1.latestCommit;
         this.helper = helper_1.default;
         this.cwd = dir;
+        if (!(0, fs_1.existsSync)(this.cwd))
+            (0, fs_1.mkdirSync)(this.cwd, { recursive: true });
         this.submodule = new submodule_1.default(dir);
         helper_1.default.suppress(() => this.isExist());
     }
+    /**
+     * git config --global --add safe.directory PATH_FOLDER
+     */
     addSafe() {
-        //
+        return this.spawn('git', 'git config --global --add safe.directory'.split(' '), this.spawnOpt({}));
     }
     /**
      * call spawn async
@@ -233,6 +238,11 @@ class git {
         // return repository is not up to date
         return changed && staged.length === 0;
     }
+    /**
+     * Spawn option default stdio pipe
+     * @param opt
+     * @returns
+     */
     spawnOpt(opt = {}) {
         return Object.assign({ cwd: this.cwd, stdio: 'pipe' }, opt);
     }
@@ -343,8 +353,8 @@ class git {
      * git init
      * @returns
      */
-    async init() {
-        return (0, spawn_1.spawn)('git', ['init'], this.spawnOpt());
+    async init(spawnOpt = this.spawnOpt({ stdio: 'inherit' })) {
+        return this.spawn('git', ['init'], this.spawnOpt(spawnOpt));
     }
     isExist() {
         return new bluebird_1.default((resolve, reject) => {

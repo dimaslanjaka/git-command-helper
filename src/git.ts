@@ -5,7 +5,7 @@
  */
 
 import Bluebird from 'bluebird';
-import { existsSync } from 'fs';
+import { existsSync, mkdirSync } from 'fs';
 import { join } from 'path';
 import helper from './helper';
 import { latestCommit } from './latestCommit';
@@ -64,6 +64,7 @@ export class git {
 
   constructor(dir: string) {
     this.cwd = dir;
+    if (!existsSync(this.cwd)) mkdirSync(this.cwd, { recursive: true });
     this.submodule = new submodule(dir);
     helper.suppress(() => this.isExist());
   }
@@ -381,8 +382,8 @@ export class git {
    * git init
    * @returns
    */
-  async init() {
-    return spawn('git', ['init'], this.spawnOpt());
+  async init(spawnOpt = this.spawnOpt({ stdio: 'inherit' })) {
+    return this.spawn('git', ['init'], this.spawnOpt(spawnOpt));
   }
 
   isExist() {

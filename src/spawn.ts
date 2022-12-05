@@ -8,11 +8,7 @@ import CacheStream from './cache-stream';
 type originalOpt = Parameters<typeof sysSpawn>[2];
 export type SpawnOptions = Record<string, any> & originalOpt;
 
-export default function promiseSpawn(
-  command: string,
-  args: string[] | SpawnOptions = [],
-  options: SpawnOptions = {}
-) {
+export default function promiseSpawn(command: string, args: string[] | SpawnOptions = [], options: SpawnOptions = {}) {
   if (!command) throw new TypeError('command is required!');
 
   if (typeof args === 'string') args = [args];

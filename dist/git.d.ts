@@ -2,7 +2,6 @@
  * NodeJS GitHub Helper
  * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
  */
-/// <reference types="node" />
 import Bluebird from 'bluebird';
 import helper from './helper';
 import { shell } from './shell';
@@ -38,7 +37,10 @@ export declare class git {
     helper: typeof helper;
     static helper: typeof helper;
     constructor(dir: string);
-    addSafe(): void;
+    /**
+     * git config --global --add safe.directory PATH_FOLDER
+     */
+    addSafe(): Bluebird<string>;
     /**
      * call spawn async
      * @param cmd
@@ -115,6 +117,11 @@ export declare class git {
      * check if can be pushed
      */
     canPush(): Promise<boolean>;
+    /**
+     * Spawn option default stdio pipe
+     * @param opt
+     * @returns
+     */
     private spawnOpt;
     /**
      * git add
@@ -124,10 +131,7 @@ export declare class git {
      */
     add(path: string, optionSpawn?: SpawnOptions): Bluebird<string>;
     info(): Promise<{
-        opt: {
-            cwd: string;
-            stdio: string;
-        } & Record<string, any> & import("child_process").SpawnOptions;
+        opt: SpawnOptions;
         remote: {
             fetch: {
                 origin: string;
@@ -173,7 +177,7 @@ export declare class git {
      * git init
      * @returns
      */
-    init(): Promise<string>;
+    init(spawnOpt?: SpawnOptions): Promise<string>;
     isExist(): Bluebird<boolean>;
     setcwd(v: string): void;
     setemail(v: string): Bluebird<string>;
