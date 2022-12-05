@@ -24,7 +24,7 @@
   },
   "[json]": {
     "editor.formatOnSave": true, // custom formating with default vscode formatter
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "vscode.json-language-features"
   },
   "editor.formatOnSave": false, // default vscode formatter
   "git.enabled": true,
