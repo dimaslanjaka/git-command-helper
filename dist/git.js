@@ -14,6 +14,7 @@ const fs_1 = require("fs");
 const path_1 = require("path");
 const helper_1 = __importDefault(require("./helper"));
 const latestCommit_1 = require("./latestCommit");
+const noop_1 = __importDefault(require("./noop"));
 const shell_1 = require("./shell");
 const spawn_1 = require("./spawn");
 const submodule_1 = __importDefault(require("./submodule"));
@@ -479,6 +480,7 @@ class git {
 exports.git = git;
 git.shell = shell_1.shell;
 git.helper = helper_1.default;
+git.noop = noop_1.default;
 exports.default = git;
 exports.gitHelper = git;
 exports.gitCommandHelper = git;

@@ -4,6 +4,7 @@
  */
 import Bluebird from 'bluebird';
 import helper from './helper';
+import noop from './noop';
 import { shell } from './shell';
 import { SpawnOptions } from './spawn';
 import submodule from './submodule';
@@ -36,6 +37,7 @@ export declare class git {
     static shell: typeof shell;
     helper: typeof helper;
     static helper: typeof helper;
+    static noop: typeof noop;
     constructor(dir: string);
     /**
      * git config --global --add safe.directory PATH_FOLDER
