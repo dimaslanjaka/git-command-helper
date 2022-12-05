@@ -9,6 +9,7 @@ import { existsSync, mkdirSync } from 'fs';
 import { join } from 'path';
 import helper from './helper';
 import { latestCommit } from './latestCommit';
+import noop from './noop';
 import { shell } from './shell';
 import { spawn, SpawnOptions } from './spawn';
 import submodule from './submodule';
@@ -61,6 +62,7 @@ export class git {
   static shell = shell;
   helper = helper;
   static helper = helper;
+  static noop = noop;
 
   constructor(dir: string) {
     this.cwd = dir;

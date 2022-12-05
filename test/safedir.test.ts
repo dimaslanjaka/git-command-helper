@@ -4,7 +4,7 @@ import rm from 'rimraf';
 import fs from 'fs';
 
 (async function () {
-  rm(TestConfig.cwd, fs, noop);
+  rm(TestConfig.cwd, fs, gitHelper.noop);
   const git = new gitHelper(TestConfig.cwd);
   await git.init();
   await git.addSafe();
