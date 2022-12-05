@@ -5,8 +5,8 @@ export const TestConfig = {
    * Git directory
    */
   cwd: join(__dirname, '../tmp/project-test'),
-  branch: 'master',
-  remote: 'https://github.com/dimaslanjaka/dimaslanjaka.github.io.git',
+  branch: 'test',
+  remote: 'https://github.com/dimaslanjaka/test-repo.git',
   username: 'dimaslanjaka',
   email: 'dimaslanjaka@gmail.com',
   password: process.env.GITHUB_TOKEN

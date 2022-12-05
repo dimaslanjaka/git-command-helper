@@ -254,8 +254,16 @@ export class git {
 
   /**
    * check if can be pushed
+   * @param originName origin name
    */
-  async canPush() {
+  async canPush(originName = 'origin', branchName = this.branch) {
+    // git push --dry-run
+    const dry = spawn(
+      'git',
+      ['push', '-u', originName || 'origin', branchName || this.branch, '--dry-run'],
+      this.spawnOpt({})
+    );
+    console.log(dry);
     // repository is not up to date
     const changed = !(await this.isUpToDate());
     // repostory file changes status
