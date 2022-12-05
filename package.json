@@ -14,7 +14,8 @@
 	"scripts": {
 		"build": "rimraf dist && tsc -p tsconfig.build.json",
 		"update": "npx npm-check-updates -u -x chalk",
-		"patch": "npm version patch"
+		"patch": "npm version patch",
+		"postinstall": "node postinstall.js --commit"
 	},
 	"repository": {
 		"type": "git",
@@ -41,8 +42,10 @@
 		"bluebird": "^3.7.2",
 		"cross-spawn": "^7.0.3",
 		"deepmerge-ts": "^4.2.2",
+		"fs-extra": "^11.1.0",
 		"hexo-util": "^2.7.0",
-		"ini": "^3.0.1"
+		"ini": "^3.0.1",
+		"upath": "^2.0.1"
 	},
 	"devDependencies": {
 		"@types/bluebird": "^3.5.37",
