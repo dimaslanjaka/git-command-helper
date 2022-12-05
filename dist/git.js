@@ -249,7 +249,7 @@ class git {
         const changed = !(await this.isUpToDate());
         // repostory file changes status
         const staged = await this.status();
-        console.log({ staged, changed, dry });
+        //console.log({ staged, changed, dry });
         // return repository is not up to date
         return changed && staged.length === 0 && dry.trim().length > 0;
     }
