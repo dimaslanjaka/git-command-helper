@@ -3,11 +3,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.spawn = void 0;
+exports.spawnSilent = exports.spawn = exports.spawnAsync = void 0;
 const bluebird_1 = __importDefault(require("bluebird"));
 const cross_spawn_1 = __importDefault(require("cross-spawn"));
 // import { spawn as sysSpawn } from 'child_process';
 const cache_stream_1 = __importDefault(require("./cache-stream"));
+const noop_1 = __importDefault(require("./noop"));
+var spawn_async_1 = require("@expo/spawn-async");
+Object.defineProperty(exports, "spawnAsync", { enumerable: true, get: function () { return __importDefault(spawn_async_1).default; } });
 function promiseSpawn(command, args = [], options = {}) {
     if (!command)
         throw new TypeError('command is required!');
@@ -64,3 +67,12 @@ function getCache(stream, encoding) {
     return buf.toString(encoding);
 }
 exports.spawn = promiseSpawn;
+const spawnSilent = async function (command, args, options) {
+    try {
+        return await promiseSpawn(command, args, options);
+    }
+    catch (_) {
+        return (0, noop_1.default)(_);
+    }
+};
+exports.spawnSilent = spawnSilent;

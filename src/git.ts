@@ -11,7 +11,7 @@ import helper from './helper';
 import { latestCommit } from './latestCommit';
 import noop from './noop';
 import { shell } from './shell';
-import { spawn, SpawnOptions, spawnSilent } from './spawn';
+import { spawn, spawnAsync, SpawnOptions, spawnSilent } from './spawn';
 import submodule from './submodule';
 import { StatusResult } from './types';
 
@@ -124,7 +124,11 @@ export class git {
     if (args.length === 0) {
       args.push('origin', this.branch);
     }
-    return spawn('git', ['fetch'].concat(args), this.spawnOpt(optionSpawn));
+    // return default git fetch when branch not set
+    if (!this.branch) return spawnAsync('git', ['fetch'], this.spawnOpt(optionSpawn));
+    // remove non-string paramters
+    args = ['fetch'].concat(args).filter((str) => typeof str === 'string' && str.length > 0);
+    return spawnAsync('git', args, this.spawnOpt(optionSpawn));
   }
 
   /**

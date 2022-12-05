@@ -60,7 +60,7 @@ class git {
      * git config --global --add safe.directory PATH_FOLDER
      */
     addSafe() {
-        return (0, spawn_1.spawn)('git', 'git config --global --add safe.directory'.split(' ').concat([this.cwd]), this.spawnOpt({ stdio: 'inherit' }))
+        return (0, spawn_1.spawnSilent)('git', 'config --global --add safe.directory'.split(' ').concat([this.cwd]), this.spawnOpt({ stdio: 'inherit' }))
             .catch(git.noop)
             .finally(() => console.log(this.cwd, 'added to safe directory'));
     }
@@ -102,7 +102,12 @@ class git {
         if (args.length === 0) {
             args.push('origin', this.branch);
         }
-        return (0, spawn_1.spawn)('git', ['fetch'].concat(args), this.spawnOpt(optionSpawn));
+        // return default git fetch when branch not set
+        if (!this.branch)
+            return (0, spawn_1.spawnAsync)('git', ['fetch'], this.spawnOpt(optionSpawn));
+        // remove non-string paramters
+        args = ['fetch'].concat(args).filter((str) => typeof str === 'string' && str.length > 0);
+        return (0, spawn_1.spawnAsync)('git', args, this.spawnOpt(optionSpawn));
     }
     /**
      * git pull
@@ -232,8 +237,12 @@ class git {
     }
     /**
      * check if can be pushed
+     * @param originName origin name
      */
-    async canPush() {
+    async canPush(originName = 'origin', branchName = this.branch) {
+        // git push --dry-run
+        const dry = (0, spawn_1.spawn)('git', ['push', '-u', originName || 'origin', branchName || this.branch, '--dry-run'], this.spawnOpt({}));
+        console.log(dry);
         // repository is not up to date
         const changed = !(await this.isUpToDate());
         // repostory file changes status
@@ -356,10 +365,10 @@ class git {
      * git init
      * @returns
      */
-    async init(spawnOpt = this.spawnOpt({ stdio: 'inherit' })) {
+    async init(spawnOpt = { stdio: 'inherit' }) {
         if (!(0, fs_1.existsSync)((0, path_1.join)(this.cwd, '.git')))
-            (0, fs_1.mkdirSync)((0, path_1.join)(this.cwd, '.git'));
-        return (0, spawn_1.spawn)('git', ['init'], this.spawnOpt(spawnOpt)).catch(noop_1.default);
+            (0, fs_1.mkdirSync)((0, path_1.join)(this.cwd, '.git'), { recursive: true });
+        return (0, spawn_1.spawnSilent)('git', ['init'], this.spawnOpt(spawnOpt)).catch(noop_1.default);
     }
     /**
      * Check if git folder exists

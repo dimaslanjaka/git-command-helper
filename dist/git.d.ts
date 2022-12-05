@@ -6,7 +6,7 @@ import Bluebird from 'bluebird';
 import helper from './helper';
 import noop from './noop';
 import { shell } from './shell';
-import { SpawnOptions } from './spawn';
+import { spawnAsync, SpawnOptions } from './spawn';
 import submodule from './submodule';
 import { StatusResult } from './types';
 export interface GitOpt {
@@ -42,7 +42,7 @@ export declare class git {
     /**
      * git config --global --add safe.directory PATH_FOLDER
      */
-    addSafe(): Bluebird<string | void>;
+    addSafe(): Promise<string | void>;
     /**
      * call spawn async
      * @param cmd
@@ -68,7 +68,7 @@ export declare class git {
      * @param optionSpawn
      * @returns
      */
-    fetch(arg?: string[], optionSpawn?: SpawnOptions): Bluebird<string>;
+    fetch(arg?: string[], optionSpawn?: SpawnOptions): spawnAsync.SpawnPromise<spawnAsync.SpawnResult>;
     /**
      * git pull
      * @param arg example: `['--recurse-submodule']`
@@ -117,8 +117,9 @@ export declare class git {
     push(force?: boolean, optionSpawn?: SpawnOptions): any;
     /**
      * check if can be pushed
+     * @param originName origin name
      */
-    canPush(): Promise<boolean>;
+    canPush(originName?: string, branchName?: string): Promise<boolean>;
     /**
      * Spawn option default stdio pipe
      * @param opt
