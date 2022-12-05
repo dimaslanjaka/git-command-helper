@@ -262,18 +262,22 @@ export class git {
    */
   async canPush(originName = 'origin', branchName = this.branch) {
     // git push --dry-run
-    const dry = spawn(
-      'git',
-      ['push', '-u', originName || 'origin', branchName || this.branch, '--dry-run'],
-      this.spawnOpt({})
-    );
-    console.log(dry);
+    if (branchName) {
+      await spawn(
+        'git',
+        ['push', '-u', originName || 'origin', branchName || this.branch, '--dry-run'],
+        this.spawnOpt({})
+      );
+    }
+    const dry = await spawn('git', ['push', '--dry-run'], this.spawnOpt({}));
+
     // repository is not up to date
     const changed = !(await this.isUpToDate());
     // repostory file changes status
     const staged = await this.status();
+    console.log({ staged, changed, dry });
     // return repository is not up to date
-    return changed && staged.length === 0;
+    return changed && staged.length === 0 && dry.trim().length > 0;
   }
 
   /**
