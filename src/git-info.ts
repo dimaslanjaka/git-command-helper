@@ -70,6 +70,10 @@ export async function getbranches() {
   }
 }
 
+/**
+ * get current branch
+ * @returns
+ */
 export async function getGithubCurrentBranch() {
   try {
     const result = await spawnAsync('git', ['branch', '--show-current']);
@@ -78,3 +82,13 @@ export async function getGithubCurrentBranch() {
     return noop(err);
   }
 }
+
+const GithubInfo = {
+  getGithubCurrentBranch,
+  getGithubRemote,
+  getGithubRepoUrl,
+  getGithubRootDir,
+  getbranches
+};
+
+export default GithubInfo;
