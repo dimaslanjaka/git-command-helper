@@ -40,10 +40,16 @@ export async function getGithubRepoUrl(path: string) {
   const root = trueCasePathSync((await getGithubRootDir()) || '');
   const remote = ((await getGithubRemote()) || '').replace(/(.git|\/)$/i, '');
 
-  const url = new URL(remote);
-  url.pathname += path.replace(root, '');
-  console.log({ root, remote, path, result: url.toString() });
-  console.log(await getGithubCurrentBranch());
+  let url = new URL(remote);
+  url.pathname += '/tree/' + (await getGithubCurrentBranch()) + path.replace(root, '');
+  const remoteURL = url.toString();
+  url = new URL(remote);
+  url.pathname += '/raw/' + (await getGithubCurrentBranch()) + path.replace(root, '');
+  const rawURL = url.toString();
+  return {
+    remoteURL,
+    rawURL
+  };
 }
 
 /**
