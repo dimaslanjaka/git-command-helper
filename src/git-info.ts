@@ -50,7 +50,7 @@ export async function getGithubRepoUrl(path: string) {
  * get current branch informations
  * @returns
  */
-export async function getbranches() {
+export async function getGithubBranches() {
   try {
     const result = await spawnAsync('git', ['branch']);
     return result.stdout
@@ -88,7 +88,7 @@ const GithubInfo = {
   getGithubRemote,
   getGithubRepoUrl,
   getGithubRootDir,
-  getbranches
+  getGithubBranches
 };
 
 export default GithubInfo;
