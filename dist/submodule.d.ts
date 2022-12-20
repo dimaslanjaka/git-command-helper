@@ -1,7 +1,7 @@
 /// <reference types="node" />
-import Bluebird from "bluebird";
-import { SpawnOptions } from "child_process";
-import git from "./git";
+import Bluebird from 'bluebird';
+import { SpawnOptions } from 'child_process';
+import git from './git';
 export declare class submodule {
     cwd: string;
     hasConfig: boolean;

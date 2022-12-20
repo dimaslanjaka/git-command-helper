@@ -2,3 +2,4 @@ config_*
 node_modules
 tmp
 *.tgz
+!release/*
