@@ -13,7 +13,8 @@
 		"*.js"
 	],
 	"scripts": {
-		"build": "rimraf dist && tsc -p tsconfig.build.json",
+		"build": "tsc -p tsconfig.build.json",
+		"postbuild": "node packer.js",
 		"update": "npx npm-check-updates -u -x chalk && npm install --cache tmp",
 		"patch": "npm version patch",
 		"postinstall": "node postinstall.js --commit"
@@ -54,15 +55,15 @@
 		"@types/cross-spawn": "^6.0.2",
 		"@types/hexo-util": "^0.6.5",
 		"@types/ini": "^1.3.31",
-		"@types/node": "^18.11.10",
-		"@typescript-eslint/eslint-plugin": "^5.45.0",
-		"@typescript-eslint/parser": "^5.45.0",
+		"@types/node": "^18.11.17",
+		"@typescript-eslint/eslint-plugin": "^5.47.0",
+		"@typescript-eslint/parser": "^5.47.0",
 		"debug": "^4.3.4",
-		"eslint": "^8.29.0",
+		"eslint": "^8.30.0",
 		"eslint-config-prettier": "^8.5.0",
 		"eslint-plugin-prettier": "^4.2.1",
 		"nodejs-package-types": "https://github.com/dimaslanjaka/nodejs-package-types/raw/main/release/nodejs-package-types.tgz",
-		"prettier": "^2.8.0",
+		"prettier": "^2.8.1",
 		"rimraf": "^3.0.2"
 	}
 }
