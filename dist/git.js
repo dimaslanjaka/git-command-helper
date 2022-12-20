@@ -51,8 +51,9 @@ class git {
         this.latestCommit = latestCommit_1.latestCommit;
         this.helper = helper_1.default;
         this.cwd = dir;
-        if (!(0, fs_1.existsSync)(this.cwd))
+        if (!(0, fs_1.existsSync)(this.cwd)) {
             (0, fs_1.mkdirSync)(this.cwd, { recursive: true });
+        }
         this.submodule = new submodule_1.default(dir);
         helper_1.default.suppress(() => this.isExist());
     }

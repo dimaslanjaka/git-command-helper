@@ -66,7 +66,9 @@ export class git {
 
   constructor(dir: string) {
     this.cwd = dir;
-    if (!existsSync(this.cwd)) mkdirSync(this.cwd, { recursive: true });
+    if (!existsSync(this.cwd)) {
+      mkdirSync(this.cwd, { recursive: true });
+    }
     this.submodule = new submodule(dir);
     helper.suppress(() => this.isExist());
   }
