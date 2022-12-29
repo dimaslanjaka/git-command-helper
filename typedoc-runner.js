@@ -115,12 +115,12 @@ const publish = async function (options = {}, callback = null) {
   });
 
   try {
-    const commit = await new git(__dirname).latestCommit().catch(noop);
-    const remote = (await new git(__dirname).getremote().catch(noop)).push.url.replace(/.git$/, '').trim();
+    const commit = await new git(__dirname).latestCommit();
+    const remote = (await new git(__dirname).getremote()).push.url.replace(/.git$/, '').trim();
     if (remote.length > 0) {
       console.log('project', remote);
       console.log('commit', `${remote}/commit/${commit}`);
-      await github.add(pkgjson.name).catch(noop);
+      await github.add(pkgjson.name);
       await spawnAsync('git', [
         'commit',
         '-m',
@@ -128,19 +128,15 @@ const publish = async function (options = {}, callback = null) {
         '-m',
         `at ${new Date()}`
       ]);
-      const isCanPush = await github.canPush().catch(noop);
+      const isCanPush = await github.canPush();
       if (isCanPush) {
-        await github.push().catch(noop);
+        await github.push();
       }
     }
   } catch {
     //
   }
 };
-
-function noop(..._) {
-  return;
-}
 
 let opt = typedocOptions;
 /**
