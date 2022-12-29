@@ -34,7 +34,7 @@ jobs:
         os: [ "ubuntu-latest", "macos-latest", "windows-latest" ]
         node-version: [ 14.x, 16.x, 18.x ]
         architecture: [ x86, x64 ]
-    
+
     runs-on: ${{ matrix.os }}
 
     name: Node ${{ matrix.node-version }} - ${{ matrix.os }}-${{ matrix.architecture }}
@@ -70,7 +70,7 @@ jobs:
 
       # https://github.com/actions/cache/blob/main/tips-and-workarounds.md#improving-cache-restore-performance-on-windows-using-cross-os-caching
       - if: ${{ runner.os == 'Windows' }}
-        name: Use GNU tar 
+        name: Use GNU tar
         run: |
           echo "Adding GNU tar to PATH"
           echo C:\Program Files\Git\usr\bin>>"%GITHUB_PATH%"
@@ -101,13 +101,13 @@ jobs:
           echo "cache npm   : ${{ env.CACHE_NPM }}"
           echo "cache yarn  : ${{ env.CACHE_YARN }}"
           echo "cache yarn2 : ${{ env.CACHE_YARN2 }}"
-          
+
       - name: Set EOL git configs
         run: |
           git config core.eol lf
           git config core.autocrlf input
           git checkout-index --force --all
- 
+
       - name: Pull & update submodules recursively
         run: |
           git pull -X theirs
@@ -147,25 +147,29 @@ jobs:
         id: install-legacy
         shell: bash
         continue-on-error: true
-      
+
       - name: Install Verbose
-        if: steps.install-legacy.outcome != 'success' && needs.install-legacy.result == 'success'
-        id: install-normal
+        if: steps.install-legacy.outcome == 'failure'
+        id: install-verbose
         continue-on-error: true
         shell: bash
-        run: rm -rf node_modules && npm install --verbose
-        
+        run: |
+          rm -rf node_modules
+          npm install --verbose
+
       - name: Install Update Binary
         id: install-update
-        if: steps.install-normal.outcome != 'success' && needs.install-normal.result == 'success'
+        if: steps.install-verbose.outcome == 'failure'
         shell: bash
-        run: rm -rf node_modules && npm install --no-shrinkwrap --update-binary
+        run: |
+          rm -rf node_modules
+          npm install --no-shrinkwrap --update-binary
         continue-on-error: true
-      
+
       - name: Clean Install
         id: install-clean
         shell: bash
-        if: steps.install-update.outcome != 'success' && needs.install-update.result == 'success'
+        if: steps.install-update.outcome == 'failure'
         run: rm -rf node_modules package-lock.json && npm install
 
       - if: ${{ steps.cache.outputs.cache-hit != 'true' }}
@@ -176,7 +180,7 @@ jobs:
 
       - name: Build
         run: npm run build
-        
+
       # https://github.com/marketplace/actions/verify-changed-files
       - name: Check if there are changes
         id: changes
@@ -188,7 +192,7 @@ jobs:
             lib
             !node_modules
             !tmp
-      
+
       - shell: bash
         name: "What's changed?"
         run: |
