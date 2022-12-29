@@ -1,6 +1,6 @@
 {
   "name": "git-command-helper",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "description": "github command helper for nodejs",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
