@@ -10,6 +10,10 @@ describe('test pull', () => {
     await git.setuser(TestConfig.username);
     await git.setemail(TestConfig.email);
     const result = await git.pull(['-X', 'theirs'], { stdio: 'pipe' });
-    expect(/^Already up to date.$/.test(result.trim())).toBe(true);
+    const updated = /^Already up to date.$/.test(result.trim());
+    expect(updated).toBe(true);
+    if (!updated) {
+      console.log(result.trim());
+    }
   });
 });

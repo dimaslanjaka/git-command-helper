@@ -20,7 +20,7 @@
     "update": "npx npm-check-updates -u -x chalk && npm install --cache tmp/npm",
     "patch": "npm version patch",
     "postinstall": "node postinstall.js --commit",
-    "test": "jest"
+    "test": "jest --runInBand"
   },
   "repository": {
     "type": "git",
