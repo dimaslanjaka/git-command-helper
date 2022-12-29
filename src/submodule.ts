@@ -13,6 +13,7 @@ export class submodule {
   cwd: string;
   hasConfig: boolean;
   private github: typeof gitHelper[] = [];
+
   constructor(cwd: string) {
     this.cwd = cwd;
     this.hasConfig = existsSync(join(this.cwd, '.gitmodules'));
@@ -22,6 +23,10 @@ export class submodule {
     return Object.assign({ cwd: this.cwd, stdio: 'pipe' } as SpawnOptions, opt);
   }
 
+  /**
+   * check has submodule
+   * @returns
+   */
   hasSubmodule() {
     return existsSync(join(this.cwd, '.gitmodules'));
   }
@@ -128,21 +133,6 @@ export class submodule {
     return extract.map((item) => {
       return Object.assign({ branch: 'master', github: null as git }, item);
     });
-    /*
-		return Bluebird.all(extract).map((info) => {
-			return new Bluebird((resolve: (result: Submodule) => any) => {
-				const { url, root, branch } = info;
-				const currentBranch = branch || "master"; // default master branch
-				setupGit({
-					url,
-					branch: currentBranch,
-					baseDir: root,
-				}).then((github) => {
-					resolve(Object.assign(info, { github }));
-				});
-			});
-		});
-		*/
   }
 }
 
