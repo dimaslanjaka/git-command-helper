@@ -9,6 +9,7 @@ import { existsSync, mkdirSync } from 'fs';
 import { EOL } from 'os';
 import { join } from 'path';
 import helper from './helper';
+import { hasInstance, setInstance } from './instances';
 import { latestCommit } from './latestCommit';
 import noop from './noop';
 import { shell } from './shell';
@@ -71,8 +72,7 @@ export class git {
       throw new Error(dir + ' not found');
     }
     this.submodule = new submodule(dir);
-    // run exist directly
-    // helper.suppress(() => this.isExist());
+    if (!hasInstance(dir)) setInstance(dir, this);
   }
 
   /**

@@ -2,9 +2,12 @@ import Bluebird from 'bluebird';
 import { SpawnOptions } from 'child_process';
 import debug from 'debug';
 import { existsSync } from 'fs';
+import { rm } from 'fs/promises';
 import { join } from 'path';
+import { toUnix } from 'upath';
 import extractSubmodule from './extract-submodule';
-import git, { gitHelper } from './git';
+import git from './git';
+import { getInstance, hasInstance, setInstance } from './instances';
 import { spawn } from './spawner';
 
 const _log = debug('git-command-helper');
@@ -12,7 +15,7 @@ const _log = debug('git-command-helper');
 export class submodule {
   cwd: string;
   hasConfig: boolean;
-  private github: typeof gitHelper[] = [];
+  private github: Record<string, git> = {};
 
   constructor(cwd: string) {
     this.cwd = cwd;
@@ -21,6 +24,30 @@ export class submodule {
 
   private spawnOpt(opt: SpawnOptions = {}) {
     return Object.assign({ cwd: this.cwd, stdio: 'pipe' } as SpawnOptions, opt);
+  }
+
+  /**
+   * add submodule
+   */
+  async add(opt: { remote: string; branch?: string; dest: string }) {
+    if (!opt.remote) throw new Error('submodule remote url required');
+    if (!opt.dest) throw new Error('submodule destination required');
+
+    const args = ['submodule', 'add'];
+    if (opt.branch) args.push('-b', opt.branch);
+    args.push(opt.remote);
+    args.push(opt.dest);
+    await spawn('git', args, { cwd: this.cwd, stdio: 'pipe' });
+  }
+
+  /**
+   * remove submodule
+   * @param path path to submodule
+   */
+  async remove(path: string) {
+    await spawn('git', ['submodule', 'deinit', '-f', toUnix(path)], { cwd: this.cwd, stdio: 'pipe' });
+    await rm(join(this.cwd, '.git/modules', toUnix(path)), { recursive: true, force: true });
+    await spawn('git', ['rm', '-f', toUnix(path)], { cwd: this.cwd, stdio: 'pipe' });
   }
 
   /**
@@ -130,7 +157,14 @@ export class submodule {
     if (!this.hasSubmodule()) throw new Error('This directory not have submodule installed');
 
     const extract = extractSubmodule(join(this.cwd, '.gitmodules'));
-    return extract.map((item) => {
+    for (let i = 0; i < extract.length; i++) {
+      const item = extract[i];
+      if (!hasInstance(item.root)) setInstance(item.root, new git(item.root));
+      const github = getInstance<git>(item.root);
+      this.github[item.root] = github;
+      extract[i] = Object.assign({ branch: 'master', github }, item);
+    }
+    return extract.map(function (item) {
       return Object.assign({ branch: 'master', github: null as git }, item);
     });
   }

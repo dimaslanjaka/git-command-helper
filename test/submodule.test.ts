@@ -18,7 +18,17 @@ describe('test pull', () => {
     await github.setemail(TestConfig.email);
   });
 
-  it('should return true', async () => {
+  it('test not have submodule', async () => {
     expect(github.submodule.hasSubmodule()).toBe(false);
+  });
+
+  it('test have submodule', async () => {
+    await github.submodule.add({ remote: 'https://github.com/dimaslanjaka/hexo-is', dest: 'packages/hexo-is' });
+    expect(github.submodule.hasSubmodule()).toBe(true);
+  });
+
+  it('test remove submodule', async () => {
+    await github.submodule.remove('packages/hexo-is');
+    expect(github.submodule.hasSubmodule()).toBe(true);
   });
 });
