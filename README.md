@@ -25,6 +25,8 @@ npm i git-command-helper
 - [API DOCUMENTATION](https://www.webmanajemen.com/docs/git-command-helper/)
 - [Main Class](https://github.com/dimaslanjaka/git-command-helper/blob/master/src/index.ts)
 
+## Usages
+
 Example
 ```js
 import git from 'git-command-helper' // const git = require('git-command-helper').default
