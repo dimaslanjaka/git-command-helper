@@ -144,7 +144,13 @@ jobs:
       - name: Install
         if: steps.install-legacy.outcome != 'success'
         id: install-normal
+        continue-on-error: true
         run: npm install
+        
+      - name: Install Update Binary
+        id: install-update
+        if: steps.install-normal.outcome != 'success'
+        run: npm install --no-shrinkwrap --update-binary
 
       - if: ${{ steps.cache.outputs.cache-hit != 'true' }}
         name: List the state of node modules
