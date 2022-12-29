@@ -24,7 +24,7 @@ on:
 
 # run single job
 concurrency:
-  group: safelink-${{ github.head_ref }}
+  group: actions-${{ github.head_ref }}
   cancel-in-progress: true
 
 jobs:
@@ -104,6 +104,7 @@ jobs:
  
       - name: Pull & update submodules recursively
         run: |
+          git pull -X theirs
           git submodule update --init --recursive
           git submodule update --recursive --remote
 
