@@ -3,33 +3,33 @@ import path from 'path';
 import gitHelper from '../src';
 import { TestConfig } from './config';
 
-(async function () {
+describe('test can push detector', async () => {
   const github = new gitHelper(TestConfig.cwd);
   await github.setremote(TestConfig.remote);
   await github.setbranch(TestConfig.branch);
   await github.setuser(TestConfig.username);
   await github.setemail(TestConfig.email);
-  const write = false;
-  if (write) {
+
+  it('cannot push after reset', async () => {
+    await github.reset(TestConfig.branch);
+
+    const can = await github.canPush();
+    expect(can).toBe(false);
+  });
+
+  it('cannot push after modify file without commit', async () => {
     fs.writeFileSync(
       path.join(TestConfig.cwd, 'canPush.txt'),
       Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
     );
-  }
-  await github.reset(TestConfig.branch);
+    const can = await github.canPush();
+    expect(can).toBe(false);
+  });
 
-  let can = await github.canPush();
-  console.log('is can push after reset', can);
-
-  fs.writeFileSync(
-    path.join(TestConfig.cwd, 'canPush.txt'),
-    Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
-  );
-  can = await github.canPush();
-  console.log('is can push after modify file', can);
-
-  await github.add('.');
-  await github.commit('update test', 'm', { stdio: 'pipe' });
-  can = await github.canPush();
-  console.log('is can push after commit', can);
-})();
+  it('can push after commit', async () => {
+    await github.add('.');
+    await github.commit('update test', 'm', { stdio: 'pipe' });
+    const can = await github.canPush();
+    expect(can).toBe(true);
+  });
+});
