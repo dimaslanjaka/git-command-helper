@@ -93,9 +93,8 @@ const publish = async function (options = {}, callback = null) {
     }
     await github.setremote(REPO_URL);
     await github.setbranch('master');
-    //await github.reset('master');
-    await github.pull(['--recurse-submodule', '-X', 'theirs']);
     await github.spawn('git', 'config core.eol lf'.split(' '));
+    await github.pull(['--recurse-submodule', '-X', 'theirs']);
   } catch {
     //
   }
