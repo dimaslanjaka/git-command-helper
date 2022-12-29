@@ -21,6 +21,10 @@ class submodule {
     spawnOpt(opt = {}) {
         return Object.assign({ cwd: this.cwd, stdio: 'pipe' }, opt);
     }
+    /**
+     * check has submodule
+     * @returns
+     */
     hasSubmodule() {
         return (0, fs_1.existsSync)((0, path_1.join)(this.cwd, '.gitmodules'));
     }
@@ -124,21 +128,6 @@ class submodule {
         return extract.map((item) => {
             return Object.assign({ branch: 'master', github: null }, item);
         });
-        /*
-            return Bluebird.all(extract).map((info) => {
-                return new Bluebird((resolve: (result: Submodule) => any) => {
-                    const { url, root, branch } = info;
-                    const currentBranch = branch || "master"; // default master branch
-                    setupGit({
-                        url,
-                        branch: currentBranch,
-                        baseDir: root,
-                    }).then((github) => {
-                        resolve(Object.assign(info, { github }));
-                    });
-                });
-            });
-            */
     }
 }
 exports.submodule = submodule;

@@ -8,6 +8,10 @@ export declare class submodule {
     private github;
     constructor(cwd: string);
     private spawnOpt;
+    /**
+     * check has submodule
+     * @returns
+     */
     hasSubmodule(): boolean;
     /**
      * git submodule update
