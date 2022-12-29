@@ -12,9 +12,9 @@ const spawn_1 = require("./spawn");
  * * see {@link https://stackoverflow.com/a/957978}
  * @returns
  */
-async function getGithubRootDir() {
+async function getGithubRootDir(opt = {}) {
     try {
-        const result = await (0, spawn_1.spawnAsync)('git', 'rev-parse --show-toplevel'.split(' '));
+        const result = await (0, spawn_1.spawnAsync)('git', 'rev-parse --show-toplevel'.split(' '), opt);
         return result.stdout.trim();
     }
     catch (err) {
@@ -28,9 +28,11 @@ exports.getGithubRootDir = getGithubRootDir;
  * @param name remote name in config, default `origin`
  * @returns
  */
-async function getGithubRemote(name = 'origin') {
+async function getGithubRemote(name = 'origin', opt = {}) {
     try {
-        const result = await (0, spawn_1.spawnAsync)('git', `config --get remote.${name}.url`.split(' '));
+        if (!name)
+            name = 'origin';
+        const result = await (0, spawn_1.spawnAsync)('git', `config --get remote.${name}.url`.split(' '), opt);
         return result.stdout.trim();
     }
     catch (err) {
@@ -42,15 +44,15 @@ exports.getGithubRemote = getGithubRemote;
  * Get github url for single file or folder
  * @param path path subfolder or file
  */
-async function getGithubRepoUrl(path) {
+async function getGithubRepoUrl(path, opt = {}) {
     path = (0, true_case_path_1.trueCasePathSync)(path);
-    const root = (0, true_case_path_1.trueCasePathSync)((await getGithubRootDir()) || '');
-    const remote = ((await getGithubRemote()) || '').replace(/(.git|\/)$/i, '');
+    const root = (0, true_case_path_1.trueCasePathSync)((await getGithubRootDir(opt)) || '');
+    const remote = ((await getGithubRemote(null, opt)) || '').replace(/(.git|\/)$/i, '');
     let url = new URL(remote);
-    url.pathname += '/tree/' + (await getGithubCurrentBranch()) + path.replace(root, '');
+    url.pathname += '/tree/' + (await getGithubCurrentBranch(opt)) + path.replace(root, '');
     const remoteURL = url.toString();
     url = new URL(remote);
-    url.pathname += '/raw/' + (await getGithubCurrentBranch()) + path.replace(root, '');
+    url.pathname += '/raw/' + (await getGithubCurrentBranch(opt)) + path.replace(root, '');
     const rawURL = url.toString();
     return {
         remoteURL,
@@ -62,9 +64,9 @@ exports.getGithubRepoUrl = getGithubRepoUrl;
  * get current branch informations
  * @returns
  */
-async function getGithubBranches() {
+async function getGithubBranches(opt = {}) {
     try {
-        const result = await (0, spawn_1.spawnAsync)('git', ['branch']);
+        const result = await (0, spawn_1.spawnAsync)('git', ['branch'], opt);
         return result.stdout
             .trim()
             .split(/\n/)
@@ -87,9 +89,9 @@ exports.getGithubBranches = getGithubBranches;
  * get current branch
  * @returns
  */
-async function getGithubCurrentBranch() {
+async function getGithubCurrentBranch(opt = {}) {
     try {
-        const result = await (0, spawn_1.spawnAsync)('git', ['branch', '--show-current']);
+        const result = await (0, spawn_1.spawnAsync)('git', ['branch', '--show-current'], opt);
         return result.stdout.trim();
     }
     catch (err) {

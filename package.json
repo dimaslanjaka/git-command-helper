@@ -13,6 +13,7 @@
     "*.js"
   ],
   "scripts": {
+    "prebuild": "git pull -X theirs",
     "build": "tsc -p tsconfig.build.json",
     "postbuild": "node packer.js",
     "preupdate": "curl -L https://github.com/dimaslanjaka/nodejs-package-types/raw/main/postinstall.js > postinstall.js && curl -L https://github.com/dimaslanjaka/nodejs-package-types/raw/main/packer.js > packer.js && curl -L https://github.com/dimaslanjaka/nodejs-package-types/raw/main/.github/workflows/build-release.yml > .github/workflows/build-release.yml",
