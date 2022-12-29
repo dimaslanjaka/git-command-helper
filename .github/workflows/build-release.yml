@@ -139,21 +139,32 @@ jobs:
       - name: Install Legacy Peer Dependencies
         run: npm install --legacy-peer-deps
         id: install-legacy
+        shell: bash
         continue-on-error: true
       
       - name: Install Verbose
-        if: steps.install-legacy.outcome != 'success'
+        if: steps.install-legacy.outcome != 'success' && needs.install-legacy.result == 'success'
         id: install-normal
         continue-on-error: true
-        run: npm install --verbose
+        shell: bash
+        run: rm -rf node_modules && npm install --verbose
         
       - name: Install Update Binary
         id: install-update
-        if: steps.install-normal.outcome != 'success'
-        run: npm install --no-shrinkwrap --update-binary
+        if: steps.install-normal.outcome != 'success' && needs.install-normal.result == 'success'
+        shell: bash
+        run: rm -rf node_modules && npm install --no-shrinkwrap --update-binary
+        continue-on-error: true
+      
+      - name: Clean Install
+        id: install-clean
+        shell: bash
+        if: steps.install-update.outcome != 'success' && needs.install-update.result == 'success'
+        run: rm -rf node_modules package-lock.json && npm install
 
       - if: ${{ steps.cache.outputs.cache-hit != 'true' }}
         name: List the state of node modules
+        shell: bash
         continue-on-error: true
         run: npm list
 
