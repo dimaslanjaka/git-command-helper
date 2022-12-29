@@ -6,7 +6,7 @@ import Bluebird from 'bluebird';
 import helper from './helper';
 import noop from './noop';
 import { shell } from './shell';
-import { spawnAsync, SpawnOptions } from './spawn';
+import { SpawnOptions } from './spawn';
 import submodule from './submodule';
 import { StatusResult } from './types';
 export interface GitOpt {
@@ -68,7 +68,7 @@ export declare class git {
      * @param optionSpawn
      * @returns
      */
-    fetch(arg?: string[], optionSpawn?: SpawnOptions): spawnAsync.SpawnPromise<spawnAsync.SpawnResult>;
+    fetch(arg?: string[], optionSpawn?: SpawnOptions): Bluebird<string>;
     /**
      * git pull
      * @param arg example: `['--recurse-submodule']`

@@ -11,6 +11,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.gitCommandHelper = exports.gitHelper = exports.git = exports.setupGit = void 0;
 const bluebird_1 = __importDefault(require("bluebird"));
 const fs_1 = require("fs");
+const os_1 = require("os");
 const path_1 = require("path");
 const helper_1 = __importDefault(require("./helper"));
 const latestCommit_1 = require("./latestCommit");
@@ -105,10 +106,10 @@ class git {
         }
         // return default git fetch when branch not set
         if (!this.branch)
-            return (0, spawn_1.spawnAsync)('git', ['fetch'], this.spawnOpt(optionSpawn));
+            return (0, spawn_1.spawn)('git', ['fetch'], this.spawnOpt(optionSpawn));
         // remove non-string paramters
         args = ['fetch'].concat(args).filter((str) => typeof str === 'string' && str.length > 0);
-        return (0, spawn_1.spawnAsync)('git', args, this.spawnOpt(optionSpawn));
+        return (0, spawn_1.spawn)('git', args, this.spawnOpt(optionSpawn));
     }
     /**
      * git pull
@@ -243,16 +244,17 @@ class git {
     async canPush(originName = 'origin', branchName = this.branch) {
         // git push --dry-run
         if (branchName) {
-            await (0, spawn_1.spawn)('git', ['push', '-u', originName || 'origin', branchName || this.branch, '--dry-run'], this.spawnOpt({}));
+            await (0, spawn_1.spawn)('git', ['push', '-u', originName || 'origin', branchName || this.branch, '--dry-run'], this.spawnOpt({ stdio: 'pipe' }));
         }
-        const dry = await (0, spawn_1.spawn)('git', ['push', '--dry-run'], this.spawnOpt({}));
         // repository is not up to date
         const changed = !(await this.isUpToDate());
         // repostory file changes status
         const staged = await this.status();
-        //console.log({ staged, changed, dry });
+        // test git push --dry-run
+        const dry = await (0, spawn_1.spawnAsync)('git', ['push', '--dry-run'], this.spawnOpt({ stdio: 'pipe' }));
+        // console.log({ staged, changed, dry: dry.output.join(EOL).trim() != 'Everything up-to-date' });
         // return repository is not up to date
-        return changed && staged.length === 0 && dry.trim().length > 0;
+        return changed && staged.length === 0 && dry.output.join(os_1.EOL).trim() != 'Everything up-to-date';
     }
     /**
      * Spawn option default stdio pipe
