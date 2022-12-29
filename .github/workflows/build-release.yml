@@ -172,6 +172,17 @@ jobs:
         if: steps.install-update.outcome == 'failure'
         run: rm -rf node_modules package-lock.json && npm install
 
+      - name: Dump Installations
+        run: |
+          echo "install-legacy.outcome ${{ steps.install-legacy.outcome }}"
+          echo "install-legacy.conclusion ${{ steps.install-legacy.conclusion }}"
+          echo "install-verbose.outcome ${{ steps.install-verbose.outcome }}"
+          echo "install-verbose.conclusion ${{ steps.install-verbose.conclusion }}"
+          echo "install-update.outcome ${{ steps.install-update.outcome }}"
+          echo "install-update.conclusion ${{ steps.install-update.conclusion }}"
+          echo "install-clean.outcome ${{ steps.install-clean.outcome }}"
+          echo "install-clean.conclusion ${{ steps.install-clean.conclusion }}"
+
       - if: ${{ steps.cache.outputs.cache-hit != 'true' }}
         name: List the state of node modules
         shell: bash
