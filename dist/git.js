@@ -56,7 +56,8 @@ class git {
             (0, fs_1.mkdirSync)(this.cwd, { recursive: true });
         }
         this.submodule = new submodule_1.default(dir);
-        helper_1.default.suppress(() => this.isExist());
+        // run exist directly
+        // helper.suppress(() => this.isExist());
     }
     /**
      * git config --global --add safe.directory PATH_FOLDER
