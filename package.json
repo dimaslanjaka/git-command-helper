@@ -10,7 +10,7 @@
     "src",
     "LICENSE",
     "readme.md",
-    "*.js"
+    "postinstall.js"
   ],
   "scripts": {
     "prebuild": "git pull -X theirs",
