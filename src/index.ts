@@ -8,6 +8,7 @@ export {
   getGithubRepoUrl,
   getGithubRootDir
 } from './git-info';
+export { spawn, spawnAsync, SpawnOptions, spawnSilent } from './spawn';
 export { default as gitSubmodule } from './submodule';
 
 export default git;
