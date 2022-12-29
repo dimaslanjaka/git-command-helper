@@ -1,14 +1,13 @@
+import { rm } from 'fs/promises';
 import { join } from 'path';
-import { gitHelper, spawn } from '../src';
+import { spawn } from '../src';
 import { TestConfig } from './config';
 
 async function clone() {
-  await spawn('git', ['clone', TestConfig.remote, 'project-test'], { cwd: join(__dirname, '../tmp') });
-  const github = new gitHelper(TestConfig.cwd);
-  await github.setremote(TestConfig.remote);
-  await github.setbranch(TestConfig.branch);
-  await github.setuser(TestConfig.username);
-  await github.setemail(TestConfig.email);
+  await rm(join(__dirname, '../tmp/project-test'), { recursive: true, force: true });
+  await spawn('git', ['clone', '-b', TestConfig.branch, TestConfig.remote, 'tmp/project-test'], {
+    cwd: join(__dirname, '../')
+  });
 }
 
-clone();
+export default clone;
