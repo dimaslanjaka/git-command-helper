@@ -11,3 +11,11 @@ export const TestConfig = {
   email: 'dimaslanjaka@gmail.com',
   password: process.env.GITHUB_TOKEN
 };
+
+/**
+ * Check current instance is jest
+ * @returns
+ */
+export function areWeTestingWithJest() {
+  return process.env.JEST_WORKER_ID !== undefined;
+}

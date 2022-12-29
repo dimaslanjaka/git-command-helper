@@ -6,6 +6,7 @@
 
 import Bluebird from 'bluebird';
 import { existsSync, mkdirSync } from 'fs';
+import { EOL } from 'os';
 import { join } from 'path';
 import helper from './helper';
 import { latestCommit } from './latestCommit';
@@ -127,10 +128,10 @@ export class git {
       args.push('origin', this.branch);
     }
     // return default git fetch when branch not set
-    if (!this.branch) return spawnAsync('git', ['fetch'], this.spawnOpt(optionSpawn));
+    if (!this.branch) return spawn('git', ['fetch'], this.spawnOpt(optionSpawn));
     // remove non-string paramters
     args = ['fetch'].concat(args).filter((str) => typeof str === 'string' && str.length > 0);
-    return spawnAsync('git', args, this.spawnOpt(optionSpawn));
+    return spawn('git', args, this.spawnOpt(optionSpawn));
   }
 
   /**
@@ -268,18 +269,19 @@ export class git {
       await spawn(
         'git',
         ['push', '-u', originName || 'origin', branchName || this.branch, '--dry-run'],
-        this.spawnOpt({})
+        this.spawnOpt({ stdio: 'pipe' })
       );
     }
-    const dry = await spawn('git', ['push', '--dry-run'], this.spawnOpt({}));
 
     // repository is not up to date
     const changed = !(await this.isUpToDate());
     // repostory file changes status
     const staged = await this.status();
-    //console.log({ staged, changed, dry });
+    // test git push --dry-run
+    const dry = await spawnAsync('git', ['push', '--dry-run'], this.spawnOpt({ stdio: 'pipe' }));
+    // console.log({ staged, changed, dry: dry.output.join(EOL).trim() != 'Everything up-to-date' });
     // return repository is not up to date
-    return changed && staged.length === 0 && dry.trim().length > 0;
+    return changed && staged.length === 0 && dry.output.join(EOL).trim() != 'Everything up-to-date';
   }
 
   /**

@@ -1,11 +1,15 @@
 import gitHelper from '../src';
 import { TestConfig } from './config';
 
-(async function () {
-  const git = new gitHelper(TestConfig.cwd);
-  await git.setremote(TestConfig.remote);
-  await git.setbranch(TestConfig.branch);
-  await git.setuser(TestConfig.username);
-  await git.setemail(TestConfig.email);
-  await git.pull(['-X', 'theirs'], {});
-})();
+describe('test pull', () => {
+  jest.setTimeout(60000);
+  it('should return true', async () => {
+    const git = new gitHelper(TestConfig.cwd);
+    await git.setremote(TestConfig.remote);
+    await git.setbranch(TestConfig.branch);
+    await git.setuser(TestConfig.username);
+    await git.setemail(TestConfig.email);
+    const result = await git.pull(['-X', 'theirs'], { stdio: 'pipe' });
+    expect(/^Already up to date.$/.test(result.trim())).toBe(true);
+  });
+});

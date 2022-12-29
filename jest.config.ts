@@ -1,5 +1,6 @@
 import type { Config } from 'jest';
 import { defaults } from 'jest-config';
+
 /*
  * For a detailed explanation regarding each configuration property and type check, visit:
  * https://jestjs.io/docs/configuration
@@ -10,6 +11,16 @@ export default {
   testEnvironment: 'node',
   moduleFileExtensions: [...defaults.moduleFileExtensions, 'mts'],
   cacheDirectory: 'tmp/jest',
+  roots: [`<rootDir>/test`],
+  testMatch: [`**/__tests__/**/*.+(ts|tsx|js)`, `**/?(*.)+(spec|test).+(ts|tsx|js)`],
+  transform: {
+    '^.+\\.(ts|tsx)$': [
+      'ts-jest',
+      // required due to custom location of tsconfig.json configuration file
+      // https://kulshekhar.github.io/ts-jest/docs/getting-started/options/tsconfig
+      { tsconfig: './tsconfig.jest.json' }
+    ]
+  },
   // All imported modules in your tests should be mocked automatically
   // automock: false,
 

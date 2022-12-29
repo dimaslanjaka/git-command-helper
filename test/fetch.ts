@@ -7,5 +7,5 @@ import { TestConfig } from './config';
   await git.setbranch(TestConfig.branch);
   await git.setuser(TestConfig.username);
   await git.setemail(TestConfig.email);
-  await git.fetch(['--all']);
+  await git.fetch(['--all'], { stdio: 'pipe' }).then(console.log);
 })();
