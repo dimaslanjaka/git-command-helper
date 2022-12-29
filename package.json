@@ -91,6 +91,6 @@
     "typescript": "^4.9.4"
   },
   "optionalDependencies": {
-    "git-command-helper": "https://github.com/dimaslanjaka/git-command-helper/raw/master/release/git-command-helper.tgz"
+    "git-command-helper": "latest"
   }
 }
