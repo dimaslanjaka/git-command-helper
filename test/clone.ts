@@ -3,6 +3,9 @@ import { join } from 'path';
 import { spawn } from '../src';
 import { TestConfig } from './config';
 
+/**
+ * do clone
+ */
 async function clone() {
   await rm(join(__dirname, '../tmp/project-test'), { recursive: true, force: true });
   await spawn('git', ['clone', '-b', TestConfig.branch, TestConfig.remote, 'tmp/project-test'], {
