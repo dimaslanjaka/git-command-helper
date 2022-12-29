@@ -7,9 +7,14 @@ const typedocOptions = require('./typedoc');
 const gulp = require('gulp');
 const pkgjson = require('./package.json');
 const { EOL } = require('os');
-const { spawnAsync } = require('git-command-helper/dist/spawn');
 const axios = require('axios');
 const { writeFile } = require('fs/promises');
+
+/**
+ * @type {import('git-command-helper/dist/spawn').spawnAsync}
+ */
+const spawnAsync =
+  pkgjson.name === 'git-command-helper' ? require('./dist').spawnAsync : require('git-command-helper').spawnAsync;
 
 // required : npm i upath && npm i -D semver typedoc git-command-helper gulp cross-spawn
 // update   : curl -L https://github.com/dimaslanjaka/nodejs-package-types/raw/main/typedoc-runner.js > typedoc-runner.js

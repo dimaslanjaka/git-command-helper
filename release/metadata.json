@@ -9,19 +9,19 @@
   },
   "/release/git-command-helper.tgz": {
     "integrity": {
-      "sha1": "5ab5b1721ac8d8fb16b1b3c5ee1b15bd3bef4356",
-      "sha256": "3ikosgiHkNRJm9b22HzBwJp8rj8TJllgsrU6pEJlnN4=",
-      "md5": "bd01a8a3032a54052043b061dd2279d0"
+      "sha1": "4fd103dd49ec3e58d6191eb7414899572bf4a351",
+      "sha256": "0NRP8BvslzRdZubLxbpzjeFLZIyybWHIPkfZqwBu41w=",
+      "md5": "73cd1757503c307ddd2744139aed4a0a"
     },
-    "size": "29.43 KB"
+    "size": "29.95 KB"
   },
   "/package-lock.json": {
     "integrity": {
-      "sha1": "81816705ee2d3deb403755e390a90a71079ef37d",
-      "sha256": "ff+4AcjB7BuvTNWGlC4WCfARbrzQnknYSAD6SRjEFBw=",
-      "md5": "73abd9bedea7a966fc7f7c83981e45a3"
+      "sha1": "2fbbe1153c468ce5379e0b2a7d03d3323c5721e8",
+      "sha256": "nviru0rnxqd0IkIOl65Re5eu9unyBZOBhiDHIhPpdw8=",
+      "md5": "aa84ec5b5c099620ebe4a92eb993c081"
     },
-    "size": "692.12 KB"
+    "size": "700.48 KB"
   },
   "/release/git-command-helper-1.0.13.tgz": {
     "integrity": {
@@ -33,10 +33,10 @@
   },
   "/release/git-command-helper-1.0.14.tgz": {
     "integrity": {
-      "sha1": "5ab5b1721ac8d8fb16b1b3c5ee1b15bd3bef4356",
-      "sha256": "3ikosgiHkNRJm9b22HzBwJp8rj8TJllgsrU6pEJlnN4=",
-      "md5": "bd01a8a3032a54052043b061dd2279d0"
+      "sha1": "4fd103dd49ec3e58d6191eb7414899572bf4a351",
+      "sha256": "0NRP8BvslzRdZubLxbpzjeFLZIyybWHIPkfZqwBu41w=",
+      "md5": "73cd1757503c307ddd2744139aed4a0a"
     },
-    "size": "29.43 KB"
+    "size": "29.95 KB"
   }
 }
