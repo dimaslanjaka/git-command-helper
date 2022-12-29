@@ -3,12 +3,17 @@ import path from 'path';
 import gitHelper from '../src';
 import { TestConfig } from './config';
 
-describe('test can push detector', async () => {
-  const github = new gitHelper(TestConfig.cwd);
-  await github.setremote(TestConfig.remote);
-  await github.setbranch(TestConfig.branch);
-  await github.setuser(TestConfig.username);
-  await github.setemail(TestConfig.email);
+describe('test can push detector', () => {
+  let github: gitHelper;
+  jest.setTimeout(60000);
+
+  beforeEach(async function () {
+    github = new gitHelper(TestConfig.cwd);
+    await github.setremote(TestConfig.remote);
+    await github.setbranch(TestConfig.branch);
+    await github.setuser(TestConfig.username);
+    await github.setemail(TestConfig.email);
+  });
 
   it('cannot push after reset', async () => {
     await github.reset(TestConfig.branch);

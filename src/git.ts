@@ -71,7 +71,8 @@ export class git {
       mkdirSync(this.cwd, { recursive: true });
     }
     this.submodule = new submodule(dir);
-    helper.suppress(() => this.isExist());
+    // run exist directly
+    // helper.suppress(() => this.isExist());
   }
 
   /**
