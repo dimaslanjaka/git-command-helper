@@ -72,6 +72,7 @@ const compile = async function (options = {}, callback = null) {
   if (existsSync(callback_script)) {
     await spawnAsync('node', [callback_script], { cwd: __dirname, stdio: 'inherit' });
   }
+  // generate readme.md and index.html
   await createIndex();
 };
 
