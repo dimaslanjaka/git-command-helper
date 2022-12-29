@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.gitSubmodule = exports.getGithubRootDir = exports.getGithubRepoUrl = exports.getGithubRemote = exports.getGithubCurrentBranch = exports.getGithubBranches = exports.GithubInfo = exports.setupGit = exports.gitHelper = exports.gitCommandHelper = void 0;
+exports.gitSubmodule = exports.spawnSilent = exports.spawnAsync = exports.spawn = exports.getGithubRootDir = exports.getGithubRepoUrl = exports.getGithubRemote = exports.getGithubCurrentBranch = exports.getGithubBranches = exports.GithubInfo = exports.setupGit = exports.gitHelper = exports.gitCommandHelper = void 0;
 const git_1 = __importDefault(require("./git"));
 var git_2 = require("./git");
 Object.defineProperty(exports, "gitCommandHelper", { enumerable: true, get: function () { return git_2.gitCommandHelper; } });
@@ -16,6 +16,10 @@ Object.defineProperty(exports, "getGithubCurrentBranch", { enumerable: true, get
 Object.defineProperty(exports, "getGithubRemote", { enumerable: true, get: function () { return git_info_1.getGithubRemote; } });
 Object.defineProperty(exports, "getGithubRepoUrl", { enumerable: true, get: function () { return git_info_1.getGithubRepoUrl; } });
 Object.defineProperty(exports, "getGithubRootDir", { enumerable: true, get: function () { return git_info_1.getGithubRootDir; } });
+var spawn_1 = require("./spawn");
+Object.defineProperty(exports, "spawn", { enumerable: true, get: function () { return spawn_1.spawn; } });
+Object.defineProperty(exports, "spawnAsync", { enumerable: true, get: function () { return spawn_1.spawnAsync; } });
+Object.defineProperty(exports, "spawnSilent", { enumerable: true, get: function () { return spawn_1.spawnSilent; } });
 var submodule_1 = require("./submodule");
 Object.defineProperty(exports, "gitSubmodule", { enumerable: true, get: function () { return __importDefault(submodule_1).default; } });
 exports.default = git_1.default;
