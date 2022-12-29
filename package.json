@@ -72,6 +72,7 @@
     "@types/node": "^18.11.18",
     "@typescript-eslint/eslint-plugin": "^5.47.1",
     "@typescript-eslint/parser": "^5.47.1",
+    "browser-sync": "^2.27.11",
     "debug": "^4.3.4",
     "eslint": "^8.30.0",
     "eslint-config-prettier": "^8.5.0",
