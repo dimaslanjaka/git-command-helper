@@ -4,3 +4,6 @@ tmp
 *.tgz
 !release/*
 /coverage
+/docs
+_*.ts
+_*.js
