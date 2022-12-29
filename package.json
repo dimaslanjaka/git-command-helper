@@ -9,7 +9,7 @@
     "typings",
     "src",
     "LICENSE",
-    "README.md",
+    "readme.md",
     "*.js"
   ],
   "scripts": {
