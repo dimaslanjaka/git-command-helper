@@ -27,8 +27,7 @@ class helper {
      */
     static isPromise(p) {
         //console.log(Object.prototype.toString.call(p));
-        return (p &&
-            /\[object (Promise|AsyncFunction)\]/i.test(Object.prototype.toString.call(p)));
+        return p && /\[object (Promise|AsyncFunction)\]/i.test(Object.prototype.toString.call(p));
     }
 }
 exports.default = helper;

@@ -14,6 +14,7 @@ const fs_1 = require("fs");
 const os_1 = require("os");
 const path_1 = require("path");
 const helper_1 = __importDefault(require("./helper"));
+const instances_1 = require("./instances");
 const latestCommit_1 = require("./latestCommit");
 const noop_1 = __importDefault(require("./noop"));
 const shell_1 = require("./shell");
@@ -56,8 +57,8 @@ class git {
             throw new Error(dir + ' not found');
         }
         this.submodule = new submodule_1.default(dir);
-        // run exist directly
-        // helper.suppress(() => this.isExist());
+        if (!(0, instances_1.hasInstance)(dir))
+            (0, instances_1.setInstance)(dir, this);
     }
     /**
      * git config --global --add safe.directory PATH_FOLDER

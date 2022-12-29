@@ -9,6 +9,19 @@ export declare class submodule {
     constructor(cwd: string);
     private spawnOpt;
     /**
+     * add submodule
+     */
+    add(opt: {
+        remote: string;
+        branch?: string;
+        dest: string;
+    }): Promise<void>;
+    /**
+     * remove submodule
+     * @param path path to submodule
+     */
+    remove(path: string): Promise<void>;
+    /**
      * check has submodule
      * @returns
      */
