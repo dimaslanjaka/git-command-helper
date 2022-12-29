@@ -22,6 +22,11 @@ on:
       - '**/test*/**'
   workflow_dispatch:
 
+# run single job
+concurrency:
+  group: safelink-${{ github.head_ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
     strategy:
