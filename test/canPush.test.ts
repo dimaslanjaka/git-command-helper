@@ -7,10 +7,7 @@ import { TestConfig } from './config';
   const github = new gitHelper(TestConfig.cwd);
   await github.isExist().then(function (exist) {
     if (!exist) {
-      github
-        .init()
-        .then(() => github.addSafe().catch(gitHelper.noop))
-        .catch(gitHelper.noop);
+      github.init().catch(gitHelper.noop);
     }
   });
   await github.setremote(TestConfig.remote).catch(gitHelper.noop);
