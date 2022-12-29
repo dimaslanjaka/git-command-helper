@@ -53,7 +53,7 @@ class git {
         this.helper = helper_1.default;
         this.cwd = dir;
         if (!(0, fs_1.existsSync)(this.cwd)) {
-            (0, fs_1.mkdirSync)(this.cwd, { recursive: true });
+            throw new Error(dir + ' not found');
         }
         this.submodule = new submodule_1.default(dir);
         // run exist directly
