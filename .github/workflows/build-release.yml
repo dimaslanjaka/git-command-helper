@@ -101,6 +101,12 @@ jobs:
           echo "cache npm   : ${{ env.CACHE_NPM }}"
           echo "cache yarn  : ${{ env.CACHE_YARN }}"
           echo "cache yarn2 : ${{ env.CACHE_YARN2 }}"
+          
+      - name: Set EOL git configs
+        run: |
+          git config core.eol lf
+          git config core.autocrlf input
+          git checkout-index --force --all
  
       - name: Pull & update submodules recursively
         run: |
