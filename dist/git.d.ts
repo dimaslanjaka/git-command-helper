@@ -134,7 +134,7 @@ export declare class git {
      */
     add(path: string, optionSpawn?: SpawnOptions): Bluebird<string>;
     info(): Promise<{
-        opt: SpawnOptions;
+        opt: any;
         remote: {
             fetch: {
                 origin: string;

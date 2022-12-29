@@ -3,7 +3,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getGithubRemote = exports.getGithubRootDir = void 0;
+exports.getGithubCurrentBranch = exports.getGithubBranches = exports.getGithubRepoUrl = exports.getGithubRemote = exports.getGithubRootDir = void 0;
+const true_case_path_1 = require("true-case-path");
 const noop_1 = __importDefault(require("./noop"));
 const spawn_1 = require("./spawn");
 /**
@@ -16,8 +17,8 @@ async function getGithubRootDir() {
         const result = await (0, spawn_1.spawnAsync)('git', 'rev-parse --show-toplevel'.split(' '));
         return result.stdout.trim();
     }
-    catch (_) {
-        return (0, noop_1.default)(_);
+    catch (err) {
+        return (0, noop_1.default)(err);
     }
 }
 exports.getGithubRootDir = getGithubRootDir;
@@ -32,8 +33,75 @@ async function getGithubRemote(name = 'origin') {
         const result = await (0, spawn_1.spawnAsync)('git', `config --get remote.${name}.url`.split(' '));
         return result.stdout.trim();
     }
-    catch (_) {
-        return (0, noop_1.default)(_);
+    catch (err) {
+        return (0, noop_1.default)(err);
     }
 }
 exports.getGithubRemote = getGithubRemote;
+/**
+ * Get github url for single file or folder
+ * @param path path subfolder or file
+ */
+async function getGithubRepoUrl(path) {
+    path = (0, true_case_path_1.trueCasePathSync)(path);
+    const root = (0, true_case_path_1.trueCasePathSync)((await getGithubRootDir()) || '');
+    const remote = ((await getGithubRemote()) || '').replace(/(.git|\/)$/i, '');
+    let url = new URL(remote);
+    url.pathname += '/tree/' + (await getGithubCurrentBranch()) + path.replace(root, '');
+    const remoteURL = url.toString();
+    url = new URL(remote);
+    url.pathname += '/raw/' + (await getGithubCurrentBranch()) + path.replace(root, '');
+    const rawURL = url.toString();
+    return {
+        remoteURL,
+        rawURL
+    };
+}
+exports.getGithubRepoUrl = getGithubRepoUrl;
+/**
+ * get current branch informations
+ * @returns
+ */
+async function getGithubBranches() {
+    try {
+        const result = await (0, spawn_1.spawnAsync)('git', ['branch']);
+        return result.stdout
+            .trim()
+            .split(/\n/)
+            .map((str) => str.split(/\s/).map((str_1) => str_1.trim()))
+            .filter((str_2) => str_2.length > 0)
+            .map((item) => {
+            return {
+                active: item.length > 1,
+                branch: item[1]
+            };
+        })
+            .filter((item_1) => typeof item_1.branch === 'string');
+    }
+    catch (err) {
+        return (0, noop_1.default)(err);
+    }
+}
+exports.getGithubBranches = getGithubBranches;
+/**
+ * get current branch
+ * @returns
+ */
+async function getGithubCurrentBranch() {
+    try {
+        const result = await (0, spawn_1.spawnAsync)('git', ['branch', '--show-current']);
+        return result.stdout.trim();
+    }
+    catch (err) {
+        return (0, noop_1.default)(err);
+    }
+}
+exports.getGithubCurrentBranch = getGithubCurrentBranch;
+const GithubInfo = {
+    getGithubCurrentBranch,
+    getGithubRemote,
+    getGithubRepoUrl,
+    getGithubRootDir,
+    getGithubBranches
+};
+exports.default = GithubInfo;

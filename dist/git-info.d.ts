@@ -11,3 +11,32 @@ export declare function getGithubRootDir(): Promise<string | void>;
  * @returns
  */
 export declare function getGithubRemote(name?: string): Promise<string | void>;
+/**
+ * Get github url for single file or folder
+ * @param path path subfolder or file
+ */
+export declare function getGithubRepoUrl(path: string): Promise<{
+    remoteURL: string;
+    rawURL: string;
+}>;
+/**
+ * get current branch informations
+ * @returns
+ */
+export declare function getGithubBranches(): Promise<void | {
+    active: boolean;
+    branch: string;
+}[]>;
+/**
+ * get current branch
+ * @returns
+ */
+export declare function getGithubCurrentBranch(): Promise<string | void>;
+declare const GithubInfo: {
+    getGithubCurrentBranch: typeof getGithubCurrentBranch;
+    getGithubRemote: typeof getGithubRemote;
+    getGithubRepoUrl: typeof getGithubRepoUrl;
+    getGithubRootDir: typeof getGithubRootDir;
+    getGithubBranches: typeof getGithubBranches;
+};
+export default GithubInfo;

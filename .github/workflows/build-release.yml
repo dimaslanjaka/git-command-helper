@@ -19,6 +19,7 @@ on:
       - '**/release/**'
       - '**/*.tgz'
       - '**/*.gz'
+      - '**/test*/**'
   workflow_dispatch:
 
 jobs:
@@ -35,12 +36,13 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          repository: dimaslanjaka/nodejs-package-types
+          # repository: dimaslanjaka/nodejs-package-types
           token: ${{ secrets.GITHUB_TOKEN }}
 
       # https://github.com/actions/cache/blob/main/tips-and-workarounds.md#force-deletion-of-caches-overriding-default-cache-eviction-policy
       - name: Cleanup caches
-        if: matrix.node-version == '14.x' && matrix.architecture == 'x86' && runner.os == 'Linux' && contains(github.event.head_commit.message, 'clean')
+        shell: bash
+        if: matrix.node-version == '14.x' && matrix.architecture == 'x86' && runner.os == 'Linux' && ( contains(github.event.head_commit.message, 'clean') || contains(github.event.head_commit.message, 'update deps') || contains(github.event.head_commit.message, 'update dependencies') )
         run: |
           gh extension install actions/gh-actions-cache
 
@@ -119,10 +121,14 @@ jobs:
             ${{ steps.set-env.outputs.cache-yarn }}
             ${{ steps.set-env.outputs.cache-yarn2 }}
           key: ${{ runner.os }}-${{ matrix.node-version }}-${{ matrix.architecture }}-${{ hashFiles('**/package-lock.json') }}
-          restore-key: |
+          restore-keys: |
             ${{ runner.os }}-${{ matrix.node-version }}-${{ matrix.architecture }}-
             ${{ runner.os }}-${{ matrix.node-version }}-
             ${{ runner.os }}-
+
+
+      - name: Install Global Packages
+        run: npm i -g typescript ts-node gulp-cli hexo-cli webpack-cli
 
       - name: Install
         run: npm install --legacy-peer-deps
@@ -150,9 +156,13 @@ jobs:
       - run: git add lib
         if: matrix.node-version == '18.x' && matrix.architecture == 'x64' && runner.os == 'Linux'
         continue-on-error: true
+      - run: git pull -X theirs
+        name: Pull before push
+        if: matrix.node-version == '18.x' && matrix.architecture == 'x64' && runner.os == 'Linux'
+        continue-on-error: true
       - name: Git push
         if: matrix.node-version == '18.x' && matrix.architecture == 'x64' && runner.os == 'Linux'
         continue-on-error: true
         run: |
-          git commit -m "Update build from $GITHUB_COMMIT_URL" -m "commit hash: $GITHUB_SHA_SHORT" -m "commit url: $GITHUB_COMMIT_URL" -m "runner: $GITHUB_RUNNER_URL"
+          git commit -m "Update build from ${{ env.GITHUB_COMMIT_URL }}" -m "commit hash: ${{ env.GITHUB_SHA_SHORT }}" -m "commit url: ${{ env.GITHUB_COMMIT_URL }}" -m "runner: ${{ env.GITHUB_RUNNER_URL }}"
           git push
