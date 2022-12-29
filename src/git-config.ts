@@ -15,3 +15,20 @@ Get global config
 git config --list --show-origin --show-scope
 
 */
+
+/*
+Disable EOL Conversion
+- https://stackoverflow.com/a/21822812
+
+make sure core.autocrlf is set to false for all repos:
+
+git config --global core.autocrlf false
+
+fix EOL (git 2.6)
+
+git add --renormalize .
+
+check eol transformation (git 2.8)
+
+git ls-files --eol
+*/
