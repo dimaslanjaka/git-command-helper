@@ -44,7 +44,7 @@ github.spawn('git', ['fetch'], { stdio: 'pipe' }).then(console.log)
 ```
 
 ## Another Examples 
-- [Usage Example With Gulp v4](https://github.com/dimaslanjaka/static-blog-generator-hexo/blob/master/deploy.ts)
+- [Usage Example With Gulp v4](https://github.com/dimaslanjaka/static-blog-generator-hexo/blob/master/gulpfile.js)
 
 ## Links
 - [My Blog](https://www.webmanajemen.com)
