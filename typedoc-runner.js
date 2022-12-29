@@ -118,7 +118,8 @@ const publish = async function (options = {}, callback = null) {
     const commit = await new git(__dirname).latestCommit().catch(noop);
     const remote = (await new git(__dirname).getremote().catch(noop)).push.url.replace(/.git$/, '').trim();
     if (remote.length > 0) {
-      console.log('current git project', remote);
+      console.log('project', remote);
+      console.log('commit', `${remote}/commit/${commit}`);
       await github.add(pkgjson.name).catch(noop);
       await spawnAsync('git', [
         'commit',
