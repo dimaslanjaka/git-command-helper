@@ -7,8 +7,7 @@
   "files": [
     "dist",
     "typings",
-    "src",
-    "LICENSE",
+    "LICENSE*",
     "readme.md",
     "postinstall.js"
   ],
