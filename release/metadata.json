@@ -10,21 +10,21 @@
   },
   "/release/git-command-helper.tgz": {
     "integrity": {
-      "sha1": "788c6168a8f01e1efd2153e2e5302b937544bc02",
-      "sha256": "xYN3wiURYy6PLbJhHwkfevO8rSR7H07TIuA3qRL9HRM=",
-      "md5": "8a1980bc475c09dcd0c7ba486e228795",
-      "sha512": "2/cVMKHL7qpL8D5A4C99m1ffEWBZZlt1x3veiw15fdrVSxATE/VykFQjH+qsG7UOy1qyKZd/LdK6RzCgeagUNw=="
+      "sha1": "a81ec3e9dc23392607f8b2bb7e9823572801fae6",
+      "sha256": "O6m82f+aZRLTst7zo7XRJ9SLOdGvODB781H61cbZEwU=",
+      "md5": "6902a28c11cdcbcb986ffa6cb5022f0a",
+      "sha512": "7pPPs80EHfFe4e1EvHrlajRsf/aLsLJ+3CnhYkeVZUcqxBcRcb0gFbxwkOcw8g2IM5KRDPujpMad1/NJEROVBA=="
     },
-    "size": "20.01 KB"
+    "size": "20.21 KB"
   },
   "/package-lock.json": {
     "integrity": {
-      "sha1": "cae2d018d5c41f5831d05c7432a0337f926d8f9f",
-      "sha256": "E42VPS9Y9zMSdSJ86d6YuvRKDJfVjea0RrGUjJFMm50=",
-      "md5": "913234d277e5023dda3bc9aca126eb53",
-      "sha512": "5fQ8PXI5rCL2DuUUGqBu8eYLd++RdBFlmHz8RUOQYcG2IwpLSfy3fMpiR2S9iIO+lcY/aXCXbAZPIimJLAkc6w=="
+      "sha1": "f6ff35a3adf4967e9dd15832f338c5ac056ede92",
+      "sha256": "Q0HiYiRCoG2amDAwYo/T9CPDIkIem3msTDsrk2hvouI=",
+      "md5": "384cbfb23e178e12d07c30ffeec355da",
+      "sha512": "XuDF7KkgXqjrrJ5sT/yNRKoBV0+JEPM8xNI3lAqB6/ba5r2mXme8xRv5MGSp2hfCXFFCtb5ne7M+2XMCls3YFg=="
     },
-    "size": "422.08 KB"
+    "size": "422.34 KB"
   },
   "/release/git-command-helper-1.0.13.tgz": {
     "integrity": {
@@ -73,11 +73,11 @@
   },
   "/release/git-command-helper-1.1.3.tgz": {
     "integrity": {
-      "sha1": "788c6168a8f01e1efd2153e2e5302b937544bc02",
-      "sha256": "xYN3wiURYy6PLbJhHwkfevO8rSR7H07TIuA3qRL9HRM=",
-      "md5": "8a1980bc475c09dcd0c7ba486e228795",
-      "sha512": "2/cVMKHL7qpL8D5A4C99m1ffEWBZZlt1x3veiw15fdrVSxATE/VykFQjH+qsG7UOy1qyKZd/LdK6RzCgeagUNw=="
+      "sha1": "a81ec3e9dc23392607f8b2bb7e9823572801fae6",
+      "sha256": "O6m82f+aZRLTst7zo7XRJ9SLOdGvODB781H61cbZEwU=",
+      "md5": "6902a28c11cdcbcb986ffa6cb5022f0a",
+      "sha512": "7pPPs80EHfFe4e1EvHrlajRsf/aLsLJ+3CnhYkeVZUcqxBcRcb0gFbxwkOcw8g2IM5KRDPujpMad1/NJEROVBA=="
     },
-    "size": "20.01 KB"
+    "size": "20.21 KB"
   }
 }
