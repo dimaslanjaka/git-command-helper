@@ -28,7 +28,7 @@ const isAllPackagesInstalled = [
   };
 });
 if (!isAllPackagesInstalled.every((o) => o.installed === true)) {
-  const names = isAllPackagesInstalled.map((o) => o.name);
+  const names = isAllPackagesInstalled.filter((o) => o.installed === false).map((o) => o.name);
   console.log(scriptname, 'package', names.join(', '), 'is not installed', 'skipping postinstall script');
   return;
 }
@@ -605,12 +605,13 @@ async function url_to_hash(alogarithm = 'sha1', url, encoding = 'hex') {
 
 /**
  * check package installed
- * @param {string} x
+ * @param {string} packageName
  * @returns
  */
-function isPackageInstalled(x) {
+function isPackageInstalled(packageName) {
   try {
-    return process.moduleLoadList.indexOf('NativeModule ' + x) >= 0 || require('fs').existsSync(require.resolve(x));
+    const modules = Array.from(process.moduleLoadList).filter((str) => !str.startsWith('NativeModule internal/'));
+    return modules.indexOf('NativeModule ' + packageName) >= 0 || fs.existsSync(require.resolve(packageName));
   } catch (e) {
     return false;
   }
