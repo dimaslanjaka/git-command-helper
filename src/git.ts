@@ -16,6 +16,7 @@ import { shell } from './shell';
 import { spawn, spawnAsync, SpawnOptions, spawnSilent } from './spawn';
 import submodule from './submodule';
 import { StatusResult } from './types';
+export * as GithubInfo from './git-info';
 
 // module 'git-command-helper';
 
@@ -58,6 +59,7 @@ export class git {
   email: string;
   remote: string;
   branch: string;
+  info: GithubInfo;
   private exist: boolean;
   cwd: string;
   latestCommit = latestCommit;
