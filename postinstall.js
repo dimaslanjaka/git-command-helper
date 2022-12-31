@@ -9,18 +9,6 @@ const axios = setupCache(Axios);
 const { HttpProxyAgent, HttpsProxyAgent } = require('hpagent');
 // const persistentCache = require('persistent-cache');
 
-/**
- * @type {import('./package-lock.json')}
- */
-const lock = JSON.parse(
-	fs.readFileSync(
-		['./node_modules/.package-lock.json', './package-lock.json']
-			.map(str => path.join(__dirname, str))
-			.filter(fs.existsSync)[0],
-		'utf-8',
-	),
-);
-
 // postinstall scripts
 // run this script after `npm install`
 // required	: cross-spawn upath axios-cache-interceptor axios hpagent
@@ -72,11 +60,37 @@ const saveCache = data => fs.writeFileSync(cacheJSON, JSON.stringify(data, null,
 			 * @type {string}
 			 */
 			const version = pkgs[pkgname];
-			// re-installing local and monorepo package
+
+			// skip when not exist in node_modules
+			if (!fs.existsSync(path.join(__dirname, pkgname))) {
+				continue;
+			}
+
+			/*
+      // re-installing local and monorepo package
 			if (/^((file|github):|(git|ssh)\+|http)/i.test(version)) {
 				//const arg = [version, isDev ? '-D' : ''].filter((str) => str.trim().length > 0);
 				toUpdate.push(pkgname);
 			}
+      */
+
+			// push update for private ssh package
+			if (/^(ssh\+|git\+ssh))/i.test(version)) {
+				toUpdate.push(pkgname);
+				continue;
+			}
+
+			/**
+			 * @type {import('./package-lock.json')}
+			 */
+			const lockfile = JSON.parse(
+				fs.readFileSync(
+					['./node_modules/.package-lock.json', './package-lock.json']
+						.map(str => path.join(__dirname, str))
+						.filter(fs.existsSync)[0],
+					'utf-8',
+				),
+			);
 
 			const node_modules_path = path.join(__dirname, 'node_modules', pkgname);
 			/**
@@ -103,7 +117,7 @@ const saveCache = data => fs.writeFileSync(cacheJSON, JSON.stringify(data, null,
 			}
 
 			// existing lock
-			const installedLock = lock.packages['node_modules/' + pkgname];
+			const installedLock = lockfile.packages['node_modules/' + pkgname];
 			installedLock.name = pkgname;
 			const { integrity, resolved } = installedLock;
 			let original = typeof resolved === 'string' && !/^https?/i.test(String(resolved)) ? resolved : null;
@@ -116,7 +130,7 @@ const saveCache = data => fs.writeFileSync(cacheJSON, JSON.stringify(data, null,
 				// console.log({ pkgname, integrity, resolved, original });
 				const hash = 'sha512-' + (await url_to_hash('sha512', resolved, 'base64'));
 				if (integrity !== hash) {
-					console.log('updating url remote package', pkgname, 'caused by different integrity');
+					console.log('remote package', pkgname, 'has different integrity');
 					// fs.rmSync(node_modules_path, { recursive: true, force: true });
 					toUpdate.push(pkgname);
 				}
@@ -129,7 +143,7 @@ const saveCache = data => fs.writeFileSync(cacheJSON, JSON.stringify(data, null,
 				if (/\/tarball\/|.tgz$/i.test(version)) {
 					// console.log(value);
 					if (originalHash !== integrity && fs.existsSync(node_modules_path)) {
-						console.log('updating local package', pkgname, 'caused by different integrity');
+						console.log('local package', pkgname, 'has different integrity');
 						// fs.rmSync(node_modules_path, { recursive: true, force: true });
 						toUpdate.push(pkgname);
 					}
@@ -156,7 +170,7 @@ const saveCache = data => fs.writeFileSync(cacheJSON, JSON.stringify(data, null,
 						// skip when get api failure
 						if (!getApi) continue;
 						if (getApi.data.sha != githubHash && fs.existsSync(node_modules_path)) {
-							console.log('updating github package', pkgname, 'caused by different hash');
+							console.log('github package', pkgname, 'from branch', branch, 'has different commit hash');
 							// fs.rmSync(node_modules_path, { recursive: true, force: true });
 							toUpdate.push(pkgname);
 						}
@@ -169,6 +183,11 @@ const saveCache = data => fs.writeFileSync(cacheJSON, JSON.stringify(data, null,
 						// skip when get api failure
 						if (!getApi) continue;
 						console.log({ version, githubPathHash, data: getApi.data.sha });
+						if (getApi.data.sha != githubHash && fs.existsSync(node_modules_path)) {
+							console.log('github package', pkgname, 'from branch', branch, 'has different commit hash');
+							// fs.rmSync(node_modules_path, { recursive: true, force: true });
+							toUpdate.push(pkgname);
+						}
 					}
 				} catch (e) {
 					if (e instanceof Error) console.log(e.code, e.message);
@@ -444,7 +463,7 @@ async function url_to_hash(alogarithm = 'sha1', url, encoding = 'hex') {
 		if (!fs.existsSync(path.dirname(outputLocationPath))) {
 			fs.mkdirSync(path.dirname(outputLocationPath), { recursive: true });
 		}
-		const writer = fs.createWriteStream(outputLocationPath);
+		const writer = fs.createWriteStream(outputLocationPath, { flags: 'w' });
 		Axios.default(url, { responseType: 'stream' }).then(response => {
 			response.data.pipe(writer);
 			let error = null;
