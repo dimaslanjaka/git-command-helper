@@ -1,6 +1,5 @@
-import git from './git';
-export { gitCommandHelper, gitHelper, setupGit } from './git';
-export {
+import git, { gitCommandHelper, gitHelper, setupGit } from './git';
+import {
   default as GithubInfo,
   getGithubBranches,
   getGithubCurrentBranch,
@@ -8,7 +7,24 @@ export {
   getGithubRepoUrl,
   getGithubRootDir
 } from './git-info';
-export { spawn, spawnAsync, SpawnOptions, spawnSilent } from './spawn';
-export { default as gitSubmodule } from './submodule';
+import { spawn, spawnAsync, spawnSilent } from './spawn';
+import { default as gitSubmodule } from './submodule';
+export { SpawnOptions } from './spawn';
+
+export const ext = {
+  spawn,
+  spawnAsync,
+  spawnSilent,
+  gitCommandHelper,
+  gitHelper,
+  setupGit,
+  GithubInfo,
+  getGithubBranches,
+  getGithubCurrentBranch,
+  getGithubRemote,
+  getGithubRepoUrl,
+  getGithubRootDir,
+  gitSubmodule
+};
 
 export default git;
