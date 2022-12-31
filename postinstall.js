@@ -1,21 +1,44 @@
 const pjson = require('./package.json');
 const fs = require('fs');
-const path = require('upath');
+const path = require('path');
+
+const isAllPackagesInstalled = [
+  'cross-spawn',
+  'upath',
+  'axios-cache-interceptor',
+  'axios',
+  'hpagent',
+  'persistent-cache'
+].map((name) => {
+  return {
+    name,
+    installed: isPackageInstalled(name)
+  };
+});
+if (!isAllPackagesInstalled.every((o) => o.installed === true)) {
+  const names = isAllPackagesInstalled.map((o) => o.name);
+  console.log('package', names.join(', '), 'is not installed', 'skipping postinstall script');
+  return;
+}
+
+// postinstall scripts
+// run this script after `npm install`
+// required	: cross-spawn upath axios-cache-interceptor axios hpagent persistent-cache
+// update		: curl -L https://github.com/dimaslanjaka/nodejs-package-types/raw/main/postinstall.js > postinstall.js
+// repo			: https://github.com/dimaslanjaka/nodejs-package-types/blob/main/postinstall.js
+// raw			: https://github.com/dimaslanjaka/nodejs-package-types/raw/main/postinstall.js
+// usages		: node postinstall.js
+
+// imports start
 const { spawn } = require('cross-spawn');
 const Axios = require('axios');
+// const upath = require('upath');
 const crypto = require('crypto');
 const { setupCache } = require('axios-cache-interceptor');
 const axios = setupCache(Axios);
 const { HttpProxyAgent, HttpsProxyAgent } = require('hpagent');
 // const persistentCache = require('persistent-cache');
-
-// postinstall scripts
-// run this script after `npm install`
-// required	: cross-spawn upath axios-cache-interceptor axios hpagent
-// update		: curl -L https://github.com/dimaslanjaka/nodejs-package-types/raw/main/postinstall.js > postinstall.js
-// repo			: https://github.com/dimaslanjaka/nodejs-package-types/blob/main/postinstall.js
-// raw			: https://github.com/dimaslanjaka/nodejs-package-types/raw/main/postinstall.js
-// usages		: node postinstall.js
+// imports ends
 
 // cache file
 const cacheJSON = path.join(__dirname, 'node_modules/.cache/npm-install.json');
@@ -43,15 +66,16 @@ const getCache = () => require('./node_modules/.cache/npm-install.json');
  */
 const saveCache = (data) => fs.writeFileSync(cacheJSON, JSON.stringify(data, null, 2));
 
-(async () => {
-  // @todo clear cache local packages
-  const packages = [pjson.dependencies, pjson.devDependencies];
-  /**
-   * list packages to update
-   * @type {string[]}
-   */
-  const toUpdate = [];
+// @todo clear cache local packages
+const packages = [pjson.dependencies, pjson.devDependencies];
 
+/**
+ * list packages to update
+ * @type {string[]}
+ */
+const toUpdate = [];
+
+(async () => {
   for (let i = 0; i < packages.length; i++) {
     const pkgs = packages[i];
     //const isDev = i === 1; // <-- index devDependencies
@@ -67,7 +91,7 @@ const saveCache = (data) => fs.writeFileSync(cacheJSON, JSON.stringify(data, nul
       }
 
       /*
-      // re-installing local and monorepo package
+      // push update local and monorepo package
 			if (/^((file|github):|(git|ssh)\+|http)/i.test(version)) {
 				//const arg = [version, isDev ? '-D' : ''].filter((str) => str.trim().length > 0);
 				toUpdate.push(pkgname);
@@ -223,81 +247,77 @@ const saveCache = (data) => fs.writeFileSync(cacheJSON, JSON.stringify(data, nul
     });
   };
 
-  /**
-   * check if all packages exists
-   * @returns
-   */
-  const checkNodeModules = () => {
-    const exists = toUpdate.map(
-      (pkgname) =>
-        fs.existsSync(path.join(__dirname, 'node_modules', pkgname)) &&
-        fs.existsSync(path.join(__dirname, 'node_modules', pkgname, 'package.json'))
-    );
-    //console.log({ exists });
-    return exists.every((exist) => exist === true);
-  };
-
   if (checkNodeModules()) {
     // filter duplicates package names
     const filterUpdates = toUpdate.filter((item, index) => toUpdate.indexOf(item) === index);
-    // do update
-    try {
-      if (isYarn) {
-        const version = await summon('yarn', ['--version']);
-        console.log('yarn version', version);
+    if (filterUpdates.length > 0) {
+      // do update
+      try {
+        if (isYarn) {
+          const version = await summon('yarn', ['--version']);
+          console.log('yarn version', version);
 
-        if (typeof version.stdout === 'string') {
-          if (version.stdout.includes('3.2.4')) {
-            filterUpdates.push('--check-cache');
+          if (typeof version.stdout === 'string') {
+            if (version.stdout.includes('3.2.4')) {
+              filterUpdates.push('--check-cache');
+            }
           }
-        }
-        // yarn cache clean
-        if (filterUpdates.find((str) => str.startsWith('file:'))) {
-          await summon('yarn', ['cache', 'clean'], {
+          // yarn cache clean
+          if (filterUpdates.find((str) => str.startsWith('file:'))) {
+            await summon('yarn', ['cache', 'clean'], {
+              cwd: __dirname,
+              stdio: 'inherit'
+            });
+          }
+          // yarn upgrade package
+          await summon('yarn', ['upgrade'].concat(...filterUpdates), {
+            cwd: __dirname,
+            stdio: 'inherit'
+          });
+        } else {
+          // npm cache clean package
+          if (filterUpdates.find((str) => str.startsWith('file:'))) {
+            await summon('npm', ['cache', 'clean'].concat(...filterUpdates), {
+              cwd: __dirname,
+              stdio: 'inherit'
+            });
+          }
+          // npm update package
+          await summon('npm', ['update'].concat(...filterUpdates), {
             cwd: __dirname,
             stdio: 'inherit'
           });
         }
-        // yarn upgrade package
-        await summon('yarn', ['upgrade'].concat(...filterUpdates), {
-          cwd: __dirname,
-          stdio: 'inherit'
-        });
-      } else {
-        // npm cache clean package
-        if (filterUpdates.find((str) => str.startsWith('file:'))) {
-          await summon('npm', ['cache', 'clean'].concat(...filterUpdates), {
-            cwd: __dirname,
-            stdio: 'inherit'
-          });
-        }
-        // npm update package
-        await summon('npm', ['update'].concat(...filterUpdates), {
-          cwd: __dirname,
-          stdio: 'inherit'
-        });
-      }
 
-      // update cache
-      await updateCache();
+        // update cache
+        await updateCache();
 
-      const argv = process.argv;
-      // node postinstall.js --commit
-      if (fs.existsSync(path.join(__dirname, '.git')) && argv.includes('--commit')) {
-        await summon('git', ['add', 'package.json'], { cwd: __dirname });
-        await summon('git', ['add', 'package-lock.json'], { cwd: __dirname });
-        const status = await summon('git', ['status', '--porcelain'], {
-          cwd: __dirname
-        });
-        console.log({ status });
-        if (status.stdout && (status.stdout.includes('package.json') || status.stdout.includes('package-lock.json'))) {
-          await summon('git', ['commit', '-m', 'Update dependencies\nDate: ' + new Date()], {
+        const argv = process.argv;
+        // node postinstall.js --commit
+        if (fs.existsSync(path.join(__dirname, '.git')) && argv.includes('--commit')) {
+          await summon('git', ['add', 'package.json'], { cwd: __dirname });
+          await summon('git', ['add', 'package-lock.json'], { cwd: __dirname });
+          const status = await summon('git', ['status', '--porcelain'], {
             cwd: __dirname
           });
+
+          if (
+            status.stdout &&
+            (status.stdout.includes('package.json') || status.stdout.includes('package-lock.json'))
+          ) {
+            await summon('git', ['add', 'package.json', 'package-lock.json'], {
+              cwd: __dirname
+            });
+            await summon('git', ['commit', '-m', 'Update dependencies', '-m', 'Date: ' + new Date()], {
+              cwd: __dirname
+            });
+          }
         }
+      } catch (e) {
+        if (e instanceof Error) console.error(e.message);
       }
-    } catch (e) {
-      if (e instanceof Error) console.error(e.message);
+    } else {
+      console.log('[postinstall] all monorepo packages already at latest version');
     }
   } else {
     console.log('some packages already deleted from node_modules');
@@ -477,7 +497,7 @@ async function url_to_hash(alogarithm = 'sha1', url, encoding = 'hex') {
       });
       writer.on('close', async () => {
         if (!error) {
-          // console.log('package downloaded', outputLocationPath.replace(path.toUnix(__dirname), ''));
+          // console.log('package downloaded', outputLocationPath.replace(__dirname, ''));
           file_to_hash(alogarithm, outputLocationPath, encoding).then((checksum) => {
             resolve(checksum);
           });
@@ -485,4 +505,31 @@ async function url_to_hash(alogarithm = 'sha1', url, encoding = 'hex') {
       });
     });
   });
+}
+
+/**
+ * check package installed
+ * @param {string} x
+ * @returns
+ */
+function isPackageInstalled(x) {
+  try {
+    return process.moduleLoadList.indexOf('NativeModule ' + x) >= 0 || require('fs').existsSync(require.resolve(x));
+  } catch (e) {
+    return false;
+  }
+}
+
+/**
+ * check if all packages exists
+ * @returns
+ */
+function checkNodeModules() {
+  const exists = toUpdate.map(
+    (pkgname) =>
+      fs.existsSync(path.join(__dirname, 'node_modules', pkgname)) &&
+      fs.existsSync(path.join(__dirname, 'node_modules', pkgname, 'package.json'))
+  );
+  //console.log({ exists });
+  return exists.every((exist) => exist === true);
 }
