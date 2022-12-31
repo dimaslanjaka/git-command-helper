@@ -1,26 +1,3 @@
-const pjson = require('./package.json');
-const fs = require('fs');
-const path = require('path');
-
-const isAllPackagesInstalled = [
-  'cross-spawn',
-  'upath',
-  'axios-cache-interceptor',
-  'axios',
-  'hpagent',
-  'persistent-cache'
-].map((name) => {
-  return {
-    name,
-    installed: isPackageInstalled(name)
-  };
-});
-if (!isAllPackagesInstalled.every((o) => o.installed === true)) {
-  const names = isAllPackagesInstalled.map((o) => o.name);
-  console.log('package', names.join(', '), 'is not installed', 'skipping postinstall script');
-  return;
-}
-
 // postinstall scripts
 // run this script after `npm install`
 // required	: cross-spawn upath axios-cache-interceptor axios hpagent persistent-cache
@@ -28,17 +5,6 @@ if (!isAllPackagesInstalled.every((o) => o.installed === true)) {
 // repo			: https://github.com/dimaslanjaka/nodejs-package-types/blob/main/postinstall.js
 // raw			: https://github.com/dimaslanjaka/nodejs-package-types/raw/main/postinstall.js
 // usages		: node postinstall.js
-
-// imports start
-const { spawn } = require('cross-spawn');
-const Axios = require('axios');
-// const upath = require('upath');
-const crypto = require('crypto');
-const { setupCache } = require('axios-cache-interceptor');
-const axios = setupCache(Axios);
-const { HttpProxyAgent, HttpsProxyAgent } = require('hpagent');
-// const persistentCache = require('persistent-cache');
-// imports ends
 
 const pjson = require('./package.json');
 const fs = require('fs');
@@ -129,24 +95,20 @@ const coloredScriptName = colors.grey(scriptname);
  */
 const argv = process.argv.slice(2);
 
-// @todo clear cache local packages
-const packages = [pjson.dependencies, pjson.devDependencies];
-
-/**
- * list packages to update
- * @type {string[]}
- */
-const toUpdate = [];
-
 (async () => {
-  for (let i = 0; i < packages.length; i++) {
-    const pkgs = packages[i];
-    //const isDev = i === 1; // <-- index devDependencies
-    for (const pkgname in pkgs) {
-      /**
-       * @type {string}
-       */
-      const version = pkgs[pkgname];
+  try {
+    const node_modules_dir = path.join(__dirname, 'node_modules');
+    // skip if project not yet installed
+    if (!fs.existsSync(node_modules_dir)) {
+      console.log(coloredScriptName, 'project not yet installed');
+      return;
+    }
+
+    if (!fs.accessSync(path.join(node_modules_dir))) {
+      console.log(coloredScriptName, 'cannot access node_modules');
+      console.log(coloredScriptName, 'probably you still run `npm install`');
+      return;
+    }
 
     // dump file
     const jsonfile = path.join(__dirname, 'tmp/postinstall/monorepos.json');
@@ -155,13 +117,18 @@ const toUpdate = [];
     }
     const json = {};
 
-      /*
-      // push update local and monorepo package
-			if (/^((file|github):|(git|ssh)\+|http)/i.test(version)) {
-				//const arg = [version, isDev ? '-D' : ''].filter((str) => str.trim().length > 0);
-				toUpdate.push(pkgname);
-			}
-      */
+    for (let i = 0; i < packages.length; i++) {
+      const pkgs = packages[i];
+      //const isDev = i === 1; // <-- index devDependencies
+      for (const pkgname in pkgs) {
+        /**
+         * @type {string}
+         */
+        const version = pkgs[pkgname];
+        /**
+         * colored package name
+         */
+        const coloredPkgname = colors.magenta(pkgname);
 
         // node postinstall.js --simple
         // add all monorepos packages to be updated without checking
@@ -502,105 +469,28 @@ const toUpdate = [];
         } catch (e) {
           if (e instanceof Error) console.error(e.message);
         }
-      }
-    }
-  }
-
-  // do update
-
-  const isYarn = fs.existsSync(path.join(__dirname, 'yarn.lock'));
-
-  /**
-   * Internal update cache
-   * @returns {Promise<ReturnType<typeof getCache>>}
-   */
-  const updateCache = () => {
-    return new Promise((resolve) => {
-      // save to cache
-      const data = getCache();
-      for (let i = 0; i < toUpdate.length; i++) {
-        const pkgname = toUpdate[i];
-        data[pkgname] = Object.assign(data[pkgname] || {}, {
-          lastInstall: new Date().getTime()
-        });
-      }
-
-      saveCache(data);
-      resolve(data);
-    });
-  };
-
-  if (checkNodeModules()) {
-    // filter duplicates package names
-    const filterUpdates = toUpdate.filter((item, index) => toUpdate.indexOf(item) === index);
-    if (filterUpdates.length > 0) {
-      // do update
-      try {
-        if (isYarn) {
-          const version = await summon('yarn', ['--version']);
-          console.log('yarn version', version);
-
-          if (typeof version.stdout === 'string') {
-            if (version.stdout.includes('3.2.4')) {
-              filterUpdates.push('--check-cache');
-            }
-          }
-          // yarn cache clean
-          if (filterUpdates.find((str) => str.startsWith('file:'))) {
-            await summon('yarn', ['cache', 'clean'], {
-              cwd: __dirname,
-              stdio: 'inherit'
-            });
-          }
-          // yarn upgrade package
-          await summon('yarn', ['upgrade'].concat(...filterUpdates), {
-            cwd: __dirname,
-            stdio: 'inherit'
-          });
+      } else {
+        if (hasNotInstalled) {
+          console.log(
+            coloredScriptName,
+            colors.green('some packages not yet installed')
+          );
         } else {
-          // npm cache clean package
-          if (filterUpdates.find((str) => str.startsWith('file:'))) {
-            await summon('npm', ['cache', 'clean'].concat(...filterUpdates), {
-              cwd: __dirname,
-              stdio: 'inherit'
-            });
-          }
-          // npm update package
-          await summon('npm', ['update'].concat(...filterUpdates), {
-            cwd: __dirname,
-            stdio: 'inherit'
-          });
+          console.log(
+            coloredScriptName,
+            'all monorepo packages already at latest version'
+          );
         }
-
-        // update cache
-        await updateCache();
-
-        const argv = process.argv;
-        // node postinstall.js --commit
-        if (fs.existsSync(path.join(__dirname, '.git')) && argv.includes('--commit')) {
-          await summon('git', ['add', 'package.json'], { cwd: __dirname });
-          await summon('git', ['add', 'package-lock.json'], { cwd: __dirname });
-          const status = await summon('git', ['status', '--porcelain'], {
-            cwd: __dirname
-          });
-
-          if (
-            status.stdout &&
-            (status.stdout.includes('package.json') || status.stdout.includes('package-lock.json'))
-          ) {
-            await summon('git', ['add', 'package.json', 'package-lock.json'], {
-              cwd: __dirname
-            });
-            await summon('git', ['commit', '-m', 'Update dependencies', '-m', 'Date: ' + new Date()], {
-              cwd: __dirname
-            });
-          }
-        }
-      } catch (e) {
-        if (e instanceof Error) console.error(e.message);
       }
     } else {
-      console.log('[postinstall] all monorepo packages already at latest version');
+      if (hasNotInstalled) {
+        console.log(coloredScriptName, 'some packages not yet installed');
+      } else {
+        console.log(
+          coloredScriptName,
+          'some packages deleted from node_modules'
+        );
+      }
     }
   } catch (e) {
     console.trace(e);
@@ -792,9 +682,11 @@ async function url_to_hash(alogarithm = 'sha1', url, encoding = 'hex') {
       writer.on('close', async () => {
         if (!error) {
           // console.log('package downloaded', outputLocationPath.replace(__dirname, ''));
-          file_to_hash(alogarithm, outputLocationPath, encoding).then((checksum) => {
-            resolve(checksum);
-          });
+          file_to_hash(alogarithm, outputLocationPath, encoding).then(
+            (checksum) => {
+              resolve(checksum);
+            }
+          );
         }
       });
     });
@@ -808,7 +700,10 @@ async function url_to_hash(alogarithm = 'sha1', url, encoding = 'hex') {
  */
 function isPackageInstalled(x) {
   try {
-    return process.moduleLoadList.indexOf('NativeModule ' + x) >= 0 || require('fs').existsSync(require.resolve(x));
+    return (
+      process.moduleLoadList.indexOf('NativeModule ' + x) >= 0 ||
+      require('fs').existsSync(require.resolve(x))
+    );
   } catch (e) {
     return false;
   }
@@ -822,7 +717,9 @@ function checkNodeModules() {
   const exists = toUpdate.map(
     (pkgname) =>
       fs.existsSync(path.join(__dirname, 'node_modules', pkgname)) &&
-      fs.existsSync(path.join(__dirname, 'node_modules', pkgname, 'package.json'))
+      fs.existsSync(
+        path.join(__dirname, 'node_modules', pkgname, 'package.json')
+      )
   );
   //console.log({ exists });
   return exists.every((exist) => exist === true);
