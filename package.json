@@ -28,7 +28,7 @@
     "patch": "npm version patch",
     "postinstall": "node postinstall.js --commit",
     "test": "jest --runInBand",
-    "docs": ""
+    "docs": "gulp docs"
   },
   "repository": {
     "type": "git",
