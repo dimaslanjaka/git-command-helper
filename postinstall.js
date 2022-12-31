@@ -80,17 +80,13 @@ const saveCache = data => fs.writeFileSync(cacheJSON, JSON.stringify(data, null,
 				continue;
 			}
 
+			const locks = ['./node_modules/.package-lock.json', './package-lock.json']
+				.map(str => path.join(__dirname, str))
+				.filter(fs.existsSync)[0];
 			/**
 			 * @type {import('./package-lock.json')}
 			 */
-			const lockfile = JSON.parse(
-				fs.readFileSync(
-					['./node_modules/.package-lock.json', './package-lock.json']
-						.map(str => path.join(__dirname, str))
-						.filter(fs.existsSync)[0],
-					'utf-8',
-				),
-			);
+			const lockfile = JSON.parse(fs.readFileSync(locks, 'utf-8'));
 
 			const node_modules_path = path.join(__dirname, 'node_modules', pkgname);
 			/**
