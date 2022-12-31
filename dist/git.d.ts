@@ -38,7 +38,37 @@ export declare class git {
     helper: typeof helper;
     static helper: typeof helper;
     static noop: typeof noop;
+    infos: {
+        getGithubCurrentBranch: typeof import("./git-info").getGithubCurrentBranch;
+        getGithubRemote: typeof import("./git-info").getGithubRemote;
+        getGithubRepoUrl: typeof import("./git-info").getGithubRepoUrl;
+        getGithubRootDir: typeof import("./git-info").getGithubRootDir;
+        getGithubBranches: typeof import("./git-info").getGithubBranches;
+    };
+    getGithubBranches: typeof import("./git-info").getGithubBranches;
+    getGithubCurrentBranch: typeof import("./git-info").getGithubCurrentBranch;
+    getGithubRemote: typeof import("./git-info").getGithubRemote;
+    getGithubRootDir: typeof import("./git-info").getGithubRootDir;
+    getGithubRepoUrl: typeof import("./git-info").getGithubRepoUrl;
     constructor(dir: string);
+    info(): Promise<{
+        opt: SpawnOptions;
+        remote: {
+            fetch: {
+                origin: string;
+                url: string;
+            };
+            push: {
+                origin: string;
+                url: string;
+            };
+        };
+        branch: {
+            active: boolean;
+            branch: string;
+        }[];
+        status: StatusResult[];
+    }>;
     /**
      * git config --global --add safe.directory PATH_FOLDER
      */
@@ -133,24 +163,6 @@ export declare class git {
      * @returns
      */
     add(path: string, optionSpawn?: SpawnOptions): Bluebird<string>;
-    info(): Promise<{
-        opt: SpawnOptions;
-        remote: {
-            fetch: {
-                origin: string;
-                url: string;
-            };
-            push: {
-                origin: string;
-                url: string;
-            };
-        };
-        branch: {
-            active: boolean;
-            branch: string;
-        }[];
-        status: StatusResult[];
-    }>;
     /**
      * git checkout
      * @param branchName
