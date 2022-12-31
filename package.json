@@ -91,6 +91,6 @@
     "typescript": "^4.9.4"
   },
   "optionalDependencies": {
-    "git-command-helper": "^1.0.14"
+    "git-command-helper": "latest"
   }
 }
