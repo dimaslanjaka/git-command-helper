@@ -26,7 +26,7 @@
     "update": "run-s update:**",
     "postupdate": "npm install --cache tmp/npm",
     "patch": "npm version patch",
-    "postinstall": "node postinstall.js --commit",
+    "postinstall": "node postinstall.js",
     "test": "jest --runInBand",
     "docs": "gulp docs"
   },
