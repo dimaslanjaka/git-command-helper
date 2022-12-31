@@ -50,7 +50,7 @@
   "bugs": {
     "url": "https://github.com/dimaslanjaka/git-command-helper/issues"
   },
-  "homepage": "https://github.com/dimaslanjaka/git-command-helper#readme",
+  "homepage": "https://www.webmanajemen.com/docs/git-command-helper/",
   "dependencies": {
     "@expo/spawn-async": "^1.7.0",
     "axios": "^1.2.2",
