@@ -201,6 +201,9 @@ const saveCache = (data) => fs.writeFileSync(cacheJSON, JSON.stringify(data, nul
   };
 
   if (checkNodeModules()) {
+    // filter duplicates package names
+    const filterUpdates = toUpdate.filter((item, index) => toUpdate.indexOf(item) === index);
+    // do update
     try {
       if (isYarn) {
         const version = await summon('yarn', ['--version']);
@@ -208,31 +211,31 @@ const saveCache = (data) => fs.writeFileSync(cacheJSON, JSON.stringify(data, nul
 
         if (typeof version.stdout === 'string') {
           if (version.stdout.includes('3.2.4')) {
-            toUpdate.push('--check-cache');
+            filterUpdates.push('--check-cache');
           }
         }
         // yarn cache clean
-        if (toUpdate.find((str) => str.startsWith('file:'))) {
+        if (filterUpdates.find((str) => str.startsWith('file:'))) {
           await summon('yarn', ['cache', 'clean'], {
             cwd: __dirname,
             stdio: 'inherit'
           });
         }
         // yarn upgrade package
-        await summon('yarn', ['upgrade'].concat(...toUpdate), {
+        await summon('yarn', ['upgrade'].concat(...filterUpdates), {
           cwd: __dirname,
           stdio: 'inherit'
         });
       } else {
         // npm cache clean package
-        if (toUpdate.find((str) => str.startsWith('file:'))) {
-          await summon('npm', ['cache', 'clean'].concat(...toUpdate), {
+        if (filterUpdates.find((str) => str.startsWith('file:'))) {
+          await summon('npm', ['cache', 'clean'].concat(...filterUpdates), {
             cwd: __dirname,
             stdio: 'inherit'
           });
         }
         // npm update package
-        await summon('npm', ['update'].concat(...toUpdate), {
+        await summon('npm', ['update'].concat(...filterUpdates), {
           cwd: __dirname,
           stdio: 'inherit'
         });
