@@ -2,6 +2,7 @@
 GitHub CLI Helper For NodeJS. Parse responses from github CLI to NodeJS Object Oriented Programming (OOP).
 
 [![npm version](https://img.shields.io/npm/v/git-command-helper?style=for-the-badge)](https://www.npmjs.com/package/git-command-helper)
+[![git-command-helper](https://snyk.io/advisor/npm-package/git-command-helper/badge.svg)](https://snyk.io/advisor/npm-package/git-command-helper)
 
 ## Features
 - Submodule parser
