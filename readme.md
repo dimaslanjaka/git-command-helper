@@ -23,8 +23,9 @@ npm i git-command-helper
 ```
 
 ## Documentation
-- [API DOCUMENTATION](https://www.webmanajemen.com/docs/git-command-helper/)
-- [Main Class](https://github.com/dimaslanjaka/git-command-helper/blob/master/src/index.ts)
+- [API documentation](https://www.webmanajemen.com/docs/git-command-helper/)
+- [modules](https://www.webmanajemen.com/docs/git-command-helper/modules.html)
+- [main class](https://github.com/dimaslanjaka/git-command-helper/blob/master/src/index.ts)
 
 ## Usages
 
