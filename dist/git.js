@@ -13,6 +13,7 @@ const bluebird_1 = __importDefault(require("bluebird"));
 const fs_1 = require("fs");
 const os_1 = require("os");
 const path_1 = require("path");
+const git_info_1 = __importDefault(require("./git-info"));
 const helper_1 = __importDefault(require("./helper"));
 const instances_1 = require("./instances");
 const latestCommit_1 = require("./latestCommit");
@@ -52,6 +53,13 @@ class git {
     constructor(dir) {
         this.latestCommit = latestCommit_1.latestCommit;
         this.helper = helper_1.default;
+        // exports infos
+        this.infos = git_info_1.default;
+        this.getGithubBranches = git_info_1.default.getGithubBranches;
+        this.getGithubCurrentBranch = git_info_1.default.getGithubCurrentBranch;
+        this.getGithubRemote = git_info_1.default.getGithubRemote;
+        this.getGithubRootDir = git_info_1.default.getGithubRootDir;
+        this.getGithubRepoUrl = git_info_1.default.getGithubRepoUrl;
         this.cwd = dir;
         if (!(0, fs_1.existsSync)(this.cwd)) {
             throw new Error(dir + ' not found');
@@ -59,6 +67,15 @@ class git {
         this.submodule = new submodule_1.default(dir);
         if (!(0, instances_1.hasInstance)(dir))
             (0, instances_1.setInstance)(dir, this);
+    }
+    async info() {
+        const opt = this.spawnOpt({ stdio: 'pipe' });
+        return {
+            opt,
+            remote: await this.getremote(['-v']),
+            branch: await this.getbranch(),
+            status: await this.status()
+        };
     }
     /**
      * git config --global --add safe.directory PATH_FOLDER
@@ -274,15 +291,6 @@ class git {
      */
     add(path, optionSpawn = { stdio: 'inherit' }) {
         return (0, spawn_1.spawn)('git', ['add', path], this.spawnOpt(optionSpawn));
-    }
-    async info() {
-        const opt = this.spawnOpt({ stdio: 'pipe' });
-        return {
-            opt,
-            remote: await this.getremote(['-v']),
-            branch: await this.getbranch(),
-            status: await this.status()
-        };
     }
     /**
      * git checkout
