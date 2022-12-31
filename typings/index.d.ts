@@ -1,6 +1,6 @@
 import * as gitHelper from '../src';
 
-type helper = gitHelper.git;
+//type helper = gitHelper.git;
 declare module 'git-command-helper' {
-  export gitHelper.git;
+  export gitHelper.default
 }
