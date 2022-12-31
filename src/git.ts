@@ -8,6 +8,7 @@ import Bluebird from 'bluebird';
 import { existsSync, mkdirSync } from 'fs';
 import { EOL } from 'os';
 import { join } from 'path';
+import GithubInfo from './git-info';
 import helper from './helper';
 import { hasInstance, setInstance } from './instances';
 import { latestCommit } from './latestCommit';
@@ -16,7 +17,6 @@ import { shell } from './shell';
 import { spawn, spawnAsync, SpawnOptions, spawnSilent } from './spawn';
 import submodule from './submodule';
 import { StatusResult } from './types';
-export * as GithubInfo from './git-info';
 
 // module 'git-command-helper';
 
@@ -59,7 +59,6 @@ export class git {
   email: string;
   remote: string;
   branch: string;
-  info: GithubInfo;
   private exist: boolean;
   cwd: string;
   latestCommit = latestCommit;
@@ -68,6 +67,14 @@ export class git {
   static helper = helper;
   static noop = noop;
 
+  // exports infos
+  infos = GithubInfo;
+  getGithubBranches = GithubInfo.getGithubBranches;
+  getGithubCurrentBranch = GithubInfo.getGithubCurrentBranch;
+  getGithubRemote = GithubInfo.getGithubRemote;
+  getGithubRootDir = GithubInfo.getGithubRootDir;
+  getGithubRepoUrl = GithubInfo.getGithubRepoUrl;
+
   constructor(dir: string) {
     this.cwd = dir;
     if (!existsSync(this.cwd)) {
@@ -75,6 +82,16 @@ export class git {
     }
     this.submodule = new submodule(dir);
     if (!hasInstance(dir)) setInstance(dir, this);
+  }
+
+  async info() {
+    const opt = this.spawnOpt({ stdio: 'pipe' });
+    return {
+      opt,
+      remote: await this.getremote(['-v']),
+      branch: await this.getbranch(),
+      status: await this.status()
+    };
   }
 
   /**
@@ -304,16 +321,6 @@ export class git {
    */
   add(path: string, optionSpawn: SpawnOptions = { stdio: 'inherit' }) {
     return spawn('git', ['add', path], this.spawnOpt(optionSpawn));
-  }
-
-  async info() {
-    const opt = this.spawnOpt({ stdio: 'pipe' });
-    return {
-      opt,
-      remote: await this.getremote(['-v']),
-      branch: await this.getbranch(),
-      status: await this.status()
-    };
   }
 
   /**
