@@ -61,7 +61,7 @@ if (typeof readme === 'string') {
  * TypeDoc options (see TypeDoc docs http://typedoc.org/api/interfaces/typedocoptionmap.html)
  * @type {import('typedoc').TypeDocOptions}
  */
-const typedocOptions = {
+const defaultOptions = {
   name: pkgjson.projectName || 'Static Blog Generator Gulp',
   //entryPoints: pkgjson.main.replace('dist', 'src'),
   entryPoints,
@@ -100,6 +100,13 @@ const typedocOptions = {
   //includeVersion: true
 };
 
+const generatedOptionFile = path.join(__dirname, 'tmp/typedocs/options.json');
+let typedocOptions = defaultOptions;
+if (fs.existsSync(generatedOptionFile)) {
+  typedocOptions = JSON.parse(readfile(generatedOptionFile, 'utf-8'));
+  typedocOptions = Object.assign(defaultOptions, typedocOptions);
+}
+
 const cjson = path.join(__dirname, 'typedoc.json');
 const scriptName = path.basename(__filename);
 
@@ -109,6 +116,38 @@ if (scriptName.endsWith('-config.js')) {
   fs.writeFileSync(cjson, JSON.stringify(typedocOptions, null, 2));
 } else {
   if (fs.existsSync(cjson)) fs.rm(cjson);
+}
+
+/**
+ * read file with validation
+ * @param {string} str
+ * @param {import('fs').EncodingOption} encoding
+ * @returns
+ */
+function readfile(str, encoding = 'utf-8') {
+  if (fs.existsSync(str)) {
+    if (fs.statSync(str).isFile()) {
+      return fs.readFileSync(str, encoding);
+    } else {
+      throw str + ' is directory';
+    }
+  } else {
+    throw str + ' not found';
+  }
+}
+
+/**
+ * write to file recursively
+ * @param {string} dest
+ * @param {any} data
+ */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function writefile(dest, data) {
+  if (!fs.existsSync(path.dirname(dest))) fs.mkdirSync(path.dirname(dest), { recursive: true });
+  if (fs.existsSync(dest)) {
+    if (fs.statSync(dest).isDirectory()) throw dest + ' is directory';
+  }
+  fs.writeFileSync(dest, data);
 }
 
 module.exports = typedocOptions;

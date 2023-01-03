@@ -22,7 +22,7 @@ const isAllPackagesInstalled = ['cross-spawn', 'axios', 'ansi-colors'].map((name
 if (!isAllPackagesInstalled.every((o) => o.installed === true)) {
   const names = isAllPackagesInstalled.filter((o) => o.installed === false).map((o) => o.name);
   console.log(scriptname, 'package', names.join(', '), 'is not installed', 'skipping postinstall script');
-  return;
+  process.exit(0);
 }
 
 //// POSTINSTALL START
@@ -45,11 +45,12 @@ if (!fs.existsSync(path.dirname(cacheJSON))) {
 if (!fs.existsSync(cacheJSON)) {
   fs.writeFileSync(cacheJSON, '{}');
 }
+
 /**
  * Get cache
  * @returns {import('./node_modules/cache/npm-install.json')}
  */
-const getCache = JSON.parse(readfile(cacheJSON, 'utf-8'));
+const getCache = () => JSON.parse(readfile(cacheJSON, 'utf-8'));
 
 /**
  * Save cache

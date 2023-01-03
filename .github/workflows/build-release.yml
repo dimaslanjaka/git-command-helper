@@ -31,7 +31,8 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ "windows-latest", "macos-11", "ubuntu-latest" ]
+        #os: [ "windows-latest", "macos-11", "ubuntu-latest" ]
+        os: [ "ubuntu-latest" ]
         node-version: [ 14.x, 16.x, 18.x ]
         architecture: [ x86, x64 ]
       fail-fast: true
@@ -151,6 +152,7 @@ jobs:
 
       - name: Install Global Packages
         run: npm i -g typescript ts-node gulp-cli hexo-cli webpack-cli
+        if: steps.cache.outputs.cache-hit != 'true'
 
       - name: Install Legacy Peer Dependencies
         run: npm install --legacy-peer-deps

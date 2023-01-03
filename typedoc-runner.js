@@ -4,19 +4,15 @@ const semver = require('semver');
 const { default: git } = require('git-command-helper');
 const { mkdirSync, existsSync, writeFileSync, readdirSync, statSync } = require('fs');
 const typedocOptions = require('./typedoc');
-const gulp = require('gulp');
 const pkgjson = require('./package.json');
 const { EOL } = require('os');
+const { spawnAsync } = require('git-command-helper/dist/spawn');
 const axios = require('axios');
 const { writeFile } = require('fs/promises');
+const fs = require('fs');
+const path = require('path');
 
-/**
- * @type {import('git-command-helper/dist/spawn').spawnAsync}
- */
-const spawnAsync =
-  pkgjson.name === 'git-command-helper' ? require('./dist').spawnAsync : require('git-command-helper').spawnAsync;
-
-// required : npm i upath && npm i -D semver typedoc git-command-helper gulp cross-spawn
+// required : upath semver typedoc git-command-helper gulp cross-spawn
 // update   : curl -L https://github.com/dimaslanjaka/nodejs-package-types/raw/main/typedoc-runner.js > typedoc-runner.js
 // repo     : https://github.com/dimaslanjaka/nodejs-package-types/blob/main/typedoc-runner.js
 // usages
@@ -35,16 +31,16 @@ let compiled = 0;
 const compile = async function (options = {}, callback = null) {
   const outDir = join(__dirname, 'docs');
   const projectDocsDir = join(outDir, pkgjson.name);
+  if (options) setTypedocOptions(options);
 
   if (!existsSync(outDir)) {
     await spawnAsync('git', ['clone', REPO_URL, 'docs'], { cwd: __dirname });
   }
 
   if (!existsSync(projectDocsDir)) mkdirSync(projectDocsDir, { recursive: true });
-  options = Object.assign(getTypedocOptions(), options || {});
 
   // disable delete dir while running twice
-  if (compiled > 0) options.cleanOutputDir = false;
+  if (compiled > 0) setTypedocOptions({ cleanOutputDir: false });
   compiled++;
 
   const app = new typedocModule.Application();
@@ -56,7 +52,7 @@ const compile = async function (options = {}, callback = null) {
   //console.log(options);
   //delete options.run;
 
-  app.bootstrap(options);
+  app.bootstrap(getTypedocOptions());
   const project = app.convert();
   if (typeof project !== 'undefined') {
     await app.generateDocs(project, projectDocsDir);
@@ -72,7 +68,6 @@ const compile = async function (options = {}, callback = null) {
   if (existsSync(callback_script)) {
     await spawnAsync('node', [callback_script], { cwd: __dirname, stdio: 'inherit' });
   }
-  // generate readme.md and index.html
   await createIndex();
 };
 
@@ -86,18 +81,17 @@ const publish = async function (options = {}, callback = null) {
 
   const github = new git(outDir);
 
-  try {
-    if (!existsSync(join(outDir, '.git'))) {
-      mkdirSync(join(outDir, '.git'), { recursive: true });
-      await github.init();
-    }
-    await github.setremote(REPO_URL);
-    await github.setbranch('master');
-    await github.spawn('git', 'config core.eol lf'.split(' '));
-    await github.pull(['--recurse-submodule', '-X', 'theirs']);
-  } catch {
-    //
+  if (!existsSync(join(outDir, '.git'))) {
+    mkdirSync(join(outDir, '.git'), { recursive: true });
+    await github
+      .spawn('git', ['clone', REPO_URL, 'docs'], { cwd: __dirname })
+      .catch(() => console.log('fail clone to /docs'));
   }
+  await github.setremote(REPO_URL).catch(() => console.log('fail set remote', REPO_URL));
+  await github.setbranch('master').catch(() => console.log('fail set branch master'));
+  //await github.reset('master');
+  await github.pull(['--recurse-submodule', '-X', 'theirs']).catch(() => console.log('fail pull'));
+  await github.spawn('git', 'config core.eol lf'.split(' ')).catch(() => console.log('fail set EOL LF'));
 
   for (let i = 0; i < 2; i++) {
     await compile(options, callback);
@@ -115,12 +109,11 @@ const publish = async function (options = {}, callback = null) {
   });
 
   try {
-    const commit = await new git(__dirname).latestCommit();
-    const remote = (await new git(__dirname).getremote()).push.url.replace(/.git$/, '').trim();
+    const commit = await new git(__dirname).latestCommit().catch(noop);
+    const remote = (await new git(__dirname).getremote().catch(noop)).push.url.replace(/.git$/, '').trim();
     if (remote.length > 0) {
-      console.log('project', remote);
-      console.log('commit', `${remote}/commit/${commit}`);
-      await github.add(pkgjson.name);
+      console.log('current git project', remote);
+      await github.add(pkgjson.name).catch(noop);
       await spawnAsync('git', [
         'commit',
         '-m',
@@ -128,15 +121,19 @@ const publish = async function (options = {}, callback = null) {
         '-m',
         `at ${new Date()}`
       ]);
-      const isCanPush = await github.canPush();
+      const isCanPush = await github.canPush().catch(noop);
       if (isCanPush) {
-        await github.push();
+        await github.push().catch(noop);
       }
     }
   } catch {
     //
   }
 };
+
+function noop(..._) {
+  return;
+}
 
 let opt = typedocOptions;
 /**
@@ -153,20 +150,9 @@ function getTypedocOptions() {
  */
 function setTypedocOptions(newOpt) {
   opt = Object.assign(opt, newOpt || {});
+  writefile(join(__dirname, 'tmp/typedocs/options.json'), JSON.stringify(opt));
   return opt;
 }
-
-/**
- * Watch sources
- * @param {gulp.TaskFunctionCallback} done
- */
-const watch = function (done) {
-  const watcher = gulp.watch([join(__dirname, 'src/**/*')]);
-  watcher.on('change', function (_event, filename) {
-    console.log(filename);
-  });
-  watcher.on('close', done);
-};
 
 if (require.main === module) {
   (async () => {
@@ -210,8 +196,39 @@ async function createIndex() {
   writeFileSync(join(__dirname, 'docs/index.html'), body.trim());
 }
 
+/**
+ * read file with validation
+ * @param {string} str
+ * @param {import('fs').EncodingOption} encoding
+ * @returns
+ */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function readfile(str, encoding = 'utf-8') {
+  if (fs.existsSync(str)) {
+    if (fs.statSync(str).isFile()) {
+      return fs.readFileSync(str, encoding);
+    } else {
+      throw str + ' is directory';
+    }
+  } else {
+    throw str + ' not found';
+  }
+}
+
+/**
+ * write to file recursively
+ * @param {string} dest
+ * @param {any} data
+ */
+function writefile(dest, data) {
+  if (!fs.existsSync(path.dirname(dest))) fs.mkdirSync(path.dirname(dest), { recursive: true });
+  if (fs.existsSync(dest)) {
+    if (fs.statSync(dest).isDirectory()) throw dest + ' is directory';
+  }
+  fs.writeFileSync(dest, data);
+}
+
 module.exports = {
-  watch,
   compile,
   compileDocs: compile,
   publish,
