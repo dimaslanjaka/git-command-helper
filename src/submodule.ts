@@ -154,7 +154,7 @@ export class submodule {
    * @returns
    */
   get() {
-    if (!this.hasSubmodule()) throw new Error('This directory not have submodule installed');
+    if (!this.hasSubmodule()) return []; //throw new Error('This directory not have submodule installed');
 
     const extract = extractSubmodule(join(this.cwd, '.gitmodules'));
     for (let i = 0; i < extract.length; i++) {
