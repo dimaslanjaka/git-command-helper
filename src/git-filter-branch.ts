@@ -7,6 +7,9 @@ git clone --mirror git://example.com/some-big-repo.git
 # bfg clean files bigger than 100M
 java -jar bfg.jar --strip-blobs-bigger-than 100M some-big-repo.git
 
+# Replace all passwords listed in a file (prefix lines 'regex:' or 'glob:' if required) with ***REMOVED*** wherever they occur in your repository :
+bfg --replace-text passwords.txt  my-repo.git
+
 # remove path from commit history
 ## using bfg
 java -jar bfg.jar --delete-files <relative_path_to_file>
