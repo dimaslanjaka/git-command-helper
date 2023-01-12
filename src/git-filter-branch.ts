@@ -8,6 +8,9 @@ git clone --mirror git://example.com/some-big-repo.git
 java -jar bfg.jar --strip-blobs-bigger-than 100M some-big-repo.git
 
 # remove path from commit history
+## using bfg
+java -jar bfg.jar --delete-files <relative_path_to_file>
+## using git-filter-branch
 git filter-branch --force --index-filter "git rm -rf --cached --ignore-unmatch <relative_path_to_file>" --prune-empty --tag-name-filter cat -- --all
 
 # reduce size
