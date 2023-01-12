@@ -166,8 +166,11 @@ const coloredScriptName = colors.grey(scriptname);
               : ''
           );
           if (isLocalPkg && !isLocalTarballpkg) {
-            const arg = [version, isDevPkg ? '-D' : isOptionalPkg ? '-O' : ''].filter((str) => str.length > 0);
-            const folderHash = await folder_to_hash('sha1', version, {
+            const arg = [version, isDevPkg ? '-D' : isOptionalPkg ? '-O' : '--save'].filter((str) => str.length > 0);
+            /**
+             * @type {Parameters<typeof folder_to_hash>[2]}
+             */
+            const hoption = {
               ignored: [
                 '**/.*',
                 '**/_*.json',
@@ -175,11 +178,19 @@ const coloredScriptName = colors.grey(scriptname);
                 '**/build/**',
                 '**/test*/**',
                 '**/dist/**',
+                '**/docs/**',
                 '**/.cache/**',
                 '**/temp/**'
               ],
-              pattern: '**/src/**'
-            });
+              pattern: '**/{src,dist,lib}/**'
+            };
+            if (pkgname.startsWith('@types/')) {
+              hoption.pattern = '**/*.d.ts';
+            }
+            if (pkgname.startsWith('hexo-theme-')) {
+              hoption.pattern = '**/{package,package-lock}.json';
+            }
+            const folderHash = await folder_to_hash('sha1', version, hoption);
             const existingHash = ((getCache().folder || {})[pkgname] || {}).hash;
             if (!existingHash || folderHash.hash !== existingHash) {
               saveCache({
