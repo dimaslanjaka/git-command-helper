@@ -11,7 +11,6 @@
     "postinstall.js"
   ],
   "scripts": {
-    "prebuild": "git pull -X theirs",
     "build": "tsc -p tsconfig.build.json",
     "pack": "node packer.js",
     "update:postinstall": "curl -L https://github.com/dimaslanjaka/nodejs-package-types/raw/main/postinstall.js > postinstall.js",
