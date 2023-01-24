@@ -53,7 +53,7 @@ export declare class git {
     getGithubRepoUrl: typeof import("./git-info").getGithubRepoUrl;
     constructor(dir: string);
     info(): Promise<{
-        opt: SpawnOptions;
+        root: string | void;
         remote: {
             fetch: {
                 origin: string;
@@ -69,6 +69,7 @@ export declare class git {
             branch: string;
         }[];
         status: StatusResult[];
+        opt: SpawnOptions;
     }>;
     /**
      * git config --global --add safe.directory PATH_FOLDER

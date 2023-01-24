@@ -87,10 +87,11 @@ export class git {
   async info() {
     const opt = this.spawnOpt({ stdio: 'pipe' });
     return {
-      opt,
+      root: await this.getGithubRootDir({ cwd: this.cwd }),
       remote: await this.getremote(['-v']),
       branch: await this.getbranch(),
-      status: await this.status()
+      status: await this.status(),
+      opt
     };
   }
 
@@ -338,7 +339,7 @@ export class git {
    * @returns
    */
   async getbranch() {
-    return await spawn('git', ['branch']).then((str) =>
+    return await spawn('git', ['branch'], this.spawnOpt({ stdio: 'pipe' })).then((str) =>
       str
         .split(/\n/)
         .map((str) => str.split(/\s/).map((str) => str.trim()))
@@ -349,7 +350,7 @@ export class git {
             branch: item[1]
           };
         })
-        .filter((item) => typeof item.branch === 'string')
+        .filter((item) => typeof item.branch === 'string' && item.branch.trim().length > 0)
     );
   }
 
