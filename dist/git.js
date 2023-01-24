@@ -71,11 +71,10 @@ class git {
     async info() {
         const opt = this.spawnOpt({ stdio: 'pipe' });
         return {
-            root: await this.getGithubRootDir({ cwd: this.cwd }),
+            root: await this.getGithubRootDir(opt),
             remote: await this.getremote(['-v']),
             branch: await this.getbranch(),
-            status: await this.status(),
-            opt
+            status: await this.status()
         };
     }
     /**

@@ -69,7 +69,6 @@ export declare class git {
             branch: string;
         }[];
         status: StatusResult[];
-        opt: SpawnOptions;
     }>;
     /**
      * git config --global --add safe.directory PATH_FOLDER
