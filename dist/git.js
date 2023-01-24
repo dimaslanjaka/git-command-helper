@@ -71,10 +71,11 @@ class git {
     async info() {
         const opt = this.spawnOpt({ stdio: 'pipe' });
         return {
-            opt,
+            root: await this.getGithubRootDir({ cwd: this.cwd }),
             remote: await this.getremote(['-v']),
             branch: await this.getbranch(),
-            status: await this.status()
+            status: await this.status(),
+            opt
         };
     }
     /**
@@ -306,7 +307,7 @@ class git {
      * @returns
      */
     async getbranch() {
-        return await (0, spawn_1.spawn)('git', ['branch']).then((str) => str
+        return await (0, spawn_1.spawn)('git', ['branch'], this.spawnOpt({ stdio: 'pipe' })).then((str) => str
             .split(/\n/)
             .map((str) => str.split(/\s/).map((str) => str.trim()))
             .filter((str) => str.length > 0)
@@ -316,7 +317,7 @@ class git {
                 branch: item[1]
             };
         })
-            .filter((item) => typeof item.branch === 'string'));
+            .filter((item) => typeof item.branch === 'string' && item.branch.trim().length > 0));
     }
     /**
      * Check if current repository is up to date with origin/remote
