@@ -74,7 +74,12 @@ exports.setupGit = setupGit;
  * GitHub Command Helper For NodeJS
  */
 class git {
-    constructor(dir) {
+    /**
+     *
+     * @param gitdir
+     * @param branch
+     */
+    constructor(gitdir, branch = 'master') {
         this.shell = shell_1.shell;
         this.helper = helper_1.default;
         this.noop = noop_1.default;
@@ -86,13 +91,15 @@ class git {
         this.getGithubRemote = git_info_1.default.getGithubRemote;
         this.getGithubRootDir = git_info_1.default.getGithubRootDir;
         this.getGithubRepoUrl = git_info_1.default.getGithubRepoUrl;
-        this.cwd = dir;
+        this.cwd = gitdir;
+        if (typeof this.branch === 'string')
+            this.branch = branch;
         if (!(0, fs_1.existsSync)(this.cwd)) {
-            throw new Error(dir + ' not found');
+            throw new Error(gitdir + ' not found');
         }
-        this.submodule = new submodule_1.default(dir);
-        if (!(0, instances_1.hasInstance)(dir))
-            (0, instances_1.setInstance)(dir, this);
+        this.submodule = new submodule_1.default(gitdir);
+        if (!(0, instances_1.hasInstance)(gitdir))
+            (0, instances_1.setInstance)(gitdir, this);
     }
     /**
      * get latest commit hash

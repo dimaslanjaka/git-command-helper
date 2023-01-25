@@ -56,7 +56,12 @@ export declare class git {
     getGithubRemote: typeof extension.getGithubRemote;
     getGithubRootDir: typeof extension.getGithubRootDir;
     getGithubRepoUrl: typeof extension.getGithubRepoUrl;
-    constructor(dir: string);
+    /**
+     *
+     * @param gitdir
+     * @param branch
+     */
+    constructor(gitdir: string, branch?: string);
     /**
      * get latest commit hash
      * @param customPath
