@@ -79,13 +79,19 @@ export class git {
   getGithubRootDir = GithubInfo.getGithubRootDir;
   getGithubRepoUrl = GithubInfo.getGithubRepoUrl;
 
-  constructor(dir: string) {
-    this.cwd = dir;
+  /**
+   *
+   * @param gitdir
+   * @param branch
+   */
+  constructor(gitdir: string, branch = 'master') {
+    this.cwd = gitdir;
+    if (typeof this.branch === 'string') this.branch = branch;
     if (!existsSync(this.cwd)) {
-      throw new Error(dir + ' not found');
+      throw new Error(gitdir + ' not found');
     }
-    this.submodule = new submodule(dir);
-    if (!hasInstance(dir)) setInstance(dir, this);
+    this.submodule = new submodule(gitdir);
+    if (!hasInstance(gitdir)) setInstance(gitdir, this);
   }
 
   /**
