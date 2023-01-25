@@ -4,6 +4,29 @@
  * NodeJS GitHub Helper
  * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
  */
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -15,6 +38,7 @@ const os_1 = require("os");
 const path_1 = require("path");
 const git_info_1 = __importDefault(require("./git-info"));
 const helper_1 = __importDefault(require("./helper"));
+const extension = __importStar(require("./index-exports"));
 const instances_1 = require("./instances");
 const latestCommit_1 = require("./latestCommit");
 const noop_1 = __importDefault(require("./noop"));
@@ -51,7 +75,10 @@ exports.setupGit = setupGit;
  */
 class git {
     constructor(dir) {
+        this.shell = shell_1.shell;
         this.helper = helper_1.default;
+        this.noop = noop_1.default;
+        this.ext = extension;
         // exports infos
         this.infos = git_info_1.default;
         this.getGithubBranches = git_info_1.default.getGithubBranches;
@@ -522,6 +549,7 @@ exports.git = git;
 git.shell = shell_1.shell;
 git.helper = helper_1.default;
 git.noop = noop_1.default;
+git.ext = extension;
 exports.default = git;
 exports.gitHelper = git;
 exports.gitCommandHelper = git;
