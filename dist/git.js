@@ -51,7 +51,6 @@ exports.setupGit = setupGit;
  */
 class git {
     constructor(dir) {
-        this.latestCommit = latestCommit_1.latestCommit;
         this.helper = helper_1.default;
         // exports infos
         this.infos = git_info_1.default;
@@ -67,6 +66,15 @@ class git {
         this.submodule = new submodule_1.default(dir);
         if (!(0, instances_1.hasInstance)(dir))
             (0, instances_1.setInstance)(dir, this);
+    }
+    /**
+     * get latest commit hash
+     * @param customPath
+     * @param options
+     * @returns
+     */
+    latestCommit(customPath, options) {
+        return (0, latestCommit_1.latestCommit)(customPath, this.spawnOpt(options));
     }
     async info() {
         const opt = this.spawnOpt({ stdio: 'pipe' });

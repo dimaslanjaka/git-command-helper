@@ -5,6 +5,7 @@
 /// <reference types="node" />
 import Bluebird from 'bluebird';
 import helper from './helper';
+import { latestCommit } from './latestCommit';
 import noop from './noop';
 import { shell } from './shell';
 import { SpawnOptions } from './spawn';
@@ -34,7 +35,6 @@ export declare class git {
     branch: string;
     private exist;
     cwd: string;
-    latestCommit: (path?: string, options?: Partial<import("./latestCommit").GetLatestCommitHashOptions>) => Promise<string>;
     static shell: typeof shell;
     helper: typeof helper;
     static helper: typeof helper;
@@ -52,6 +52,13 @@ export declare class git {
     getGithubRootDir: typeof import("./git-info").getGithubRootDir;
     getGithubRepoUrl: typeof import("./git-info").getGithubRepoUrl;
     constructor(dir: string);
+    /**
+     * get latest commit hash
+     * @param customPath
+     * @param options
+     * @returns
+     */
+    latestCommit(customPath?: string | null, options?: Parameters<typeof latestCommit>[1]): Promise<string>;
     info(): Promise<{
         root: string | void;
         remote: {
