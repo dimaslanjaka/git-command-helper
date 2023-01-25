@@ -175,6 +175,10 @@ export declare class git {
      */
     private spawnOpt;
     /**
+     * check has any file changed
+     */
+    hasChanged(): Promise<boolean>;
+    /**
      * git add
      * @param path specific path or argument -A
      * @param optionSpawn
