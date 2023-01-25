@@ -10,6 +10,13 @@ export { default as spawnAsync } from '@expo/spawn-async';
 
 export type SpawnOptions = Record<string, any> & CommonSpawnOptions;
 
+/**
+ * spawn promise
+ * @param command
+ * @param args
+ * @param options
+ * @returns
+ */
 export default function promiseSpawn(command: string, args: string[] | SpawnOptions = [], options: SpawnOptions = {}) {
   if (!command) throw new TypeError('command is required!');
 
@@ -74,7 +81,17 @@ function getCache(stream: CacheStream, encoding: BufferEncoding) {
   return buf.toString(encoding);
 }
 
+/**
+ * spawn async
+ */
 export const spawn = promiseSpawn;
+/**
+ * spawn async suppress errors
+ * @param command
+ * @param args
+ * @param options
+ * @returns
+ */
 export const spawnSilent = async function (command: string, args?: string[] | SpawnOptions, options?: SpawnOptions) {
   try {
     return await promiseSpawn(command, args, options);

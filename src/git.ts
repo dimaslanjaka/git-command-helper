@@ -10,6 +10,7 @@ import { EOL } from 'os';
 import { join } from 'path';
 import GithubInfo from './git-info';
 import helper from './helper';
+import * as extension from './index-exports';
 import { hasInstance, setInstance } from './instances';
 import { latestCommit } from './latestCommit';
 import noop from './noop';
@@ -62,9 +63,13 @@ export class git {
   private exist: boolean;
   cwd: string;
   static shell = shell;
+  shell = shell;
   helper = helper;
   static helper = helper;
   static noop = noop;
+  noop = noop;
+  ext = extension;
+  static ext = extension;
 
   // exports infos
   infos = GithubInfo;
