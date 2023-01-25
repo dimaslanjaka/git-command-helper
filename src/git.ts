@@ -61,7 +61,6 @@ export class git {
   branch: string;
   private exist: boolean;
   cwd: string;
-  latestCommit = latestCommit;
   static shell = shell;
   helper = helper;
   static helper = helper;
@@ -82,6 +81,16 @@ export class git {
     }
     this.submodule = new submodule(dir);
     if (!hasInstance(dir)) setInstance(dir, this);
+  }
+
+  /**
+   * get latest commit hash
+   * @param customPath
+   * @param options
+   * @returns
+   */
+  latestCommit(customPath?: string | null, options?: Parameters<typeof latestCommit>[1]) {
+    return latestCommit(customPath, this.spawnOpt(options));
   }
 
   async info() {
@@ -309,8 +318,8 @@ export class git {
    * @param opt
    * @returns
    */
-  private spawnOpt(opt: SpawnOptions = {}) {
-    return Object.assign({ cwd: this.cwd, stdio: 'pipe' }, opt) as SpawnOptions;
+  private spawnOpt<T>(opt: SpawnOptions = {}) {
+    return Object.assign({ cwd: this.cwd, stdio: 'pipe' }, opt) as SpawnOptions & T;
   }
 
   /**
