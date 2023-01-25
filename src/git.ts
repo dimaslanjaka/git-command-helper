@@ -334,6 +334,14 @@ export class git {
   }
 
   /**
+   * check has any file changed
+   */
+  async hasChanged() {
+    const status = await this.status();
+    return status.length > 0;
+  }
+
+  /**
    * git add
    * @param path specific path or argument -A
    * @param optionSpawn
