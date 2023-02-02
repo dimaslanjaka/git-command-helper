@@ -1,4 +1,5 @@
 {
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "module": "CommonJS",
     "target": "es2018",
@@ -27,6 +28,7 @@
     "allowUnreachableCode": true,
     "allowUnusedLabels": true,
     "noImplicitThis": false,
+    "tsBuildInfoFile": "./dist/tsconfig.build.tsbuildinfo",
     "typeRoots": [
       "./node_modules/@types"
     ],

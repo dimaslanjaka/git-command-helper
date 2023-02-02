@@ -107,3 +107,4 @@ const GithubInfo = {
     getGithubBranches
 };
 exports.default = GithubInfo;
+//# sourceMappingURL=git-info.js.map

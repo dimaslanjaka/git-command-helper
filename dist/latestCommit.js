@@ -52,3 +52,4 @@ const latestCommit = async (path, options = {}) => {
     return res.stdout[0];
 };
 exports.latestCommit = latestCommit;
+//# sourceMappingURL=latestCommit.js.map
