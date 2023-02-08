@@ -49,10 +49,13 @@
   "dependencies": {
     "@expo/spawn-async": "^1.7.0",
     "bluebird": "^3.7.2",
+    "cross-spawn": "https://github.com/dimaslanjaka/node-cross-spawn/tarball/private",
     "deepmerge-ts": "^4.3.0",
     "fs-extra": "^11.1.0",
     "hexo-util": "^3.0.1",
     "ini": "^3.0.1",
+    "nodejs-package-types": "https://github.com/dimaslanjaka/nodejs-package-types/raw/main/release/nodejs-package-types.tgz",
+    "persistent-cache": "https://github.com/dimaslanjaka/persistent-cache/tarball/improve2",
     "true-case-path": "^2.2.1",
     "tslib": "^2.5.0",
     "upath": "^2.0.1"
@@ -85,12 +88,6 @@
     "typedoc": "^0.23.24",
     "typedoc-plugin-missing-exports": "^1.0.0",
     "typescript": "^4.9.5"
-  },
-  "optionalDependencies": {
-    "cross-spawn": "https://github.com/dimaslanjaka/node-cross-spawn/tarball/private",
-    "git-command-helper": "latest",
-    "nodejs-package-types": "https://github.com/dimaslanjaka/nodejs-package-types/raw/main/release/nodejs-package-types.tgz",
-    "persistent-cache": "https://github.com/dimaslanjaka/persistent-cache/tarball/improve2"
   },
   "directories": {
     "test": "test"
