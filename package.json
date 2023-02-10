@@ -62,7 +62,7 @@
   },
   "devDependencies": {
     "@types/bluebird": "^3.5.38",
-    "@types/hexo-util": "^0.6.5",
+    "@types/hexo-util": "https://github.com/dimaslanjaka/nodejs-package-types/raw/main/hexo-util/release/types-hexo-util.tgz",
     "@types/ini": "^1.3.31",
     "@types/jest": "^29.4.0",
     "@types/node": "^18.11.19",
