@@ -8,7 +8,8 @@
     "dist",
     "LICENSE*",
     "readme.md",
-    "postinstall.js"
+    "postinstall.js",
+    "!**/*.tsbuildinfo"
   ],
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
