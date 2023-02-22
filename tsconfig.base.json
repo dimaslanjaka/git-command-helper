@@ -3,6 +3,7 @@
   "compilerOptions": {
     "module": "CommonJS",
     "target": "es2018",
+    "composite": true,
     // Tells TypeScript to read JS files, as
     // normally they are ignored as source files
     "allowJs": true,
