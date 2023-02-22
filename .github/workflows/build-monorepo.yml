@@ -64,8 +64,8 @@ jobs:
           node-version: 18.x
           architecture: x64
           token: ${{ secrets.ACCESS_TOKEN }}
-          cache: 'npm'
-          cache-dependency-path: '**/package-lock.json'
+          # cache: 'npm'
+          # cache-dependency-path: '**/package-lock.json'
       
       - name: Set env
         id: set-env
