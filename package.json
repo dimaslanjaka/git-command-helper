@@ -50,7 +50,7 @@
   "dependencies": {
     "@expo/spawn-async": "^1.7.0",
     "bluebird": "^3.7.2",
-    "deepmerge-ts": "^4.3.0",
+    "deepmerge-ts": "^5.0.0",
     "fs-extra": "^11.1.0",
     "hexo-util": "^3.0.1",
     "ini": "^3.0.1",
