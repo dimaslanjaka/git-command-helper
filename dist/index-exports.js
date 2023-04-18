@@ -30,3 +30,4 @@ __exportStar(require("./spawn"), exports);
 var submodule_1 = require("./submodule");
 Object.defineProperty(exports, "gitSubmodule", { enumerable: true, get: function () { return __importDefault(submodule_1).default; } });
 //
+//# sourceMappingURL=index-exports.js.map

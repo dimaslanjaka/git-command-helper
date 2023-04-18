@@ -168,3 +168,4 @@ class submodule {
 exports.submodule = submodule;
 exports.default = submodule;
 exports.gitSubmodule = submodule;
+//# sourceMappingURL=submodule.js.map

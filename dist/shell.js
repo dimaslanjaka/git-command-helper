@@ -32,3 +32,4 @@ async function shell(cmd, args, opt = null) {
     }
 }
 exports.shell = shell;
+//# sourceMappingURL=shell.js.map

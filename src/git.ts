@@ -10,6 +10,7 @@ import { EOL } from 'os';
 import { join } from 'path';
 import GithubInfo from './git-info';
 import helper from './helper';
+import * as extension from './index-exports';
 import { hasInstance, setInstance } from './instances';
 import { latestCommit } from './latestCommit';
 import noop from './noop';
@@ -61,11 +62,14 @@ export class git {
   branch: string;
   private exist: boolean;
   cwd: string;
-  latestCommit = latestCommit;
   static shell = shell;
+  shell = shell;
   helper = helper;
   static helper = helper;
   static noop = noop;
+  noop = noop;
+  ext = extension;
+  static ext = extension;
 
   // exports infos
   infos = GithubInfo;
@@ -75,23 +79,38 @@ export class git {
   getGithubRootDir = GithubInfo.getGithubRootDir;
   getGithubRepoUrl = GithubInfo.getGithubRepoUrl;
 
-  constructor(dir: string) {
-    this.cwd = dir;
+  /**
+   *
+   * @param gitdir
+   * @param branch
+   */
+  constructor(gitdir: string, branch = 'master') {
+    this.cwd = gitdir;
+    if (typeof this.branch === 'string') this.branch = branch;
     if (!existsSync(this.cwd)) {
-      throw new Error(dir + ' not found');
+      throw new Error(gitdir + ' not found');
     }
-    this.submodule = new submodule(dir);
-    if (!hasInstance(dir)) setInstance(dir, this);
+    this.submodule = new submodule(gitdir);
+    if (!hasInstance(gitdir)) setInstance(gitdir, this);
+  }
+
+  /**
+   * get latest commit hash
+   * @param customPath
+   * @param options
+   * @returns
+   */
+  latestCommit(customPath?: string | null, options?: Parameters<typeof latestCommit>[1]) {
+    return latestCommit(customPath, this.spawnOpt(options));
   }
 
   async info() {
     const opt = this.spawnOpt({ stdio: 'pipe' });
     return {
-      root: await this.getGithubRootDir({ cwd: this.cwd }),
+      root: await this.getGithubRootDir(opt),
       remote: await this.getremote(['-v']),
       branch: await this.getbranch(),
-      status: await this.status(),
-      opt
+      status: await this.status()
     };
   }
 
@@ -310,8 +329,16 @@ export class git {
    * @param opt
    * @returns
    */
-  private spawnOpt(opt: SpawnOptions = {}) {
-    return Object.assign({ cwd: this.cwd, stdio: 'pipe' }, opt) as SpawnOptions;
+  private spawnOpt<T>(opt: SpawnOptions = {}) {
+    return Object.assign({ cwd: this.cwd, stdio: 'pipe' }, opt) as SpawnOptions & T;
+  }
+
+  /**
+   * check has any file changed
+   */
+  async hasChanged() {
+    const status = await this.status();
+    return status.length > 0;
   }
 
   /**
