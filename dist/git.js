@@ -559,11 +559,11 @@ class git {
         });
     }
 }
-exports.git = git;
 git.shell = shell_1.shell;
 git.helper = helper_1.default;
 git.noop = noop_1.default;
 git.ext = extension;
+exports.git = git;
 exports.default = git;
 exports.gitHelper = git;
 exports.gitCommandHelper = git;
