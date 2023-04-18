@@ -64,4 +64,3 @@ spawner.spawn = spawn_1.default;
 exports.spawner = spawner;
 exports.default = spawner;
 exports.spawn = spawner.spawn;
-//# sourceMappingURL=spawner.js.map

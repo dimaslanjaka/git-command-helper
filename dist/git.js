@@ -567,4 +567,3 @@ exports.git = git;
 exports.default = git;
 exports.gitHelper = git;
 exports.gitCommandHelper = git;
-//# sourceMappingURL=git.js.map
