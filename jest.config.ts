@@ -18,7 +18,7 @@ const config: Config = {
   roots: [`<rootDir>/test`],
   coveragePathIgnorePatterns: ['/node_modules/', '/dist/', '/tmp/', '/test/'],
 
-  testMatch: [`**/__tests__/**/*.+(ts|tsx|js)`, `**/?(*.)+(spec|test).+(ts|tsx|js)`],
+  testMatch: [`**/__tests__/**/*.+(ts|tsx|js)`, `**/?(*.)+(spec|test).+(ts|tsx|js)`, `**/test/*.test.ts`],
 
   transform: {
     '^.+\\.(ts|tsx)$': [

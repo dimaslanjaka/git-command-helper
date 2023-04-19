@@ -1,3 +1,4 @@
+import { describe, expect, it } from '@jest/globals';
 import { join } from 'path';
 import { getGithubRepoUrl } from '../src/git-info';
 
