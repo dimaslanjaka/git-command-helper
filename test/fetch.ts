@@ -1,7 +1,9 @@
 import gitHelper from '../src';
+import clone from './clone';
 import { TestConfig } from './config';
 
 (async function () {
+  await clone();
   const git = new gitHelper(TestConfig.cwd);
   await git.setremote(TestConfig.remote);
   await git.setbranch(TestConfig.branch);

@@ -1,4 +1,4 @@
-import { rm } from 'fs/promises';
+import { existsSync } from 'fs';
 import { join } from 'path';
 import { spawn } from '../src';
 import { TestConfig } from './config';
@@ -7,10 +7,13 @@ import { TestConfig } from './config';
  * do clone
  */
 async function clone() {
-  await rm(join(__dirname, '../tmp/project-test'), { recursive: true, force: true });
-  await spawn('git', ['clone', '-b', TestConfig.branch, TestConfig.remote, 'tmp/project-test'], {
-    cwd: join(__dirname, '../')
-  });
+  // if (existsSync(TestConfig.cwd)) await rm(TestConfig.cwd, { recursive: true, force: true });
+  console.log('cloning', TestConfig);
+  if (!existsSync(TestConfig.cwd))
+    await spawn('git', ['clone', '-b', TestConfig.branch, TestConfig.remote, 'tmp/project-test'], {
+      cwd: join(__dirname, '../'),
+      stdio: 'inherit'
+    });
 }
 
 export default clone;
