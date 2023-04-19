@@ -7,3 +7,4 @@ tmp
 /docs
 _*.ts
 _*.js
+*.log
