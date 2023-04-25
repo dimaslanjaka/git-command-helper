@@ -15,18 +15,18 @@ import { hasInstance, setInstance } from './instances';
 import { latestCommit } from './latestCommit';
 import noop from './noop';
 import { shell } from './shell';
-import { spawn, spawnAsync, SpawnOptions, spawnSilent } from './spawn';
+import { SpawnOptions, spawn, spawnAsync, spawnSilent } from './spawn';
 import submodule from './submodule';
 import { StatusResult } from './types';
 
 // module 'git-command-helper';
 
 export interface GitOpt {
-  user?: string;
-  email?: string;
+  user?: string | null;
+  email?: string | null;
   url: string;
-  branch: string;
-  baseDir: string;
+  branch: string | null;
+  baseDir: string | null;
 }
 
 /**
@@ -55,13 +55,13 @@ export async function setupGit({ branch, url, baseDir, email = null, user = null
  * GitHub Command Helper For NodeJS
  */
 export class git {
-  submodule: submodule;
-  user: string;
-  email: string;
-  remote: string;
-  branch: string;
-  private exist: boolean;
-  cwd: string;
+  submodule!: submodule;
+  user!: string;
+  email!: string;
+  remote!: string;
+  branch!: string;
+  private exist!: boolean;
+  cwd!: string;
   static shell = shell;
   shell = shell;
   helper = helper;
@@ -88,7 +88,7 @@ export class git {
     this.cwd = gitdir;
     if (typeof this.branch === 'string') this.branch = branch;
     if (!existsSync(this.cwd)) {
-      throw new Error(gitdir + ' not found');
+      throw new Error((gitdir || 'git directory') + ' not found');
     }
     this.submodule = new submodule(gitdir);
     if (!hasInstance(gitdir)) setInstance(gitdir, this);
@@ -181,7 +181,7 @@ export class git {
    * @returns
    */
   async pull(arg?: string[], optionSpawn: SpawnOptions = { stdio: 'inherit' }) {
-    let args = [];
+    let args: string[] = [];
     if (Array.isArray(arg)) args = args.concat(arg);
     if (args.length === 0) {
       args.push('origin', this.branch);
@@ -527,22 +527,26 @@ export class git {
         .split(/\n/gm)
         .filter((split) => split.length > 0)
         .map((splitted) => {
-          let key: string;
+          let key: null | string = null;
           const nameUrl = splitted.split(/\t/).map((str) => {
             const rg = /\((.*)\)/gm;
             if (rg.test(str))
               return str
-                .replace(rg, (whole, v1) => {
+                .replace(rg, (_whole, v1) => {
                   key = v1;
                   return '';
                 })
                 .trim();
             return str.trim();
           });
-          result[key] = {
-            origin: nameUrl[0],
-            url: nameUrl[1]
-          };
+          if (key !== null) {
+            result[key] = {
+              origin: nameUrl[0],
+              url: nameUrl[1]
+            };
+          } else {
+            throw new Error('key never assigned');
+          }
         });
       return result;
     } catch {

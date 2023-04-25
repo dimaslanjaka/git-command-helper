@@ -42,7 +42,31 @@ jobs:
       - uses: actions/checkout@v3
         with:
           # repository: dimaslanjaka/nodejs-package-types
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.ACCESS_TOKEN }}
+          ref: monorepo
+
+      - name: Set EOL git configs
+        continue-on-error: true
+        run: |
+          git config core.eol lf
+          git config core.autocrlf input
+          git checkout-index --force --all
+
+      - name: Pull & update submodules recursively
+        continue-on-error: true
+        run: |
+          git submodule update --init --recursive
+          git submodule update --recursive --remote
+          git pull -X theirs
+
+      - name: initialize nodejs
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+          architecture: x64
+          token: ${{ secrets.ACCESS_TOKEN }}
+          # cache: 'npm'
+          # cache-dependency-path: '**/package-lock.json'
 
       - name: Set env
         id: set-env
@@ -69,29 +93,6 @@ jobs:
           echo "cache npm   : ${{ env.CACHE_NPM }}"
           echo "cache yarn  : ${{ env.CACHE_YARN }}"
           echo "cache yarn2 : ${{ env.CACHE_YARN2 }}"
-
-      - name: Set EOL git configs
-        continue-on-error: true
-        run: |
-          git config core.eol lf
-          git config core.autocrlf input
-          git checkout-index --force --all
-
-      - name: Pull & update submodules recursively
-        continue-on-error: true
-        run: |
-          git submodule update --init --recursive
-          git submodule update --recursive --remote
-          git pull -X theirs
-
-      - name: initialize nodejs
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18.x
-          architecture: x64
-          token: ${{ secrets.GITHUB_TOKEN }}
-          cache: 'npm'
-          cache-dependency-path: '**/package-lock.json'
 
       - name: Enable corepack
         run: corepack enable
@@ -171,7 +172,7 @@ jobs:
       # https://github.com/marketplace/actions/verify-changed-files
       - name: Check if there are changes
         id: changes
-        uses: tj-actions/verify-changed-files@v14
+        uses: tj-actions/verify-changed-files@v13
         with:
           files: |
             release

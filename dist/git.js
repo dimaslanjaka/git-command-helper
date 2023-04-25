@@ -95,7 +95,7 @@ class git {
         if (typeof this.branch === 'string')
             this.branch = branch;
         if (!(0, fs_1.existsSync)(this.cwd)) {
-            throw new Error(gitdir + ' not found');
+            throw new Error((gitdir || 'git directory') + ' not found');
         }
         this.submodule = new submodule_1.default(gitdir);
         if (!(0, instances_1.hasInstance)(gitdir))
@@ -505,22 +505,27 @@ class git {
                 .split(/\n/gm)
                 .filter((split) => split.length > 0)
                 .map((splitted) => {
-                let key;
+                let key = null;
                 const nameUrl = splitted.split(/\t/).map((str) => {
                     const rg = /\((.*)\)/gm;
                     if (rg.test(str))
                         return str
-                            .replace(rg, (whole, v1) => {
+                            .replace(rg, (_whole, v1) => {
                             key = v1;
                             return '';
                         })
                             .trim();
                     return str.trim();
                 });
-                result[key] = {
-                    origin: nameUrl[0],
-                    url: nameUrl[1]
-                };
+                if (key !== null) {
+                    result[key] = {
+                        origin: nameUrl[0],
+                        url: nameUrl[1]
+                    };
+                }
+                else {
+                    throw new Error('key never assigned');
+                }
             });
             return result;
         }
