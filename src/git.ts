@@ -6,7 +6,6 @@
 
 import Bluebird from 'bluebird';
 import { existsSync, mkdirSync } from 'fs';
-import { EOL } from 'os';
 import { join } from 'path';
 import GithubInfo from './git-info';
 import helper from './helper';
@@ -15,9 +14,10 @@ import { hasInstance, setInstance } from './instances';
 import { latestCommit } from './latestCommit';
 import noop from './noop';
 import { shell } from './shell';
-import { SpawnOptions, spawn, spawnAsync, spawnSilent } from './spawn';
+import { SpawnOptions, spawn, spawnSilent } from './spawn';
 import submodule from './submodule';
 import { StatusResult } from './types';
+import { isCanPush } from './functions/push-checker';
 
 // module 'git-command-helper';
 
@@ -301,8 +301,12 @@ export class git {
 
   /**
    * check if can be pushed
-   * @param originName origin name
    */
+  async canPush() {
+    return isCanPush.dryRun(this.cwd);
+  }
+
+  /*
   async canPush(originName = 'origin', branchName = this.branch) {
     // git push --dry-run
     if (branchName) {
@@ -319,17 +323,18 @@ export class git {
     const staged = await this.status();
     // test git push --dry-run
     const dry = await spawnAsync('git', ['push', '--dry-run'], this.spawnOpt({ stdio: 'pipe' }));
-    // console.log({ staged, changed, dry: dry.output.join(EOL).trim() != 'Everything up-to-date' });
+    console.log({ staged, changed, dry: dry.output.join(EOL).trim() != 'Everything up-to-date' });
     // return repository is not up to date
     return changed && staged.length === 0 && dry.output.join(EOL).trim() != 'Everything up-to-date';
   }
+  */
 
   /**
    * Spawn option default stdio pipe
    * @param opt
    * @returns
    */
-  private spawnOpt<T>(opt: SpawnOptions = {}) {
+  spawnOpt<T>(opt: SpawnOptions = {}) {
     return Object.assign({ cwd: this.cwd, stdio: 'pipe' }, opt) as SpawnOptions & T;
   }
 

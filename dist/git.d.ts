@@ -2,6 +2,7 @@
  * NodeJS GitHub Helper
  * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
  */
+/// <reference types="node" />
 import Bluebird from 'bluebird';
 import helper from './helper';
 import * as extension from './index-exports';
@@ -164,15 +165,14 @@ export declare class git {
     push(force?: boolean, optionSpawn?: SpawnOptions): any;
     /**
      * check if can be pushed
-     * @param originName origin name
      */
-    canPush(originName?: string, branchName?: string): Promise<boolean>;
+    canPush(): Promise<boolean>;
     /**
      * Spawn option default stdio pipe
      * @param opt
      * @returns
      */
-    private spawnOpt;
+    spawnOpt<T>(opt?: SpawnOptions): Record<string, any> & import("child_process").CommonSpawnOptions & T;
     /**
      * check has any file changed
      */

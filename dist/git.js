@@ -34,7 +34,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.gitCommandHelper = exports.gitHelper = exports.git = exports.setupGit = void 0;
 const bluebird_1 = __importDefault(require("bluebird"));
 const fs_1 = require("fs");
-const os_1 = require("os");
 const path_1 = require("path");
 const git_info_1 = __importDefault(require("./git-info"));
 const helper_1 = __importDefault(require("./helper"));
@@ -45,6 +44,7 @@ const noop_1 = __importDefault(require("./noop"));
 const shell_1 = require("./shell");
 const spawn_1 = require("./spawn");
 const submodule_1 = __importDefault(require("./submodule"));
+const push_checker_1 = require("./functions/push-checker");
 /**
  * Setup git with branch and remote url resolved automatically
  * @param param0
@@ -300,23 +300,32 @@ class git {
     }
     /**
      * check if can be pushed
-     * @param originName origin name
      */
-    async canPush(originName = 'origin', branchName = this.branch) {
-        // git push --dry-run
-        if (branchName) {
-            await (0, spawn_1.spawn)('git', ['push', '-u', originName || 'origin', branchName || this.branch, '--dry-run'], this.spawnOpt({ stdio: 'pipe' }));
-        }
-        // repository is not up to date
-        const changed = !(await this.isUpToDate());
-        // repostory file changes status
-        const staged = await this.status();
-        // test git push --dry-run
-        const dry = await (0, spawn_1.spawnAsync)('git', ['push', '--dry-run'], this.spawnOpt({ stdio: 'pipe' }));
-        console.log({ staged, changed, dry: dry.output.join(os_1.EOL).trim() != 'Everything up-to-date' });
-        // return repository is not up to date
-        return changed && staged.length === 0 && dry.output.join(os_1.EOL).trim() != 'Everything up-to-date';
+    async canPush() {
+        return push_checker_1.isCanPush.dryRun(this.cwd);
     }
+    /*
+    async canPush(originName = 'origin', branchName = this.branch) {
+      // git push --dry-run
+      if (branchName) {
+        await spawn(
+          'git',
+          ['push', '-u', originName || 'origin', branchName || this.branch, '--dry-run'],
+          this.spawnOpt({ stdio: 'pipe' })
+        );
+      }
+  
+      // repository is not up to date
+      const changed = !(await this.isUpToDate());
+      // repostory file changes status
+      const staged = await this.status();
+      // test git push --dry-run
+      const dry = await spawnAsync('git', ['push', '--dry-run'], this.spawnOpt({ stdio: 'pipe' }));
+      console.log({ staged, changed, dry: dry.output.join(EOL).trim() != 'Everything up-to-date' });
+      // return repository is not up to date
+      return changed && staged.length === 0 && dry.output.join(EOL).trim() != 'Everything up-to-date';
+    }
+    */
     /**
      * Spawn option default stdio pipe
      * @param opt
