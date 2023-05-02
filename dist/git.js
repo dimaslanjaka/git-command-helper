@@ -313,7 +313,7 @@ class git {
         const staged = await this.status();
         // test git push --dry-run
         const dry = await (0, spawn_1.spawnAsync)('git', ['push', '--dry-run'], this.spawnOpt({ stdio: 'pipe' }));
-        // console.log({ staged, changed, dry: dry.output.join(EOL).trim() != 'Everything up-to-date' });
+        console.log({ staged, changed, dry: dry.output.join(os_1.EOL).trim() != 'Everything up-to-date' });
         // return repository is not up to date
         return changed && staged.length === 0 && dry.output.join(os_1.EOL).trim() != 'Everything up-to-date';
     }
@@ -572,4 +572,3 @@ exports.git = git;
 exports.default = git;
 exports.gitHelper = git;
 exports.gitCommandHelper = git;
-//# sourceMappingURL=git.js.map

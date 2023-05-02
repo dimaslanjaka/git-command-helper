@@ -2,7 +2,6 @@
  * NodeJS GitHub Helper
  * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
  */
-/// <reference types="node" />
 import Bluebird from 'bluebird';
 import helper from './helper';
 import * as extension from './index-exports';
