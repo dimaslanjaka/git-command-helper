@@ -10,7 +10,8 @@
     "readme.md",
     "!**/*.tsbuildinfo",
     "!**/package-lock.json",
-    "!**/yarn.lock"
+    "!**/yarn.lock",
+    "!**/release/**"
   ],
   "scripts": {
     "build": "tsc -b tsconfig.build.json",
