@@ -1,9 +1,10 @@
 /* eslint-disable no-useless-escape */
 const { spawn } = require('cross-spawn');
 const fs = require('fs-extra');
-const { join, dirname, toUnix } = require('upath');
+const { resolve, join, dirname, toUnix } = require('upath');
 const packagejson = require('./package.json');
 const crypto = require('crypto');
+const { readdirSync, statSync } = require('fs');
 // const os = require('os');
 
 // auto create tarball (tgz) on release folder
@@ -212,7 +213,32 @@ function parseVersion(versionString) {
 /**
  * create release/readme.md
  */
-function addReadMe() {
+async function addReadMe() {
+  /**
+   * @type {typeof import('git-command-helper')}
+   */
+  const gch = packagejson.name !== 'git-command-helper' ? require('git-command-helper') : require('./dist');
+
+  const git = new gch.default(__dirname);
+
+  const tarballs = readdirSync(releaseDir)
+    .filter((str) => str.endsWith('tgz'))
+    .map((str) => {
+      return {
+        absolute: resolve(releaseDir, str),
+        relative: resolve(releaseDir, str).replace(toUnix(__dirname), '')
+      };
+    })
+    .filter((o) => statSync(o.absolute).isFile());
+
+  for (let i = 0; i < tarballs.length; i++) {
+    const tarball = tarballs[i];
+    // await git.addAndCommit(tarball.relative, 'chore(tarball): update ' + (await git.latestCommit()));
+    const hash = await git.latestCommit(tarball.relative.replace(/^\//));
+    const raw = await git.getGithubRepoUrl(tarball.relative);
+    console.log({ tarball, hash, raw });
+  }
+
   fs.writeFileSync(
     join(releaseDir, 'readme.md'),
     `
