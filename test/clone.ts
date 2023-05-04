@@ -5,7 +5,7 @@ import { spawn } from '../src';
 import { TestConfig } from './config';
 
 /**
- * do clone
+ * do clone when destination folder not exist
  */
 async function clone() {
   // if (existsSync(TestConfig.cwd)) await rm(TestConfig.cwd, { recursive: true, force: true });
