@@ -49,5 +49,5 @@ export const latestCommit = async (path?: string | null, options: Partial<GetLat
     args.push(path);
   }
   const res = await spawner.promise(options, 'git', ...args);
-  return res.stdout[0] as string;
+  if (res.stdout) return res.stdout[0] as string;
 };
