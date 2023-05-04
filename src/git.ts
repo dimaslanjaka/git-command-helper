@@ -442,7 +442,7 @@ export class git {
                   path: str
                 } as StatusResult;
             })
-            .filter((str) => typeof str === 'object');
+            .filter((str) => typeof str === 'object') as StatusResult[];
           resolve(result);
         })
         .catch(reject);
