@@ -3,6 +3,7 @@
  * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
  */
 /// <reference types="node" />
+/// <reference types="node" />
 import Bluebird from 'bluebird';
 import helper from './helper';
 import * as extension from './index-exports';
@@ -17,7 +18,7 @@ export interface GitOpt {
   email?: string | null;
   url: string;
   branch: string | null;
-  baseDir: string | null;
+  baseDir: string;
 }
 /**
  * Setup git with branch and remote url resolved automatically

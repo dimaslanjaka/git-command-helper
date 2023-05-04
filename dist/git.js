@@ -35,6 +35,7 @@ exports.gitCommandHelper = exports.gitHelper = exports.git = exports.setupGit = 
 const bluebird_1 = __importDefault(require("bluebird"));
 const fs_1 = require("fs");
 const path_1 = require("path");
+const push_checker_1 = require("./functions/push-checker");
 const git_info_1 = __importDefault(require("./git-info"));
 const helper_1 = __importDefault(require("./helper"));
 const extension = __importStar(require("./index-exports"));
@@ -44,13 +45,12 @@ const noop_1 = __importDefault(require("./noop"));
 const shell_1 = require("./shell");
 const spawn_1 = require("./spawn");
 const submodule_1 = __importDefault(require("./submodule"));
-const push_checker_1 = require("./functions/push-checker");
 /**
  * Setup git with branch and remote url resolved automatically
  * @param param0
  * @returns
  */
-async function setupGit({ branch, url, baseDir, email = null, user = null }) {
+async function setupGit({ branch, url, baseDir = process.cwd(), email = null, user = null }) {
     const github = new exports.gitHelper(baseDir);
     github.remote = url;
     try {
@@ -58,7 +58,8 @@ async function setupGit({ branch, url, baseDir, email = null, user = null }) {
             await github.init();
         }
         await github.setremote(url);
-        await github.setbranch(branch);
+        if (branch)
+            await github.setbranch(branch);
         if (email)
             await github.setemail(email);
         if (user)
