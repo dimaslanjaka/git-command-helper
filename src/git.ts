@@ -26,6 +26,9 @@ export interface GitOpt {
   email?: string | null;
   url: string;
   branch: string | null;
+  /**
+   * git directory otherwise process.cwd()
+   */
   baseDir: string | null;
 }
 
@@ -35,7 +38,7 @@ export interface GitOpt {
  * @returns
  */
 export async function setupGit({ branch, url, baseDir, email = null, user = null }: GitOpt) {
-  const github = new gitHelper(baseDir);
+  const github = new gitHelper(baseDir || process.cwd());
   github.remote = url;
   try {
     if (!(await github.isExist())) {
