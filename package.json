@@ -26,7 +26,8 @@
     "test": "jest --runInBand --config=jest.config.ts",
     "docs": "gulp docs",
     "clean": "rm -rf dist",
-    "deadcode": "ts-prune"
+    "deadcode": "ts-prune",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -79,9 +80,11 @@
     "eslint-plugin-prettier": "^4.2.1",
     "glob": "^10.2.2",
     "gulp": "^4.0.2",
+    "husky": "^8.0.3",
     "jest": "^29.5.0",
     "jest-config": "^29.5.0",
     "jsonc-parser": "^3.2.0",
+    "lint-staged": "^13.2.2",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.8.8",
     "rimraf": "^5.0.0",
