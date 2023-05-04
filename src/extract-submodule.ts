@@ -5,14 +5,14 @@ import git from './git';
 
 /**
  * extract submodule to object
- * @param path
+ * @param gitmodulesPath
  */
-function extractSubmodule(path: fs.PathOrFileDescriptor) {
-  const config = ini.parse(fs.readFileSync(path).toString());
+function extractSubmodule(gitmodulesPath: string) {
+  const config = ini.parse(fs.readFileSync(gitmodulesPath).toString());
   return Object.keys(config).map((key) => {
     if (key.startsWith('submodule')) {
       const submodule: Submodule = config[key];
-      submodule.root = join(dirname(String(path)), submodule.path);
+      submodule.root = join(dirname(String(gitmodulesPath)), submodule.path);
       //submodule.github = new git(submodule.root);
       /*if (submodule.url)
 				submodule.github
