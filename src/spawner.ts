@@ -1,4 +1,4 @@
-import { spawn as spawnSys, SpawnOptions } from 'child_process';
+import { SpawnOptions, spawn as spawnSys } from 'child_process';
 import { Readable } from 'stream';
 import promiseSpawn from './spawn';
 
@@ -17,7 +17,11 @@ export class spawner {
   static promise(options: null | SpawnOptions = null, cmd: string, ...args: string[]) {
     return new Promise(
       (
-        resolve: (returnargs: { code: number; stdout: string[] | Readable; stderr: string[] | Readable }) => any,
+        resolve: (returnargs: {
+          code: number | null;
+          stdout: string[] | Readable | null;
+          stderr: string[] | Readable | null;
+        }) => any,
         reject: (returnargs: { args: string[]; err: Error }) => any
       ) => {
         // default option inherit
