@@ -1,5 +1,5 @@
 import { SpawnOptions } from 'child_process';
-import spawner from './spawner';
+import spawner from '../spawner';
 
 export type GetLatestCommitHashOptions = Partial<SpawnOptions> & {
   /**

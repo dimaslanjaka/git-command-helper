@@ -7,12 +7,12 @@
 import Bluebird from 'bluebird';
 import { existsSync, mkdirSync } from 'fs';
 import { join } from 'path';
+import { latestCommit } from './functions/latestCommit';
 import { isCanPush } from './functions/push-checker';
 import GithubInfo from './git-info';
 import helper from './helper';
 import * as extension from './index-exports';
 import { hasInstance, setInstance } from './instances';
-import { latestCommit } from './latestCommit';
 import noop from './noop';
 import { shell } from './shell';
 import { SpawnOptions, spawn, spawnSilent } from './spawn';
