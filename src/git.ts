@@ -26,7 +26,7 @@ export interface GitOpt {
   email?: string | null;
   url: string;
   branch: string | null;
-  baseDir: string | null;
+  baseDir: string;
 }
 
 /**
@@ -34,7 +34,7 @@ export interface GitOpt {
  * @param param0
  * @returns
  */
-export async function setupGit({ branch, url, baseDir, email = null, user = null }: GitOpt) {
+export async function setupGit({ branch, url, baseDir = process.cwd(), email = null, user = null }: GitOpt) {
   const github = new gitHelper(baseDir);
   github.remote = url;
   try {
@@ -42,7 +42,7 @@ export async function setupGit({ branch, url, baseDir, email = null, user = null
       await github.init();
     }
     await github.setremote(url);
-    await github.setbranch(branch);
+    if (branch) await github.setbranch(branch);
     if (email) await github.setemail(email);
     if (user) await github.setuser(user);
   } catch (e) {
