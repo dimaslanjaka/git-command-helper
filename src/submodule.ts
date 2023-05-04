@@ -1,7 +1,7 @@
 import Bluebird from 'bluebird';
 import { SpawnOptions } from 'child_process';
 import debug from 'debug';
-import { existsSync } from 'fs';
+import { existsSync, statSync } from 'fs';
 import { rm } from 'fs/promises';
 import { join } from 'path';
 import { toUnix } from 'upath';
@@ -55,7 +55,14 @@ export class submodule {
    * @returns
    */
   hasSubmodule() {
-    return existsSync(join(this.cwd, '.gitmodules'));
+    const gitmodules = join(this.cwd, '.gitmodules');
+    const exist = existsSync(gitmodules);
+    // check empty .gitmodules
+    if (exist) {
+      const size = statSync(gitmodules).size;
+      return size > 0;
+    }
+    return exist;
   }
 
   /**
