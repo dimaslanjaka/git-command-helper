@@ -23,9 +23,10 @@
     "update": "run-s update:** && node postinstall.js",
     "patch": "npm version patch",
     "pretest": "node -r ts-node/register test/pretest.ts",
-    "test": "jest --runInBand",
+    "test": "jest --runInBand --config=jest.config.ts",
     "docs": "gulp docs",
-    "clean": "rm -rf dist"
+    "clean": "rm -rf dist",
+    "deadcode": "ts-prune"
   },
   "repository": {
     "type": "git",
@@ -86,6 +87,7 @@
     "semver": "^7.5.0",
     "ts-jest": "^29.1.0",
     "ts-node": "^10.9.1",
+    "ts-prune": "^0.10.3",
     "typedoc": "^0.24.6",
     "typedoc-plugin-missing-exports": "^2.0.0",
     "typescript": "^5.0.4"
