@@ -12,8 +12,6 @@ const tsconfigJest: typeof import('./tsconfig.base.json') = jsonc.parse(
 );
 const tsconfig = Object.assign(tsconfigBase.compilerOptions, tsconfigJest.compilerOptions);
 
-console.log(tsconfig);
-
 /**
  * @see {@link https://jestjs.io/docs/configuration}
  * * how to run single test {@link https://stackoverflow.com/questions/28725955/how-do-i-test-a-single-file-using-jest}
