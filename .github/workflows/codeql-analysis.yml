@@ -16,10 +16,10 @@ name: 'CodeQL'
 
 on:
   push:
-    branches: [ "master", "main", "beta" ]
+    branches: [ "master", "main", "beta", "monorepo" ]
     paths: [ '**/*.ts' ]
   pull_request:
-    branches: [ "master", "main", "beta" ]
+    branches: [ "master", "main", "beta", "monorepo" ]
     paths: [ '**/*.ts' ]
   schedule:
     - cron: '43 22 * * 6'
