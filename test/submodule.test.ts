@@ -8,7 +8,7 @@ describe('test submodules', () => {
 
   beforeAll(async function () {
     github = new gitHelper(testcfg.cwd);
-    await github.reset(testcfg.branch).then(() => console.log(testcfg.cwd, 'reset'));
+    await github.reset(testcfg.branch);
   });
 
   it('not have submodule', () => {
