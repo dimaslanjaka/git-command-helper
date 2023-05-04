@@ -1,5 +1,4 @@
 config_*
-node_modules
 tmp
 *.tgz
 !release/*
@@ -9,3 +8,9 @@ _*.ts
 _*.js
 *.log
 **/*.tsbuildinfo
+**/node_modules
+**/.yarn/cache/**
+**/.yarn/unplugged/**
+**/.yarn/*.gz
+**/.yarn/version*
+.pnp.*
