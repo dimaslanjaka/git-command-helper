@@ -11,12 +11,14 @@ async function clone() {
   // if (existsSync(TestConfig.cwd)) await rm(TestConfig.cwd, { recursive: true, force: true });
   const cfg = structuredClone(TestConfig);
   delete cfg.password;
-  console.log('cloning', cfg);
-  if (!existsSync(TestConfig.cwd))
+
+  if (!existsSync(TestConfig.cwd)) {
+    console.log('cloning', cfg);
     await spawn('git', ['clone', '-b', TestConfig.branch, TestConfig.remote, 'tmp/project-test'], {
       cwd: join(__dirname, '../'),
       stdio: 'inherit'
     });
+  }
 }
 
 export default clone;
