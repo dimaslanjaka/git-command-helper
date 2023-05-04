@@ -22,6 +22,7 @@
     "update:ncu": "npx npm-check-updates -u -x chalk",
     "update": "run-s update:** && node postinstall.js",
     "patch": "npm version patch",
+    "pretest": "node -r ts-node/register test/pretest.ts",
     "test": "jest --runInBand",
     "docs": "gulp docs",
     "clean": "rm -rf dist"
