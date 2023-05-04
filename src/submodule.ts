@@ -166,13 +166,14 @@ export class submodule {
     const extract = extractSubmodule(join(this.cwd, '.gitmodules'));
     for (let i = 0; i < extract.length; i++) {
       const item = extract[i];
+      if (!item) continue;
       if (!hasInstance(item.root)) setInstance(item.root, new git(item.root));
       const github = getInstance<git>(item.root);
       this.github[item.root] = github;
       extract[i] = Object.assign({ branch: 'master', github }, item);
     }
     return extract.map(function (item) {
-      return Object.assign({ branch: 'master', github: null as git }, item);
+      return Object.assign({ branch: 'master', github: null as unknown as git }, item);
     });
   }
 }
