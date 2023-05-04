@@ -38,7 +38,7 @@ export const latestCommit = async (path?: string | null, options: Partial<GetLat
   } else {
     // get last commit hash of specific path
     args.push('log');
-    if (!short) {
+    if (short === true) {
       args.push('--pretty=tformat:%H');
     } else {
       args.push('--pretty=tformat:%h');
