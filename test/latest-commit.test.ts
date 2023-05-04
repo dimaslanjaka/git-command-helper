@@ -5,14 +5,14 @@ import { TestConfig } from './config';
 describe('latestCommit() - get latest commit', () => {
   let gh: git;
   beforeAll(async () => {
-    gh = new gitCommandHelper(TestConfig.cwd);
+    gh = new gitCommandHelper(TestConfig.cwd, TestConfig.branch);
     await gh.reset(TestConfig.branch);
   });
 
   it('root repository', async () => {
-    const commit = await gh.latestCommit();
-    expect(typeof commit === 'string').toBeTruthy();
-    expect(commit).toBe('ca0d4d0');
+    expect(await gh.latestCommit(undefined, { short: true })).toBe('ca0d4d0');
+    expect(await gh.latestCommit(undefined, { short: false })).toBe('ca0d4d0343dfe8f2b1000e4085f5c2fc10e0f3d2');
+    expect(await gh.latestCommit()).toBe('ca0d4d0');
   });
 
   it('README.md', async () => {

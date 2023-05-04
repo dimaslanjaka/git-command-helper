@@ -3,7 +3,7 @@ import spawner from '../spawner';
 
 export type GetLatestCommitHashOptions = Partial<SpawnOptions> & {
   /**
-   * short hash format
+   * short hash format. default: `true`
    */
   short?: boolean;
   //verbose?: boolean;
@@ -29,7 +29,7 @@ export const latestCommit = async (filePath?: string | null, options: Partial<Ge
     cwd: process.cwd()
   };
   options = Object.assign(default_options, options);
-  const shortHashFormat = options.short === true;
+  const shortHashFormat = typeof options.short === 'undefined' || options.short === null ? true : options.short;
   const args: string[] = [];
   if (!filePath) {
     // get last commit hash of cwd
