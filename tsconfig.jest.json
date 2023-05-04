@@ -12,6 +12,7 @@
 
     /* Type Checking */
     "strict": false /* Enable all strict type-checking */,
-    "skipLibCheck": true /* Skip type checking all .d.ts files. */
+    "skipLibCheck": true, /* Skip type checking all .d.ts files. */
+    "skipDefaultLibCheck": true
   }
 }
