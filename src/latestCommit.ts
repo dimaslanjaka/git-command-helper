@@ -1,5 +1,4 @@
 import { SpawnOptions } from 'child_process';
-import { deepmerge } from 'deepmerge-ts';
 import spawner from './spawner';
 
 export type GetLatestCommitHashOptions = Partial<SpawnOptions> & {
@@ -28,7 +27,7 @@ export const latestCommit = async (path?: string | null, options: Partial<GetLat
   const default_options: GetLatestCommitHashOptions = {
     cwd: process.cwd()
   };
-  options = deepmerge(default_options, options);
+  options = Object.assign(default_options, options);
   const short = options.short || true;
   const args: string[] = [];
   if (!path) {
