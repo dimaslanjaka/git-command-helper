@@ -45,7 +45,7 @@ export async function setupGit({ branch, url, baseDir, email = null, user = null
       await github.init();
     }
     await github.setremote(url);
-    await github.setbranch(branch);
+    if (typeof branch === 'string') await github.setbranch(branch);
     if (email) await github.setemail(email);
     if (user) await github.setuser(user);
   } catch (e) {
@@ -165,7 +165,7 @@ export class git {
    * @returns
    */
   fetch(arg?: string[], optionSpawn: SpawnOptions = { stdio: 'inherit' }) {
-    let args = [];
+    let args: typeof arg = [];
     if (Array.isArray(arg)) args = args.concat(arg);
     if (args.length === 0) {
       args.push('origin', this.branch);
@@ -262,7 +262,7 @@ export class git {
           try {
             await self.addAndCommit(options[0].path, options[0].msg || 'update ' + options[0].path + ' ' + new Date());
           } catch (e) {
-            errors.push(e);
+            errors.push(e as any);
           }
         } finally {
           options.shift();
