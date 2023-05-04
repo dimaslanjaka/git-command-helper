@@ -10,12 +10,12 @@
   },
   "/release/git-command-helper.tgz": {
     "integrity": {
-      "sha1": "e0f8db4878525150c9fc7b632eeedb6df46f83ac",
-      "sha256": "iUCHauxcXha/K7kVGCW+yP9iWD7gt7l9FF/0sd/YqUg=",
-      "md5": "e53112a114668914a23746566b237e7f",
-      "sha512": "VPsPobr6xp9LvlR6K8b8UREzlZF+cg8no1m2Eqpps7sXxpKgR3dNLPgxfWgMtpQFVmxblKIGSporfpwoUoP+yw=="
+      "sha1": "c2da7555fbe4fcf62651843718a54a7a43ab3aa9",
+      "sha256": "Z5wQLgiH4GcJ+MxVPurxBy0Oo9MH41cbs2ll7tY9XMU=",
+      "md5": "9b7595f68b9c3d7d387d96f80fefcb63",
+      "sha512": "TbFgKeDytbUOPVaOPV0B9pSMMZjMsY1gfE19NPrIg3WU8WmDvMapQMS/k/C3008XkCq+R5JbVOIHlkRVE3Dpfw=="
     },
-    "size": "15.39 KB"
+    "size": "18.10 KB"
   },
   "/package-lock.json": {
     "integrity": {
@@ -142,5 +142,23 @@
       "sha512": "VPsPobr6xp9LvlR6K8b8UREzlZF+cg8no1m2Eqpps7sXxpKgR3dNLPgxfWgMtpQFVmxblKIGSporfpwoUoP+yw=="
     },
     "size": "15.39 KB"
+  },
+  "/release/git-command-helper-1.2.0.tgz": {
+    "integrity": {
+      "sha1": "c2da7555fbe4fcf62651843718a54a7a43ab3aa9",
+      "sha256": "Z5wQLgiH4GcJ+MxVPurxBy0Oo9MH41cbs2ll7tY9XMU=",
+      "md5": "9b7595f68b9c3d7d387d96f80fefcb63",
+      "sha512": "TbFgKeDytbUOPVaOPV0B9pSMMZjMsY1gfE19NPrIg3WU8WmDvMapQMS/k/C3008XkCq+R5JbVOIHlkRVE3Dpfw=="
+    },
+    "size": "18.10 KB"
+  },
+  "/yarn.lock": {
+    "integrity": {
+      "sha1": "95bbc79519f1ae8ba497416cf7165bc1239ae140",
+      "sha256": "0igBe/RBUihOeUT7PhEj/1/BaTT+1olGDIWlzQP/Zhc=",
+      "md5": "7d100df91db401c8810206dc590f1792",
+      "sha512": "QdFzgkX7CIXGXhfA831B6i5QdbCTmD/ssCgMeydBbCcPAZQdstV7NuMkKak8sbTwRv0KwKk0eIitWFEFLvo6ag=="
+    },
+    "size": "323.93 KB"
   }
 }
