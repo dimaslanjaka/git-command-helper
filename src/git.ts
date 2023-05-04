@@ -545,7 +545,7 @@ export class git {
             return str.trim();
           });
           if (key !== null) {
-            result[key] = {
+            (result as any)[key] = {
               origin: nameUrl[0],
               url: nameUrl[1]
             };
