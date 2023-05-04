@@ -49,7 +49,7 @@ export const latestCommit = async (filePath?: string | null, options: Partial<Ge
   const res = await spawner.promise(options, 'git', ...args);
   if (res.stdout) {
     const result = res.stdout[0] as string;
-    console.log('git', ...args, result);
+    //console.log('git', ...args, result);
     return result;
   }
 };
