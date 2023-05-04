@@ -1,10 +1,10 @@
 /* eslint-disable no-useless-escape */
 const { spawn } = require('cross-spawn');
 const fs = require('fs-extra');
-const { resolve, join, dirname, toUnix } = require('upath');
+const { resolve, join, dirname, toUnix, basename } = require('upath');
 const packagejson = require('./package.json');
 const crypto = require('crypto');
-const { readdirSync, statSync } = require('fs');
+
 // const os = require('os');
 
 // auto create tarball (tgz) on release folder
@@ -220,8 +220,11 @@ async function addReadMe() {
   const gch = packagejson.name !== 'git-command-helper' ? require('git-command-helper') : require('./dist');
 
   const git = new gch.default(__dirname);
+  const branch = (await git.getbranch()).filter((o) => o.active)[0].branch;
+  const gitlatest = await git.latestCommit();
 
-  const tarballs = readdirSync(releaseDir)
+  const tarballs = fs
+    .readdirSync(releaseDir)
     .filter((str) => str.endsWith('tgz'))
     .map((str) => {
       return {
@@ -229,20 +232,54 @@ async function addReadMe() {
         relative: resolve(releaseDir, str).replace(toUnix(__dirname), '')
       };
     })
-    .filter((o) => statSync(o.absolute).isFile());
+    .filter((o) => fs.statSync(o.absolute).isFile());
 
+  let md = `# Release \`${packagejson.name}\` tarball\n`;
+
+  md += '## Releases\n';
+  md += '| version | tarball url |\n';
+  md += '| :--- | :--- |\n';
   for (let i = 0; i < tarballs.length; i++) {
     const tarball = tarballs[i];
-    // await git.addAndCommit(tarball.relative, 'chore(tarball): update ' + (await git.latestCommit()));
-    const hash = await git.latestCommit(tarball.relative.replace(/^\//));
-    const raw = await git.getGithubRepoUrl(tarball.relative);
-    console.log({ tarball, hash, raw });
+    await git.add(tarball.relative.replace(/^\/+/, ''));
+    try {
+      await git.commit('chore(tarball): update ' + gitlatest, '-m', { stdio: 'pipe' });
+    } catch {
+      //
+    }
+    const hash = await git.latestCommit(tarball.relative.replace(/^\/+/, ''));
+    const raw = await git.getGithubRepoUrl(tarball.relative.replace(/^\/+/, ''));
+    let tarballUrl;
+    const dev = raw.rawURL;
+    const prod = raw.rawURL.replace('/raw/' + branch, '/raw/' + hash);
+    let ver = basename(tarball.relative, '.tgz').replace(`${packagejson.name}-`, '');
+    if (isNaN(parseFloat(ver))) {
+      ver = 'latest';
+      tarballUrl = dev;
+    } else {
+      tarballUrl = prod;
+    }
+    md += `| ${ver} | ${tarballUrl} |\n`;
   }
+
+  md += `
+use this tarball with \`resolutions\`:
+\`\`\`json
+{
+  "resolutions": {
+    "${packagejson.name}": "<url of tarball>"
+  }
+}
+\`\`\`
+
+## Releases
+
+    `;
 
   fs.writeFileSync(
     join(releaseDir, 'readme.md'),
-    `
-# Release \`${packagejson.name}\` Tarball
+    md +
+      `
 
 ## Get URL of \`${packagejson.name}\` Release Tarball
 - select tarball file
