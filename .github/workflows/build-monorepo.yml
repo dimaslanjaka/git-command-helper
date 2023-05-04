@@ -67,7 +67,7 @@ jobs:
           token: ${{ secrets.ACCESS_TOKEN }}
           # cache: 'npm'
           # cache-dependency-path: '**/package-lock.json'
-      
+
       - name: Set env
         id: set-env
         shell: bash
@@ -190,8 +190,8 @@ jobs:
         if: steps.changes.outputs.files_changed == 'true'
         continue-on-error: true
         run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git config --global user.name 'dimaslanjaka'
+          git config --global user.email 'dimaslanjaka@gmail.com'
       - run: git add release
         if: steps.changes.outputs.files_changed == 'true'
         continue-on-error: true
