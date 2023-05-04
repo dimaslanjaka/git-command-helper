@@ -7,6 +7,7 @@
 import Bluebird from 'bluebird';
 import { existsSync, mkdirSync } from 'fs';
 import { join } from 'path';
+import { isCanPush } from './functions/push-checker';
 import GithubInfo from './git-info';
 import helper from './helper';
 import * as extension from './index-exports';
@@ -17,7 +18,6 @@ import { shell } from './shell';
 import { SpawnOptions, spawn, spawnSilent } from './spawn';
 import submodule from './submodule';
 import { StatusResult } from './types';
-import { isCanPush } from './functions/push-checker';
 
 // module 'git-command-helper';
 
@@ -162,7 +162,7 @@ export class git {
    * @returns
    */
   fetch(arg?: string[], optionSpawn: SpawnOptions = { stdio: 'inherit' }) {
-    let args = [];
+    let args: string[] = [];
     if (Array.isArray(arg)) args = args.concat(arg);
     if (args.length === 0) {
       args.push('origin', this.branch);
@@ -259,7 +259,7 @@ export class git {
           try {
             await self.addAndCommit(options[0].path, options[0].msg || 'update ' + options[0].path + ' ' + new Date());
           } catch (e) {
-            errors.push(e);
+            errors.push(e as any);
           }
         } finally {
           options.shift();
