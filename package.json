@@ -8,7 +8,9 @@
     "dist",
     "LICENSE*",
     "readme.md",
-    "!**/*.tsbuildinfo"
+    "!**/*.tsbuildinfo",
+    "!**/package-lock.json",
+    "!**/yarn.lock"
   ],
   "scripts": {
     "build": "tsc -b tsconfig.build.json",
