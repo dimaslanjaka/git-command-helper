@@ -35,12 +35,12 @@ exports.gitCommandHelper = exports.gitHelper = exports.git = exports.setupGit = 
 const bluebird_1 = __importDefault(require("bluebird"));
 const fs_1 = require("fs");
 const path_1 = require("path");
+const latestCommit_1 = require("./functions/latestCommit");
 const push_checker_1 = require("./functions/push-checker");
 const git_info_1 = __importDefault(require("./git-info"));
 const helper_1 = __importDefault(require("./helper"));
 const extension = __importStar(require("./index-exports"));
 const instances_1 = require("./instances");
-const latestCommit_1 = require("./latestCommit");
 const noop_1 = __importDefault(require("./noop"));
 const shell_1 = require("./shell");
 const spawn_1 = require("./spawn");

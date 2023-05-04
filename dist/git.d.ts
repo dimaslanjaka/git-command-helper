@@ -5,9 +5,9 @@
 /// <reference types="node" />
 /// <reference types="node" />
 import Bluebird from 'bluebird';
+import { latestCommit } from './functions/latestCommit';
 import helper from './helper';
 import * as extension from './index-exports';
-import { latestCommit } from './latestCommit';
 import noop from './noop';
 import { shell } from './shell';
 import { SpawnOptions } from './spawn';
