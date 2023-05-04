@@ -16,3 +16,4 @@ _*.js
 .pnp.*
 yarn.lock
 package-lock.json
+/dist/
