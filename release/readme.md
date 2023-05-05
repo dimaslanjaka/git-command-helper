@@ -16,7 +16,7 @@
 | 1.1.7 | https://github.com/dimaslanjaka/git-command-helper/raw/ffedd09/release/git-command-helper-1.1.7.tgz |
 | 1.1.8 | https://github.com/dimaslanjaka/git-command-helper/raw/ffedd09/release/git-command-helper-1.1.8.tgz |
 | 1.1.9 | https://github.com/dimaslanjaka/git-command-helper/raw/27fb573/release/git-command-helper-1.1.9.tgz |
-| 1.2.0 | https://github.com/dimaslanjaka/git-command-helper/raw/7c5d2c4/release/git-command-helper-1.2.0.tgz |
+| 1.2.0 | https://github.com/dimaslanjaka/git-command-helper/raw/6c8d8e4/release/git-command-helper-1.2.0.tgz |
 | latest | https://github.com/dimaslanjaka/git-command-helper/raw/master/release/git-command-helper.tgz |
 
 use this tarball with `resolutions`:
