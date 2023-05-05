@@ -15,9 +15,15 @@ export async function getGithubRepoUrl(path: string, opt: spawnAsync.SpawnOption
 
   let url = new URL(remote);
   url.pathname += '/tree/' + (await getGithubCurrentBranch(opt)) + path.replace(root, '');
+  /**
+   * url from repository url
+   */
   const remoteURL = url.toString();
   url = new URL(remote);
   url.pathname += '/raw/' + (await getGithubCurrentBranch(opt)) + path.replace(root, '');
+  /**
+   * url raw file
+   */
   const rawURL = url.toString();
   return {
     remoteURL,
