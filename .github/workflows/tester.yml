@@ -8,12 +8,18 @@ name: Tester
 on:
   push:
     paths:
-      - '**/*.ts'
+      - '**/src/*.ts'
+      - '**/test/*.ts'
+      - '**/src/*.js'
+      - '**/test/*.js'
   pull_request:
     types:
       - closed
     paths:
-      - '**/*.ts'
+      - '**/src/*.ts'
+      - '**/test/*.ts'
+      - '**/src/*.js'
+      - '**/test/*.js'
   workflow_dispatch:
 
 jobs:
