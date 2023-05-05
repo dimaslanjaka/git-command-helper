@@ -10,10 +10,10 @@
   },
   "/release/git-command-helper.tgz": {
     "integrity": {
-      "sha1": "32fbf726e7114db55f82a357b5df8dac8234a6f2",
-      "sha256": "a7t+3I+lbD6beBuA8M7SAQ2e/waIZ6jyuhsXsP8t4rQ=",
-      "md5": "68486a93080e9d53ec5d47337a3bea8f",
-      "sha512": "yH3wjOvOMSL2yQoGU081TSJsddPDEXFx8vmnpFNykmFcM6AbNyDeqXV5aDmCgnQvGZXHKWkGR5Y3EslzNqEcaw=="
+      "sha1": "bcb4c4a48fd0a6ce769fce6321665ca2d01bd6d5",
+      "sha256": "Y9DcIYgZI2MFPqyrCH5GCBNy+BXkqP3jeRuTal4SDGU=",
+      "md5": "54502e5bac849168d058bddd5c163b1f",
+      "sha512": "mYZfqo+vwZnxItZ72UxE8xrMNxNTEj5+egPQxDWndlyX33au6Ga2XPSZRfgoRjVfGXmU5oXo0YvE/l3xCZHx+g=="
     },
     "size": "16.95 KB"
   },
@@ -145,10 +145,10 @@
   },
   "/release/git-command-helper-1.2.0.tgz": {
     "integrity": {
-      "sha1": "32fbf726e7114db55f82a357b5df8dac8234a6f2",
-      "sha256": "a7t+3I+lbD6beBuA8M7SAQ2e/waIZ6jyuhsXsP8t4rQ=",
-      "md5": "68486a93080e9d53ec5d47337a3bea8f",
-      "sha512": "yH3wjOvOMSL2yQoGU081TSJsddPDEXFx8vmnpFNykmFcM6AbNyDeqXV5aDmCgnQvGZXHKWkGR5Y3EslzNqEcaw=="
+      "sha1": "bcb4c4a48fd0a6ce769fce6321665ca2d01bd6d5",
+      "sha256": "Y9DcIYgZI2MFPqyrCH5GCBNy+BXkqP3jeRuTal4SDGU=",
+      "md5": "54502e5bac849168d058bddd5c163b1f",
+      "sha512": "mYZfqo+vwZnxItZ72UxE8xrMNxNTEj5+egPQxDWndlyX33au6Ga2XPSZRfgoRjVfGXmU5oXo0YvE/l3xCZHx+g=="
     },
     "size": "16.95 KB"
   },
