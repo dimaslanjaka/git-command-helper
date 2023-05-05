@@ -7,6 +7,7 @@
 import Bluebird from 'bluebird';
 import { existsSync, mkdirSync } from 'fs';
 import { join } from 'path';
+import { isUntracked } from './functions/isFileChanged';
 import { latestCommit } from './functions/latestCommit';
 import { isCanPush } from './functions/push-checker';
 import GithubInfo from './git-info';
@@ -56,6 +57,11 @@ export class git {
   getGithubRemote = GithubInfo.getGithubRemote;
   getGithubRootDir = GithubInfo.getGithubRootDir;
   getGithubRepoUrl = GithubInfo.getGithubRepoUrl;
+
+  // check file is untracked
+  isUntracked(file: string) {
+    return isUntracked(file, { cwd: this.cwd });
+  }
 
   /**
    *
