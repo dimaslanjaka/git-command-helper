@@ -7,19 +7,13 @@ name: Tester
 
 on:
   push:
-    paths-ignore:
-      - '**/*.tgz'
-      - '**/*.gz'
-      - '**/release/**'
-      - '**garbage-collector**'
-      - '**codeql**'
+    paths:
+      - '**/*.ts'
   pull_request:
     types:
       - closed
-    paths-ignore:
-      - '**/release/**'
-      - '**/*.tgz'
-      - '**/*.gz'
+    paths:
+      - '**/*.ts'
   workflow_dispatch:
 
 jobs:
