@@ -3,3 +3,5 @@ export * from './index-exports';
 export * as ext from './index-exports';
 
 export default git;
+export const gitHelper = git;
+export const gitCommandHelper = git;
