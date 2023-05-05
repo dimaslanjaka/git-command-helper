@@ -105,7 +105,6 @@ jobs:
           echo "runner url  : ${{ env.GITHUB_RUNNER_URL }}"
           echo "cache npm   : ${{ env.CACHE_NPM }}"
           echo "cache yarn  : ${{ env.CACHE_YARN }}"
-          echo "cache yarn2 : ${{ env.CACHE_YARN2 }}"
 
       - name: Enable corepack
         run: corepack enable
