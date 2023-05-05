@@ -56,9 +56,21 @@ export class git {
   getGithubCurrentBranch = GithubInfo.getGithubCurrentBranch;
   getGithubRemote = GithubInfo.getGithubRemote;
   getGithubRootDir = GithubInfo.getGithubRootDir;
-  getGithubRepoUrl = GithubInfo.getGithubRepoUrl;
 
-  // check file is untracked
+  /**
+   * get repository and raw file url
+   * @param file relative to git root without leading `/`
+   * @returns
+   */
+  getGithubRepoUrl(file: string) {
+    return GithubInfo.getGithubRepoUrl(file, { cwd: this.cwd });
+  }
+
+  /**
+   * check file is untracked
+   * @param file relative to git root without leading `/`
+   * @returns
+   */
   isUntracked(file: string) {
     return isUntracked(file, { cwd: this.cwd });
   }
