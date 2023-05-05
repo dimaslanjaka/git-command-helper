@@ -7,6 +7,7 @@
 import Bluebird from 'bluebird';
 import { existsSync, mkdirSync } from 'fs';
 import { join } from 'path';
+import { isUntracked } from './functions/isFileChanged';
 import { latestCommit } from './functions/latestCommit';
 import { isCanPush } from './functions/push-checker';
 import GithubInfo from './git-info';
@@ -27,28 +28,6 @@ export interface GitOpt {
   url: string;
   branch: string | null;
   baseDir: string;
-}
-
-/**
- * Setup git with branch and remote url resolved automatically
- * @param param0
- * @returns
- */
-export async function setupGit({ branch, url, baseDir = process.cwd(), email = null, user = null }: GitOpt) {
-  const github = new gitHelper(baseDir);
-  github.remote = url;
-  try {
-    if (!(await github.isExist())) {
-      await github.init();
-    }
-    await github.setremote(url);
-    if (branch) await github.setbranch(branch);
-    if (email) await github.setemail(email);
-    if (user) await github.setuser(user);
-  } catch (e) {
-    console.trace(e);
-  }
-  return github;
 }
 
 /**
@@ -77,7 +56,24 @@ export class git {
   getGithubCurrentBranch = GithubInfo.getGithubCurrentBranch;
   getGithubRemote = GithubInfo.getGithubRemote;
   getGithubRootDir = GithubInfo.getGithubRootDir;
-  getGithubRepoUrl = GithubInfo.getGithubRepoUrl;
+
+  /**
+   * get repository and raw file url
+   * @param file relative to git root without leading `/`
+   * @returns
+   */
+  getGithubRepoUrl(file: string) {
+    return GithubInfo.getGithubRepoUrl(file, { cwd: this.cwd });
+  }
+
+  /**
+   * check file is untracked
+   * @param file relative to git root without leading `/`
+   * @returns
+   */
+  isUntracked(file: string) {
+    return isUntracked(file, { cwd: this.cwd });
+  }
 
   /**
    *
@@ -599,5 +595,25 @@ export class git {
 }
 
 export default git;
-export const gitHelper = git;
-export const gitCommandHelper = git;
+
+/**
+ * Setup git with branch and remote url resolved automatically
+ * @param param0
+ * @returns
+ */
+export async function setupGit({ branch, url, baseDir = process.cwd(), email = null, user = null }: GitOpt) {
+  const github = new git(baseDir);
+  github.remote = url;
+  try {
+    if (!(await github.isExist())) {
+      await github.init();
+    }
+    await github.setremote(url);
+    if (branch) await github.setbranch(branch);
+    if (email) await github.setemail(email);
+    if (user) await github.setuser(user);
+  } catch (e) {
+    console.trace(e);
+  }
+  return github;
+}
