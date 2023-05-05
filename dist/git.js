@@ -31,10 +31,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.gitCommandHelper = exports.gitHelper = exports.git = exports.setupGit = void 0;
+exports.setupGit = exports.git = void 0;
 const bluebird_1 = __importDefault(require("bluebird"));
 const fs_1 = require("fs");
 const path_1 = require("path");
+const isFileChanged_1 = require("./functions/isFileChanged");
 const latestCommit_1 = require("./functions/latestCommit");
 const push_checker_1 = require("./functions/push-checker");
 const git_info_1 = __importDefault(require("./git-info"));
@@ -46,35 +47,25 @@ const shell_1 = require("./shell");
 const spawn_1 = require("./spawn");
 const submodule_1 = __importDefault(require("./submodule"));
 /**
- * Setup git with branch and remote url resolved automatically
- * @param param0
- * @returns
- */
-async function setupGit({ branch, url, baseDir = process.cwd(), email = null, user = null }) {
-    const github = new exports.gitHelper(baseDir);
-    github.remote = url;
-    try {
-        if (!(await github.isExist())) {
-            await github.init();
-        }
-        await github.setremote(url);
-        if (branch)
-            await github.setbranch(branch);
-        if (email)
-            await github.setemail(email);
-        if (user)
-            await github.setuser(user);
-    }
-    catch (e) {
-        console.trace(e);
-    }
-    return github;
-}
-exports.setupGit = setupGit;
-/**
  * GitHub Command Helper For NodeJS
  */
 class git {
+    /**
+     * get repository and raw file url
+     * @param file relative to git root without leading `/`
+     * @returns
+     */
+    getGithubRepoUrl(file) {
+        return git_info_1.default.getGithubRepoUrl(file, { cwd: this.cwd });
+    }
+    /**
+     * check file is untracked
+     * @param file relative to git root without leading `/`
+     * @returns
+     */
+    isUntracked(file) {
+        return (0, isFileChanged_1.isUntracked)(file, { cwd: this.cwd });
+    }
     /**
      *
      * @param gitdir
@@ -91,7 +82,6 @@ class git {
         this.getGithubCurrentBranch = git_info_1.default.getGithubCurrentBranch;
         this.getGithubRemote = git_info_1.default.getGithubRemote;
         this.getGithubRootDir = git_info_1.default.getGithubRootDir;
-        this.getGithubRepoUrl = git_info_1.default.getGithubRepoUrl;
         this.cwd = gitdir;
         if (typeof this.branch === 'string')
             this.branch = branch;
@@ -580,5 +570,29 @@ git.noop = noop_1.default;
 git.ext = extension;
 exports.git = git;
 exports.default = git;
-exports.gitHelper = git;
-exports.gitCommandHelper = git;
+/**
+ * Setup git with branch and remote url resolved automatically
+ * @param param0
+ * @returns
+ */
+async function setupGit({ branch, url, baseDir = process.cwd(), email = null, user = null }) {
+    const github = new git(baseDir);
+    github.remote = url;
+    try {
+        if (!(await github.isExist())) {
+            await github.init();
+        }
+        await github.setremote(url);
+        if (branch)
+            await github.setbranch(branch);
+        if (email)
+            await github.setemail(email);
+        if (user)
+            await github.setuser(user);
+    }
+    catch (e) {
+        console.trace(e);
+    }
+    return github;
+}
+exports.setupGit = setupGit;

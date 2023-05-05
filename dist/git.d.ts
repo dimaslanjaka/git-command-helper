@@ -21,12 +21,6 @@ export interface GitOpt {
   baseDir: string;
 }
 /**
- * Setup git with branch and remote url resolved automatically
- * @param param0
- * @returns
- */
-export declare function setupGit({ branch, url, baseDir, email, user }: GitOpt): Promise<extension.git>;
-/**
  * GitHub Command Helper For NodeJS
  */
 export declare class git {
@@ -56,7 +50,21 @@ export declare class git {
   getGithubCurrentBranch: typeof extension.getGithubCurrentBranch;
   getGithubRemote: typeof extension.getGithubRemote;
   getGithubRootDir: typeof extension.getGithubRootDir;
-  getGithubRepoUrl: typeof extension.getGithubRepoUrl;
+  /**
+   * get repository and raw file url
+   * @param file relative to git root without leading `/`
+   * @returns
+   */
+  getGithubRepoUrl(file: string): Promise<{
+    remoteURL: string;
+    rawURL: string;
+  }>;
+  /**
+   * check file is untracked
+   * @param file relative to git root without leading `/`
+   * @returns
+   */
+  isUntracked(file: string): Promise<boolean>;
   /**
    *
    * @param gitdir
@@ -268,5 +276,9 @@ export declare class git {
   reset(branch?: string): Bluebird<string>;
 }
 export default git;
-export declare const gitHelper: typeof extension.git;
-export declare const gitCommandHelper: typeof extension.git;
+/**
+ * Setup git with branch and remote url resolved automatically
+ * @param param0
+ * @returns
+ */
+export declare function setupGit({ branch, url, baseDir, email, user }: GitOpt): Promise<extension.git>;

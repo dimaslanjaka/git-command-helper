@@ -29,8 +29,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ext = void 0;
+exports.gitCommandHelper = exports.gitHelper = exports.ext = void 0;
 const git_1 = __importDefault(require("./git"));
 __exportStar(require("./index-exports"), exports);
 exports.ext = __importStar(require("./index-exports"));
 exports.default = git_1.default;
+exports.gitHelper = git_1.default;
+exports.gitCommandHelper = git_1.default;

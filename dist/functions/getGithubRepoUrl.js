@@ -15,9 +15,15 @@ async function getGithubRepoUrl(path, opt = {}) {
     const remote = ((await (0, getGithubRemote_1.getGithubRemote)(null, opt)) || '').replace(/(.git|\/)$/i, '');
     let url = new URL(remote);
     url.pathname += '/tree/' + (await (0, getGithubCurrentBranch_1.getGithubCurrentBranch)(opt)) + path.replace(root, '');
+    /**
+     * url from repository url
+     */
     const remoteURL = url.toString();
     url = new URL(remote);
     url.pathname += '/raw/' + (await (0, getGithubCurrentBranch_1.getGithubCurrentBranch)(opt)) + path.replace(root, '');
+    /**
+     * url raw file
+     */
     const rawURL = url.toString();
     return {
         remoteURL,
