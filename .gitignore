@@ -17,3 +17,4 @@ _*.js
 yarn.lock
 package-lock.json
 /dist/
+.nyc*
