@@ -36,7 +36,7 @@ jobs:
         #os: [ "windows-latest", "macos-11", "ubuntu-latest" ]
         os: ['ubuntu-latest']
         node-version: ['14', '16', '18']
-        architecture: ['x86', 'x64']
+        #architecture: ['x86', 'x64']
       fail-fast: true
       max-parallel: 6
 
@@ -214,6 +214,7 @@ jobs:
           FILE=package-lock.json
           if [ -f "$FILE" ]; then
               npm run build
+              npm run pack --if-present
           else
               yarn build
           fi
