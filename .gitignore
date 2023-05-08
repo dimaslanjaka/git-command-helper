@@ -18,3 +18,4 @@ yarn.lock
 package-lock.json
 /dist/
 .nyc*
+release/git-command-helper-*.tgz
