@@ -7,6 +7,7 @@
 import Bluebird from 'bluebird';
 import { existsSync, mkdirSync } from 'fs';
 import { join } from 'path';
+import { isIgnored, isIgnoredOpt } from './functions/gitignore';
 import { isUntracked } from './functions/isFileChanged';
 import { latestCommit } from './functions/latestCommit';
 import { isCanPush } from './functions/push-checker';
@@ -340,6 +341,18 @@ export class git {
   async hasChanged() {
     const status = await this.status();
     return status.length > 0;
+  }
+
+  /**
+   * is file ignored by `.gitignore`?
+   * @param filePath
+   * @param options
+   * @returns
+   */
+  isIgnored(filePath: string, options?: isIgnoredOpt) {
+    if (!options) options = {};
+    options.cwd = this.cwd;
+    return isIgnored(filePath, options);
   }
 
   /**
