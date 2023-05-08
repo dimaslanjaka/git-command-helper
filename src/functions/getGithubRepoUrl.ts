@@ -1,14 +1,14 @@
-import { trueCasePathSync } from 'true-case-path';
-import { spawnAsync } from '../spawn';
+import { trueCasePathSync } from '../utils/case-path';
 import { getGithubCurrentBranch } from './getGithubCurrentBranch';
 import { getGithubRemote } from './getGithubRemote';
 import { getGithubRootDir } from './getGithubRootDir';
+import { infoOptions } from './infoOptions';
 
 /**
  * Get github url for single file or folder
  * @param path path subfolder or file
  */
-export async function getGithubRepoUrl(path: string, opt: spawnAsync.SpawnOptions = {}) {
+export async function getGithubRepoUrl(path: string, opt: infoOptions = { cwd: process.cwd() }) {
   path = trueCasePathSync(path);
   const root = trueCasePathSync((await getGithubRootDir(opt)) || '');
   const remote = ((await getGithubRemote(null, opt)) || '').replace(/(.git|\/)$/i, '');

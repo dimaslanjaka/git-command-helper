@@ -1,12 +1,12 @@
 {
-  "/release/git-command-helper-1.0.12.tgz": {
+  "/release/git-command-helper-1.2.0.tgz": {
     "integrity": {
-      "sha1": "0e9fc5daeb2ed6429866fd91dd34281a3cf293b7",
-      "sha256": "XkFBLIvRk7B4+OZqgp/AA2ZKMbCZ87SwpJFUEE6CIaE=",
-      "md5": "d909a0c547ece5b6c0575263cbc62c09",
-      "sha512": "mTRikXdQL4vjps86k4rx9V/9Kq3eW0iRLfOhmWtE8EQ0mjAqIk7UMt/12r+BsTKnemwiFvs8GdoHiyyeCn6gaw=="
+      "sha1": "ac38bb6dc0284ee8cfec1a711b4ef4ec5d28aaac",
+      "sha256": "CjWRioqPhpepQpCZwzlXaFQw6uHdw4Jaxl0TUBGxgFI=",
+      "md5": "915eaa56617da3443724e789ef30ba67",
+      "sha512": "Koj3aZdWFqviz4Plv8hKSO+Y87HR2e5DUBVCSPnRZthZPdfspNrr/+a9+axx3T/FIuCwnpK+fq5IUvpo6/ULtQ=="
     },
-    "size": "24.84 KB"
+    "size": "20.33 KB"
   },
   "/release/git-command-helper.tgz": {
     "integrity": {

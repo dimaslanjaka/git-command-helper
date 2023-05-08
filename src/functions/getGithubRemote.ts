@@ -1,12 +1,6 @@
 import noop from '../noop';
 import { spawnAsync } from '../spawn';
-
-export interface infoOptions extends spawnAsync.SpawnOptions {
-  /**
-   * make function throws when error occurs
-   */
-  throwable?: boolean;
-}
+import { infoOptions } from './infoOptions';
 
 /**
  * get origin url
