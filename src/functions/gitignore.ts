@@ -21,7 +21,7 @@ export const getIgnores = async ({ cwd = process.cwd() }) =>
 export type Return = {
   filter: {
     str: string;
-    cwd: string;
+    root: string;
     relativePath: string;
     matched: boolean;
   }[];
@@ -46,7 +46,10 @@ export async function isIgnored(filePath: string, { verbose = false }: infoOptio
     relativePath = relativePath.replace(/^\/+/, '');
     return {
       str,
-      cwd,
+      /**
+       * root directory of git
+       */
+      root: cwd,
       relativePath,
       matched: str === relativePath || relativePath.startsWith(str) || minimatch(relativePath, str)
     };
