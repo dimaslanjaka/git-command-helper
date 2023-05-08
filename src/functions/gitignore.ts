@@ -1,5 +1,6 @@
 import cp from 'cross-spawn';
-import fs from 'fs';
+import fs from 'fs-extra';
+import * as glob from 'glob';
 import { minimatch } from 'minimatch';
 import path from 'upath';
 import { trueCasePathSync } from '../utils/case-path';
@@ -21,18 +22,23 @@ export const getIgnores = async ({ cwd = process.cwd() }) =>
 export type Return = {
   filter: {
     str: string;
-    root: string;
     relativePath: string;
     matched: boolean;
   }[];
   result: boolean;
+  /**
+   * root directory of git
+   */
+  root: string;
 };
 
+export type isIgnoredOpt = infoOptions & Parameters<typeof getAllIgnoresConfig>[0];
+
 export async function isIgnored(filePath: string): Promise<boolean>;
-export async function isIgnored(filePath: string, opt?: infoOptions): Promise<boolean | Return>;
+export async function isIgnored(filePath: string, opt?: isIgnoredOpt): Promise<boolean | Return>;
 export async function isIgnored(filePath: string, opt: { verbose: true }): Promise<Return>;
 export async function isIgnored(filePath: string, opt: { verbose: false }): Promise<boolean>;
-export async function isIgnored(filePath: string, { verbose = false }: infoOptions = {}) {
+export async function isIgnored(filePath: string, options: isIgnoredOpt = {}) {
   const cwd = await getGithubRootDir({ cwd: path.dirname(filePath) });
   if (!cwd) throw new Error(filePath + ' is not inside git repository');
 
@@ -44,22 +50,54 @@ export async function isIgnored(filePath: string, { verbose = false }: infoOptio
       relativePath = unixPath.replace(cwd, '');
     }
     relativePath = relativePath.replace(/^\/+/, '');
+
+    const matches: boolean[] = [];
+    const patterns = getAllIgnoresConfig(options);
+    for (let i = 0; i < patterns.length; i++) {
+      const pattern = patterns[i];
+      if (pattern === '*') continue;
+      const matched = minimatch(relativePath, pattern, { nonegate: true });
+      if (matched && options.verbose) console.log(pattern, matched);
+      matches.push(matched);
+    }
+
     return {
       str,
-      /**
-       * root directory of git
-       */
-      root: cwd,
       relativePath,
-      matched: str === relativePath || relativePath.startsWith(str) || minimatch(relativePath, str)
+      matched:
+        str.includes(relativePath) ||
+        str === relativePath ||
+        relativePath.startsWith(str) ||
+        matches.some((b) => b === true)
     };
   });
   const result = filter.some((o) => o.matched);
-  if (verbose) {
+  if (options.verbose) {
     return {
+      root: cwd,
       filter,
       result
     };
   }
   return result;
+}
+
+/**
+ * get and parse all `.gitignore` files
+ */
+export function getAllIgnoresConfig(options: glob.GlobOptionsWithFileTypesFalse) {
+  const files = glob
+    .globSync('**/.gitignore', options)
+    .filter((str) => typeof str === 'string')
+    .map((file) => path.toUnix(options.cwd ? trueCasePathSync(file, String(options.cwd)) : trueCasePathSync(file)));
+  const lines = files
+    .map((file) =>
+      fs
+        .readFileSync(file, 'utf-8')
+        .split(/\r?\n/gm)
+        .map((str) => str.trim())
+    )
+    .flat()
+    .filter((str) => str.length > 0 && !str.startsWith('#'));
+  return lines;
 }
