@@ -26,7 +26,7 @@
     "update:typedoc-server": "curl -L https://github.com/dimaslanjaka/nodejs-package-types/raw/main/typedoc-server.js > typedoc-server.js",
     "update:packer": "curl -L https://github.com/dimaslanjaka/nodejs-package-types/raw/main/packer.js > packer.js",
     "update:ncu": "npx npm-check-updates -u -x chalk",
-    "update": "run-s 'update:**'",
+    "update": "run-s \"update:**\"",
     "patch": "npm version patch",
     "pretest": "npm run build && node -r ts-node/register test/pretest.ts",
     "test": "jest --runInBand --config=jest.config.ts",
