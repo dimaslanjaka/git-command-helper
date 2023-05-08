@@ -507,7 +507,7 @@ export class git {
   }
 
   /**
-   * get remote information
+   * get remote `origin` information
    * @param args
    * @returns
    */
@@ -524,31 +524,33 @@ export class git {
           url: ''
         }
       };
-      res
-        .split(/\n/gm)
-        .filter((split) => split.length > 0)
-        .map((splitted) => {
-          let key: null | string = null;
-          const nameUrl = splitted.split(/\t/).map((str) => {
-            const rg = /\((.*)\)/gm;
-            if (rg.test(str))
-              return str
-                .replace(rg, (_whole, v1) => {
-                  key = v1;
-                  return '';
-                })
-                .trim();
-            return str.trim();
-          });
-          if (key !== null) {
-            (result as any)[key] = {
-              origin: nameUrl[0],
-              url: nameUrl[1]
-            };
-          } else {
-            throw new Error('key never assigned');
-          }
+      const lines = res.split(/\n/gm).filter((split) => split.length > 0);
+      lines.map((splitted) => {
+        let key: 'fetch' | 'push' | undefined;
+        const nameUrl = splitted.split(/\t/).map((str) => {
+          const rg = /\((.*)\)/gm;
+          if (rg.test(str))
+            return str
+              .replace(rg, (_whole, v1) => {
+                key = v1;
+                return '';
+              })
+              .trim();
+          return str.trim();
         });
+
+        // skip non-origin
+        if (nameUrl[0] != 'origin') return;
+
+        if (key) {
+          (result as any)[key] = {
+            origin: nameUrl[0],
+            url: nameUrl[1]
+          };
+        } else {
+          throw new Error('key never assigned');
+        }
+      });
       return result;
     } catch {
       //
