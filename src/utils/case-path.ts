@@ -1,8 +1,8 @@
 'use strict';
 
-import { readdir as _readdir, readdirSync } from 'fs';
+import { readdir as _readdir, existsSync, readdirSync } from 'fs';
 import { platform } from 'os';
-import { isAbsolute, normalize } from 'path';
+import { isAbsolute, join, normalize } from 'path';
 import { promisify as pify } from 'util';
 
 const readdir = pify(_readdir);
@@ -30,6 +30,7 @@ function matchCaseInsensitive(fileOrDirectory: string, directoryContents: string
 
 function _trueCasePath({ sync }) {
   return (filePath: string, basePath?: string) => {
+    if (!existsSync(filePath)) return basePath ? join(basePath, filePath) : filePath;
     if (basePath) {
       if (!isAbsolute(basePath)) {
         throw new Error(`[true-case-path]: basePath argument must be absolute. Received "${basePath}"`);
