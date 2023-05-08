@@ -10,9 +10,9 @@ describe('latestCommit() - get latest commit', () => {
   });
 
   it('root repository', async () => {
-    expect(await gh.latestCommit(undefined, { short: true })).toBe('def54d6c');
-    expect(await gh.latestCommit(undefined, { short: false })).toBe('def54d6c2839626137ed73f93075ab3325d11408');
-    expect(await gh.latestCommit()).toBe('def54d6c');
+    expect(await gh.latestCommit(undefined, { short: true })).toBe('524949a2');
+    expect(await gh.latestCommit(undefined, { short: false })).toBe('524949a2e012a82784bcc3d955b117a74a385a03');
+    expect(await gh.latestCommit()).toBe('524949a2');
   });
 
   it('README.md', async () => {
