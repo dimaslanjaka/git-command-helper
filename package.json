@@ -116,5 +116,6 @@
     "test": "test",
     "lib": "dist",
     "bin": "bin"
-  }
+  },
+  "packageManager": "yarn@3.5.1"
 }
