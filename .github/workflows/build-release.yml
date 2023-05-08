@@ -183,11 +183,12 @@ jobs:
         shell: bash
         if: steps.install-update.outcome == 'failure'
         run: |
-          rm -rf node_modules package-lock.json
+          rm -rf node_modules package-lock.json yarn.lock
           FILE=package-lock.json
           if [ -f "$FILE" ]; then
               npm install
           else
+              touch yarn.lock
               yarn install
           fi
 
