@@ -17,7 +17,9 @@ describe('.gitignore test', () => {
   });
 
   it('should be ignored', async () => {
-    const check = await isIgnored(ignoredFile);
-    expect(check).toBeTruthy();
+    const absolute = await isIgnored(ignoredFile);
+    expect(absolute).toBeTruthy();
+    const relative = await isIgnored('file-ignore.txt');
+    expect(relative).toBeTruthy();
   });
 });
