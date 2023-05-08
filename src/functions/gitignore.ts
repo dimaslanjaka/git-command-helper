@@ -39,8 +39,18 @@ export async function isIgnored(filePath: string, opt?: isIgnoredOpt): Promise<b
 export async function isIgnored(filePath: string, opt: { verbose: true }): Promise<Return>;
 export async function isIgnored(filePath: string, opt: { verbose: false }): Promise<boolean>;
 export async function isIgnored(filePath: string, options: isIgnoredOpt = {}) {
-  const cwd = await getGithubRootDir({ cwd: path.dirname(filePath) });
-  if (!cwd) throw new Error(filePath + ' is not inside git repository');
+  let cwd = (await getGithubRootDir({ cwd: path.dirname(filePath) })) || '';
+  if (cwd.length === 0) {
+    const err = new Error(path.toUnix(filePath) + ' is not inside git repository');
+    if (options.throwable) {
+      throw err;
+    } else {
+      console.log({ error: err.message, cwd });
+    }
+
+    // cwd fallback to process.cwd
+    cwd = process.cwd();
+  }
 
   const ignores = await getIgnores({ cwd });
   const filter = ignores.map((str) => {
