@@ -1,5 +1,5 @@
-import { trueCasePathSync } from 'true-case-path';
 import { spawnAsync } from '../spawn';
+import { trueCasePathSync } from '../utils/case-path';
 import { getGithubCurrentBranch } from './getGithubCurrentBranch';
 import { getGithubRemote } from './getGithubRemote';
 import { getGithubRootDir } from './getGithubRootDir';
