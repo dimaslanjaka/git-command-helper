@@ -8,11 +8,13 @@
     "dist",
     "LICENSE*",
     "readme.md",
+    "bin",
     "!**/*.tsbuildinfo",
     "!**/package-lock.json",
     "!**/yarn.lock",
     "!**/release/**",
-    "!**/tmp/**"
+    "!**/tmp/**",
+    "!**/node_modules/**"
   ],
   "scripts": {
     "build": "tsc -b tsconfig.build.json && npm run pack",
