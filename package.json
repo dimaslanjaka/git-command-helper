@@ -110,7 +110,9 @@
     "typescript": "^5.0.4"
   },
   "directories": {
+    "doc": "docs",
     "test": "test",
-    "lib": "dist"
+    "lib": "dist",
+    "bin": "bin"
   }
 }
