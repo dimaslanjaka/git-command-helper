@@ -68,7 +68,6 @@
     "hexo-util": "^3.0.1",
     "ini": "^4.1.0",
     "sbg-utility": "^1.0.9",
-    "true-case-path": "^2.2.1",
     "upath": "^2.0.1"
   },
   "devDependencies": {
