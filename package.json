@@ -65,7 +65,7 @@
     "cross-spawn": "https://github.com/dimaslanjaka/node-cross-spawn/raw/2cf620b9c848068544a2d26726a5a9b4faa7cc80/release/cross-spawn.tgz",
     "deepmerge-ts": "^5.1.0",
     "fs-extra": "^11.1.1",
-    "hexo-util": "^3.0.1",
+    "hexo-util": "https://github.com/dimaslanjaka/hexo/raw/cdff687/releases/hexo-util.tgz",
     "ini": "^4.1.0",
     "minimatch": "^9.0.0",
     "sbg-utility": "^1.0.9",
