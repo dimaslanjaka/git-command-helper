@@ -487,7 +487,7 @@ export class git {
 
   /**
    * set remote url
-   * @param v
+   * @param remoteURL repository url
    * @param name custom object name
    * @returns
    * @example
@@ -496,8 +496,8 @@ export class git {
    * // custom name
    * git add remote customName https://
    */
-  public async setremote(v: string | URL, name?: string, spawnOpt: SpawnOptions = {}) {
-    this.remote = v instanceof URL ? v.toString() : v;
+  public async setremote(remoteURL: string | URL, name?: string, spawnOpt: SpawnOptions = {}) {
+    this.remote = remoteURL instanceof URL ? remoteURL.toString() : remoteURL;
     const opt = this.spawnOpt(Object.assign({ stdio: 'pipe' }, spawnOpt || {}));
     try {
       return await spawn('git', ['remote', 'add', name || 'origin', this.remote], opt);
