@@ -45,7 +45,7 @@ export async function isIgnored(filePath: string, options: isIgnoredOpt = {}) {
     if (options.throwable) {
       throw err;
     } else {
-      console.log({ error: err.message, cwd });
+      console.log({ error: err, cwd: path.dirname(filePath) });
     }
 
     // cwd fallback to process.cwd
