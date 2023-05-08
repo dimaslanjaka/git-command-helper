@@ -2,21 +2,21 @@
 ## Releases
 | version | tarball url |
 | :--- | :--- |
-| 1.0.12 | https://github.com/dimaslanjaka/git-command-helper/raw/8c8d08c/release/git-command-helper-1.0.12.tgz |
-| 1.0.13 | https://github.com/dimaslanjaka/git-command-helper/raw/8c8d08c/release/git-command-helper-1.0.13.tgz |
-| 1.0.14 | https://github.com/dimaslanjaka/git-command-helper/raw/8c8d08c/release/git-command-helper-1.0.14.tgz |
-| 1.1.0 | https://github.com/dimaslanjaka/git-command-helper/raw/8c8d08c/release/git-command-helper-1.1.0.tgz |
-| 1.1.1 | https://github.com/dimaslanjaka/git-command-helper/raw/8c8d08c/release/git-command-helper-1.1.1.tgz |
-| 1.1.10 | https://github.com/dimaslanjaka/git-command-helper/raw/8c8d08c/release/git-command-helper-1.1.10.tgz |
-| 1.1.2 | https://github.com/dimaslanjaka/git-command-helper/raw/8c8d08c/release/git-command-helper-1.1.2.tgz |
-| 1.1.3 | https://github.com/dimaslanjaka/git-command-helper/raw/8c8d08c/release/git-command-helper-1.1.3.tgz |
-| 1.1.4 | https://github.com/dimaslanjaka/git-command-helper/raw/8c8d08c/release/git-command-helper-1.1.4.tgz |
-| 1.1.5 | https://github.com/dimaslanjaka/git-command-helper/raw/8c8d08c/release/git-command-helper-1.1.5.tgz |
-| 1.1.6 | https://github.com/dimaslanjaka/git-command-helper/raw/8c8d08c/release/git-command-helper-1.1.6.tgz |
-| 1.1.7 | https://github.com/dimaslanjaka/git-command-helper/raw/8c8d08c/release/git-command-helper-1.1.7.tgz |
-| 1.1.8 | https://github.com/dimaslanjaka/git-command-helper/raw/8c8d08c/release/git-command-helper-1.1.8.tgz |
-| 1.1.9 | https://github.com/dimaslanjaka/git-command-helper/raw/8c8d08c/release/git-command-helper-1.1.9.tgz |
-| 1.2.0 | https://github.com/dimaslanjaka/git-command-helper/raw/8c8d08c/release/git-command-helper-1.2.0.tgz |
+| 1.0.12 | https://github.com/dimaslanjaka/git-command-helper/raw/a39cbc8/release/git-command-helper-1.0.12.tgz |
+| 1.0.13 | https://github.com/dimaslanjaka/git-command-helper/raw/a39cbc8/release/git-command-helper-1.0.13.tgz |
+| 1.0.14 | https://github.com/dimaslanjaka/git-command-helper/raw/a39cbc8/release/git-command-helper-1.0.14.tgz |
+| 1.1.0 | https://github.com/dimaslanjaka/git-command-helper/raw/a39cbc8/release/git-command-helper-1.1.0.tgz |
+| 1.1.1 | https://github.com/dimaslanjaka/git-command-helper/raw/a39cbc8/release/git-command-helper-1.1.1.tgz |
+| 1.1.10 | https://github.com/dimaslanjaka/git-command-helper/raw/a39cbc8/release/git-command-helper-1.1.10.tgz |
+| 1.1.2 | https://github.com/dimaslanjaka/git-command-helper/raw/a39cbc8/release/git-command-helper-1.1.2.tgz |
+| 1.1.3 | https://github.com/dimaslanjaka/git-command-helper/raw/a39cbc8/release/git-command-helper-1.1.3.tgz |
+| 1.1.4 | https://github.com/dimaslanjaka/git-command-helper/raw/a39cbc8/release/git-command-helper-1.1.4.tgz |
+| 1.1.5 | https://github.com/dimaslanjaka/git-command-helper/raw/a39cbc8/release/git-command-helper-1.1.5.tgz |
+| 1.1.6 | https://github.com/dimaslanjaka/git-command-helper/raw/a39cbc8/release/git-command-helper-1.1.6.tgz |
+| 1.1.7 | https://github.com/dimaslanjaka/git-command-helper/raw/a39cbc8/release/git-command-helper-1.1.7.tgz |
+| 1.1.8 | https://github.com/dimaslanjaka/git-command-helper/raw/a39cbc8/release/git-command-helper-1.1.8.tgz |
+| 1.1.9 | https://github.com/dimaslanjaka/git-command-helper/raw/a39cbc8/release/git-command-helper-1.1.9.tgz |
+| 1.2.0 | https://github.com/dimaslanjaka/git-command-helper/raw/a39cbc8/release/git-command-helper-1.2.0.tgz |
 | latest | https://github.com/dimaslanjaka/git-command-helper/raw/monorepo/release/git-command-helper.tgz |
 
 use this tarball with `resolutions`:
