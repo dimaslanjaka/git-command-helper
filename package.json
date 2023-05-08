@@ -17,7 +17,7 @@
     "!**/node_modules/**"
   ],
   "scripts": {
-    "build": "tsc -b tsconfig.build.json && npm run pack",
+    "build": "tsc -b tsconfig.build.json",
     "pack": "node packer.js --yarn",
     "update:postinstall": "curl -L https://github.com/dimaslanjaka/nodejs-package-types/raw/main/postinstall.js > postinstall.js",
     "update:build-release": "curl -L https://github.com/dimaslanjaka/nodejs-package-types/raw/main/.github/workflows/build-release.yml > .github/workflows/build-release.yml",
