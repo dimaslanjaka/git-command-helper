@@ -507,11 +507,33 @@ export class git {
   }
 
   /**
+   * get remote information. default `origin`
+   * @param args
+   * @returns remote url
+   */
+  public async getremote(args: string): Promise<string>;
+  /**
    * get remote `origin` information
+   * @param args
+   * @returns object remote
+   */
+  public async getremote(args?: string[]): Promise<{
+    fetch: {
+      origin: string;
+      url: string;
+    };
+    push: {
+      origin: string;
+      url: string;
+    };
+  }>;
+  /**
+   * get remote information. default `origin`
    * @param args
    * @returns
    */
-  public async getremote(args?: string[]) {
+  public async getremote(args?: string[] | string) {
+    if (typeof args === 'string') return await GithubInfo.getGithubRemote(args, { cwd: this.cwd });
     try {
       const res = await spawn('git', ['remote'].concat(args || ['-v']), this.spawnOpt({ stdio: 'pipe' }));
       const result = {
