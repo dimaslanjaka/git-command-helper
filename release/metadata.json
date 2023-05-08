@@ -1,0 +1,29 @@
+{
+  "/release/git-command-helper-1.2.0.tgz": {
+    "integrity": {
+      "sha1": "0b459fb30452fabd55e71f1b68efa17bc104035b",
+      "sha256": "anrzjuaQWv8GC7A8VGGqm+ExfqyfOXKb3VstOxyA9+s=",
+      "md5": "4eb2914cff0ab4d5b55c5062763ffc4b",
+      "sha512": "8dwInjTUtpCfZbqI/AE4hDeoTlyDgEuzof8RLXbmH3o5xzLi56oIw3d5P92BIWxJFP55AF+ipVtb+xzSACZp4A=="
+    },
+    "size": "21.47 KB"
+  },
+  "/release/git-command-helper.tgz": {
+    "integrity": {
+      "sha1": "0b459fb30452fabd55e71f1b68efa17bc104035b",
+      "sha256": "anrzjuaQWv8GC7A8VGGqm+ExfqyfOXKb3VstOxyA9+s=",
+      "md5": "4eb2914cff0ab4d5b55c5062763ffc4b",
+      "sha512": "8dwInjTUtpCfZbqI/AE4hDeoTlyDgEuzof8RLXbmH3o5xzLi56oIw3d5P92BIWxJFP55AF+ipVtb+xzSACZp4A=="
+    },
+    "size": "21.47 KB"
+  },
+  "/yarn.lock": {
+    "integrity": {
+      "sha1": "548e1df7988c02390b6c86a309dfcd3364decd56",
+      "sha256": "BS6t+ANQoEy05VCxViV0wv1tg+gUQM8oDjalNWDMAQg=",
+      "md5": "c63454c799b7c7aca1f8a2d96d3fd573",
+      "sha512": "z1Vd2z8wJgBLwG20ri5F4qxG7F5VrKZuJTdXrOx6VChc9bGH08a1KwRY5TWXohUG/nYU2yzTc/o3l47WfD8UXw=="
+    },
+    "size": "389.31 KB"
+  }
+}
