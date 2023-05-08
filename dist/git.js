@@ -464,7 +464,7 @@ class git {
     }
     /**
      * set remote url
-     * @param v
+     * @param remoteURL repository url
      * @param name custom object name
      * @returns
      * @example
@@ -473,8 +473,8 @@ class git {
      * // custom name
      * git add remote customName https://
      */
-    async setremote(v, name, spawnOpt = {}) {
-        this.remote = v instanceof URL ? v.toString() : v;
+    async setremote(remoteURL, name, spawnOpt = {}) {
+        this.remote = remoteURL instanceof URL ? remoteURL.toString() : remoteURL;
         const opt = this.spawnOpt(Object.assign({ stdio: 'pipe' }, spawnOpt || {}));
         try {
             return await (0, spawn_1.spawn)('git', ['remote', 'add', name || 'origin', this.remote], opt);
@@ -484,11 +484,13 @@ class git {
         }
     }
     /**
-     * get remote information
+     * get remote information. default `origin`
      * @param args
      * @returns
      */
     async getremote(args) {
+        if (typeof args === 'string')
+            return await git_info_1.default.getGithubRemote(args, { cwd: this.cwd });
         try {
             const res = await (0, spawn_1.spawn)('git', ['remote'].concat(args || ['-v']), this.spawnOpt({ stdio: 'pipe' }));
             const result = {
@@ -501,11 +503,9 @@ class git {
                     url: ''
                 }
             };
-            res
-                .split(/\n/gm)
-                .filter((split) => split.length > 0)
-                .map((splitted) => {
-                let key = null;
+            const lines = res.split(/\n/gm).filter((split) => split.length > 0);
+            lines.map((splitted) => {
+                let key;
                 const nameUrl = splitted.split(/\t/).map((str) => {
                     const rg = /\((.*)\)/gm;
                     if (rg.test(str))
@@ -517,7 +517,10 @@ class git {
                             .trim();
                     return str.trim();
                 });
-                if (key !== null) {
+                // skip non-origin
+                if (nameUrl[0] != 'origin')
+                    return;
+                if (key) {
                     result[key] = {
                         origin: nameUrl[0],
                         url: nameUrl[1]

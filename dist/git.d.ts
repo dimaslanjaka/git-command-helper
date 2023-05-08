@@ -237,7 +237,7 @@ export declare class git {
   setuser(v: string): Bluebird<string>;
   /**
    * set remote url
-   * @param v
+   * @param remoteURL repository url
    * @param name custom object name
    * @returns
    * @example
@@ -246,11 +246,17 @@ export declare class git {
    * // custom name
    * git add remote customName https://
    */
-  setremote(v: string | URL, name?: string, spawnOpt?: SpawnOptions): Promise<any>;
+  setremote(remoteURL: string | URL, name?: string, spawnOpt?: SpawnOptions): Promise<any>;
   /**
-   * get remote information
+   * get remote information. default `origin`
    * @param args
-   * @returns
+   * @returns remote url
+   */
+  getremote(args: string): Promise<string>;
+  /**
+   * get remote `origin` information
+   * @param args
+   * @returns object remote
    */
   getremote(args?: string[]): Promise<{
     fetch: {

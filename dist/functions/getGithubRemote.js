@@ -20,6 +20,8 @@ async function getGithubRemote(name = 'origin', opt = {}) {
         return result.stdout.trim();
     }
     catch (err) {
+        if (opt.throwable)
+            throw err;
         return (0, noop_1.default)(err);
     }
 }
