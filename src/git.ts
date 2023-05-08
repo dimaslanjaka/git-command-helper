@@ -487,7 +487,7 @@ export class git {
 
   /**
    * set remote url
-   * @param v
+   * @param remoteURL repository url
    * @param name custom object name
    * @returns
    * @example
@@ -496,8 +496,8 @@ export class git {
    * // custom name
    * git add remote customName https://
    */
-  public async setremote(v: string | URL, name?: string, spawnOpt: SpawnOptions = {}) {
-    this.remote = v instanceof URL ? v.toString() : v;
+  public async setremote(remoteURL: string | URL, name?: string, spawnOpt: SpawnOptions = {}) {
+    this.remote = remoteURL instanceof URL ? remoteURL.toString() : remoteURL;
     const opt = this.spawnOpt(Object.assign({ stdio: 'pipe' }, spawnOpt || {}));
     try {
       return await spawn('git', ['remote', 'add', name || 'origin', this.remote], opt);
@@ -507,11 +507,33 @@ export class git {
   }
 
   /**
-   * get remote information
+   * get remote information. default `origin`
+   * @param args
+   * @returns remote url
+   */
+  public async getremote(args: string): Promise<string>;
+  /**
+   * get remote `origin` information
+   * @param args
+   * @returns object remote
+   */
+  public async getremote(args?: string[]): Promise<{
+    fetch: {
+      origin: string;
+      url: string;
+    };
+    push: {
+      origin: string;
+      url: string;
+    };
+  }>;
+  /**
+   * get remote information. default `origin`
    * @param args
    * @returns
    */
-  public async getremote(args?: string[]) {
+  public async getremote(args?: string[] | string) {
+    if (typeof args === 'string') return await GithubInfo.getGithubRemote(args, { cwd: this.cwd });
     try {
       const res = await spawn('git', ['remote'].concat(args || ['-v']), this.spawnOpt({ stdio: 'pipe' }));
       const result = {
@@ -524,31 +546,33 @@ export class git {
           url: ''
         }
       };
-      res
-        .split(/\n/gm)
-        .filter((split) => split.length > 0)
-        .map((splitted) => {
-          let key: null | string = null;
-          const nameUrl = splitted.split(/\t/).map((str) => {
-            const rg = /\((.*)\)/gm;
-            if (rg.test(str))
-              return str
-                .replace(rg, (_whole, v1) => {
-                  key = v1;
-                  return '';
-                })
-                .trim();
-            return str.trim();
-          });
-          if (key !== null) {
-            (result as any)[key] = {
-              origin: nameUrl[0],
-              url: nameUrl[1]
-            };
-          } else {
-            throw new Error('key never assigned');
-          }
+      const lines = res.split(/\n/gm).filter((split) => split.length > 0);
+      lines.map((splitted) => {
+        let key: 'fetch' | 'push' | undefined;
+        const nameUrl = splitted.split(/\t/).map((str) => {
+          const rg = /\((.*)\)/gm;
+          if (rg.test(str))
+            return str
+              .replace(rg, (_whole, v1) => {
+                key = v1;
+                return '';
+              })
+              .trim();
+          return str.trim();
         });
+
+        // skip non-origin
+        if (nameUrl[0] != 'origin') return;
+
+        if (key) {
+          (result as any)[key] = {
+            origin: nameUrl[0],
+            url: nameUrl[1]
+          };
+        } else {
+          throw new Error('key never assigned');
+        }
+      });
       return result;
     } catch {
       //
