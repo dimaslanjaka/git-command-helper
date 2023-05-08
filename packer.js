@@ -241,11 +241,17 @@ async function addReadMe() {
   md += '| :--- | :--- |\n';
   for (let i = 0; i < tarballs.length; i++) {
     const tarball = tarballs[i];
-    await git.add(tarball.relative.replace(/^\/+/, ''));
-    try {
-      await git.commit('chore(tarball): update ' + gitlatest, '-m', { stdio: 'pipe' });
-    } catch {
-      //
+    // skip index tarball which ignored by .gitignore
+    if (git.isIgnored(tarball.relative)) {
+      console.log(tarball.relative, 'ignored by .gitignore');
+      continue;
+    } else {
+      await git.add(tarball.relative.replace(/^\/+/, ''));
+      try {
+        await git.commit('chore(tarball): update ' + gitlatest, '-m', { stdio: 'pipe' });
+      } catch {
+        //
+      }
     }
     const hash = await git.latestCommit(tarball.relative.replace(/^\/+/, ''));
     const raw = await git.getGithubRepoUrl(tarball.relative.replace(/^\/+/, ''));
