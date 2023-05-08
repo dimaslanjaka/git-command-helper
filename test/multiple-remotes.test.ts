@@ -12,6 +12,6 @@ describe('test multiple url', () => {
 
   it('should valid origin', async () => {
     // github.getGithubRemote().then(console.log);
-    expect(await github.getremote()).toBe(testcfg.remote);
+    expect((await github.getremote())?.push.url).toBe(testcfg.remote);
   });
 });
