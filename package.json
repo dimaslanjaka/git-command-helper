@@ -32,7 +32,7 @@
     "test": "jest --runInBand --detectOpenHandles --collect-coverage --update-snapshot --config=jest.config.ts",
     "posttest": "rm -rf tmp/project-test",
     "test-cov": "nyc --reporter=lcovonly npm test",
-    "docs": "gulp docs",
+    "docs": "npm run clean && npm run build && gulp docs",
     "clean": "rm -rf dist && rm -rf tmp",
     "deadcode": "ts-prune",
     "prepare": "husky install"
