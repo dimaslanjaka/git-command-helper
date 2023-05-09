@@ -35,7 +35,7 @@ jobs:
       matrix:
         #os: [ "windows-latest", "macos-11", "ubuntu-latest" ]
         os: ['ubuntu-latest']
-        node-version: ['14', '16', '18']
+        node-version: ['14.x', '16.x', '18.x']
         #architecture: ['x86', 'x64']
       fail-fast: true
       max-parallel: 6
@@ -43,7 +43,6 @@ jobs:
       NODE_OPTIONS: '--max_old_space_size=8192' #8192 4096 --expose-gc
       YARN_ENABLE_IMMUTABLE_INSTALLS: false
       ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
-      node_version: 14.x
 
     runs-on: ${{ matrix.os }}
 

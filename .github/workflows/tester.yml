@@ -29,7 +29,7 @@ jobs:
     env:
       NODE_OPTIONS: '--max_old_space_size=8192' #8192 4096 --expose-gc
       YARN_ENABLE_IMMUTABLE_INSTALLS: false
-      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
 
     runs-on: ubuntu-latest
 
@@ -193,11 +193,16 @@ jobs:
         run: npm test
 
   coverage:
+    needs: tester
     runs-on: ${{ matrix.os }}
+    env:
+      NODE_OPTIONS: '--max_old_space_size=8192' #8192 4096 --expose-gc
+      YARN_ENABLE_IMMUTABLE_INSTALLS: false
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
     strategy:
       matrix:
-        os: [ubuntu-latest]
-        node-version: ['14.x']
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node-version: ['14.x', '16.x', '18.x']
     steps:
       - uses: actions/checkout@v3
         with:
@@ -206,6 +211,19 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
+      - uses: actions/cache@v3
+        id: cache
+        with:
+          path: |
+            **/dist
+            **/tmp
+            **/node_modules
+            /.yarn
+            ./yarn.lock
+          key: ${{ runner.os }}-${{ matrix.node-version }}
+          restore-keys: |
+            ${{ runner.os }}-${{ matrix.node-version }}
+            ${{ runner.os }}-
       - name: Install Dependencies
         run: npm install
       - name: Coverage
