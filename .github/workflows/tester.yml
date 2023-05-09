@@ -8,6 +8,9 @@ on:
       - '**/src/*.js'
       - '**/test/*.js'
       - '**/.github/workflows/tester.yml'
+      - '**/package.json'
+      - '**/yarn.lock'
+      - '**/package-lock.json'
   pull_request:
     types:
       - closed
@@ -16,6 +19,9 @@ on:
       - '**/test/*.ts'
       - '**/src/*.js'
       - '**/test/*.js'
+      - '**/package.json'
+      - '**/yarn.lock'
+      - '**/package-lock.json'
   workflow_dispatch:
 
 jobs:
