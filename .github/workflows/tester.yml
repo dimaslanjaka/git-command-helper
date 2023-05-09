@@ -6,7 +6,8 @@ on:
       - '**/src/*.ts'
       - '**/test/*.ts'
       - '**/src/*.js'
-      - '**/test/*.js'
+      - '**/test/*.js',
+      - '**/.github/workflows/tester.yml'
   pull_request:
     types:
       - closed
