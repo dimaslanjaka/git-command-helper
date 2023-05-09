@@ -1,4 +1,5 @@
 import { trueCasePathSync } from '../utils/case-path';
+import { safeURL } from '../utils/safe-url';
 import { getGithubCurrentBranch } from './getGithubCurrentBranch';
 import { getGithubRemote } from './getGithubRemote';
 import { getGithubRootDir } from './getGithubRootDir';
@@ -7,6 +8,7 @@ import { infoOptions } from './infoOptions';
 /**
  * Get github url for single file or folder
  * @param path path subfolder or file
+ * @returns safe url
  */
 export async function getGithubRepoUrl(path: string, opt: infoOptions = { cwd: process.cwd() }) {
   path = trueCasePathSync(path);
@@ -18,13 +20,13 @@ export async function getGithubRepoUrl(path: string, opt: infoOptions = { cwd: p
   /**
    * url from repository url
    */
-  const remoteURL = url.toString();
+  const remoteURL = safeURL(url.toString());
   url = new URL(remote);
   url.pathname += '/raw/' + (await getGithubCurrentBranch(opt)) + path.replace(root, '');
   /**
    * url raw file
    */
-  const rawURL = url.toString();
+  const rawURL = safeURL(url.toString());
   return {
     remoteURL,
     rawURL
