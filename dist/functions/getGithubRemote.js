@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getGithubRemote = void 0;
 const noop_1 = __importDefault(require("../noop"));
 const spawn_1 = require("../spawn");
+const safe_url_1 = require("../utils/safe-url");
 /**
  * get origin url
  * * see {@link https://stackoverflow.com/a/4090938}
@@ -17,7 +18,7 @@ async function getGithubRemote(name = 'origin', opt = {}) {
         if (!name)
             name = 'origin';
         const result = await (0, spawn_1.spawnAsync)('git', `config --get remote.${name}.url`.split(' '), opt);
-        return result.stdout.trim();
+        return (0, safe_url_1.safeURL)(result.stdout.trim());
     }
     catch (err) {
         if (opt.throwable)

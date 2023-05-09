@@ -2,12 +2,14 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getGithubRepoUrl = void 0;
 const case_path_1 = require("../utils/case-path");
+const safe_url_1 = require("../utils/safe-url");
 const getGithubCurrentBranch_1 = require("./getGithubCurrentBranch");
 const getGithubRemote_1 = require("./getGithubRemote");
 const getGithubRootDir_1 = require("./getGithubRootDir");
 /**
  * Get github url for single file or folder
  * @param path path subfolder or file
+ * @returns safe url
  */
 async function getGithubRepoUrl(path, opt = { cwd: process.cwd() }) {
     path = (0, case_path_1.trueCasePathSync)(path);
@@ -18,13 +20,13 @@ async function getGithubRepoUrl(path, opt = { cwd: process.cwd() }) {
     /**
      * url from repository url
      */
-    const remoteURL = url.toString();
+    const remoteURL = (0, safe_url_1.safeURL)(url.toString());
     url = new URL(remote);
     url.pathname += '/raw/' + (await (0, getGithubCurrentBranch_1.getGithubCurrentBranch)(opt)) + path.replace(root, '');
     /**
      * url raw file
      */
-    const rawURL = url.toString();
+    const rawURL = (0, safe_url_1.safeURL)(url.toString());
     return {
         remoteURL,
         rawURL
