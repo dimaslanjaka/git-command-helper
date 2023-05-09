@@ -1,6 +1,6 @@
 {
   "name": "git-command-helper",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "github command helper for nodejs",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -29,7 +29,7 @@
     "update": "run-s \"update:**\"",
     "patch": "npm version patch",
     "pretest": "npm run build && node -r ts-node/register test/pretest.ts",
-    "test": "jest --runInBand --config=jest.config.ts",
+    "test": "jest --runInBand --detectOpenHandles --config=jest.config.ts",
     "test-cov": "nyc --reporter=lcovonly npm test",
     "docs": "gulp docs",
     "clean": "rm -rf dist",

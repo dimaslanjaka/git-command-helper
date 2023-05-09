@@ -1,5 +1,4 @@
 import path from 'upath';
-import noop from '../noop';
 import { spawnAsync } from '../spawn';
 import { trueCasePathSync } from '../utils/case-path';
 import { infoOptions } from './infoOptions';
@@ -15,6 +14,6 @@ export async function getGithubRootDir(opt: infoOptions = {}) {
     const result = await spawnAsync('git', ['rev-parse', '--show-toplevel'], opt);
     return path.toUnix(trueCasePathSync(result.stdout.trim()));
   } catch (err) {
-    return noop(err);
+    if (opt.throwable) throw err;
   }
 }
