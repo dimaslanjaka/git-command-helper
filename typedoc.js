@@ -94,7 +94,7 @@ const defaultOptions = {
   githubPages: true,
   //theme: 'hierarchy',
   plugin: ['typedoc-plugin-missing-exports'],
-  ignoreCompilerErrors: true,
+  //ignoreCompilerErrors: true,
   logger: 'none'
   //version: true,
   //includeVersion: true
