@@ -1,4 +1,4 @@
-import spawnAsync from '@expo/spawn-async';
+import { async as spawnAsync } from 'cross-spawn';
 
 /**
  * check if can be pushed
@@ -6,7 +6,7 @@ import spawnAsync from '@expo/spawn-async';
  */
 export async function dryRun(cwd: string) {
   const dry = await spawnAsync('git', ['push', '--dry-run'], { stdio: 'pipe', cwd });
-  return dry.output.join('\n').trim() != 'Everything up-to-date';
+  return dry.output.trim() != 'Everything up-to-date';
 }
 
 export const isCanPush = { dryRun };
