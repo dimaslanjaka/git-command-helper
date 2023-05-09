@@ -31,7 +31,7 @@ jobs:
       fail-fast: true
       max-parallel: 6
     env:
-      node_version: 14.x
+      node_version: 14
 
     runs-on: ubuntu-latest
 
