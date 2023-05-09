@@ -2,7 +2,7 @@
 ## Releases
 | version | tarball url |
 | :--- | :--- |
-| latest | https://github.com/dimaslanjaka/git-command-helper/raw/573da7d/release/git-command-helper.tgz |
+| latest | https://github.com/dimaslanjaka/git-command-helper/raw/2bc2009/release/git-command-helper.tgz |
 | latest | https://github.com/dimaslanjaka/git-command-helper/raw/monorepo/release/git-command-helper.tgz |
 
 use this tarball with `resolutions`:
