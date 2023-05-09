@@ -259,7 +259,17 @@ async function addReadMe() {
       continue;
     } else {
       await git.add(relativeTarball);
-      if (await git.hasChanged()) {
+      const args = ['status', '--porcelain', '--', relativeTarball, '|', 'wc', '-l'];
+      const isChanged =
+        parseInt(
+          (
+            await spawnAsync('git', args, {
+              cwd: __dirname,
+              shell: true
+            })
+          ).output.trim()
+        ) > 0;
+      if (isChanged) {
         await git.commit('chore(tarball): update ' + gitlatest, '-m', { stdio: 'pipe' });
       }
     }

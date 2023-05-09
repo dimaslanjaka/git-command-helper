@@ -10,12 +10,12 @@
   },
   "/release/git-command-helper.tgz": {
     "integrity": {
-      "sha1": "99c09e01852aad92986c72338041da0a864459d4",
-      "sha256": "Ij7EJ/vgQxoO1v0wL1OvzkypUuRrLMJfDeKh2Z1pJEA=",
-      "md5": "d7928ba9263eebcd4a2d3de9cb3d500f",
-      "sha512": "p+PB2OzO9BDYn422+mmDAc/SMjTwV8nR8HdRMP1XG8H5+ElLVTB67alIXsYgLH2vkhDxTaX9YIoYmsaVjSe0lQ=="
+      "sha1": "2372528eb27b2b8c17268ca5f8e50486718bf565",
+      "sha256": "pR5lg1rWis7kq+L2c23naZxyBab777B1IDLWxYA0dWg=",
+      "md5": "3e505a4a8485b85620bb5eeb730104ff",
+      "sha512": "HaU1hk6ph7ncVCqEI1TGFCvBbPbEglapqhFl+FHe8R5COMm3GeLEe+R76EdbIND4aszwiQEJOredYzvvPgXV5Q=="
     },
-    "size": "19.69 KB"
+    "size": "21.92 KB"
   },
   "/package-lock.json": {
     "integrity": {
@@ -145,29 +145,29 @@
   },
   "/release/git-command-helper-1.2.0.tgz": {
     "integrity": {
-      "sha1": "a9da9c6304c2bc4b1565e1c4b80009841d755d2c",
-      "sha256": "slilvgQh+fCKg9jHG4Z5wbDEj+ZiJd8HW6eawKCMtIg=",
-      "md5": "a4f99e33fbda3f596b465b8b30d29c0d",
-      "sha512": "gJ6bIZf0eirF4dI5lxZxN0tPMAH6+yJd9G0rd6aYrzIOyGI+ARdgS4QM1vvfDMUH7Q6ohQSSqhFRLxSy1rD5qA=="
+      "sha1": "0b459fb30452fabd55e71f1b68efa17bc104035b",
+      "sha256": "anrzjuaQWv8GC7A8VGGqm+ExfqyfOXKb3VstOxyA9+s=",
+      "md5": "4eb2914cff0ab4d5b55c5062763ffc4b",
+      "sha512": "8dwInjTUtpCfZbqI/AE4hDeoTlyDgEuzof8RLXbmH3o5xzLi56oIw3d5P92BIWxJFP55AF+ipVtb+xzSACZp4A=="
     },
-    "size": "16.39 KB"
+    "size": "21.47 KB"
   },
   "/yarn.lock": {
     "integrity": {
-      "sha1": "95bbc79519f1ae8ba497416cf7165bc1239ae140",
-      "sha256": "0igBe/RBUihOeUT7PhEj/1/BaTT+1olGDIWlzQP/Zhc=",
-      "md5": "7d100df91db401c8810206dc590f1792",
-      "sha512": "QdFzgkX7CIXGXhfA831B6i5QdbCTmD/ssCgMeydBbCcPAZQdstV7NuMkKak8sbTwRv0KwKk0eIitWFEFLvo6ag=="
+      "sha1": "548e1df7988c02390b6c86a309dfcd3364decd56",
+      "sha256": "BS6t+ANQoEy05VCxViV0wv1tg+gUQM8oDjalNWDMAQg=",
+      "md5": "c63454c799b7c7aca1f8a2d96d3fd573",
+      "sha512": "z1Vd2z8wJgBLwG20ri5F4qxG7F5VrKZuJTdXrOx6VChc9bGH08a1KwRY5TWXohUG/nYU2yzTc/o3l47WfD8UXw=="
     },
-    "size": "323.93 KB"
+    "size": "389.31 KB"
   },
   "/release/git-command-helper-1.2.1.tgz": {
     "integrity": {
-      "sha1": "99c09e01852aad92986c72338041da0a864459d4",
-      "sha256": "Ij7EJ/vgQxoO1v0wL1OvzkypUuRrLMJfDeKh2Z1pJEA=",
-      "md5": "d7928ba9263eebcd4a2d3de9cb3d500f",
-      "sha512": "p+PB2OzO9BDYn422+mmDAc/SMjTwV8nR8HdRMP1XG8H5+ElLVTB67alIXsYgLH2vkhDxTaX9YIoYmsaVjSe0lQ=="
+      "sha1": "2372528eb27b2b8c17268ca5f8e50486718bf565",
+      "sha256": "pR5lg1rWis7kq+L2c23naZxyBab777B1IDLWxYA0dWg=",
+      "md5": "3e505a4a8485b85620bb5eeb730104ff",
+      "sha512": "HaU1hk6ph7ncVCqEI1TGFCvBbPbEglapqhFl+FHe8R5COMm3GeLEe+R76EdbIND4aszwiQEJOredYzvvPgXV5Q=="
     },
-    "size": "19.69 KB"
+    "size": "21.92 KB"
   }
 }
