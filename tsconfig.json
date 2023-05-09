@@ -5,7 +5,8 @@
     "tsBuildInfoFile": "./tmp/tsconfig.build.tsbuildinfo",
     "declarationMap": false,
     "outDir": "tmp/dist",
-    "strict": true
+    "strict": true,
+    "noEmit": true
   },
   "include": ["src", "test"]
 }
