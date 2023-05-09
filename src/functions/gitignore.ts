@@ -74,11 +74,7 @@ export async function isIgnored(filePath: string, options: isIgnoredOpt = {}) {
     return {
       str,
       relativePath,
-      matched:
-        str.includes(relativePath) ||
-        str === relativePath ||
-        relativePath.startsWith(str) ||
-        matches.some((b) => b === true)
+      matched: str === relativePath || matches.some((b) => b === true)
     };
   });
   const result = filter.some((o) => o.matched);
