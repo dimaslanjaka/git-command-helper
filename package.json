@@ -116,7 +116,7 @@
     "typescript": "^5.0.4"
   },
   "directories": {
-    "doc": "docs",
+    "doc": "docs/git-command-helper",
     "test": "test",
     "lib": "dist",
     "bin": "bin"
