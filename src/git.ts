@@ -14,7 +14,7 @@ import { isCanPush } from './functions/push-checker';
 import GithubInfo from './git-info';
 import helper from './helper';
 import * as extension from './index-exports';
-import { hasInstance, setInstance } from './instances';
+import { getInstance, hasInstance, setInstance } from './instances';
 import noop from './noop';
 import { shell } from './shell';
 import { SpawnOptions, spawn, spawnSilent } from './spawn';
@@ -83,6 +83,7 @@ export class git {
    * @param branch
    */
   constructor(gitdir: string, branch = 'master') {
+    if (hasInstance(gitdir)) return getInstance(gitdir);
     this.cwd = gitdir;
     if (typeof this.branch === 'string') this.branch = branch;
     if (!existsSync(this.cwd)) {
