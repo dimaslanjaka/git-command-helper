@@ -197,8 +197,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest]
-        node-version: ['14.x']
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node-version: ['14.x', '16.x', '18.x']
     steps:
       - uses: actions/checkout@v3
         with:
@@ -207,6 +207,19 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
+      - uses: actions/cache@v3
+        id: cache
+        with:
+          path: |
+            **/dist
+            **/tmp
+            **/node_modules
+            /.yarn
+            ./yarn.lock
+          key: ${{ runner.os }}-${{ matrix.node-version }}
+          restore-keys: |
+            ${{ runner.os }}-${{ matrix.node-version }}
+            ${{ runner.os }}-
       - name: Install Dependencies
         run: npm install
       - name: Coverage
