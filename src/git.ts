@@ -5,6 +5,7 @@
  */
 
 import Bluebird from 'bluebird';
+import { spawnAsync } from 'cross-spawn';
 import { existsSync, mkdirSync } from 'fs';
 import { join } from 'path';
 import { isIgnored, isIgnoredOpt } from './functions/gitignore';
@@ -142,7 +143,7 @@ export class git {
    * @returns
    */
   setAutoRebase() {
-    return spawn('git', ['config', 'pull.rebase', 'false']);
+    return spawnAsync('git', ['config', 'pull.rebase', 'false']);
   }
 
   /**
@@ -151,7 +152,7 @@ export class git {
    * @returns
    */
   setForceLF() {
-    return spawn('git', ['config', 'core.autocrlf', 'false']);
+    return spawnAsync('git', ['config', 'core.autocrlf', 'false']);
   }
 
   /**
