@@ -300,6 +300,7 @@ async function addReadMe() {
     if (isNaN(parseFloat(ver))) {
       ver = 'latest';
       tarballUrl = dev;
+      md += `| ${ver} | ${prod} |\n`;
     } else {
       tarballUrl = prod;
     }
