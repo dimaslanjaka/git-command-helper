@@ -1211,17 +1211,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:>=10.0.0":
-  version: 18.16.3
-  resolution: "@types/node@npm:18.16.3"
-  checksum: 816b39d45b05ebdc6f362b630970df3f6d82f71d418a2555353522f4eeeb078fa201de5299f02c09a09faa975e43b2745fe19c263d44069f87ddf37d6c37b717
-  languageName: node
-  linkType: hard
-
-"@types/node@npm:^20.1.0":
-  version: 20.1.0
-  resolution: "@types/node@npm:20.1.0"
-  checksum: c6d9afa9aa78b4b4348c69ece94975be70346b144c278f1395694a10ef919d7db300018101b6f9245e6bdd76674a5327d2d14829092f3d5295e858cff5f22a66
+"@types/node@npm:*, @types/node@npm:>=10.0.0, @types/node@npm:^20.1.0":
+  version: 20.1.1
+  resolution: "@types/node@npm:20.1.1"
+  checksum: 47961ee23f873c14c3f6045422ff3059f3bfb10231ef3080a7a72d7215cc8c2623fa8cedb7b246305962fa9c1e0c9e381e04b12eb3e9ec5d076025c6231ac8da
   languageName: node
   linkType: hard
 
@@ -1254,9 +1247,9 @@ __metadata:
   linkType: hard
 
 "@types/semver@npm:^7.3.12":
-  version: 7.3.13
-  resolution: "@types/semver@npm:7.3.13"
-  checksum: 00c0724d54757c2f4bc60b5032fe91cda6410e48689633d5f35ece8a0a66445e3e57fa1d6e07eb780f792e82ac542948ec4d0b76eb3484297b79bd18b8cf1cb0
+  version: 7.5.0
+  resolution: "@types/semver@npm:7.5.0"
+  checksum: 0a64b9b9c7424d9a467658b18dd70d1d781c2d6f033096a6e05762d20ebbad23c1b69b0083b0484722aabf35640b78ccc3de26368bcae1129c87e9df028a22e2
   languageName: node
   linkType: hard
 
@@ -1977,7 +1970,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^1.3.5, axios@npm:^1.3.6, axios@npm:^1.4.0":
+"axios@npm:^1.3.6, axios@npm:^1.4.0":
   version: 1.4.0
   resolution: "axios@npm:1.4.0"
   dependencies:
@@ -2594,9 +2587,9 @@ __metadata:
   linkType: hard
 
 "caniuse-lite@npm:^1.0.30001449":
-  version: 1.0.30001482
-  resolution: "caniuse-lite@npm:1.0.30001482"
-  checksum: a5f7681c860a29736f29350ebd81041c40b6aa7b2f94c50ed27284a0507e46dc79536dcfc05432504cfc80a0bf2070e4ad6fa704a9c0f3f32d47bed9059e98c2
+  version: 1.0.30001486
+  resolution: "caniuse-lite@npm:1.0.30001486"
+  checksum: 5e8c2ba2679e4ad17dea6d2761a6449b814441bfeac81af6cc9d58af187df6af4b79b27befcbfc4a557e720b21c0399a7d1911c8705922e38938dcc0f40b5d4b
   languageName: node
   linkType: hard
 
@@ -3113,14 +3106,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"core-js@npm:^3.30.1":
-  version: 3.30.1
-  resolution: "core-js@npm:3.30.1"
-  checksum: 6d4a00b488694d4c715c424e15dfef31433ac7aa395c39c518a0cfacec918ada1c716fed74682033197e0164e23bbf38bfd598ee9a239c4aaa590ab1ba862ac8
-  languageName: node
-  linkType: hard
-
-"core-js@npm:^3.30.2":
+"core-js@npm:^3.30.1, core-js@npm:^3.30.2":
   version: 3.30.2
   resolution: "core-js@npm:3.30.2"
   checksum: 73d47e2b9d9f502800973982d08e995bbf04832e20b04e04be31dd7607247158271315e9328788a2408190e291c7ffbefad141167b1e57dea9f983e1e723541e
@@ -3208,54 +3194,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cross-spawn@https://github.com/dimaslanjaka/node-cross-spawn/raw/2cf620b9c848068544a2d26726a5a9b4faa7cc80/release/cross-spawn.tgz":
+"cross-spawn@https://github.com/dimaslanjaka/node-cross-spawn/raw/2cf620b/release/cross-spawn.tgz":
   version: 7.0.4
-  resolution: "cross-spawn@https://github.com/dimaslanjaka/node-cross-spawn/raw/2cf620b9c848068544a2d26726a5a9b4faa7cc80/release/cross-spawn.tgz"
+  resolution: "cross-spawn@https://github.com/dimaslanjaka/node-cross-spawn/raw/2cf620b/release/cross-spawn.tgz"
   dependencies:
     shebang-command: ^2.0.0
     which: ^3.0.1
   checksum: cdd488304c7506dbe310e21ae5fe7a33edb484731a8d238dd49e1da4f657cc69160ea2075100836347172b4d690e650c28998f0ef327d9526f8f48603df657db
-  languageName: node
-  linkType: hard
-
-"cross-spawn@https://github.com/dimaslanjaka/node-cross-spawn/raw/e5c4f6200a97cba60fcdec614c9ce278c12fa633/release/cross-spawn.tgz":
-  version: 7.0.4
-  resolution: "cross-spawn@https://github.com/dimaslanjaka/node-cross-spawn/raw/e5c4f6200a97cba60fcdec614c9ce278c12fa633/release/cross-spawn.tgz"
-  dependencies:
-    shebang-command: ^2.0.0
-    which: ^3.0.0
-  checksum: 0baad950b8c37a09990a92e4a771e632e60b17e8d664841c049019a71055ccbe24a69091c14cb08ed0c3fd2df463e4d1bf1a531644128e0382d3226d2f05d3e7
-  languageName: node
-  linkType: hard
-
-"cross-spawn@https://github.com/dimaslanjaka/node-cross-spawn/raw/private/release/cross-spawn.tgz":
-  version: 7.0.4
-  resolution: "cross-spawn@https://github.com/dimaslanjaka/node-cross-spawn/raw/private/release/cross-spawn.tgz"
-  dependencies:
-    shebang-command: ^2.0.0
-    which: ^3.0.0
-  checksum: 0baad950b8c37a09990a92e4a771e632e60b17e8d664841c049019a71055ccbe24a69091c14cb08ed0c3fd2df463e4d1bf1a531644128e0382d3226d2f05d3e7
-  languageName: node
-  linkType: hard
-
-"cross-spawn@https://github.com/dimaslanjaka/node-cross-spawn/tarball/private":
-  version: 7.0.4
-  resolution: "cross-spawn@https://github.com/dimaslanjaka/node-cross-spawn.git#commit=f14471d5dde41f844d92921bf6a64494f222fb66"
-  dependencies:
-    shebang-command: ^2.0.0
-    which: ^3.0.1
-  checksum: cdd488304c7506dbe310e21ae5fe7a33edb484731a8d238dd49e1da4f657cc69160ea2075100836347172b4d690e650c28998f0ef327d9526f8f48603df657db
-  languageName: node
-  linkType: hard
-
-"cross-spawn@npm:^7.0.0, cross-spawn@npm:^7.0.2, cross-spawn@npm:^7.0.3":
-  version: 7.0.3
-  resolution: "cross-spawn@npm:7.0.3"
-  dependencies:
-    path-key: ^3.1.0
-    shebang-command: ^2.0.0
-    which: ^2.0.1
-  checksum: 671cc7c7288c3a8406f3c69a3ae2fc85555c04169e9d611def9a675635472614f1c0ed0ef80955d5b6d4e724f6ced67f0ad1bb006c2ea643488fcfef994d7f52
   languageName: node
   linkType: hard
 
@@ -3757,9 +3702,9 @@ __metadata:
   linkType: hard
 
 "electron-to-chromium@npm:^1.4.284":
-  version: 1.4.382
-  resolution: "electron-to-chromium@npm:1.4.382"
-  checksum: 553a82840bf8b0f99d298b0ffd2273b04f4e37659126828f95107212f95f571facc750465e20e6df95c988c9950a0c80800d2efd0d3075e15f443e5ae22e5231
+  version: 1.4.387
+  resolution: "electron-to-chromium@npm:1.4.387"
+  checksum: 3c1ddddad5b9d86aa68cbe002e76b9ce1ed2b220b766f33249ea40cd3ae7be8af93f75a05f27a3e13e039801d936ce302b61f74cb054023180369541e4a31197
   languageName: node
   linkType: hard
 
@@ -4064,14 +4009,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-visitor-keys@npm:^3.3.0":
-  version: 3.4.0
-  resolution: "eslint-visitor-keys@npm:3.4.0"
-  checksum: 33159169462d3989321a1ec1e9aaaf6a24cc403d5d347e9886d1b5bfe18ffa1be73bdc6203143a28a606b142b1af49787f33cff0d6d0813eb5f2e8d2e1a6043c
-  languageName: node
-  linkType: hard
-
-"eslint-visitor-keys@npm:^3.4.1":
+"eslint-visitor-keys@npm:^3.3.0, eslint-visitor-keys@npm:^3.4.1":
   version: 3.4.1
   resolution: "eslint-visitor-keys@npm:3.4.1"
   checksum: f05121d868202736b97de7d750847a328fcfa8593b031c95ea89425333db59676ac087fa905eba438d0a3c5769632f828187e0c1a0d271832a2153c1d3661c2c
@@ -4934,7 +4872,7 @@ __metadata:
     bluebird: ^3.7.2
     browser-sync: ^2.29.1
     core-js: ^3.30.2
-    cross-spawn: "https://github.com/dimaslanjaka/node-cross-spawn/raw/2cf620b9c848068544a2d26726a5a9b4faa7cc80/release/cross-spawn.tgz"
+    cross-spawn: "https://github.com/dimaslanjaka/node-cross-spawn/raw/2cf620b/release/cross-spawn.tgz"
     debug: ^4.3.4
     deepmerge-ts: ^5.1.0
     eslint: ^8.40.0
@@ -7499,10 +7437,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"micro-memoize@npm:^4.0.11":
-  version: 4.0.14
-  resolution: "micro-memoize@npm:4.0.14"
-  checksum: 9a1c236c3e626b9a0cf323cd7ede18f972fd4474f1bcdea8e1340d9a49a1fee629f60d35baa2df8ba0d880230886d92587525d4b9c9dc14100cc39545506e1b9
+"micro-memoize@npm:^4.1.2":
+  version: 4.1.2
+  resolution: "micro-memoize@npm:4.1.2"
+  checksum: 4b02750622d44b5ab31573c629b5d91927dd0c2727743ff75e790c223ab6cd02c48cc3bddea69da0dffb688091a0a71a17944947dd165f8ba9e03728bc30a76d
   languageName: node
   linkType: hard
 
@@ -7754,12 +7692,12 @@ __metadata:
   linkType: hard
 
 "moize@npm:^6.1.0":
-  version: 6.1.5
-  resolution: "moize@npm:6.1.5"
+  version: 6.1.6
+  resolution: "moize@npm:6.1.6"
   dependencies:
     fast-equals: ^3.0.1
-    micro-memoize: ^4.0.11
-  checksum: 62fa868b2b2b29d01b2831aebd009071afd88f2d682f342915952f5ac88ec9919839fddd79fc4c13b5eb1b2f63b444885358dec1f26ed9d9734a7b4577a4b9a4
+    micro-memoize: ^4.1.2
+  checksum: a81c56e8d3d30ad0c324369ab636e48b9799abb7f5e0955250f99744dbea456848107d293436face8e12acf7bc820e759048118083cc37644a4c95a37c66e566
   languageName: node
   linkType: hard
 
@@ -7874,8 +7812,8 @@ __metadata:
   linkType: hard
 
 "node-fetch@npm:^2.6.7":
-  version: 2.6.9
-  resolution: "node-fetch@npm:2.6.9"
+  version: 2.6.10
+  resolution: "node-fetch@npm:2.6.10"
   dependencies:
     whatwg-url: ^5.0.0
   peerDependencies:
@@ -7883,7 +7821,7 @@ __metadata:
   peerDependenciesMeta:
     encoding:
       optional: true
-  checksum: acb04f9ce7224965b2b59e71b33c639794d8991efd73855b0b250921382b38331ffc9d61bce502571f6cc6e11a8905ca9b1b6d4aeb586ab093e2756a1fd190d0
+  checksum: 9250e5266ccb4cc43e0ba5a4e23447d65f207a445d8f968420ef5f135cb9db3f03e527647a3762c1ba06872cbd13640e572d9eea63ba6754e936a6e824ed85a3
   languageName: node
   linkType: hard
 
@@ -7994,20 +7932,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nodejs-package-types@https://github.com/dimaslanjaka/nodejs-package-types/raw/main/release/nodejs-package-types.tgz":
+"nodejs-package-types@https://github.com/dimaslanjaka/nodejs-package-types/raw/4cb0e2a/release/nodejs-package-types.tgz":
   version: 1.1.4
-  resolution: "nodejs-package-types@https://github.com/dimaslanjaka/nodejs-package-types/raw/main/release/nodejs-package-types.tgz"
+  resolution: "nodejs-package-types@https://github.com/dimaslanjaka/nodejs-package-types/raw/4cb0e2a/release/nodejs-package-types.tgz"
   dependencies:
     "@types/express": ^4.17.17
     ansi-colors: ^4.1.3
-    axios: ^1.3.5
+    axios: ^1.4.0
     cross-spawn: "https://github.com/dimaslanjaka/node-cross-spawn/tarball/private"
     fs-extra: ^11.1.1
     hexo-util: ^3.0.1
     through2: ^4.0.2
     true-case-path: ^2.2.1
     upath: ^2.0.1
-  checksum: 90c9bb66c9d3ae68180509a7946e944b64e3c00c8e7579c218e5cbdb8d36c8e350b9812f05e7a088334d41a392625ab38e0be23cb6fd543c3c718aa43a7f8ac1
+  checksum: 058f616c07f320a7dfa0bf36367901a7a8cfca332c802ea486712bb309f1c84cc073c29a00f1372c76b3633533f21ce5665e36ae8e1c98073319359f0bbb1d84
   languageName: node
   linkType: hard
 
@@ -8624,7 +8562,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"path-key@npm:^3.0.0, path-key@npm:^3.1.0":
+"path-key@npm:^3.0.0":
   version: 3.1.1
   resolution: "path-key@npm:3.1.1"
   checksum: 55cd7a9dd4b343412a8386a743f9c746ef196e57c823d90ca3ab917f90ab9f13dd0ded27252ba49dbdfcab2b091d998bc446f6220cd3cea65db407502a740020
@@ -11321,7 +11259,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"which@npm:^3.0.0, which@npm:^3.0.1":
+"which@npm:^3.0.1":
   version: 3.0.1
   resolution: "which@npm:3.0.1"
   dependencies:
