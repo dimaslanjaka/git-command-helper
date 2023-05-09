@@ -1,17 +1,13 @@
 name: Tester
 
-# automated packer.js
-# repo    : https://github.com/dimaslanjaka/nodejs-package-types/blob/main/.github/workflows/build-release.yml
-# raw     : https://raw.githubusercontent.com/dimaslanjaka/nodejs-package-types/main/.github/workflows/build-release.yml
-# update  : curl -L https://github.com/dimaslanjaka/nodejs-package-types/raw/main/.github/workflows/build-release.yml > .github/workflows/build-release.yml
-
 on:
   push:
     paths:
       - '**/src/*.ts'
       - '**/test/*.ts'
       - '**/src/*.js'
-      - '**/test/*.js'
+      - '**/test/*.js',
+      - '**/.github/workflows/tester.yml'
   pull_request:
     types:
       - closed
@@ -73,11 +69,12 @@ jobs:
             **/dist
             **/tmp
             **/node_modules
-            **/.yarn
-          key: ${{ matrix.os }}-${{ matrix.node-version }}
+            /.yarn
+            ./yarn.lock
+          key: ${{ runner.os }}-${{ github.ref_name }}
           restore-keys: |
-            ${{ matrix.os }}-${{ matrix.node-version }}
-            ${{ matrix.os }}-
+            ${{ runner.os }}-${{ github.ref_name }}
+            ${{ runner.os }}-
 
       - name: install
         run: |
