@@ -121,6 +121,10 @@ jobs:
           echo "machine=$machine" >> $GITHUB_OUTPUT
           echo "machine=$machine" >> $GITHUB_ENV
 
+      - name: dump
+        run: |
+          echo "runner name ${{ runner.name }}"
+
       - name: Install Legacy Peer Dependencies
         run: |
           if [ "${{ steps.set-env.outputs.PACKAGE-MANAGER }}" == "npm" ]; then
