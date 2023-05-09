@@ -2,15 +2,14 @@ import { beforeAll, describe, expect, it, jest } from '@jest/globals';
 import fs from 'fs';
 import path from 'path';
 import gitHelper from '../src';
-import clone from './clone';
 import { testcfg } from './config';
 
 describe('canPush()', () => {
   let github: gitHelper;
   jest.setTimeout(60000);
 
-  beforeAll(async function () {
-    github = await clone();
+  beforeAll(function () {
+    github = new gitHelper(testcfg.cwd);
   });
 
   it('cannot push after reset', async () => {

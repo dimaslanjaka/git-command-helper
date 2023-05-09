@@ -1,7 +1,7 @@
 import 'core-js/actual';
 import { existsSync } from 'fs';
 import { join } from 'path';
-import { gitCommandHelper, spawn } from '../src';
+import { spawn } from '../src';
 import { TestConfig } from './config';
 
 /**
@@ -19,8 +19,6 @@ async function clone() {
       stdio: 'inherit'
     });
   }
-
-  return new gitCommandHelper(cfg.cwd, cfg.branch);
 }
 
 export default clone;

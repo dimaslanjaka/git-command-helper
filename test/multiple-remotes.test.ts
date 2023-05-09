@@ -1,13 +1,11 @@
 import { afterAll, beforeAll, describe, expect, it } from '@jest/globals';
-import git, { spawn } from '../src';
-import clone from './clone';
+import { gitHelper, spawn } from '../src';
 import { testcfg } from './config';
 
 describe('test multiple url', () => {
-  let github: git;
+  const github = new gitHelper(testcfg.cwd, testcfg.branch);
 
   beforeAll(async () => {
-    github = await clone();
     // set new remote upstream
     await github.setremote('https://github.com/dimaslanjaka/hexo', 'upstream');
   });
