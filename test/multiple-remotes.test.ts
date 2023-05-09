@@ -3,7 +3,7 @@ import { gitHelper, spawn } from '../src';
 import { testcfg } from './config';
 
 describe('test multiple url', () => {
-  const github = new gitHelper(testcfg.cwd);
+  const github = new gitHelper(testcfg.cwd, testcfg.branch);
 
   beforeAll(async () => {
     // set new remote upstream

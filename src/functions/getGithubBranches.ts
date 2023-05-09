@@ -1,4 +1,4 @@
-import noop from '../noop';
+import _ from 'lodash';
 import { spawnAsync } from '../spawn';
 
 /**
@@ -21,6 +21,6 @@ export async function getGithubBranches(opt: spawnAsync.SpawnOptions = {}) {
       })
       .filter((item_1) => typeof item_1.branch === 'string');
   } catch (err) {
-    return noop(err);
+    return _.noop(err);
   }
 }

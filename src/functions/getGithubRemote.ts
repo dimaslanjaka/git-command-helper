@@ -1,4 +1,4 @@
-import noop from '../noop';
+import _ from 'lodash';
 import { spawnAsync } from '../spawn';
 import { safeURL } from '../utils/safe-url';
 import { infoOptions } from './infoOptions';
@@ -17,6 +17,6 @@ export async function getGithubRemote(name: string | null | undefined = 'origin'
   } catch (err) {
     if (opt.throwable) throw err;
 
-    return noop(err);
+    return _.noop(err);
   }
 }

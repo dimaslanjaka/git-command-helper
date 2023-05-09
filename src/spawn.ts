@@ -4,8 +4,8 @@ import Bluebird from 'bluebird';
 import { CommonSpawnOptions } from 'child_process';
 import sysSpawn from 'cross-spawn';
 // import { spawn as sysSpawn } from 'child_process';
+import _ from 'lodash';
 import CacheStream from './cache-stream';
-import noop from './noop';
 export { default as spawnAsync } from '@expo/spawn-async';
 
 export type SpawnOptions = Record<string, any> & CommonSpawnOptions;
@@ -95,7 +95,7 @@ export const spawn = promiseSpawn;
 export const spawnSilent = async function (command: string, args?: string[] | SpawnOptions, options?: SpawnOptions) {
   try {
     return await promiseSpawn(command, args, options);
-  } catch (_) {
-    return noop(_);
+  } catch (_err) {
+    return _.noop(_err);
   }
 };

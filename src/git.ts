@@ -5,7 +5,9 @@
  */
 
 import Bluebird from 'bluebird';
+import { spawnAsync } from 'cross-spawn';
 import { existsSync, mkdirSync } from 'fs';
+import _ from 'lodash';
 import { join } from 'path';
 import { isIgnored, isIgnoredOpt } from './functions/gitignore';
 import { isUntracked } from './functions/isFileChanged';
@@ -14,9 +16,7 @@ import { isCanPush } from './functions/push-checker';
 import GithubInfo from './git-info';
 import helper from './helper';
 import * as extension from './index-exports';
-import { hasInstance, setInstance } from './instances';
-import noop from './noop';
-import { shell } from './shell';
+import { getInstance, hasInstance, setInstance } from './instances';
 import { SpawnOptions, spawn, spawnSilent } from './spawn';
 import submodule from './submodule';
 import { StatusResult } from './types';
@@ -43,12 +43,8 @@ export class git {
   branch!: string;
   private exist!: boolean;
   cwd!: string;
-  static shell = shell;
-  shell = shell;
   helper = helper;
   static helper = helper;
-  static noop = noop;
-  noop = noop;
   ext = extension;
   static ext = extension;
 
@@ -83,6 +79,7 @@ export class git {
    * @param branch
    */
   constructor(gitdir: string, branch = 'master') {
+    if (hasInstance(gitdir)) return getInstance(gitdir);
     this.cwd = gitdir;
     if (typeof this.branch === 'string') this.branch = branch;
     if (!existsSync(this.cwd)) {
@@ -121,7 +118,7 @@ export class git {
       'config --global --add safe.directory'.split(' ').concat([this.cwd]),
       this.spawnOpt({ stdio: 'inherit' })
     )
-      .catch(git.noop)
+      .catch(_.noop)
       .finally(() => console.log(this.cwd, 'added to safe directory'));
   }
 
@@ -141,7 +138,7 @@ export class git {
    * @returns
    */
   setAutoRebase() {
-    return spawn('git', ['config', 'pull.rebase', 'false']);
+    return spawnAsync('git', ['config', 'pull.rebase', 'false']);
   }
 
   /**
@@ -150,7 +147,7 @@ export class git {
    * @returns
    */
   setForceLF() {
-    return spawn('git', ['config', 'core.autocrlf', 'false']);
+    return spawnAsync('git', ['config', 'core.autocrlf', 'false']);
   }
 
   /**
@@ -465,7 +462,7 @@ export class git {
    */
   async init(spawnOpt: SpawnOptions = { stdio: 'inherit' }) {
     if (!existsSync(join(this.cwd, '.git'))) mkdirSync(join(this.cwd, '.git'), { recursive: true });
-    return spawnSilent('git', ['init'], this.spawnOpt(spawnOpt)).catch(noop);
+    return spawnSilent('git', ['init'], this.spawnOpt(spawnOpt)).catch(_.noop);
   }
 
   /**
