@@ -1,5 +1,6 @@
 import noop from '../noop';
 import { spawnAsync } from '../spawn';
+import { safeURL } from '../utils/safe-url';
 import { infoOptions } from './infoOptions';
 
 /**
@@ -12,7 +13,7 @@ export async function getGithubRemote(name: string | null | undefined = 'origin'
   try {
     if (!name) name = 'origin';
     const result = await spawnAsync('git', `config --get remote.${name}.url`.split(' '), opt);
-    return result.stdout.trim();
+    return safeURL(result.stdout.trim());
   } catch (err) {
     if (opt.throwable) throw err;
 

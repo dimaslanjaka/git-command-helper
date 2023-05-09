@@ -20,6 +20,7 @@ import { shell } from './shell';
 import { SpawnOptions, spawn, spawnSilent } from './spawn';
 import submodule from './submodule';
 import { StatusResult } from './types';
+import { safeURL } from './utils/safe-url';
 
 // module 'git-command-helper';
 
@@ -580,7 +581,7 @@ export class git {
         if (key) {
           (result as any)[key] = {
             origin: nameUrl[0],
-            url: nameUrl[1]
+            url: safeURL(nameUrl[1])
           };
         } else {
           throw new Error('key never assigned');
