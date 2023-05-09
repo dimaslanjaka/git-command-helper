@@ -1,5 +1,5 @@
 /* eslint-disable no-useless-escape */
-const { spawn } = require('cross-spawn');
+const { spawn, async: spawnAsync } = require('cross-spawn');
 const fs = require('fs-extra');
 const { resolve, join, dirname, toUnix, basename } = require('upath');
 const packagejson = require('./package.json');
@@ -241,18 +241,29 @@ async function addReadMe() {
   md += '| :--- | :--- |\n';
   for (let i = 0; i < tarballs.length; i++) {
     const tarball = tarballs[i];
+    const relativeTarball = tarball.relative.replace(/^\/+/, '');
+    // skip file not exist
+    if (!fs.existsSync(tarball.absolute)) {
+      console.log(tarball.relative, 'not found');
+      continue;
+    }
     // skip index tarball which ignored by .gitignore
-    if (git.isIgnored(tarball.relative)) {
-      console.log(tarball.relative, 'ignored by .gitignore');
+    const checkIgnore = (await spawnAsync('git', ['status', '--porcelain', '--ignored'], { cwd: __dirname })).output
+      .split(/\r?\n/)
+      .map((str) => str.trim())
+      .filter((str) => str.startsWith('!!'))
+      .map((str) => str.replace('!!', '').trim())
+      .join('\n');
+    if (checkIgnore.includes(relativeTarball)) {
+      console.log(relativeTarball, 'ignored by .gitignore');
       continue;
     } else {
-      await git.add(tarball.relative.replace(/^\/+/, ''));
-      try {
+      await git.add(relativeTarball);
+      if (await git.hasChanged()) {
         await git.commit('chore(tarball): update ' + gitlatest, '-m', { stdio: 'pipe' });
-      } catch {
-        //
       }
     }
+
     const hash = await git.latestCommit(tarball.relative.replace(/^\/+/, ''));
     const raw = await git.getGithubRepoUrl(tarball.relative.replace(/^\/+/, ''));
     let tarballUrl;
