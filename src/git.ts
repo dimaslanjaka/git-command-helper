@@ -17,7 +17,6 @@ import helper from './helper';
 import * as extension from './index-exports';
 import { getInstance, hasInstance, setInstance } from './instances';
 import noop from './noop';
-import { shell } from './shell';
 import { SpawnOptions, spawn, spawnSilent } from './spawn';
 import submodule from './submodule';
 import { StatusResult } from './types';
@@ -44,8 +43,6 @@ export class git {
   branch!: string;
   private exist!: boolean;
   cwd!: string;
-  static shell = shell;
-  shell = shell;
   helper = helper;
   static helper = helper;
   static noop = noop;
