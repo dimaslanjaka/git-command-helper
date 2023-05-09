@@ -30,6 +30,8 @@ jobs:
     strategy:
       fail-fast: true
       max-parallel: 6
+    env:
+      node_version: 14.x
 
     runs-on: ubuntu-latest
 
@@ -58,11 +60,7 @@ jobs:
       - name: initialize nodejs
         uses: actions/setup-node@v3
         with:
-          node-version: 18.x
-          architecture: x64
-          token: ${{ secrets.ACCESS_TOKEN }}
-          # cache: 'npm'
-          # cache-dependency-path: '**/package-lock.json'
+          node-version: ${{ env.node_version }}
 
       - name: Set env
         id: set-env
@@ -123,9 +121,9 @@ jobs:
             **/node_modules
             **/tmp
             **/dist
-          key: ${{ runner.os }}-${{ github.ref_name }}
+          key: ${{ runner.os }}-${{ env.node_version }}
           restore-keys: |
-            ${{ runner.os }}-${{ github.ref_name }}
+            ${{ runner.os }}-${{ env.node_version }}
             ${{ runner.os }}-
 
       - name: Check Updates
