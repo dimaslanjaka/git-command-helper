@@ -10,7 +10,7 @@ const axios = require('axios');
 const { writeFile } = require('fs/promises');
 const fs = require('fs');
 const path = require('path');
-const git = pkgjson.name === 'git-command-helper' ? require('./dist') : require('git-command-helper').default;
+const git = pkgjson.name === 'git-command-helper' ? require('./dist').default : require('git-command-helper').default;
 
 // required : upath semver typedoc git-command-helper gulp cross-spawn
 // update   : curl -L https://github.com/dimaslanjaka/nodejs-package-types/raw/main/typedoc-runner.js > typedoc-runner.js
