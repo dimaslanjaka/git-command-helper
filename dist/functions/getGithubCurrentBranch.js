@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getGithubCurrentBranch = void 0;
-const noop_1 = __importDefault(require("../noop"));
+const lodash_1 = __importDefault(require("lodash"));
 const spawn_1 = require("../spawn");
 /**
  * get current branch
@@ -16,7 +16,7 @@ async function getGithubCurrentBranch(opt = {}) {
         return result.stdout.trim();
     }
     catch (err) {
-        return (0, noop_1.default)(err);
+        return lodash_1.default.noop(err);
     }
 }
 exports.getGithubCurrentBranch = getGithubCurrentBranch;

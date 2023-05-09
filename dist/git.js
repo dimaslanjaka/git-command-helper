@@ -33,7 +33,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.setupGit = exports.git = void 0;
 const bluebird_1 = __importDefault(require("bluebird"));
+const cross_spawn_1 = require("cross-spawn");
 const fs_1 = require("fs");
+const lodash_1 = __importDefault(require("lodash"));
 const path_1 = require("path");
 const gitignore_1 = require("./functions/gitignore");
 const isFileChanged_1 = require("./functions/isFileChanged");
@@ -43,8 +45,6 @@ const git_info_1 = __importDefault(require("./git-info"));
 const helper_1 = __importDefault(require("./helper"));
 const extension = __importStar(require("./index-exports"));
 const instances_1 = require("./instances");
-const noop_1 = __importDefault(require("./noop"));
-const shell_1 = require("./shell");
 const spawn_1 = require("./spawn");
 const submodule_1 = __importDefault(require("./submodule"));
 const safe_url_1 = require("./utils/safe-url");
@@ -74,9 +74,7 @@ class git {
      * @param branch
      */
     constructor(gitdir, branch = 'master') {
-        this.shell = shell_1.shell;
         this.helper = helper_1.default;
-        this.noop = noop_1.default;
         this.ext = extension;
         // exports infos
         this.infos = git_info_1.default;
@@ -84,6 +82,8 @@ class git {
         this.getGithubCurrentBranch = git_info_1.default.getGithubCurrentBranch;
         this.getGithubRemote = git_info_1.default.getGithubRemote;
         this.getGithubRootDir = git_info_1.default.getGithubRootDir;
+        if ((0, instances_1.hasInstance)(gitdir))
+            return (0, instances_1.getInstance)(gitdir);
         this.cwd = gitdir;
         if (typeof this.branch === 'string')
             this.branch = branch;
@@ -117,7 +117,7 @@ class git {
      */
     addSafe() {
         return (0, spawn_1.spawnSilent)('git', 'config --global --add safe.directory'.split(' ').concat([this.cwd]), this.spawnOpt({ stdio: 'inherit' }))
-            .catch(git.noop)
+            .catch(lodash_1.default.noop)
             .finally(() => console.log(this.cwd, 'added to safe directory'));
     }
     /**
@@ -135,7 +135,7 @@ class git {
      * @returns
      */
     setAutoRebase() {
-        return (0, spawn_1.spawn)('git', ['config', 'pull.rebase', 'false']);
+        return (0, cross_spawn_1.spawnAsync)('git', ['config', 'pull.rebase', 'false']);
     }
     /**
      * setup end of line LF
@@ -143,7 +143,7 @@ class git {
      * @returns
      */
     setForceLF() {
-        return (0, spawn_1.spawn)('git', ['config', 'core.autocrlf', 'false']);
+        return (0, cross_spawn_1.spawnAsync)('git', ['config', 'core.autocrlf', 'false']);
     }
     /**
      * git fetch
@@ -447,7 +447,7 @@ class git {
     async init(spawnOpt = { stdio: 'inherit' }) {
         if (!(0, fs_1.existsSync)((0, path_1.join)(this.cwd, '.git')))
             (0, fs_1.mkdirSync)((0, path_1.join)(this.cwd, '.git'), { recursive: true });
-        return (0, spawn_1.spawnSilent)('git', ['init'], this.spawnOpt(spawnOpt)).catch(noop_1.default);
+        return (0, spawn_1.spawnSilent)('git', ['init'], this.spawnOpt(spawnOpt)).catch(lodash_1.default.noop);
     }
     /**
      * Check if git folder exists
@@ -581,9 +581,7 @@ class git {
         });
     }
 }
-git.shell = shell_1.shell;
 git.helper = helper_1.default;
-git.noop = noop_1.default;
 git.ext = extension;
 exports.git = git;
 exports.default = git;

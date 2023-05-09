@@ -7,8 +7,8 @@ exports.spawnSilent = exports.spawn = exports.spawnAsync = void 0;
 const bluebird_1 = __importDefault(require("bluebird"));
 const cross_spawn_1 = __importDefault(require("cross-spawn"));
 // import { spawn as sysSpawn } from 'child_process';
+const lodash_1 = __importDefault(require("lodash"));
 const cache_stream_1 = __importDefault(require("./cache-stream"));
-const noop_1 = __importDefault(require("./noop"));
 var spawn_async_1 = require("@expo/spawn-async");
 Object.defineProperty(exports, "spawnAsync", { enumerable: true, get: function () { return __importDefault(spawn_async_1).default; } });
 /**
@@ -88,8 +88,8 @@ const spawnSilent = async function (command, args, options) {
     try {
         return await promiseSpawn(command, args, options);
     }
-    catch (_) {
-        return (0, noop_1.default)(_);
+    catch (_err) {
+        return lodash_1.default.noop(_err);
     }
 };
 exports.spawnSilent = spawnSilent;
