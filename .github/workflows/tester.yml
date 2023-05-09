@@ -193,6 +193,7 @@ jobs:
         run: npm test
 
   coverage:
+    needs: tester
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
