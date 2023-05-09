@@ -47,6 +47,7 @@ const noop_1 = __importDefault(require("./noop"));
 const shell_1 = require("./shell");
 const spawn_1 = require("./spawn");
 const submodule_1 = __importDefault(require("./submodule"));
+const safe_url_1 = require("./utils/safe-url");
 /**
  * GitHub Command Helper For NodeJS
  */
@@ -536,7 +537,7 @@ class git {
                 if (key) {
                     result[key] = {
                         origin: nameUrl[0],
-                        url: nameUrl[1]
+                        url: (0, safe_url_1.safeURL)(nameUrl[1])
                     };
                 }
                 else {
