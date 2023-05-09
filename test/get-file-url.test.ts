@@ -8,7 +8,7 @@ describe('getGithubRepoUrl() - get file url', () => {
   let branch: string;
 
   beforeAll(async () => {
-    gh = new gitCommandHelper(__dirname);
+    gh = new gitCommandHelper(join(__dirname, '..'));
     branch = (await gh.getbranch()).filter((o) => o.active)[0].branch;
   });
 
