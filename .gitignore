@@ -14,7 +14,6 @@ _*.js
 **/.yarn/*.gz
 **/.yarn/version*
 .pnp.*
-yarn.lock
 package-lock.json
 /dist/
 .nyc*
