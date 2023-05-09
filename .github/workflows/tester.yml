@@ -70,9 +70,9 @@ jobs:
             **/node_modules
             /.yarn
             ./yarn.lock
-          key: ${{ runner.os }}-${{ matrix.node-version }}
+          key: ${{ runner.os }}-${{ github.ref_name }}
           restore-keys: |
-            ${{ runner.os }}-${{ matrix.node-version }}
+            ${{ runner.os }}-${{ github.ref_name }}
             ${{ runner.os }}-
 
       - name: install
