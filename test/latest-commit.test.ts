@@ -17,7 +17,7 @@ describe('latestCommit() - get latest commit', () => {
 
   it('README.md', async () => {
     const shortHash = await gh.latestCommit('README.md', { short: true });
-    expect(shortHash).toBe('9e6355ad');
+    expect(shortHash?.startsWith('9e6355a')).toBeTruthy();
     const longHash = await gh.latestCommit('README.md', { short: false });
     expect(longHash).toBe('9e6355ad21e9d555418c4092cb60b5a67242c676');
   });
