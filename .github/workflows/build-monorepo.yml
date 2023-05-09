@@ -1,5 +1,10 @@
 name: Build Monorepo
 
+# automated build dist and tarball
+# repo    : https://github.com/dimaslanjaka/nodejs-package-types/blob/main/.github/workflows/build-release.yml
+# raw     : https://raw.githubusercontent.com/dimaslanjaka/nodejs-package-types/main/.github/workflows/build-release.yml
+# update  : curl -L https://github.com/dimaslanjaka/nodejs-package-types/raw/main/.github/workflows/build-release.yml > .github/workflows/build-release.yml
+
 on:
   push:
     branches: ['monorepo']
@@ -167,7 +172,8 @@ jobs:
         if: steps.install-update.outcome == 'failure'
         run: rm -rf node_modules package-lock.json && npm install
 
-      - name: Dump Installations
+      - name: Dump
+        shell: bash
         run: |
           echo "install-legacy.outcome ${{ steps.install-legacy.outcome }}"
           echo "install-legacy.conclusion ${{ steps.install-legacy.conclusion }}"
@@ -177,6 +183,14 @@ jobs:
           echo "install-update.conclusion ${{ steps.install-update.conclusion }}"
           echo "install-clean.outcome ${{ steps.install-clean.outcome }}"
           echo "install-clean.conclusion ${{ steps.install-clean.conclusion }}"
+          echo "branch      : ${{ steps.set-env.outputs.GITHUB_BRANCH }}"
+          echo "commit msg  : ${{ github.event.head_commit.message }}"
+          echo "commit hash : ${{ steps.set-env.outputs.GITHUB_SHA_SHORT }}"
+          echo "commit url  : ${{ steps.set-env.outputs.GITHUB_COMMIT_URL }}"
+          echo "runner url  : ${{ steps.set-env.outputs.GITHUB_RUNNER_URL }}"
+          echo "cache npm   : ${{ steps.set-env.outputs.CACHE_NPM }}"
+          echo "cache yarn  : ${{ steps.set-env.outputs.CACHE_YARN }}"
+          echo "package mgr : "${{ steps.set-env.outputs.PACKAGE-MANAGER }}""
 
       - if: ${{ steps.cache.outputs.cache-hit != 'true' }}
         name: List the state of node modules
