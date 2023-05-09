@@ -9,6 +9,7 @@ on:
       - '**/release/**'
       - '**garbage-collector**'
       - '**codeql**'
+      - '**/.github/workflows/tester.yml'
   pull_request:
     types:
       - closed
