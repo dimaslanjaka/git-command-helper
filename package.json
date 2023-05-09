@@ -33,7 +33,7 @@
     "posttest": "rm -rf tmp/project-test",
     "test-cov": "nyc --reporter=lcovonly npm test",
     "docs": "gulp docs",
-    "clean": "rm -rf dist",
+    "clean": "rm -rf dist && rm -rf tmp",
     "deadcode": "ts-prune",
     "prepare": "husky install"
   },
