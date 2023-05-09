@@ -54,6 +54,11 @@ log('='.repeat(19));
 log('= packing started =');
 log('='.repeat(19));
 
+/**
+ * is current device is Github Actions
+ */
+const _isCI = process.env.GITHUB_ACTION && process.env.GITHUB_ACTIONS;
+
 const child = !withYarn
   ? spawn('npm', ['pack'], { cwd: __dirname, stdio: 'ignore' })
   : spawn('yarn', ['pack'], { cwd: __dirname, stdio: 'ignore' });
@@ -214,6 +219,18 @@ function parseVersion(versionString) {
  * create release/readme.md
  */
 async function addReadMe() {
+  // set username and email on CI
+  if (_isCI) {
+    await spawnAsync('git', ['config', '--global', 'user.name', 'dimaslanjaka'], {
+      cwd: __dirname,
+      stdio: 'inherit'
+    });
+    await spawnAsync('git', ['config', '--global', 'user.email', 'dimaslanjaka@gmail.com'], {
+      cwd: __dirname,
+      stdio: 'inherit'
+    });
+  }
+
   /**
    * @type {typeof import('git-command-helper')}
    */
