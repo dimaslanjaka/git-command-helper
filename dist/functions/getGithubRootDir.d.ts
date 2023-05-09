@@ -4,4 +4,4 @@ import { infoOptions } from './infoOptions';
  * * see {@link https://stackoverflow.com/a/957978}
  * @returns
  */
-export declare function getGithubRootDir(opt?: infoOptions): Promise<string | void>;
+export declare function getGithubRootDir(opt?: infoOptions): Promise<string>;

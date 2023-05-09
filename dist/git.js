@@ -35,6 +35,7 @@ exports.setupGit = exports.git = void 0;
 const bluebird_1 = __importDefault(require("bluebird"));
 const fs_1 = require("fs");
 const path_1 = require("path");
+const gitignore_1 = require("./functions/gitignore");
 const isFileChanged_1 = require("./functions/isFileChanged");
 const latestCommit_1 = require("./functions/latestCommit");
 const push_checker_1 = require("./functions/push-checker");
@@ -331,6 +332,18 @@ class git {
     async hasChanged() {
         const status = await this.status();
         return status.length > 0;
+    }
+    /**
+     * is file ignored by `.gitignore`?
+     * @param filePath
+     * @param options
+     * @returns
+     */
+    isIgnored(filePath, options) {
+        if (!options)
+            options = {};
+        options.cwd = this.cwd;
+        return (0, gitignore_1.isIgnored)(filePath, options);
     }
     /**
      * git add

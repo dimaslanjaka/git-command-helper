@@ -4,5 +4,5 @@
  */
 export declare function dryRun(cwd: string): Promise<boolean>;
 export declare const isCanPush: {
-  dryRun: typeof dryRun;
+    dryRun: typeof dryRun;
 };

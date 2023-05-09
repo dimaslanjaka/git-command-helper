@@ -5,7 +5,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getGithubRootDir = void 0;
 const upath_1 = __importDefault(require("upath"));
-const noop_1 = __importDefault(require("../noop"));
 const spawn_1 = require("../spawn");
 const case_path_1 = require("../utils/case-path");
 /**
@@ -21,7 +20,8 @@ async function getGithubRootDir(opt = {}) {
         return upath_1.default.toUnix((0, case_path_1.trueCasePathSync)(result.stdout.trim()));
     }
     catch (err) {
-        return (0, noop_1.default)(err);
+        if (opt.throwable)
+            throw err;
     }
 }
 exports.getGithubRootDir = getGithubRootDir;

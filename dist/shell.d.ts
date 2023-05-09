@@ -2,8 +2,8 @@
 /// <reference types="node" />
 import { SpawnOptions } from 'child_process';
 export type ShellOptions = SpawnOptions & {
-  verbose?: boolean;
-  supress?: boolean;
+    verbose?: boolean;
+    supress?: boolean;
 };
 /**
  * asynchronous spawner

@@ -53,7 +53,7 @@ async function isIgnored(filePath, options = {}) {
             throw err;
         }
         else {
-            console.log({ error: err.message, cwd });
+            console.log({ error: err, cwd: upath_1.default.dirname(filePath) });
         }
         // cwd fallback to process.cwd
         cwd = process.cwd();
@@ -80,10 +80,7 @@ async function isIgnored(filePath, options = {}) {
         return {
             str,
             relativePath,
-            matched: str.includes(relativePath) ||
-                str === relativePath ||
-                relativePath.startsWith(str) ||
-                matches.some((b) => b === true)
+            matched: str === relativePath || matches.some((b) => b === true)
         };
     });
     const result = filter.some((o) => o.matched);

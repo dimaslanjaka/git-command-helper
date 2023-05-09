@@ -5,7 +5,9 @@ const getGithubCurrentBranch_1 = require("./functions/getGithubCurrentBranch");
 const getGithubRemote_1 = require("./functions/getGithubRemote");
 const getGithubRepoUrl_1 = require("./functions/getGithubRepoUrl");
 const getGithubRootDir_1 = require("./functions/getGithubRootDir");
+const gitignore_1 = require("./functions/gitignore");
 const GithubInfo = {
+    getIgnores: gitignore_1.getIgnores,
     getGithubCurrentBranch: getGithubCurrentBranch_1.getGithubCurrentBranch,
     getGithubRemote: getGithubRemote_1.getGithubRemote,
     getGithubRepoUrl: getGithubRepoUrl_1.getGithubRepoUrl,

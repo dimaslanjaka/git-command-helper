@@ -4,10 +4,13 @@ import { getGithubRemote } from './functions/getGithubRemote';
 import { getGithubRepoUrl } from './functions/getGithubRepoUrl';
 import { getGithubRootDir } from './functions/getGithubRootDir';
 declare const GithubInfo: {
-  getGithubCurrentBranch: typeof getGithubCurrentBranch;
-  getGithubRemote: typeof getGithubRemote;
-  getGithubRepoUrl: typeof getGithubRepoUrl;
-  getGithubRootDir: typeof getGithubRootDir;
-  getGithubBranches: typeof getGithubBranches;
+    getIgnores: ({ cwd }: {
+        cwd?: string;
+    }) => Promise<string[]>;
+    getGithubCurrentBranch: typeof getGithubCurrentBranch;
+    getGithubRemote: typeof getGithubRemote;
+    getGithubRepoUrl: typeof getGithubRepoUrl;
+    getGithubRootDir: typeof getGithubRootDir;
+    getGithubBranches: typeof getGithubBranches;
 };
 export default GithubInfo;
