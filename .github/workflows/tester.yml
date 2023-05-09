@@ -68,11 +68,12 @@ jobs:
             **/dist
             **/tmp
             **/node_modules
-            **/.yarn
-          key: ${{ matrix.os }}-${{ matrix.node-version }}
+            /.yarn
+            ./yarn.lock
+          key: ${{ runner.os }}-${{ matrix.node-version }}
           restore-keys: |
-            ${{ matrix.os }}-${{ matrix.node-version }}
-            ${{ matrix.os }}-
+            ${{ runner.os }}-${{ matrix.node-version }}
+            ${{ runner.os }}-
 
       - name: install
         run: |
