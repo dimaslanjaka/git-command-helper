@@ -1,4 +1,4 @@
-import noop from '../noop';
+import _ from 'lodash';
 import { spawnAsync } from '../spawn';
 
 /**
@@ -10,6 +10,6 @@ export async function getGithubCurrentBranch(opt: spawnAsync.SpawnOptions = {}) 
     const result = await spawnAsync('git', ['branch', '--show-current'], opt);
     return result.stdout.trim();
   } catch (err) {
-    return noop(err);
+    return _.noop(err);
   }
 }
