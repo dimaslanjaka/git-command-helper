@@ -1,6 +1,7 @@
 import { afterAll, beforeAll, describe, expect, it } from '@jest/globals';
 import { spawnAsync } from 'cross-spawn';
-import git, { gitCommandHelper } from '../src';
+import git from '../src';
+import clone from './clone';
 import { testcfg } from './config';
 
 describe('get remote', () => {
@@ -8,7 +9,7 @@ describe('get remote', () => {
   const newremote = 'https://username:TOKEN@github.com/dimaslanjaka/test-repo.git';
 
   beforeAll(async () => {
-    gh = new gitCommandHelper(testcfg.cwd);
+    gh = await clone();
     // set new remote with username and token
     await gh.setremote(newremote, 'origin');
   });

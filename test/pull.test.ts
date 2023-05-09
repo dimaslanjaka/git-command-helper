@@ -1,11 +1,11 @@
 import { describe, expect, it, jest } from '@jest/globals';
-import gitHelper from '../src';
+import clone from './clone';
 import { TestConfig } from './config';
 
 describe('test pull', () => {
   jest.setTimeout(60000);
   it('should return true', async () => {
-    const git = new gitHelper(TestConfig.cwd);
+    const git = await clone();
     await git.setremote(TestConfig.remote);
     await git.setbranch(TestConfig.branch);
     await git.setuser(TestConfig.username);

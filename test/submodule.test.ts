@@ -1,5 +1,6 @@
 import { beforeAll, describe, expect, it, jest } from '@jest/globals';
 import gitHelper from '../src';
+import clone from './clone';
 import { testcfg } from './config';
 
 describe('test submodules', () => {
@@ -7,7 +8,7 @@ describe('test submodules', () => {
   let github: gitHelper;
 
   beforeAll(async function () {
-    github = new gitHelper(testcfg.cwd);
+    github = await clone();
     await github.reset(testcfg.branch);
   });
 

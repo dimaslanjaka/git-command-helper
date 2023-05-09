@@ -1,11 +1,12 @@
 import { beforeAll, describe, expect, it } from '@jest/globals';
-import git, { gitCommandHelper } from '../src';
+import git from '../src';
+import clone from './clone';
 import { TestConfig } from './config';
 
 describe('latestCommit() - get latest commit', () => {
   let gh: git;
   beforeAll(async () => {
-    gh = new gitCommandHelper(TestConfig.cwd, TestConfig.branch);
+    gh = await clone();
     await gh.reset(TestConfig.branch);
   });
 

@@ -1,14 +1,15 @@
 import { beforeAll, describe, expect, test } from '@jest/globals';
 import { writeFileSync } from 'fs';
 import { join } from 'path';
-import git, { gitHelper } from '../src';
+import git from '../src';
 import { isUntracked } from '../src/functions/isFileChanged';
+import clone from './clone';
 import { testcfg } from './config';
 
 describe('untrack', () => {
   let gh: git;
   beforeAll(async () => {
-    gh = new gitHelper(testcfg.cwd, testcfg.branch);
+    gh = await clone();
     await gh.reset(testcfg.branch);
   });
 
