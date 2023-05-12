@@ -1,4 +1,4 @@
-name: Build Monorepo
+name: Build Release
 
 # automated build dist and tarball
 # repo    : https://github.com/dimaslanjaka/nodejs-package-types/blob/main/.github/workflows/build-release.yml
@@ -7,7 +7,7 @@ name: Build Monorepo
 
 on:
   push:
-    branches: ['monorepo']
+    branches: ['master', 'main']
     paths-ignore:
       - '**/*.tgz'
       - '**/*.gz'
@@ -27,14 +27,11 @@ on:
 
 # run single job
 concurrency:
-  group: build-monorepo
+  group: build-release
   cancel-in-progress: true
 
 jobs:
   build:
-    strategy:
-      fail-fast: true
-      max-parallel: 6
     env:
       NODE_OPTIONS: '--max_old_space_size=8192' #8192 4096 --expose-gc
       YARN_ENABLE_IMMUTABLE_INSTALLS: false
@@ -43,7 +40,7 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    name: Build Monorepo
+    name: Build Release
     steps:
       - uses: actions/checkout@v3
         with:
@@ -137,7 +134,7 @@ jobs:
       - name: Check Updates
         shell: bash
         continue-on-error: true
-        run: npm run update
+        run: npm run update --if-present
 
       - name: Install Global Packages
         run: npm i -g typescript ts-node gulp-cli hexo-cli webpack-cli
