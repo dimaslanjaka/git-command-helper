@@ -4880,7 +4880,7 @@ __metadata:
     bluebird: ^3.7.2
     browser-sync: ^2.29.1
     core-js: ^3.30.2
-    cross-spawn: "https://github.com/dimaslanjaka/node-cross-spawn/raw/2cf620b/release/cross-spawn.tgz"
+    cross-spawn: "https://github.com/dimaslanjaka/node-cross-spawn/tarball/5560156be9745d682c7a5e727cffeee0b0179ab1"
     debug: ^4.3.4
     deepmerge-ts: ^5.1.0
     eslint: ^8.40.0
