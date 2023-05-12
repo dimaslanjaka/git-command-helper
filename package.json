@@ -1,6 +1,6 @@
 {
   "name": "git-command-helper",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "github command helper for nodejs",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -33,7 +33,7 @@
     "posttest": "rm -rf tmp/project-test",
     "test-cov": "nyc --reporter=lcovonly npm test",
     "docs": "npm run clean && npm run build && gulp docs",
-    "clean": "rm -rf dist && rm -rf tmp",
+    "clean": "rm -rf dist && rm -rf tmp && npm run build",
     "deadcode": "ts-prune",
     "prepare": "husky install"
   },
