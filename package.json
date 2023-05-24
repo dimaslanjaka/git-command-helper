@@ -7,12 +7,11 @@
   "files": [
     "dist",
     "LICENSE*",
-    "readme.md",
     "bin",
     "!**/*.tsbuildinfo",
     "!**/package-lock.json",
     "!**/yarn.lock",
-    "!**/release/**",
+    "!**/release*/**",
     "!**/tmp/**",
     "!**/node_modules/**"
   ],
@@ -67,7 +66,7 @@
     "deepmerge-ts": "^5.1.0",
     "fs-extra": "^11.1.1",
     "hexo-util": "https://github.com/dimaslanjaka/hexo/raw/cdff687/releases/hexo-util.tgz",
-    "ini": "^4.1.0",
+    "ini": "^4.1.1",
     "lodash": "^4.17.21",
     "minimatch": "^9.0.0",
     "sbg-utility": "^1.0.9",

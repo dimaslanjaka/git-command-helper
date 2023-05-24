@@ -4922,7 +4922,7 @@ __metadata:
     gulp: ^4.0.2
     hexo-util: "https://github.com/dimaslanjaka/hexo/raw/cdff687/releases/hexo-util.tgz"
     husky: ^8.0.3
-    ini: ^4.1.0
+    ini: ^4.1.1
     jest: ^29.5.0
     jest-config: ^29.5.0
     jest-mock: ^29.5.0
@@ -5789,6 +5789,13 @@ __metadata:
   version: 4.1.0
   resolution: "ini@npm:4.1.0"
   checksum: 12fc7c1f0a048e37398928f32513b494012b11fcec43fc3ef687445b29d959c548abef6d911686e507199c17c366c5bce7bedf02c3fc32912a71737b8291f6c5
+  languageName: node
+  linkType: hard
+
+"ini@npm:^4.1.1":
+  version: 4.1.1
+  resolution: "ini@npm:4.1.1"
+  checksum: 0e5909554074fbc31824fa5415b0f604de4a665514c96a897a77bf77353a7ad4743927321270e9d0610a9d510ccd1f3cd77422f7cc80d8f4542dbce75476fb6d
   languageName: node
   linkType: hard
 
