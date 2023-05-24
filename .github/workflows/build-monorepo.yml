@@ -189,8 +189,9 @@ jobs:
           echo "cache yarn  : ${{ steps.set-env.outputs.CACHE_YARN }}"
           echo "package mgr : "${{ steps.set-env.outputs.PACKAGE-MANAGER }}""
 
-      - if: ${{ steps.cache.outputs.cache-hit != 'true' }}
-        name: List the state of node modules
+      - name: List the state of node modules
+        #if: ${{ steps.cache.outputs.cache-hit != 'true' }}
+        if: ${{ false }}
         shell: bash
         continue-on-error: true
         run: npm list
