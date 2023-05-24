@@ -91,10 +91,10 @@ export class submodule {
       const doUp = () => {
         return new Bluebird((resolveDoUp: (...v: any[]) => any) => {
           let { github } = info[0];
-          const { branch, root, url } = info[0];
+          const { branch, cwd, url } = info[0];
           //console.log("safe", info[0]);
           if (!github) {
-            github = new git(root);
+            github = new git(cwd);
           }
           const doReset = () => github.reset(branch);
           const doPull = () => github.pull(['origin', branch, '--recurse-submodule']);
@@ -167,9 +167,9 @@ export class submodule {
     for (let i = 0; i < extract.length; i++) {
       const item = extract[i];
       if (!item) continue;
-      if (!hasInstance(item.root)) setInstance(item.root, new git(item.root));
-      const github = getInstance<git>(item.root);
-      this.github[item.root] = github;
+      if (!hasInstance(item.cwd)) setInstance(item.cwd, new git(item.cwd));
+      const github = getInstance<git>(item.cwd);
+      this.github[item.cwd] = github;
       extract[i] = Object.assign({ branch: 'master', github }, item);
     }
     return extract.map(function (item) {

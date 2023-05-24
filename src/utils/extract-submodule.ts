@@ -5,6 +5,7 @@ import git, { GitOpt } from '../git';
 
 export interface Submodule extends GitOpt {
   github?: git;
+  path?: string;
 }
 
 /**
@@ -15,10 +16,9 @@ function extractSubmodule(gitmodulesPath: string) {
   const config = ini.parse(fs.readFileSync(gitmodulesPath).toString());
   return Object.keys(config).map((key) => {
     if (key.startsWith('submodule')) {
-      const submodule = config[key];
+      const submodule = config[key] as Submodule;
       submodule.cwd = join(dirname(String(gitmodulesPath)), submodule.path);
       submodule.github = new git(submodule.cwd);
-      console.log(submodule);
       return submodule;
     }
   });
