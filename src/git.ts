@@ -8,7 +8,7 @@ import Bluebird from 'bluebird';
 import { spawnAsync } from 'cross-spawn';
 import fs, { existsSync, mkdirSync } from 'fs-extra';
 import _ from 'lodash';
-import { join } from 'path';
+import { join } from 'upath';
 import { isIgnored, isIgnoredOpt } from './functions/gitignore';
 import { isUntracked } from './functions/isFileChanged';
 import { latestCommit } from './functions/latestCommit';

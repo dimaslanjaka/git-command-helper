@@ -1,4 +1,4 @@
-import fs from 'fs';
+import fs from 'fs-extra';
 import ini from 'ini';
 import { dirname, join } from 'upath';
 import git, { GitOpt } from '../git';

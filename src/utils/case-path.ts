@@ -1,8 +1,8 @@
 'use strict';
 
-import { readdir as _readdir, existsSync, readdirSync } from 'fs';
+import { readdir as _readdir, existsSync, readdirSync } from 'fs-extra';
 import { platform } from 'os';
-import { isAbsolute, join, normalize } from 'path';
+import { isAbsolute, join, normalize } from 'upath';
 import { promisify as pify } from 'util';
 
 const readdir = pify(_readdir);
