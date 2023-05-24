@@ -25,10 +25,10 @@ import { safeURL } from './utils/safe-url';
 // module 'git-command-helper';
 
 export interface GitOpt {
-  user?: string | null;
-  email?: string | null;
+  user?: string;
+  email?: string;
   /** branch */
-  ref: string | null;
+  ref?: string;
   /** base folder */
   cwd: string;
   /** remote url */
@@ -40,11 +40,11 @@ export interface GitOpt {
  */
 export class git {
   submodules!: (Submodule | undefined)[];
-  user!: string;
-  email!: string;
-  remote!: string;
-  branch!: string;
-  private exist!: boolean;
+  user: string | undefined;
+  email: string | undefined;
+  remote: string | undefined;
+  branch: string;
+  private exist: boolean | undefined;
   cwd!: string;
   helper = helper;
   static helper = helper;
@@ -68,17 +68,19 @@ export class git {
       this.branch = branch;
     } else {
       gitdir = obj.cwd;
-      this.cwd = obj.cwd;
+      this.branch = obj.cwd;
+      this.remote = obj.url;
+      this.email = obj.email;
     }
     if (hasInstance(gitdir)) return getInstance(gitdir);
     this.cwd = gitdir;
 
-    if (!existsSync(this.cwd)) {
+    if (!existsSync(gitdir)) {
       // create .git folder
-      fs.mkdirSync(join(this.cwd, '.git'), { recursive: true });
-      this.spawn('git', ['init']).then(() => {
-        // this.spawn('git', ['pull', 'origin', this.branch], { cwd: this.cwd });
-        this.setremote(this.remote);
+      fs.mkdirSync(join(gitdir, '.git'), { recursive: true });
+      const self = this;
+      this.spawn('git', ['init']).then(function () {
+        if (typeof self.remote === 'function') this.setremote(self.remote);
       });
     }
 
@@ -480,23 +482,6 @@ export class git {
   async init(spawnOpt: SpawnOptions = { stdio: 'inherit' }) {
     if (!existsSync(join(this.cwd, '.git'))) mkdirSync(join(this.cwd, '.git'), { recursive: true });
     return spawnSilent('git', ['init'], this.spawnOpt(spawnOpt)).catch(_.noop);
-  }
-
-  /**
-   * Check if git folder exists
-   * @returns
-   */
-  isExist() {
-    return new Bluebird((resolve: (exists: boolean) => any, reject) => {
-      const folderExist = existsSync(join(this.cwd, '.git'));
-      spawn('git', ['status'], this.spawnOpt({ stdio: 'pipe' }))
-        .then((result) => {
-          const match1 = /changes not staged for commit/gim.test(result);
-          this.exist = match1 && folderExist;
-          resolve(this.exist);
-        })
-        .catch(reject);
-    });
   }
 
   public setcwd(v: string) {
