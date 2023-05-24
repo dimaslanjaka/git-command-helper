@@ -139,7 +139,7 @@ jobs:
       - name: Install Global Packages
         run: npm i -g typescript ts-node gulp-cli hexo-cli webpack-cli
 
-      - name: Install Legacy Peer Dependencies
+      - name: Install
         run: yarn install
         id: install
         shell: bash
@@ -187,7 +187,6 @@ jobs:
           files: |
             release
             dist
-            lib
             !node_modules
             !tmp
 
