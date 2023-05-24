@@ -76,7 +76,7 @@ export class git {
       // create .git folder
       fs.mkdirSync(join(this.cwd, '.git'), { recursive: true });
       this.spawn('git', ['init']).then(() => {
-        this.spawn('git', ['pull', 'origin', this.branch], { cwd: this.cwd });
+        // this.spawn('git', ['pull', 'origin', this.branch], { cwd: this.cwd });
       });
     }
 
