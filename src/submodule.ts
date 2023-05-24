@@ -5,10 +5,10 @@ import { existsSync, statSync } from 'fs';
 import { rm } from 'fs/promises';
 import { join } from 'path';
 import { toUnix } from 'upath';
-import extractSubmodule from './extract-submodule';
 import git from './git';
 import { getInstance, hasInstance, setInstance } from './instances';
 import { spawn } from './spawner';
+import extractSubmodule from './utils/extract-submodule';
 
 const _log = debug('git-command-helper');
 
