@@ -158,14 +158,6 @@ jobs:
       - name: Dump
         shell: bash
         run: |
-          echo "install-legacy.outcome ${{ steps.install-legacy.outcome }}"
-          echo "install-legacy.conclusion ${{ steps.install-legacy.conclusion }}"
-          echo "install-verbose.outcome ${{ steps.install-verbose.outcome }}"
-          echo "install-verbose.conclusion ${{ steps.install-verbose.conclusion }}"
-          echo "install-update.outcome ${{ steps.install-update.outcome }}"
-          echo "install-update.conclusion ${{ steps.install-update.conclusion }}"
-          echo "install-clean.outcome ${{ steps.install-clean.outcome }}"
-          echo "install-clean.conclusion ${{ steps.install-clean.conclusion }}"
           echo "branch      : ${{ steps.set-env.outputs.GITHUB_BRANCH }}"
           echo "commit msg  : ${{ github.event.head_commit.message }}"
           echo "commit hash : ${{ steps.set-env.outputs.GITHUB_SHA_SHORT }}"
