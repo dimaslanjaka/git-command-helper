@@ -630,25 +630,3 @@ export class git {
 }
 
 export default git;
-
-/**
- * Setup git with branch and remote url resolved automatically
- * @param param0
- * @returns
- */
-export async function setupGit({ branch, url, baseDir = process.cwd(), email = null, user = null }: GitOpt) {
-  const github = new git(baseDir);
-  github.remote = url;
-  try {
-    if (!(await github.isExist())) {
-      await github.init();
-    }
-    await github.setremote(url);
-    if (branch) await github.setbranch(branch);
-    if (email) await github.setemail(email);
-    if (user) await github.setuser(user);
-  } catch (e) {
-    console.trace(e);
-  }
-  return github;
-}
