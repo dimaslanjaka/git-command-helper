@@ -68,6 +68,7 @@ export class git {
       this.branch = branch;
     } else {
       gitdir = obj.cwd;
+      this.cwd = obj.cwd;
     }
     if (hasInstance(gitdir)) return getInstance(gitdir);
     this.cwd = gitdir;
@@ -77,6 +78,7 @@ export class git {
       fs.mkdirSync(join(this.cwd, '.git'), { recursive: true });
       this.spawn('git', ['init']).then(() => {
         // this.spawn('git', ['pull', 'origin', this.branch], { cwd: this.cwd });
+        this.setremote(this.remote);
       });
     }
 
