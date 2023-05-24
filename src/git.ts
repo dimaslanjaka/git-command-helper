@@ -75,6 +75,7 @@ export class git {
     if (hasInstance(gitdir)) return getInstance(gitdir);
     this.cwd = gitdir;
 
+    // auto recreate git directory
     if (!existsSync(gitdir)) {
       // create .git folder
       fs.mkdirSync(join(gitdir, '.git'), { recursive: true });
