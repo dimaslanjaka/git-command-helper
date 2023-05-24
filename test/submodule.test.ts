@@ -12,16 +12,16 @@ describe('test submodules', () => {
   });
 
   it('not have submodule', () => {
-    expect(github.submodule.hasSubmodule()).toBe(false);
+    expect(github.submodule?.hasSubmodule()).toBe(false);
   });
 
   it('have submodule', async () => {
-    await github.submodule.add({ remote: 'https://github.com/dimaslanjaka/hexo-is', dest: 'packages/hexo-is' });
-    expect(github.submodule.hasSubmodule()).toBe(true);
+    await github.submodule?.add({ remote: 'https://github.com/dimaslanjaka/hexo-is', dest: 'packages/hexo-is' });
+    expect(github.submodule?.hasSubmodule()).toBe(true);
   });
 
   it('remove submodule', async () => {
-    await github.submodule.remove('packages/hexo-is');
-    expect(github.submodule.hasSubmodule()).toBe(false);
+    await github.submodule?.remove('packages/hexo-is');
+    expect(github.submodule?.hasSubmodule()).toBe(false);
   });
 });

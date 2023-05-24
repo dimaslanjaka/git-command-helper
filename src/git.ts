@@ -18,6 +18,7 @@ import helper from './helper';
 import * as extension from './index-exports';
 import { getInstance, hasInstance, setInstance } from './instances';
 import { SpawnOptions, spawn, spawnSilent } from './spawn';
+import submodule from './submodule';
 import { StatusResult } from './types/status';
 import extractSubmodule, { Submodule } from './utils/extract-submodule';
 import { safeURL } from './utils/safe-url';
@@ -44,8 +45,10 @@ export class git {
   email: string | undefined;
   remote: string | undefined;
   branch: string;
-  private exist: boolean | undefined;
+  submodule: import('./submodule').default | undefined;
   cwd!: string;
+
+  // external funcs
   helper = helper;
   static helper = helper;
   ext = extension;
@@ -85,8 +88,9 @@ export class git {
       });
     }
 
-    if (existsSync(join(this.cwd, '.gitmodules'))) {
-      this.submodules = extractSubmodule(join(this.cwd, '.gitmodules'));
+    if (existsSync(join(gitdir, '.gitmodules'))) {
+      this.submodules = extractSubmodule(join(gitdir, '.gitmodules'));
+      this.submodule = new submodule(gitdir);
     }
     if (!hasInstance(gitdir)) setInstance(gitdir, this);
   }
