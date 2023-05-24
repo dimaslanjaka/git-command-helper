@@ -3,7 +3,8 @@ import fs from 'fs-extra';
 import path from 'upath';
 import gitCommandHelper from '../src';
 
-const __dirnameUnix = path.toUnix(__dirname);
+const base = path.join(__dirname, '../tmp/github-pages');
+if (!fs.existsSync(base)) fs.mkdirSync(base, { recursive: true });
 
 interface deployInfo {
   name: string;
@@ -15,7 +16,7 @@ interface deployInfo {
 const deployInfo = [
   {
     name: 'root',
-    dest: path.join(__dirname, '.deploy_git'),
+    dest: path.join(base, '.deploy_git'),
     url: 'https://github.com/dimaslanjaka/dimaslanjaka.github.io',
     ref: 'master',
     callback: async function (this: deployInfo) {
@@ -34,7 +35,7 @@ const deployInfo = [
   },
   {
     name: 'docs',
-    dest: path.join(__dirname, '.deploy_git/docs'),
+    dest: path.join(base, '.deploy_git/docs'),
     url: 'https://github.com/dimaslanjaka/docs',
     ref: 'master',
     callback: async function (this: deployInfo) {
@@ -50,7 +51,7 @@ const deployInfo = [
   },
   {
     name: 'chimeraland',
-    dest: path.join(__dirname, '.deploy_git/chimeraland'),
+    dest: path.join(base, '.deploy_git/chimeraland'),
     url: 'https://github.com/dimaslanjaka/chimeraland',
     ref: 'gh-pages',
     callback: async function (this: deployInfo) {
@@ -73,7 +74,7 @@ const deployInfo = [
   },
   {
     name: 'page',
-    dest: path.join(__dirname, '.deploy_git/page'),
+    dest: path.join(base, '.deploy_git/page'),
     url: 'https://github.com/dimaslanjaka/page',
     ref: 'gh-pages',
     callback: async function (this: deployInfo) {
