@@ -2,7 +2,7 @@ import fs from 'fs-extra';
 import * as glob from 'glob';
 import { minimatch } from 'minimatch';
 import path from 'upath';
-import cp from '../cross-spawn/src';
+import * as cp from '../cross-spawn/src';
 import { trueCasePathSync } from '../utils/case-path';
 import { getGithubRootDir } from './getGithubRootDir';
 import { infoOptions } from './infoOptions';
