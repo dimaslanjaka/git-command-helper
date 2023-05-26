@@ -1,15 +1,48 @@
 'use strict';
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.trueCasePath = exports.trueCasePathSync = void 0;
-const fs_1 = require("fs");
+const fs_extra_1 = require("fs-extra");
 const os_1 = require("os");
 const path_1 = require("path");
+const upath_1 = require("upath");
 const util_1 = require("util");
-const readdir = (0, util_1.promisify)(fs_1.readdir);
+const readdir = (0, util_1.promisify)(fs_extra_1.readdir);
 const isWindows = (0, os_1.platform)() === 'win32';
 const delimiter = isWindows ? '\\' : '/';
-exports.trueCasePathSync = _trueCasePath({ sync: true });
-exports.trueCasePath = _trueCasePath({ sync: false });
+exports.trueCasePathSync = trueCasePathNew({ sync: true });
+exports.trueCasePath = trueCasePathNew({ sync: false });
+function trueCasePathNew(opt) {
+    const defaults = { sync: false };
+    const trueCase = _trueCasePath(Object.assign(defaults, opt || {}));
+    return (filePath, basePath, cbOpt) => {
+        let result;
+        let bPath = undefined;
+        let callbackOpt = Object.assign({ unix: false }, cbOpt || {});
+        if (typeof basePath === 'string') {
+            bPath = basePath;
+        }
+        else if (typeof basePath === 'object') {
+            callbackOpt = Object.assign({ unix: false }, basePath || {});
+        }
+        let fPath = filePath;
+        if (typeof bPath === 'string')
+            fPath = (0, path_1.join)(bPath, filePath);
+        if ((0, fs_extra_1.existsSync)(fPath)) {
+            result = trueCase(filePath, bPath);
+        }
+        else {
+            result = fPath.trim().replace(/^[a-zA-Z]:/g, function (match) {
+                return match.toUpperCase();
+            });
+        }
+        if (callbackOpt === null || callbackOpt === void 0 ? void 0 : callbackOpt.unix) {
+            return (0, upath_1.toUnix)(result);
+        }
+        else {
+            return result;
+        }
+    };
+}
 function getRelevantFilePathSegments(filePath) {
     return filePath.split(delimiter).filter((s) => s !== '');
 }
@@ -27,7 +60,7 @@ function matchCaseInsensitive(fileOrDirectory, directoryContents, filePath) {
 function _trueCasePath({ sync }) {
     return (filePath, basePath) => {
         var _a;
-        if (!(0, fs_1.existsSync)(filePath))
+        if (!(0, fs_extra_1.existsSync)(filePath))
             return basePath ? (0, path_1.join)(basePath, filePath) : filePath;
         if (basePath) {
             if (!(0, path_1.isAbsolute)(basePath)) {
@@ -52,7 +85,7 @@ function _trueCasePath({ sync }) {
     };
 }
 function iterateSync(basePath, filePath, segments) {
-    return segments.reduce((realPath, fileOrDirectory) => realPath + delimiter + matchCaseInsensitive(fileOrDirectory, (0, fs_1.readdirSync)(realPath + delimiter), filePath), basePath);
+    return segments.reduce((realPath, fileOrDirectory) => realPath + delimiter + matchCaseInsensitive(fileOrDirectory, (0, fs_extra_1.readdirSync)(realPath + delimiter), filePath), basePath);
 }
 async function iterateAsync(basePath, filePath, segments) {
     return await segments.reduce(async (realPathPromise, fileOrDirectory) => (await realPathPromise) +

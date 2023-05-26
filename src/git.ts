@@ -6,9 +6,9 @@
 
 import Bluebird from 'bluebird';
 import { spawnAsync } from 'cross-spawn';
-import { existsSync, mkdirSync } from 'fs';
+import fs, { existsSync, mkdirSync } from 'fs-extra';
 import _ from 'lodash';
-import { join } from 'path';
+import { join } from 'upath';
 import { isIgnored, isIgnoredOpt } from './functions/gitignore';
 import { isUntracked } from './functions/isFileChanged';
 import { latestCommit } from './functions/latestCommit';
@@ -19,30 +19,42 @@ import * as extension from './index-exports';
 import { getInstance, hasInstance, setInstance } from './instances';
 import { SpawnOptions, spawn, spawnSilent } from './spawn';
 import submodule from './submodule';
-import { StatusResult } from './types';
+import { StatusResult } from './types/status';
+import extractSubmodule, { Submodule } from './utils/extract-submodule';
 import { safeURL } from './utils/safe-url';
 
 // module 'git-command-helper';
 
 export interface GitOpt {
-  user?: string | null;
-  email?: string | null;
+  user?: string;
+  email?: string;
+  /** branch */
+  ref?: string;
+  /** base folder */
+  cwd: string;
+  /** remote url */
   url: string;
-  branch: string | null;
-  baseDir: string;
 }
 
 /**
  * GitHub Command Helper For NodeJS
  */
 export class git {
-  submodule!: submodule;
-  user!: string;
-  email!: string;
-  remote!: string;
-  branch!: string;
-  private exist!: boolean;
+  /** is current device is github actions */
+  static isGithubCI =
+    typeof process.env['GITHUB_WORKFLOW'] === 'string' && typeof process.env['GITHUB_WORKFLOW_SHA'] === 'string';
+  /** is current device is github actions */
+  isGithubCI =
+    typeof process.env['GITHUB_WORKFLOW'] === 'string' && typeof process.env['GITHUB_WORKFLOW_SHA'] === 'string';
+  submodules!: (Submodule | undefined)[];
+  user: string | undefined;
+  email: string | undefined;
+  remote: string | undefined;
+  branch: string;
+  submodule: import('./submodule').default | undefined;
   cwd!: string;
+
+  // external funcs
   helper = helper;
   static helper = helper;
   ext = extension;
@@ -54,6 +66,40 @@ export class git {
   getGithubCurrentBranch = GithubInfo.getGithubCurrentBranch;
   getGithubRemote = GithubInfo.getGithubRemote;
   getGithubRootDir = GithubInfo.getGithubRootDir;
+
+  constructor(obj: string, branch?: string);
+  // only allow single param
+  constructor(obj: GitOpt);
+  constructor(obj: string | GitOpt, branch = 'master') {
+    let gitdir: string;
+    if (typeof obj === 'string') {
+      gitdir = obj;
+      this.branch = branch;
+    } else {
+      gitdir = obj.cwd;
+      this.branch = obj.cwd;
+      this.remote = obj.url;
+      this.email = obj.email;
+    }
+    if (hasInstance(gitdir)) return getInstance(gitdir);
+    this.cwd = gitdir;
+
+    // auto recreate git directory
+    if (!existsSync(gitdir)) {
+      // create .git folder
+      fs.mkdirSync(join(gitdir, '.git'), { recursive: true });
+      const self = this;
+      this.spawn('git', ['init']).then(function () {
+        if (typeof self.remote === 'function') this.setremote(self.remote);
+      });
+    }
+
+    if (existsSync(join(gitdir, '.gitmodules'))) {
+      this.submodules = extractSubmodule(join(gitdir, '.gitmodules'));
+      this.submodule = new submodule(gitdir);
+    }
+    if (!hasInstance(gitdir)) setInstance(gitdir, this);
+  }
 
   /**
    * get repository and raw file url
@@ -71,22 +117,6 @@ export class git {
    */
   isUntracked(file: string) {
     return isUntracked(file, { cwd: this.cwd });
-  }
-
-  /**
-   *
-   * @param gitdir
-   * @param branch
-   */
-  constructor(gitdir: string, branch = 'master') {
-    if (hasInstance(gitdir)) return getInstance(gitdir);
-    this.cwd = gitdir;
-    if (typeof this.branch === 'string') this.branch = branch;
-    if (!existsSync(this.cwd)) {
-      throw new Error((gitdir || 'git directory') + ' not found');
-    }
-    this.submodule = new submodule(gitdir);
-    if (!hasInstance(gitdir)) setInstance(gitdir, this);
   }
 
   /**
@@ -129,7 +159,7 @@ export class git {
    * @param spawnOpt
    * @returns
    */
-  spawn(cmd: string, args: string[], spawnOpt: SpawnOptions) {
+  spawn(cmd: string, args: string[], spawnOpt?: SpawnOptions) {
     return spawn(cmd, args, this.spawnOpt(spawnOpt || { stdio: 'pipe' }));
   }
 
@@ -465,23 +495,6 @@ export class git {
     return spawnSilent('git', ['init'], this.spawnOpt(spawnOpt)).catch(_.noop);
   }
 
-  /**
-   * Check if git folder exists
-   * @returns
-   */
-  isExist() {
-    return new Bluebird((resolve: (exists: boolean) => any, reject) => {
-      const folderExist = existsSync(join(this.cwd, '.git'));
-      spawn('git', ['status'], this.spawnOpt({ stdio: 'pipe' }))
-        .then((result) => {
-          const match1 = /changes not staged for commit/gim.test(result);
-          this.exist = match1 && folderExist;
-          resolve(this.exist);
-        })
-        .catch(reject);
-    });
-  }
-
   public setcwd(v: string) {
     this.cwd = v;
   }
@@ -630,25 +643,3 @@ export class git {
 }
 
 export default git;
-
-/**
- * Setup git with branch and remote url resolved automatically
- * @param param0
- * @returns
- */
-export async function setupGit({ branch, url, baseDir = process.cwd(), email = null, user = null }: GitOpt) {
-  const github = new git(baseDir);
-  github.remote = url;
-  try {
-    if (!(await github.isExist())) {
-      await github.init();
-    }
-    await github.setremote(url);
-    if (branch) await github.setbranch(branch);
-    if (email) await github.setemail(email);
-    if (user) await github.setuser(user);
-  } catch (e) {
-    console.trace(e);
-  }
-  return github;
-}

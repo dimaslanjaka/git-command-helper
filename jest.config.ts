@@ -26,7 +26,7 @@ const config: JestConfigWithTsJest = {
   collectCoverageFrom: ['src/*.{js,ts}', '!**/node_modules/**', '!**/vendor/**', '!**/test/**', '!**/*.test.{js,ts}'],
   roots: [`<rootDir>/test`],
   coveragePathIgnorePatterns: ['/node_modules/', '/dist/', '/tmp/', '/test/'],
-
+  //testPathIgnorePatterns: ['**/.deploy_git/**'],
   testMatch: [`**/__tests__/**/*.+(ts|tsx|js)`, `**/?(*.)+(spec|test).+(ts|tsx|js)`, `**/test/*.test.ts`],
 
   transform: {

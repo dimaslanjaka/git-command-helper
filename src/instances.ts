@@ -1,14 +1,14 @@
 import git from './git';
 import submodule from './submodule';
 
-const instances: Record<string, git | submodule> = {};
+const instances: Record<string, any> = {};
 
 /**
  * get git instance
  * @param key
  * @returns
  */
-export function getInstance<T extends git | submodule>(key: string) {
+export function getInstance<T>(key: string) {
   return instances[key] as T;
 }
 
@@ -17,7 +17,7 @@ export function getInstance<T extends git | submodule>(key: string) {
  * @param key
  * @param instance
  */
-export function setInstance(key: string, instance: git | submodule) {
+export function setInstance<T>(key: string, instance: git | submodule | T) {
   instances[key] = instance;
 }
 

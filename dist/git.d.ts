@@ -9,25 +9,32 @@ import { latestCommit } from './functions/latestCommit';
 import helper from './helper';
 import * as extension from './index-exports';
 import { SpawnOptions } from './spawn';
-import submodule from './submodule';
-import { StatusResult } from './types';
+import { StatusResult } from './types/status';
+import { Submodule } from './utils/extract-submodule';
 export interface GitOpt {
-  user?: string | null;
-  email?: string | null;
+  user?: string;
+  email?: string;
+  /** branch */
+  ref?: string;
+  /** base folder */
+  cwd: string;
+  /** remote url */
   url: string;
-  branch: string | null;
-  baseDir: string;
 }
 /**
  * GitHub Command Helper For NodeJS
  */
 export declare class git {
-  submodule: submodule;
-  user: string;
-  email: string;
-  remote: string;
+  /** is current device is github actions */
+  static isGithubCI: boolean;
+  /** is current device is github actions */
+  isGithubCI: boolean;
+  submodules: (Submodule | undefined)[];
+  user: string | undefined;
+  email: string | undefined;
+  remote: string | undefined;
   branch: string;
-  private exist;
+  submodule: import('./submodule').default | undefined;
   cwd: string;
   helper: typeof helper;
   static helper: typeof helper;
@@ -45,6 +52,8 @@ export declare class git {
   getGithubCurrentBranch: typeof extension.getGithubCurrentBranch;
   getGithubRemote: typeof extension.getGithubRemote;
   getGithubRootDir: typeof extension.getGithubRootDir;
+  constructor(obj: string, branch?: string);
+  constructor(obj: GitOpt);
   /**
    * get repository and raw file url
    * @param file relative to git root without leading `/`
@@ -60,12 +69,6 @@ export declare class git {
    * @returns
    */
   isUntracked(file: string): Promise<boolean>;
-  /**
-   *
-   * @param gitdir
-   * @param branch
-   */
-  constructor(gitdir: string, branch?: string);
   /**
    * get latest commit hash
    * @param customPath
@@ -102,7 +105,7 @@ export declare class git {
    * @param spawnOpt
    * @returns
    */
-  spawn(cmd: string, args: string[], spawnOpt: SpawnOptions): Bluebird<string>;
+  spawn(cmd: string, args: string[], spawnOpt?: SpawnOptions): Bluebird<string>;
   /**
    * setup merge on pull strategy
    * @returns
@@ -239,11 +242,6 @@ export declare class git {
    * @returns
    */
   init(spawnOpt?: SpawnOptions): Promise<string | void>;
-  /**
-   * Check if git folder exists
-   * @returns
-   */
-  isExist(): Bluebird<boolean>;
   setcwd(v: string): void;
   setemail(v: string): Bluebird<string>;
   setuser(v: string): Bluebird<string>;
@@ -294,9 +292,3 @@ export declare class git {
   reset(branch?: string): Bluebird<string>;
 }
 export default git;
-/**
- * Setup git with branch and remote url resolved automatically
- * @param param0
- * @returns
- */
-export declare function setupGit({ branch, url, baseDir, email, user }: GitOpt): Promise<extension.git>;

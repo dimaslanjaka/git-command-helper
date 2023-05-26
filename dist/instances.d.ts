@@ -5,13 +5,13 @@ import submodule from './submodule';
  * @param key
  * @returns
  */
-export declare function getInstance<T extends git | submodule>(key: string): T;
+export declare function getInstance<T>(key: string): T;
 /**
  * set git instance
  * @param key
  * @param instance
  */
-export declare function setInstance(key: string, instance: git | submodule): void;
+export declare function setInstance<T>(key: string, instance: git | submodule | T): void;
 /**
  * check git instance
  * @param key

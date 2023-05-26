@@ -31,12 +31,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.setupGit = exports.git = void 0;
+exports.git = void 0;
 const bluebird_1 = __importDefault(require("bluebird"));
 const cross_spawn_1 = require("cross-spawn");
-const fs_1 = require("fs");
+const fs_extra_1 = __importStar(require("fs-extra"));
 const lodash_1 = __importDefault(require("lodash"));
-const path_1 = require("path");
+const upath_1 = require("upath");
 const gitignore_1 = require("./functions/gitignore");
 const isFileChanged_1 = require("./functions/isFileChanged");
 const latestCommit_1 = require("./functions/latestCommit");
@@ -47,11 +47,55 @@ const extension = __importStar(require("./index-exports"));
 const instances_1 = require("./instances");
 const spawn_1 = require("./spawn");
 const submodule_1 = __importDefault(require("./submodule"));
+const extract_submodule_1 = __importDefault(require("./utils/extract-submodule"));
 const safe_url_1 = require("./utils/safe-url");
 /**
  * GitHub Command Helper For NodeJS
  */
 class git {
+    constructor(obj, branch = 'master') {
+        /** is current device is github actions */
+        this.isGithubCI = typeof process.env['GITHUB_WORKFLOW'] === 'string' && typeof process.env['GITHUB_WORKFLOW_SHA'] === 'string';
+        // external funcs
+        this.helper = helper_1.default;
+        this.ext = extension;
+        // exports infos
+        this.infos = git_info_1.default;
+        this.getGithubBranches = git_info_1.default.getGithubBranches;
+        this.getGithubCurrentBranch = git_info_1.default.getGithubCurrentBranch;
+        this.getGithubRemote = git_info_1.default.getGithubRemote;
+        this.getGithubRootDir = git_info_1.default.getGithubRootDir;
+        let gitdir;
+        if (typeof obj === 'string') {
+            gitdir = obj;
+            this.branch = branch;
+        }
+        else {
+            gitdir = obj.cwd;
+            this.branch = obj.cwd;
+            this.remote = obj.url;
+            this.email = obj.email;
+        }
+        if ((0, instances_1.hasInstance)(gitdir))
+            return (0, instances_1.getInstance)(gitdir);
+        this.cwd = gitdir;
+        // auto recreate git directory
+        if (!(0, fs_extra_1.existsSync)(gitdir)) {
+            // create .git folder
+            fs_extra_1.default.mkdirSync((0, upath_1.join)(gitdir, '.git'), { recursive: true });
+            const self = this;
+            this.spawn('git', ['init']).then(function () {
+                if (typeof self.remote === 'function')
+                    this.setremote(self.remote);
+            });
+        }
+        if ((0, fs_extra_1.existsSync)((0, upath_1.join)(gitdir, '.gitmodules'))) {
+            this.submodules = (0, extract_submodule_1.default)((0, upath_1.join)(gitdir, '.gitmodules'));
+            this.submodule = new submodule_1.default(gitdir);
+        }
+        if (!(0, instances_1.hasInstance)(gitdir))
+            (0, instances_1.setInstance)(gitdir, this);
+    }
     /**
      * get repository and raw file url
      * @param file relative to git root without leading `/`
@@ -67,32 +111,6 @@ class git {
      */
     isUntracked(file) {
         return (0, isFileChanged_1.isUntracked)(file, { cwd: this.cwd });
-    }
-    /**
-     *
-     * @param gitdir
-     * @param branch
-     */
-    constructor(gitdir, branch = 'master') {
-        this.helper = helper_1.default;
-        this.ext = extension;
-        // exports infos
-        this.infos = git_info_1.default;
-        this.getGithubBranches = git_info_1.default.getGithubBranches;
-        this.getGithubCurrentBranch = git_info_1.default.getGithubCurrentBranch;
-        this.getGithubRemote = git_info_1.default.getGithubRemote;
-        this.getGithubRootDir = git_info_1.default.getGithubRootDir;
-        if ((0, instances_1.hasInstance)(gitdir))
-            return (0, instances_1.getInstance)(gitdir);
-        this.cwd = gitdir;
-        if (typeof this.branch === 'string')
-            this.branch = branch;
-        if (!(0, fs_1.existsSync)(this.cwd)) {
-            throw new Error((gitdir || 'git directory') + ' not found');
-        }
-        this.submodule = new submodule_1.default(gitdir);
-        if (!(0, instances_1.hasInstance)(gitdir))
-            (0, instances_1.setInstance)(gitdir, this);
     }
     /**
      * get latest commit hash
@@ -445,25 +463,9 @@ class git {
      * @returns
      */
     async init(spawnOpt = { stdio: 'inherit' }) {
-        if (!(0, fs_1.existsSync)((0, path_1.join)(this.cwd, '.git')))
-            (0, fs_1.mkdirSync)((0, path_1.join)(this.cwd, '.git'), { recursive: true });
+        if (!(0, fs_extra_1.existsSync)((0, upath_1.join)(this.cwd, '.git')))
+            (0, fs_extra_1.mkdirSync)((0, upath_1.join)(this.cwd, '.git'), { recursive: true });
         return (0, spawn_1.spawnSilent)('git', ['init'], this.spawnOpt(spawnOpt)).catch(lodash_1.default.noop);
-    }
-    /**
-     * Check if git folder exists
-     * @returns
-     */
-    isExist() {
-        return new bluebird_1.default((resolve, reject) => {
-            const folderExist = (0, fs_1.existsSync)((0, path_1.join)(this.cwd, '.git'));
-            (0, spawn_1.spawn)('git', ['status'], this.spawnOpt({ stdio: 'pipe' }))
-                .then((result) => {
-                const match1 = /changes not staged for commit/gim.test(result);
-                this.exist = match1 && folderExist;
-                resolve(this.exist);
-            })
-                .catch(reject);
-        });
     }
     setcwd(v) {
         this.cwd = v;
@@ -551,7 +553,7 @@ class git {
         }
     }
     checkLock() {
-        return (0, fs_1.existsSync)((0, path_1.join)(this.cwd, '.git/index.lock'));
+        return (0, fs_extra_1.existsSync)((0, upath_1.join)(this.cwd, '.git/index.lock'));
     }
     /**
      * set branch (git checkout branchName)
@@ -581,33 +583,9 @@ class git {
         });
     }
 }
+/** is current device is github actions */
+git.isGithubCI = typeof process.env['GITHUB_WORKFLOW'] === 'string' && typeof process.env['GITHUB_WORKFLOW_SHA'] === 'string';
 git.helper = helper_1.default;
 git.ext = extension;
 exports.git = git;
 exports.default = git;
-/**
- * Setup git with branch and remote url resolved automatically
- * @param param0
- * @returns
- */
-async function setupGit({ branch, url, baseDir = process.cwd(), email = null, user = null }) {
-    const github = new git(baseDir);
-    github.remote = url;
-    try {
-        if (!(await github.isExist())) {
-            await github.init();
-        }
-        await github.setremote(url);
-        if (branch)
-            await github.setbranch(branch);
-        if (email)
-            await github.setemail(email);
-        if (user)
-            await github.setuser(user);
-    }
-    catch (e) {
-        console.trace(e);
-    }
-    return github;
-}
-exports.setupGit = setupGit;
