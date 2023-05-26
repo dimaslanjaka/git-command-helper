@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('upath');
 const pkgjson = require('./package.json');
+const { writefile } = require('sbg-utility');
 
 // required: npm i upath
 // required: npm i -D typedoc typedoc-plugin-missing-exports
@@ -53,7 +54,7 @@ if (typeof readme === 'string') {
 
     const tmp = path.join(__dirname, 'tmp');
     if (!fs.existsSync(tmp)) fs.mkdirSync(tmp);
-    fs.writeFileSync(path.join(tmp, 'readme.md'), content);
+    writefile(path.join(tmp, 'readme.md'), content);
   }
 }
 
@@ -103,7 +104,7 @@ const defaultOptions = {
 const generatedOptionFile = path.join(__dirname, 'tmp/typedocs/options.json');
 let typedocOptions = defaultOptions;
 if (fs.existsSync(generatedOptionFile)) {
-  typedocOptions = JSON.parse(_readfile(generatedOptionFile, 'utf-8'));
+  typedocOptions = JSON.parse(fs.readFileSync(generatedOptionFile, 'utf-8'));
   typedocOptions = Object.assign(defaultOptions, typedocOptions);
 }
 
@@ -113,40 +114,9 @@ const scriptName = path.basename(__filename);
 // run json creation when filename endswith -config.js
 if (scriptName.endsWith('-config.js')) {
   typedocOptions['$schema'] = 'https://typedoc.org/schema.json';
-  fs.writeFileSync(cjson, JSON.stringify(typedocOptions, null, 2));
+  writefile(cjson, JSON.stringify(typedocOptions, null, 2));
 } else {
   if (fs.existsSync(cjson)) fs.rm(cjson);
-}
-
-/**
- * read file with validation
- * @param {string} str
- * @param {import('fs').EncodingOption} encoding
- * @returns
- */
-function _readfile(str, encoding = 'utf-8') {
-  if (fs.existsSync(str)) {
-    if (fs.statSync(str).isFile()) {
-      return fs.readFileSync(str, encoding);
-    } else {
-      throw str + ' is directory';
-    }
-  } else {
-    throw str + ' not found';
-  }
-}
-
-/**
- * write to file recursively
- * @param {string} dest
- * @param {any} data
- */
-function _writefile(dest, data) {
-  if (!fs.existsSync(path.dirname(dest))) fs.mkdirSync(path.dirname(dest), { recursive: true });
-  if (fs.existsSync(dest)) {
-    if (fs.statSync(dest).isDirectory()) throw dest + ' is directory';
-  }
-  fs.writeFileSync(dest, data);
 }
 
 module.exports = typedocOptions;
