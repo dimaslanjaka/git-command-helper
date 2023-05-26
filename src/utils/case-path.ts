@@ -2,15 +2,54 @@
 
 import { readdir as _readdir, existsSync, readdirSync } from 'fs-extra';
 import { platform } from 'os';
-import { isAbsolute, join, normalize } from 'upath';
+import { isAbsolute, join, normalize } from 'path';
+import { toUnix } from 'upath';
 import { promisify as pify } from 'util';
 
 const readdir = pify(_readdir);
 const isWindows = platform() === 'win32';
 const delimiter = isWindows ? '\\' : '/';
 
-export const trueCasePathSync = _trueCasePath({ sync: true });
-export const trueCasePath = _trueCasePath({ sync: false });
+export const trueCasePathSync = trueCasePathNew({ sync: true });
+export const trueCasePath = trueCasePathNew({ sync: false });
+
+interface trueCasePathNewOpt {
+  /** synchronous */
+  sync: boolean;
+}
+interface trueCasePathNewCallbackOpt {
+  /** return as unix style path */
+  unix?: boolean;
+}
+
+function trueCasePathNew(opt?: trueCasePathNewOpt) {
+  const defaults = { sync: false };
+  const trueCase = _trueCasePath(Object.assign(defaults, opt || {}));
+  return (filePath: string, basePath?: string | trueCasePathNewCallbackOpt, cbOpt?: trueCasePathNewCallbackOpt) => {
+    let result: string;
+    let bPath: string | undefined = undefined;
+    let callbackOpt: trueCasePathNewCallbackOpt = Object.assign({ unix: false }, cbOpt || {});
+    if (typeof basePath === 'string') {
+      bPath = basePath;
+    } else if (typeof basePath === 'object') {
+      callbackOpt = Object.assign({ unix: false }, basePath || {});
+    }
+    let fPath = filePath;
+    if (typeof bPath === 'string') fPath = join(bPath, filePath);
+    if (existsSync(fPath)) {
+      result = trueCase(filePath, bPath);
+    } else {
+      result = fPath.trim().replace(/^[a-zA-Z]:/g, function (match) {
+        return match.toUpperCase();
+      });
+    }
+    if (callbackOpt?.unix) {
+      return toUnix(result);
+    } else {
+      return result;
+    }
+  };
+}
 
 function getRelevantFilePathSegments(filePath: string) {
   return filePath.split(delimiter).filter((s) => s !== '');
