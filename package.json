@@ -122,7 +122,7 @@
     "node": ">=14"
   },
   "resolutions": {
-    "cross-spawn": "https://github.com/dimaslanjaka/node-cross-spawn/raw/7adf3a7/release/cross-spawn.tgz",
+    "cross-spawn": "https://github.com/dimaslanjaka/node-cross-spawn/raw/bf2d8bb/release/cross-spawn.tgz",
     "ansi-regex": "^4",
     "glob-parent": "^6.0.2",
     "node.extend": "^2.0.2",
