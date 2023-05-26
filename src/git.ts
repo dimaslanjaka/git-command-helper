@@ -40,6 +40,12 @@ export interface GitOpt {
  * GitHub Command Helper For NodeJS
  */
 export class git {
+  /** is current device is github actions */
+  static isGithubCI =
+    typeof process.env['GITHUB_WORKFLOW'] === 'string' && typeof process.env['GITHUB_WORKFLOW_SHA'] === 'string';
+  /** is current device is github actions */
+  isGithubCI =
+    typeof process.env['GITHUB_WORKFLOW'] === 'string' && typeof process.env['GITHUB_WORKFLOW_SHA'] === 'string';
   submodules!: (Submodule | undefined)[];
   user: string | undefined;
   email: string | undefined;
