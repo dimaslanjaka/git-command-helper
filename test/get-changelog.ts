@@ -2,7 +2,7 @@ import spawn from '../src/cross-spawn/dist';
 
 // git log <commit hash 1>..<commit hash 2> --oneline | cut -d " " -f 1
 // git rev-list --ancestry-path 7b4a07a..ecf5891
-// https://github.com/dimaslanjaka/git-command-helper/compare/486f19ec76687552adbb09626792ec6b96614b49..ad3e9eec244ff3b1f25bfa04fec898b8f1960cfb
+// https://github.com/dimaslanjaka/git-command-helper/compare/486f19e..ad3e9ee
 // git rev-list --ancestry-path 486f19e..ad3e9ee
 // git log 486f19e..ad3e9ee --oneline | cut -d " " -f 1
 // git log monorepo --since="<date 486f19e>" --until="<date ad3e9ee>" --oneline
