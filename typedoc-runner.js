@@ -2,7 +2,7 @@ const { join } = require('upath');
 const typedocModule = require('typedoc');
 const semver = require('semver');
 const { mkdirSync, existsSync, writeFileSync, readdirSync, statSync } = require('fs');
-const typedocOptions = require('./typedoc');
+const typedocOptions = require('./typedoc.config');
 const pkgjson = require('./package.json');
 const { EOL } = require('os');
 const { spawnAsync } = require('cross-spawn');
@@ -11,6 +11,8 @@ const { writeFile } = require('fs/promises');
 const fs = require('fs');
 const path = require('path');
 const git = pkgjson.name === 'git-command-helper' ? require('./dist').default : require('git-command-helper').default;
+
+console.log('typedoc running');
 
 // required : upath semver typedoc git-command-helper gulp cross-spawn
 // update   : curl -L https://github.com/dimaslanjaka/nodejs-package-types/raw/main/typedoc-runner.js > typedoc-runner.js
@@ -144,7 +146,7 @@ function noop(..._) {
 let opt = typedocOptions;
 /**
  * Get typedoc options
- * @returns {typeof import('./typedoc')}
+ * @returns {typeof import('./typedoc.config')}
  */
 function getTypedocOptions() {
   return opt;
@@ -152,7 +154,7 @@ function getTypedocOptions() {
 
 /**
  * Set typedoc options
- * @param {typeof import('./typedoc')} newOpt
+ * @param {typeof import('./typedoc.config')} newOpt
  */
 function setTypedocOptions(newOpt) {
   opt = Object.assign(opt, newOpt || {});
@@ -161,7 +163,7 @@ function setTypedocOptions(newOpt) {
 }
 
 if (require.main === module) {
-  (async () => {
+  console.log('running')(async () => {
     const argv = process.argv;
     // node typedoc-runner.js --publish
     if (argv.includes('--publish')) {
