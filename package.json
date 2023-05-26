@@ -119,5 +119,15 @@
     "lib": "dist",
     "bin": "bin"
   },
-  "packageManager": "yarn@3.5.1"
+  "packageManager": "yarn@3.5.1",
+  "engines": {
+    "node": ">=14"
+  },
+  "optionalDependencies": {
+    "ansi-regex": "^6.0.1",
+    "glob-parent": "^6.0.2",
+    "node.extend": "^2.0.2",
+    "socket.io-parser": "^3.4.3",
+    "unset-value": "^2.0.1"
+  }
 }
