@@ -89,7 +89,6 @@
     "axios": "^1.4.0",
     "axios-cache-interceptor": "^1.1.0",
     "browser-sync": "^2.29.3",
-    "debug": "^4.3.4",
     "eslint": "^8.41.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",

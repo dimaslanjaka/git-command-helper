@@ -1,6 +1,5 @@
 import Bluebird from 'bluebird';
 import { SpawnOptions } from 'child_process';
-import debug from 'debug';
 import { existsSync, statSync } from 'fs-extra';
 import { rm } from 'fs/promises';
 import { join, toUnix } from 'upath';
@@ -8,8 +7,6 @@ import git from './git';
 import { getInstance, hasInstance, setInstance } from './instances';
 import { spawn } from './spawner';
 import extractSubmodule from './utils/extract-submodule';
-
-const _log = debug('git-command-helper');
 
 export class submodule {
   cwd: string;
