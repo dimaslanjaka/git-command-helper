@@ -1,0 +1,4 @@
+[submodule "src/cross-spawn"]
+	path = src/cross-spawn
+	url = https://github.com/dimaslanjaka/node-cross-spawn.git
+	branch = private

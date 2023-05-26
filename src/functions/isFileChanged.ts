@@ -1,4 +1,4 @@
-import cp from 'cross-spawn';
+import cp from '../cross-spawn/src';
 
 /**
  * check file is untracked

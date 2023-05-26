@@ -2,7 +2,7 @@
 
 import Bluebird from 'bluebird';
 import { CommonSpawnOptions } from 'child_process';
-import sysSpawn from 'cross-spawn';
+import sysSpawn from './cross-spawn/src';
 // import { spawn as sysSpawn } from 'child_process';
 import _ from 'lodash';
 import CacheStream from './cache-stream';
