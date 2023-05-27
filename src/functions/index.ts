@@ -5,7 +5,6 @@ export * from './getGithubRepoUrl';
 export * from './getGithubRootDir';
 export * from './gitignore';
 export * from './hasChanges';
-export * from './index.builder';
 export * from './index';
 export * from './infoOptions';
 export * from './isFileChanged';

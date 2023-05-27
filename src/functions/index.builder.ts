@@ -6,9 +6,12 @@ import { spawnSilent } from '../spawn';
 // this only for development and excluded from build config
 
 // create export
-const contents = fs.readdirSync(__dirname).map((file) => {
-  return `export * from './${file.replace(/.ts$/, '')}';`;
-});
+const contents = fs
+  .readdirSync(__dirname)
+  .filter((file) => !file.includes('.builder'))
+  .map((file) => {
+    return `export * from './${file.replace(/.ts$/, '')}';`;
+  });
 // dump
 console.log(contents);
 // fix eslint
