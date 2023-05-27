@@ -5,7 +5,6 @@ import ignore from 'ignore';
 import path from 'upath';
 import { trueCasePathSync } from '../utils/case-path';
 import { getGithubRootDir } from './getGithubRootDir';
-import { infoOptions } from './infoOptions';
 
 /**
  * get all ignored files by .gitignore
@@ -51,26 +50,15 @@ export const getIgnores = async ({ cwd = process.cwd() }) => {
   >;
 };
 
-export type Return = {
-  filter: {
-    str: string;
-    relativePath: string;
-    matched: boolean;
-  }[];
-  result: boolean;
-  /**
-   * current working directory of git
-   */
-  cwd: string;
-};
+export async function isIgnored(filePath: string, opt?: { cwd: string }) {
+  let dirname = opt?.cwd ? opt.cwd : path.dirname(filePath);
+  if (dirname === '.') dirname = process.cwd();
+  const cwd = (await getGithubRootDir({ cwd: dirname })) || '';
+  const relative = path.relative(cwd, filePath);
+  const patterns = await getAllIgnoresConfig({ cwd });
+  const ig = ignore().add(patterns);
 
-export type isIgnoredOpt = infoOptions & Parameters<typeof getAllIgnoresConfig>[0];
-
-export async function isIgnored(filePath: string) {
-  const cwd = (await getGithubRootDir({ cwd: path.dirname(filePath) })) || '';
-
-  const ig = ignore().add(await getAllIgnoresConfig({ cwd }));
-  return ig.ignores(path.relative(cwd, filePath));
+  return ig.ignores(relative);
 }
 
 /**
