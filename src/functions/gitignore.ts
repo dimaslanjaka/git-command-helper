@@ -1,3 +1,4 @@
+import Bluebird from 'bluebird';
 import fs from 'fs-extra';
 import * as glob from 'glob';
 import { minimatch } from 'minimatch';
@@ -106,4 +107,35 @@ export function getAllIgnoresConfig(options: glob.GlobOptionsWithFileTypesFalse)
     .flat()
     .filter((str) => str.length > 0 && !str.startsWith('#'));
   return lines;
+}
+
+/**
+ * get all `.gitignore` files
+ * @param searchDir
+ * @returns
+ */
+export function getGitignoreFiles(opt: { cwd: string }): Promise<string[]> {
+  const searchDirRootGit = getGithubRootDir(opt);
+  return new Bluebird((res) => {
+    Bluebird.resolve(
+      glob.glob('**/.gitignore', {
+        cwd: opt.cwd,
+        posix: true,
+        ignore: ['**/node_modules/**']
+      })
+    )
+      .then((result) => {
+        return Bluebird.all(
+          result.map(async (filePath) => {
+            const absolute = path.join(opt.cwd, filePath);
+            const dirname = path.dirname(absolute);
+
+            const rootGit = await getGithubRootDir({ cwd: dirname });
+            if (rootGit !== (await searchDirRootGit)) return;
+            return absolute;
+          })
+        ).filter((o) => typeof o !== 'undefined') as Bluebird<string[]>;
+      })
+      .then((o) => res(o));
+  });
 }
