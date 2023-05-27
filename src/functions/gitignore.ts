@@ -50,8 +50,14 @@ export const getIgnores = async ({ cwd = process.cwd() }) => {
   >;
 };
 
-export async function isIgnored(filePath: string, opt?: { cwd: string }) {
-  let dirname = opt?.cwd ? opt.cwd : path.dirname(filePath);
+/**
+ * is file ignored by `.gitignore`?
+ * @param filePath
+ * @param options
+ * @returns
+ */
+export async function isIgnored(filePath: string, options?: { cwd: string }) {
+  let dirname = options?.cwd ? options.cwd : path.dirname(filePath);
   if (dirname === '.') dirname = process.cwd();
   const cwd = (await getGithubRootDir({ cwd: dirname })) || '';
   const relative = path.relative(cwd, filePath);
