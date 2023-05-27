@@ -21,6 +21,6 @@ FOR /F "delims=" %%F IN ('CALL "%NODE_EXE%" "%NPM_CLI_JS%" prefix -g') DO (
   set "NODE_EXE=%%F\node"
 )
 rem set js file
-set "JS_FILE=%~dp0\feat"
+set "JS_FILE=%~dp0\conventional-commit"
 rem execute js file
-"%NODE_EXE%" "%JS_FILE%" %*
+"%NODE_EXE%" "%JS_FILE%" -t feat %*
