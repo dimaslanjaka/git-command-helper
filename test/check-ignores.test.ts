@@ -17,8 +17,8 @@ describe('.gitignore test', () => {
 
   it('should have file-ignore.txt', async () => {
     const check = await getIgnores({ cwd: testcfg.cwd });
-    expect(check.some((o) => o.relative.includes(basename(ignoredFile)))).toBeTruthy();
-    expect(check.some((o) => o.relative.includes(basename(ignoredFile2)))).toBeTruthy();
+    expect(check.some((o) => o.relative.endsWith(basename(ignoredFile)))).toBeTruthy();
+    expect(check.some((o) => o.relative.endsWith(basename(ignoredFile2)))).toBeTruthy();
   }, 90000);
 
   it('should be ignored', async () => {
