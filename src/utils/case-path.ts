@@ -26,27 +26,37 @@ function trueCasePathNew(opt?: trueCasePathNewOpt) {
   const defaults = { sync: false };
   const trueCase = _trueCasePath(Object.assign(defaults, opt || {}));
   return (filePath: string, basePath?: string | trueCasePathNewCallbackOpt, cbOpt?: trueCasePathNewCallbackOpt) => {
-    let result: string;
-    let bPath: string | undefined = undefined;
-    let callbackOpt: trueCasePathNewCallbackOpt = Object.assign({ unix: false }, cbOpt || {});
-    if (typeof basePath === 'string') {
-      bPath = basePath;
-    } else if (typeof basePath === 'object') {
-      callbackOpt = Object.assign({ unix: false }, basePath || {});
-    }
-    let fPath = filePath;
-    if (typeof bPath === 'string') fPath = join(bPath, filePath);
-    if (existsSync(fPath)) {
-      result = trueCase(filePath, bPath);
+    if (filePath.length > 3) {
+      let result: string;
+      let bPath: string | undefined = undefined;
+      let callbackOpt: trueCasePathNewCallbackOpt = Object.assign({ unix: false }, cbOpt || {});
+      if (typeof basePath === 'string') {
+        bPath = basePath;
+      } else if (typeof basePath === 'object') {
+        callbackOpt = Object.assign({ unix: false }, basePath || {});
+      }
+      let fPath = filePath;
+      if (typeof bPath === 'string') fPath = join(bPath, filePath);
+      if (existsSync(fPath)) {
+        result = trueCase(filePath, bPath);
+      } else {
+        result = fPath.trim().replace(/^[a-zA-Z]:/g, function (match) {
+          return match.toUpperCase();
+        });
+      }
+      if (callbackOpt?.unix) {
+        return toUnix(result);
+      } else {
+        return result;
+      }
     } else {
-      result = fPath.trim().replace(/^[a-zA-Z]:/g, function (match) {
-        return match.toUpperCase();
-      });
-    }
-    if (callbackOpt?.unix) {
-      return toUnix(result);
-    } else {
-      return result;
+      if (typeof basePath === 'string') {
+        console.error('failed convert case-path of', { basePath, filePath });
+        return join(basePath, filePath);
+      } else {
+        console.error('failed convert case-path of', { filePath });
+        return filePath;
+      }
     }
   };
 }
