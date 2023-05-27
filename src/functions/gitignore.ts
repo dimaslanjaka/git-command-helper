@@ -54,7 +54,7 @@ export async function isIgnored(filePath: string, options: isIgnoredOpt = {}) {
   }
 
   const ignores = await getIgnores({ cwd });
-  const filter = ignores.map((str) => {
+  const filter = Bluebird.all(ignores).map(async (str) => {
     const unixPath = path.toUnix(trueCasePathSync(filePath));
     let relativePath = unixPath;
     if (fs.existsSync(unixPath)) {
@@ -63,7 +63,7 @@ export async function isIgnored(filePath: string, options: isIgnoredOpt = {}) {
     relativePath = relativePath.replace(/^\/+/, '');
 
     const matches: boolean[] = [];
-    const patterns = getAllIgnoresConfig(options);
+    const patterns = await getAllIgnoresConfig(options);
     for (let i = 0; i < patterns.length; i++) {
       const pattern = patterns[i];
       if (pattern === '*') continue;
@@ -78,11 +78,11 @@ export async function isIgnored(filePath: string, options: isIgnoredOpt = {}) {
       matched: str === relativePath || matches.some((b) => b === true)
     };
   });
-  const result = filter.some((o) => o.matched);
+  const result = (await filter).some((o) => o.matched);
   if (options.verbose) {
     return {
       root: cwd,
-      filter,
+      filter: await filter,
       result
     };
   }
@@ -92,11 +92,8 @@ export async function isIgnored(filePath: string, options: isIgnoredOpt = {}) {
 /**
  * get and parse all `.gitignore` files
  */
-export function getAllIgnoresConfig(options: glob.GlobOptionsWithFileTypesFalse) {
-  const files = glob
-    .globSync('**/.gitignore', options)
-    .filter((str) => typeof str === 'string')
-    .map((file) => path.toUnix(options.cwd ? trueCasePathSync(file, String(options.cwd)) : trueCasePathSync(file)));
+export async function getAllIgnoresConfig(options: glob.GlobOptionsWithFileTypesFalse) {
+  const files = await getGitignoreFiles(options);
   const lines = files
     .map((file) =>
       fs
@@ -114,7 +111,7 @@ export function getAllIgnoresConfig(options: glob.GlobOptionsWithFileTypesFalse)
  * @param searchDir
  * @returns
  */
-export function getGitignoreFiles(opt: { cwd: string }): Promise<string[]> {
+export function getGitignoreFiles(opt: glob.GlobOptionsWithFileTypesFalse): Promise<string[]> {
   const searchDirRootGit = getGithubRootDir(opt);
   return new Bluebird((res) => {
     Bluebird.resolve(
