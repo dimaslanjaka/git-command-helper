@@ -15,17 +15,19 @@ describe('.gitignore test', () => {
     writeFileSync(ignoredFile2, '');
   }, 900000);
 
-  it('should have file-ignore.txt', async () => {
+  it('getIgnores() - should have file-ignore.txt', async () => {
     const check = await getIgnores({ cwd: testcfg.cwd });
     expect(check.some((o) => o.relative.endsWith(basename(ignoredFile)))).toBeTruthy();
     expect(check.some((o) => o.relative.endsWith(basename(ignoredFile2)))).toBeTruthy();
   }, 90000);
 
-  it('should be ignored', async () => {
+  it('isIgnored() - should be ignored', async () => {
     // absolute
     expect(await isIgnored(ignoredFile)).toBeTruthy();
-    // relative
-    expect(await isIgnored('file-ignore.txt')).toBeTruthy();
+    // relative needs options.cwd
+    expect(await isIgnored('file-ignore.txt', { cwd: testcfg.cwd })).toBeTruthy();
+    expect(await isIgnored('file-ignore.txt')).toBeFalsy();
+    expect(await isIgnored('/file-ignore.txt')).toBeFalsy();
     // absolute another wildcard
     expect(await isIgnored(ignoredFile2)).toBeTruthy();
   }, 90000);

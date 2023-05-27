@@ -58,21 +58,21 @@ export const getIgnores = async ({ cwd = process.cwd() }) => {
  */
 export async function isIgnored(filePath: string, options?: { cwd: string }) {
   const defaults = Object.assign({ cwd: path.dirname(filePath) }, options || {});
-  if (!defaults.cwd) {
-    defaults.cwd = path.dirname(filePath);
-  }
   if (defaults.cwd === '.') defaults.cwd = process.cwd();
+  // fix UNIX style
+  if (fs.existsSync(defaults.cwd)) defaults.cwd = trueCasePathSync(defaults.cwd, { unix: true });
   /** git root directory */
   const gitRoot = (await getGithubRootDir(defaults)) || '';
-  const relative = path.relative(gitRoot, filePath);
+  /** setup ignore module */
   const patterns = await getAllIgnoresConfig({ cwd: gitRoot });
   const ig = ignore().add(patterns);
-
-  try {
-    return ig.ignores(relative);
-  } catch {
-    console.log({ relative, gitRoot });
+  const relative = path.relative(gitRoot, filePath);
+  if (fs.existsSync(path.join(gitRoot, filePath)) || relative.startsWith('.')) {
+    // filePath parameter is relative to gitRoot
+    return ig.ignores(filePath.replace(/^[./]+/g, ''));
   }
+
+  return ig.ignores(relative);
 }
 
 /**
