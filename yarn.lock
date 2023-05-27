@@ -1032,7 +1032,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/bluebird@npm:^3.5.38":
+"@types/bluebird@npm:^3":
   version: 3.5.38
   resolution: "@types/bluebird@npm:3.5.38"
   checksum: 8d1b04261e8e58816ec84ffa616c9e641c9416d0ab10c915ddb9cd8a0e7070af16df4f2eec243a3809cbed8ecee2fb3f45600ae43b3ab0ceea563aa18ceb6ab1
@@ -4864,7 +4864,7 @@ __metadata:
     "@jest/expect": ^29.5.0
     "@jest/globals": ^29.5.0
     "@jest/types": ^29.5.0
-    "@types/bluebird": ^3.5.38
+    "@types/bluebird": ^3
     "@types/core-js": ^2.5.5
     "@types/fs-extra": ^11
     "@types/git-command-helper": "https://github.com/dimaslanjaka/git-command-helper/raw/3be2a4c810270d1fcc5865c625b7db6d5292d6e0/release/git-command-helper.tgz"
