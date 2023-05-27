@@ -16,6 +16,7 @@ export const trueCasePath = trueCasePathNew({ sync: false });
 interface trueCasePathNewOpt {
   /** synchronous */
   sync: boolean;
+  debug?: boolean;
 }
 interface trueCasePathNewCallbackOpt {
   /** return as unix style path */
@@ -51,10 +52,10 @@ function trueCasePathNew(opt?: trueCasePathNewOpt) {
       }
     } else {
       if (typeof basePath === 'string') {
-        console.error('failed convert case-path of', { basePath, filePath });
+        if (opt?.debug) console.error('failed convert case-path of', { basePath, filePath });
         return join(basePath, filePath);
       } else {
-        console.error('failed convert case-path of', { filePath });
+        if (opt?.debug) console.error('failed convert case-path of', { filePath });
         return filePath;
       }
     }
