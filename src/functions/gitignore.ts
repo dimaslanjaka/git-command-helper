@@ -114,12 +114,20 @@ export async function getAllIgnoresConfig(options: glob.GlobOptionsWithFileTypes
 export function getGitignoreFiles(opt: glob.GlobOptionsWithFileTypesFalse): Promise<string[]> {
   const searchDirRootGit = getGithubRootDir(opt);
   return new Bluebird((res) => {
+    const ignore = ['**/node_modules/**'];
+    if (Array.isArray(opt.ignore)) {
+      ignore.push(...opt.ignore);
+    } else if (typeof opt.ignore === 'string') {
+      ignore.push(opt.ignore);
+    }
     Bluebird.resolve(
-      glob.glob('**/.gitignore', {
-        cwd: opt.cwd,
-        posix: true,
-        ignore: ['**/node_modules/**']
-      })
+      glob.glob(
+        '**/.gitignore',
+        Object.assign({ cwd: opt.cwd }, opt, {
+          posix: true,
+          ignore
+        })
+      )
     )
       .then((result) => {
         return Bluebird.all(
@@ -127,8 +135,8 @@ export function getGitignoreFiles(opt: glob.GlobOptionsWithFileTypesFalse): Prom
             const absolute = path.join(opt.cwd, filePath);
             const dirname = path.dirname(absolute);
 
-            const rootGit = await getGithubRootDir({ cwd: dirname });
-            if (rootGit !== (await searchDirRootGit)) return;
+            const rootGitOfFile = await getGithubRootDir({ cwd: dirname });
+            if (rootGitOfFile !== (await searchDirRootGit)) return;
             return trueCasePathSync(absolute);
           })
         ).filter((o) => typeof o !== 'undefined') as Bluebird<string[]>;
