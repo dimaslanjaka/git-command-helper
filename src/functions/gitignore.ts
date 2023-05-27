@@ -1,9 +1,9 @@
 import Bluebird from 'bluebird';
 import fs from 'fs-extra';
 import * as glob from 'glob';
+import ignore from 'ignore';
 import { minimatch } from 'minimatch';
 import path from 'upath';
-import * as cp from '../cross-spawn/src';
 import { trueCasePathSync } from '../utils/case-path';
 import { getGithubRootDir } from './getGithubRootDir';
 import { infoOptions } from './infoOptions';
@@ -13,12 +13,44 @@ import { infoOptions } from './infoOptions';
  * @param param0
  * @returns
  */
-export const getIgnores = async ({ cwd = process.cwd() }) =>
-  (await cp.async('git', 'status --porcelain --ignored'.split(' '), { cwd })).output
-    .split(/\r?\n/)
-    .map((str) => str.trim())
-    .filter((str) => str.startsWith('!!'))
-    .map((str) => str.replace(/!!\s+/, ''));
+export const getIgnores = async ({ cwd = process.cwd() }) => {
+  const searchDir = cwd;
+  const searchDirRootGit = await getGithubRootDir({ cwd: searchDir });
+  if (!searchDirRootGit) throw new Error('cwd/search dir is not git');
+
+  const ignores = await getAllIgnoresConfig({ cwd: searchDir });
+  const ig = ignore().add(ignores);
+  const files = await glob.glob('**', {
+    // Adds a / character to directory matches.
+    mark: true,
+    cwd: searchDir,
+    ignore: ['**/node_modules/**', '**/docs/**'],
+    posix: true
+  });
+  return Bluebird.all(files)
+    .map(async (file) => {
+      const absolute = trueCasePathSync(path.resolve(searchDir, file));
+      const dirname = path.dirname(absolute);
+      const rootGitOfFile = await getGithubRootDir({ cwd: dirname });
+      // fail when root git is different
+      if (searchDirRootGit !== rootGitOfFile) return '';
+      const relative = path.relative(rootGitOfFile, absolute);
+      if (ig.ignores(relative)) {
+        return {
+          absolute,
+          relative: '/' + relative
+        };
+      } else {
+        return '';
+      }
+    })
+    .filter((item) => typeof item === 'object') as Bluebird<
+    {
+      absolute: string;
+      relative: string;
+    }[]
+  >;
+};
 
 export type Return = {
   filter: {
@@ -54,7 +86,7 @@ export async function isIgnored(filePath: string, options: isIgnoredOpt = {}) {
   }
 
   const ignores = await getIgnores({ cwd });
-  const filter = Bluebird.all(ignores).map(async (str) => {
+  const filter = Bluebird.all(ignores).map(async ({ relative }) => {
     const unixPath = path.toUnix(trueCasePathSync(filePath));
     let relativePath = unixPath;
     if (fs.existsSync(unixPath)) {
@@ -73,9 +105,9 @@ export async function isIgnored(filePath: string, options: isIgnoredOpt = {}) {
     }
 
     return {
-      str,
+      str: relative,
       relativePath,
-      matched: str === relativePath || matches.some((b) => b === true)
+      matched: relative === relativePath || matches.some((b) => b === true)
     };
   });
   const result = (await filter).some((o) => o.matched);
