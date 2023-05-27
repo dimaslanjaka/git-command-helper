@@ -57,14 +57,22 @@ export const getIgnores = async ({ cwd = process.cwd() }) => {
  * @returns
  */
 export async function isIgnored(filePath: string, options?: { cwd: string }) {
-  let dirname = options?.cwd ? options.cwd : path.dirname(filePath);
-  if (dirname === '.') dirname = process.cwd();
-  const cwd = (await getGithubRootDir({ cwd: dirname })) || '';
-  const relative = path.relative(cwd, filePath);
-  const patterns = await getAllIgnoresConfig({ cwd });
+  const defaults = Object.assign({ cwd: path.dirname(filePath) }, options || {});
+  if (!defaults.cwd) {
+    defaults.cwd = path.dirname(filePath);
+  }
+  if (defaults.cwd === '.') defaults.cwd = process.cwd();
+  /** git root directory */
+  const gitRoot = (await getGithubRootDir(defaults)) || '';
+  const relative = path.relative(gitRoot, filePath);
+  const patterns = await getAllIgnoresConfig({ cwd: gitRoot });
   const ig = ignore().add(patterns);
 
-  return ig.ignores(relative);
+  try {
+    return ig.ignores(relative);
+  } catch {
+    console.log({ relative, gitRoot });
+  }
 }
 
 /**
