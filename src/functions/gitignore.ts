@@ -60,9 +60,9 @@ export type Return = {
   }[];
   result: boolean;
   /**
-   * root directory of git
+   * current working directory of git
    */
-  root: string;
+  cwd: string;
 };
 
 export type isIgnoredOpt = infoOptions & Parameters<typeof getAllIgnoresConfig>[0];
@@ -86,7 +86,7 @@ export async function isIgnored(filePath: string, options: isIgnoredOpt = {}) {
   }
 
   const ignores = await getIgnores({ cwd });
-  const filter = Bluebird.all(ignores).map(async ({ relative }) => {
+  const filter = await Bluebird.all(ignores).map(async ({ relative }) => {
     const unixPath = path.toUnix(trueCasePathSync(filePath));
     let relativePath = unixPath;
     if (fs.existsSync(unixPath)) {
@@ -110,11 +110,12 @@ export async function isIgnored(filePath: string, options: isIgnoredOpt = {}) {
       matched: relative === relativePath || matches.some((b) => b === true)
     };
   });
-  const result = (await filter).some((o) => o.matched);
+  console.log(filter);
+  const result = filter.some((o) => o.matched);
   if (options.verbose) {
     return {
-      root: cwd,
-      filter: await filter,
+      cwd,
+      filter,
       result
     };
   }
