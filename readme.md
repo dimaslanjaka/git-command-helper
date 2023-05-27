@@ -11,20 +11,24 @@ GitHub CLI Helper For NodeJS. Parse responses from github CLI to NodeJS Object O
 - Git Conventional Commit Helpers
 
 ## Installation
-Beta Version
-```bash
-npm i https://github.com/dimaslanjaka/git-command-helper.git
-```
-### to update beta version
-```bash
-npm update git-command-helper
-```
-Production Version
 ```bash
 npm i git-command-helper
 ```
+Beta Version
+```bash
+npm i git-command-helper@https://github.com/dimaslanjaka/git-command-helper.git
+```
 
-## Documentation
+## CLI usages
+### Conventional Commits Helper
+rename `cli` to `chore`|`feat`|`refactor`|`fix`
+```bash
+cli "header" "commit message line 2" "commit message line 3"
+cli -s scopename "header" "commit message line 2" "commit message line 3"
+cli -s scopename "message \`code\` another message"
+```
+
+## Documentations
 - [API documentation](https://www.webmanajemen.com/docs/git-command-helper/)
 - [modules](https://www.webmanajemen.com/docs/git-command-helper/modules.html)
 - [main class](https://github.com/dimaslanjaka/git-command-helper/blob/master/src/index.ts)
