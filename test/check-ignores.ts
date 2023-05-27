@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'upath';
 import { spawnAsync } from '../src/cross-spawn/src/spawn';
-import { getIgnores } from '../src/functions/gitignore';
+import { getIgnores, isIgnored } from '../src/functions/gitignore';
 import { testcfg } from './config';
 
 (async function () {
@@ -12,8 +12,25 @@ import { testcfg } from './config';
   fs.writeFileSync(ignoredFile, '');
   fs.writeFileSync(ignoredFile2, '');
   console.log(
-    check,
+    path.basename(ignoredFile),
+    check.some((o) => o.relative.endsWith(path.basename(ignoredFile)))
+  );
+  console.log(
     path.basename(ignoredFile2),
     check.some((o) => o.relative.endsWith(path.basename(ignoredFile2)))
   );
+  await (async () => {
+    /**
+     * this file should be indexed
+     */
+    const indexed = path.join(testcfg.cwd, 'new-file.txt');
+    /**
+     * this file should be ignored
+     */
+    const ignored = path.join(testcfg.cwd, 'new-file-another.txt');
+    fs.writeFileSync(ignored, '');
+    fs.writeFileSync(indexed, '');
+    console.log({ ignored }, await isIgnored(ignored));
+    console.log({ indexed }, await isIgnored(indexed));
+  })();
 })();
