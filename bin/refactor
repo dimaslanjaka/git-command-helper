@@ -2,6 +2,7 @@
 
 // refactor "header" "line2" "line3"
 // refactor -s scopename "header" "line2" "line3"
+// refactor -s scopename "message \`code\` another message"
 
 const cp = require('cross-spawn');
 const minimist = require('minimist');
