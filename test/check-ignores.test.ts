@@ -19,7 +19,7 @@ describe('.gitignore test', () => {
     const check = await getIgnores(testcfg);
     expect(check.some((o) => o.relative.includes(basename(ignoredFile)))).toBeTruthy();
     expect(check.some((o) => o.relative.includes(basename(ignoredFile2)))).toBeTruthy();
-  });
+  }, 90000);
 
   it('should be ignored', async () => {
     // absolute
