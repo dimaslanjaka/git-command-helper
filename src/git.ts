@@ -371,12 +371,6 @@ export class git {
     return status.length > 0;
   }
 
-  /**
-   * is file ignored by `.gitignore`?
-   * @param filePath
-   * @param options
-   * @returns
-   */
   isIgnored = isIgnored;
   static isIgnored = isIgnored;
 

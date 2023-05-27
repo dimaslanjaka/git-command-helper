@@ -52,7 +52,7 @@ export const getIgnores = async ({ cwd = process.cwd() }) => {
 
 /**
  * is file ignored by `.gitignore`?
- * @param filePath
+ * @param filePath `absolute` file path, but `relative` path must have `options.cwd`
  * @param options
  * @returns
  */
