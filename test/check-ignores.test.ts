@@ -1,4 +1,4 @@
-import { beforeAll, describe, expect, it } from '@jest/globals';
+import { afterAll, beforeAll, describe, expect, it } from '@jest/globals';
 import { writeFileSync } from 'fs-extra';
 import { basename, join } from 'path';
 import { spawnSync } from '../src/cross-spawn/src';
@@ -14,6 +14,12 @@ describe('.gitignore test', () => {
     writeFileSync(ignoredFile, '');
     writeFileSync(ignoredFile2, '');
   }, 900000);
+
+  afterAll(() => {
+    if (global.gc) {
+      global.gc();
+    }
+  });
 
   it('getIgnores() - should have file-ignore.txt', async () => {
     const check = await getIgnores({ cwd: testcfg.cwd });
