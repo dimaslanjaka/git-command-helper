@@ -4,7 +4,7 @@
 | :--- | :--- |
 | 1.2.3 | https://github.com/dimaslanjaka/git-command-helper/raw/undefined/release/git-command-helper-1.2.3.tgz |
 | 1.2.5 | https://github.com/dimaslanjaka/git-command-helper/raw/undefined/release/git-command-helper-1.2.5.tgz |
-| latest | https://github.com/dimaslanjaka/git-command-helper/raw/7d9b86b/release/git-command-helper.tgz |
+| latest | https://github.com/dimaslanjaka/git-command-helper/raw/3a38463/release/git-command-helper.tgz |
 | latest | https://github.com/dimaslanjaka/git-command-helper/raw/monorepo/release/git-command-helper.tgz |
 
 use this tarball with `resolutions`:
