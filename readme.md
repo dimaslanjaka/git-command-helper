@@ -8,6 +8,7 @@ GitHub CLI Helper For NodeJS. Parse responses from github CLI to NodeJS Object O
 ## Features
 - Submodule parser
 - Asynchronous friendly
+- Git Conventional Commit Helpers
 
 ## Installation
 Beta Version
