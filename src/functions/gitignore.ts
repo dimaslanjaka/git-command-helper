@@ -132,7 +132,7 @@ export function getGitignoreFiles(opt: { cwd: string }): Promise<string[]> {
 
             const rootGit = await getGithubRootDir({ cwd: dirname });
             if (rootGit !== (await searchDirRootGit)) return;
-            return absolute;
+            return trueCasePathSync(absolute);
           })
         ).filter((o) => typeof o !== 'undefined') as Bluebird<string[]>;
       })
