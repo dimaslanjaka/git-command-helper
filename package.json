@@ -27,7 +27,7 @@
     "update": "run-s \"update:**\"",
     "patch": "npm version patch",
     "pretest": "npm run build && node -r ts-node/register test/pretest.ts",
-    "test": "jest --runInBand --detectOpenHandles --collect-coverage --update-snapshot --config=jest.config.ts",
+    "test": "jest --runInBand --detectOpenHandles --logHeapUsage --collect-coverage --update-snapshot --config=jest.config.ts",
     "posttest": "rm -rf tmp/project-test",
     "test-cov": "nyc --reporter=lcovonly npm test",
     "docs": "npm run clean && npm run build && gulp docs",
