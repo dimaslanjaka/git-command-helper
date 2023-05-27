@@ -10,7 +10,7 @@ import _ from 'lodash';
 import { join } from 'upath';
 import { spawnAsync } from './cross-spawn/src';
 import * as GithubInfo from './functions';
-import { isIgnored, isIgnoredOpt } from './functions/gitignore';
+import { isIgnored } from './functions/gitignore';
 import { isUntracked } from './functions/isFileChanged';
 import { latestCommit } from './functions/latestCommit';
 import { isCanPush } from './functions/push-checker';
@@ -377,11 +377,8 @@ export class git {
    * @param options
    * @returns
    */
-  isIgnored(filePath: string, options?: isIgnoredOpt) {
-    if (!options) options = {};
-    options.cwd = this.cwd;
-    return isIgnored(filePath, options);
-  }
+  isIgnored = isIgnored;
+  static isIgnored = isIgnored;
 
   /**
    * git add
