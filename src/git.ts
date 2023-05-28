@@ -50,7 +50,7 @@ export class git {
   user: string | undefined;
   email: string | undefined;
   remote: string | undefined;
-  branch: string;
+  branch = 'master';
   submodule: import('./submodule').default | undefined;
   cwd!: string;
 
@@ -77,7 +77,7 @@ export class git {
       this.branch = branch;
     } else {
       gitdir = obj.cwd;
-      this.branch = obj.cwd;
+      if (obj.ref) this.branch = obj.ref;
       this.remote = obj.url;
       this.email = obj.email;
     }
