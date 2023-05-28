@@ -78,9 +78,10 @@ export class git {
       this.branch = branch;
     } else {
       gitdir = obj.cwd;
-      if (obj.ref) this.branch = obj.ref;
+      //if (obj.ref||obj.branch) this.branch = obj.ref || obj.branch;
       this.remote = obj.url || obj.remote;
       this.email = obj.email;
+      this.user = obj.user;
     }
     if (hasInstance(gitdir)) return getInstance(gitdir);
     this.cwd = gitdir;
