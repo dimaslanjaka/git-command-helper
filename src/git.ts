@@ -30,6 +30,7 @@ export interface GitOpt {
   email?: string;
   /** branch */
   ref?: string;
+  branch?: string;
   /** base folder */
   cwd: string;
   /** remote url */
@@ -78,7 +79,7 @@ export class git {
       this.branch = branch;
     } else {
       gitdir = obj.cwd;
-      //if (obj.ref||obj.branch) this.branch = obj.ref || obj.branch;
+      if (obj.ref || obj.branch) this.branch = (obj.ref || obj.branch) as string;
       this.remote = obj.url || obj.remote;
       this.email = obj.email;
       this.user = obj.user;
