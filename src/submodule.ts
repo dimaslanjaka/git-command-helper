@@ -87,7 +87,7 @@ export class submodule {
       const doUp = () => {
         return new Bluebird((resolveDoUp: (...v: any[]) => any) => {
           let { github } = info[0];
-          const { branch, cwd, url } = info[0];
+          const { branch, cwd, remote } = info[0].github;
           //console.log("safe", info[0]);
           if (!github) {
             github = new git(cwd);
@@ -95,18 +95,20 @@ export class submodule {
           const doReset = () => github.reset(branch);
           const doPull = () => github.pull(['origin', branch, '--recurse-submodule']);
           // update from remote name origin
-          github.setremote(url, 'origin').then(() => {
-            // force checkout branch instead commit hash
-            github.setbranch(branch, true).then(() => {
-              if (reset) {
-                // reset then pull
-                doReset().then(doPull).then(resolveDoUp);
-              } else {
-                // pull
-                doPull().then(resolveDoUp);
-              }
+          if (typeof remote === 'string') {
+            github.setremote(remote, 'origin').then(() => {
+              // force checkout branch instead commit hash
+              github.setbranch(branch, true).then(() => {
+                if (reset) {
+                  // reset then pull
+                  doReset().then(doPull).then(resolveDoUp);
+                } else {
+                  // pull
+                  doPull().then(resolveDoUp);
+                }
+              });
             });
-          });
+          }
         });
       };
       const iterate = () => {
