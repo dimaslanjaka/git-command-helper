@@ -80,7 +80,7 @@
     "@types/bluebird": "^3",
     "@types/core-js": "^2.5.5",
     "@types/fs-extra": "^11",
-    "@types/git-command-helper": "https://github.com/dimaslanjaka/git-command-helper/raw/49ce18129eac1f4fd3130ba6284de2eed4dba8d0/release/git-command-helper.tgz",
+    "@types/git-command-helper": "https://github.com/dimaslanjaka/git-command-helper/raw/7d63e18/release/git-command-helper.tgz",
     "@types/ini": "^1.3.31",
     "@types/lodash": "^4",
     "@types/minimist": "^1",
