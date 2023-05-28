@@ -33,7 +33,8 @@ export interface GitOpt {
   /** base folder */
   cwd: string;
   /** remote url */
-  url: string;
+  url?: string;
+  remote: string;
 }
 
 /**
@@ -78,7 +79,7 @@ export class git {
     } else {
       gitdir = obj.cwd;
       if (obj.ref) this.branch = obj.ref;
-      this.remote = obj.url;
+      this.remote = obj.url || obj.remote;
       this.email = obj.email;
     }
     if (hasInstance(gitdir)) return getInstance(gitdir);
