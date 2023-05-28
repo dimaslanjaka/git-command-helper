@@ -20,6 +20,7 @@ import { getInstance, hasInstance, setInstance } from './instances';
 import { SpawnOptions, spawn, spawnSilent } from './spawn';
 import submodule from './submodule';
 import { StatusResult } from './types/status';
+import * as gitUtil from './utils';
 import extractSubmodule, { Submodule } from './utils/extract-submodule';
 import { safeURL } from './utils/safe-url';
 
@@ -61,6 +62,8 @@ export class git {
   static helper = helper;
   ext = extension;
   static ext = extension;
+  util = gitUtil;
+  static util = gitUtil;
 
   // exports infos
   infos = GithubInfo;
