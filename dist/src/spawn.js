@@ -31,7 +31,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.spawnSilent = exports.spawn = exports.spawnAsync = void 0;
 const bluebird_1 = __importDefault(require("bluebird"));
-const sysSpawn = __importStar(require("../cross-spawn/src"));
+const sysSpawn = __importStar(require("../cross-spawn/src/index"));
 var spawn_async_1 = require("@expo/spawn-async");
 Object.defineProperty(exports, "spawnAsync", { enumerable: true, get: function () { return __importDefault(spawn_async_1).default; } });
 __exportStar(require("../cross-spawn/src"), exports);
