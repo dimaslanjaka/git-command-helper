@@ -117,6 +117,14 @@ export class git {
     if (!hasInstance(gitdir)) setInstance(gitdir, this);
   }
 
+  setToken(token: string) {
+    this.token = token;
+  }
+
+  getToken() {
+    return this.token as string;
+  }
+
   /**
    * get repository and raw file url
    * @param file relative to git root without leading `/`
