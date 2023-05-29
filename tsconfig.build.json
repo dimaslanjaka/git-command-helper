@@ -3,9 +3,7 @@
   "compilerOptions": {
     "rootDirs": ["src", "utility/packages/sbg-utility/src", "cross-spawn/src"],
     "outDir": "dist",
-    "resolveJsonModule": true,
-    "types": ["node"],
-    "typeRoots": ["./node_modules/@types"]
+    "resolveJsonModule": true
   },
   "include": ["src/index.ts", "src/**/*.json"],
   "exclude": ["*.test.*", "**/node_modules", "**/dist/**", "**/tmp/**", "**/*.builder.ts"]
