@@ -4,7 +4,6 @@ import { existsSync, statSync } from 'fs-extra';
 import { rm } from 'fs/promises';
 import { join, toUnix } from 'upath';
 import git from './git';
-import { getInstance, hasInstance, setInstance } from './instances';
 import { spawn } from './spawner';
 import extractSubmodule from './utils/extract-submodule';
 
@@ -168,14 +167,9 @@ export class submodule {
     for (let i = 0; i < extract.length; i++) {
       const item = extract[i];
       if (!item) continue;
-      if (!hasInstance(item.cwd)) setInstance(item.cwd, new git(item.cwd));
-      const github = getInstance<git>(item.cwd);
-      this.github[item.cwd] = github;
-      extract[i] = Object.assign({ branch: 'master', github }, item);
+      this.github[item.cwd] = item.github;
     }
-    return extract.map(function (item) {
-      return Object.assign({ branch: 'master', github: null as unknown as git }, item);
-    });
+    return extract;
   }
 }
 
