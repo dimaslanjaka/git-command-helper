@@ -22,12 +22,17 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getDefaultConfigYaml = exports.getDefaultConfig = void 0;
-const fs_extra_1 = require("fs-extra");
+const fs_extra_1 = __importDefault(require("fs-extra"));
 const true_case_path_1 = require("true-case-path");
 const upath_1 = require("upath");
 const yaml = __importStar(require("yaml"));
+const utils_1 = require("../utils");
+const _config_json_1 = __importDefault(require("./_config.json"));
 /**
  * get default configuration
  * @returns
@@ -127,6 +132,12 @@ exports.getDefaultConfig = getDefaultConfig;
  * @returns
  */
 function getDefaultConfigYaml() {
-    return (0, fs_extra_1.readFileSync)((0, upath_1.join)(__dirname, '_config.yml'), 'utf-8');
+    const yml = (0, upath_1.join)(__dirname, '_config.yml');
+    if (fs_extra_1.default.existsSync(yml)) {
+        return fs_extra_1.default.readFileSync((0, upath_1.join)(__dirname, '_config.yml'), 'utf-8');
+    }
+    else {
+        return (0, utils_1.jsonStringifyWithCircularRefs)(_config_json_1.default);
+    }
 }
 exports.getDefaultConfigYaml = getDefaultConfigYaml;

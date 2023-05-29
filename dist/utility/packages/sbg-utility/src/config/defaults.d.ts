@@ -17,10 +17,6 @@ export declare function getDefaultConfig(): {
     categories: {
         lowercase: boolean;
         assign: any;
-        /**
-         * get default configuration
-         * @returns
-         */
         mapper: any;
     };
     category_dir: string;
