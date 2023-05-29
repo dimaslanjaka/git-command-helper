@@ -126,6 +126,9 @@ jobs:
           esac
           echo "machine=$machine" >> $GITHUB_OUTPUT
           echo "machine=$machine" >> $GITHUB_ENV
+          
+      - run: corepack enable
+        name: enable NodeJS corepack
 
       - name: Install Legacy Peer Dependencies
         run: |

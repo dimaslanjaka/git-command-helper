@@ -1,20 +1,19 @@
 import Bluebird from 'bluebird';
 import { SpawnOptions } from 'child_process';
-import debug from 'debug';
 import { existsSync, statSync } from 'fs-extra';
 import { rm } from 'fs/promises';
 import { join, toUnix } from 'upath';
 import git from './git';
-import { getInstance, hasInstance, setInstance } from './instances';
 import { spawn } from './spawner';
 import extractSubmodule from './utils/extract-submodule';
 
-const _log = debug('git-command-helper');
-
 export class submodule {
+  /** current working directory */
   cwd: string;
+  /** .gitmodules exist */
   hasConfig: boolean;
-  private github: Record<string, git> = {};
+  /** git-command-helper class */
+  github: Record<string, git> = {};
 
   constructor(cwd: string) {
     this.cwd = cwd;
@@ -86,40 +85,39 @@ export class submodule {
    */
   safeUpdate(reset = false) {
     return new Bluebird((resolve) => {
-      const info = this.get();
+      const infos = this.get();
       const doUp = () => {
         return new Bluebird((resolveDoUp: (...v: any[]) => any) => {
-          let { github } = info[0];
-          const { branch, cwd, url } = info[0];
-          //console.log("safe", info[0]);
-          if (!github) {
-            github = new git(cwd);
-          }
+          if (!infos[0]) return;
+          const github = infos[0];
+          const { branch, remote } = infos[0].github;
           const doReset = () => github.reset(branch);
           const doPull = () => github.pull(['origin', branch, '--recurse-submodule']);
           // update from remote name origin
-          github.setremote(url, 'origin').then(() => {
-            // force checkout branch instead commit hash
-            github.setbranch(branch, true).then(() => {
-              if (reset) {
-                // reset then pull
-                doReset().then(doPull).then(resolveDoUp);
-              } else {
-                // pull
-                doPull().then(resolveDoUp);
-              }
+          if (typeof remote === 'string') {
+            github.setremote(remote, 'origin').then(() => {
+              // force checkout branch instead commit hash
+              github.setbranch(branch, true).then(() => {
+                if (reset) {
+                  // reset then pull
+                  doReset().then(doPull).then(resolveDoUp);
+                } else {
+                  // pull
+                  doPull().then(resolveDoUp);
+                }
+              });
             });
-          });
+          }
         });
       };
       const iterate = () => {
         return new Bluebird((resolveIt: (...v: any[]) => any) => {
           doUp()
             .then(() => {
-              info.shift();
+              infos.shift();
             })
             .then(() => {
-              if (info.length > 0) {
+              if (infos.length > 0) {
                 return iterate().then(resolveIt);
               } else {
                 resolveIt();
@@ -127,7 +125,7 @@ export class submodule {
             });
         });
       };
-      if (info.length > 0) {
+      if (infos.length > 0) {
         resolve(iterate());
       }
     });
@@ -166,14 +164,9 @@ export class submodule {
     for (let i = 0; i < extract.length; i++) {
       const item = extract[i];
       if (!item) continue;
-      if (!hasInstance(item.cwd)) setInstance(item.cwd, new git(item.cwd));
-      const github = getInstance<git>(item.cwd);
-      this.github[item.cwd] = github;
-      extract[i] = Object.assign({ branch: 'master', github }, item);
+      this.github[item.cwd] = item.github;
     }
-    return extract.map(function (item) {
-      return Object.assign({ branch: 'master', github: null as unknown as git }, item);
-    });
+    return extract;
   }
 }
 

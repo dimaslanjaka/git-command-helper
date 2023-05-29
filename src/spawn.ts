@@ -2,11 +2,12 @@
 
 import Bluebird from 'bluebird';
 import { CommonSpawnOptions } from 'child_process';
-import sysSpawn from 'cross-spawn';
+import * as sysSpawn from '../cross-spawn/src';
+export { default as spawnAsync } from '@expo/spawn-async';
+export * from '../cross-spawn/src';
 // import { spawn as sysSpawn } from 'child_process';
 import _ from 'lodash';
 import CacheStream from './cache-stream';
-export { default as spawnAsync } from '@expo/spawn-async';
 
 export type SpawnOptions = Record<string, any> & CommonSpawnOptions;
 
@@ -28,7 +29,7 @@ export default function promiseSpawn(command: string, args: string[] | SpawnOpti
   }
 
   return new Bluebird((resolve: (str?: string) => any, reject) => {
-    const task = sysSpawn(command, <string[]>args, options);
+    const task = sysSpawn.spawn(command, <string[]>args, options);
     const verbose: boolean = options.verbose || false;
     const { encoding = 'utf8' } = options;
     const stdoutCache = new CacheStream();
