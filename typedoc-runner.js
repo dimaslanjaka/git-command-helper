@@ -12,8 +12,6 @@ const fs = require('fs');
 const path = require('path');
 const git = pkgjson.name === 'git-command-helper' ? require('./dist').default : require('git-command-helper').default;
 
-console.log('typedoc running');
-
 // required : upath semver typedoc git-command-helper gulp cross-spawn
 // update   : curl -L https://github.com/dimaslanjaka/nodejs-package-types/raw/main/typedoc-runner.js > typedoc-runner.js
 // repo     : https://github.com/dimaslanjaka/nodejs-package-types/blob/main/typedoc-runner.js
@@ -146,7 +144,7 @@ function noop(..._) {
 let opt = typedocOptions;
 /**
  * Get typedoc options
- * @returns {typeof import('./typedoc.config')}
+ * @returns {typeof import('./typedoc')}
  */
 function getTypedocOptions() {
   return opt;
@@ -163,7 +161,7 @@ function setTypedocOptions(newOpt) {
 }
 
 if (require.main === module) {
-  console.log('running')(async () => {
+  (async () => {
     const argv = process.argv;
     // node typedoc-runner.js --publish
     if (argv.includes('--publish')) {
