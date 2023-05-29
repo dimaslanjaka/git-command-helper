@@ -177,7 +177,7 @@ jobs:
       - name: Build
         run: npm run build
       - name: Pack
-        run: npm run pack
+        run: npm run pack -- --commit
 
       # https://github.com/marketplace/actions/verify-changed-files
       - name: Check if there are changes

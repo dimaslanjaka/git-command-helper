@@ -1,7 +1,7 @@
 import { beforeAll, describe, expect, it, jest } from '@jest/globals';
-import gitHelper from '../src';
-import submodule from '../src/submodule';
-import { testcfg } from './config';
+import gitHelper from '../../src';
+import submodule from '../../src/submodule';
+import { testcfg } from '../config';
 
 describe('test submodules', () => {
   jest.setTimeout(60000);

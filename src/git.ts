@@ -5,35 +5,41 @@
  */
 
 import Bluebird from 'bluebird';
-import { spawnAsync } from 'cross-spawn';
 import fs, { existsSync, mkdirSync } from 'fs-extra';
 import _ from 'lodash';
+import { jsonStringifyWithCircularRefs } from 'sbg-utility';
 import { join } from 'upath';
-import { isIgnored, isIgnoredOpt } from './functions/gitignore';
+import * as crossSpawn from './cross-spawn/src';
+import { spawnAsync } from './cross-spawn/src';
+import * as GithubInfo from './functions';
+import { isIgnored } from './functions/gitignore';
 import { isUntracked } from './functions/isFileChanged';
 import { latestCommit } from './functions/latestCommit';
 import { isCanPush } from './functions/push-checker';
-import GithubInfo from './git-info';
 import helper from './helper';
 import * as extension from './index-exports';
 import { getInstance, hasInstance, setInstance } from './instances';
 import { SpawnOptions, spawn, spawnSilent } from './spawn';
 import submodule from './submodule';
 import { StatusResult } from './types/status';
+import * as gitUtil from './utils';
 import extractSubmodule, { Submodule } from './utils/extract-submodule';
 import { safeURL } from './utils/safe-url';
 
 // module 'git-command-helper';
 
 export interface GitOpt {
+  [key: string]: any;
   user?: string;
   email?: string;
   /** branch */
   ref?: string;
+  branch?: string;
   /** base folder */
   cwd: string;
   /** remote url */
-  url: string;
+  url?: string;
+  remote: string;
 }
 
 /**
@@ -50,15 +56,20 @@ export class git {
   user: string | undefined;
   email: string | undefined;
   remote: string | undefined;
-  branch: string;
+  branch = 'master';
   submodule: import('./submodule').default | undefined;
   cwd!: string;
+  token?: string;
 
   // external funcs
   helper = helper;
   static helper = helper;
   ext = extension;
   static ext = extension;
+  util = gitUtil;
+  static util = gitUtil;
+  crossSpawn = crossSpawn;
+  static crossSpawn = crossSpawn;
 
   // exports infos
   infos = GithubInfo;
@@ -74,15 +85,22 @@ export class git {
     let gitdir: string;
     if (typeof obj === 'string') {
       gitdir = obj;
-      this.branch = branch;
+      if (branch) this.branch = branch;
     } else {
       gitdir = obj.cwd;
-      this.branch = obj.cwd;
-      this.remote = obj.url;
+      if (obj.ref || obj.branch) this.branch = (obj.ref || obj.branch) as string;
+      this.remote = obj.url || obj.remote;
       this.email = obj.email;
+      this.user = obj.user;
     }
     if (hasInstance(gitdir)) return getInstance(gitdir);
     this.cwd = gitdir;
+
+    if (this.remote) {
+      // @fixme parse token from url
+      // const parse = new URL(this.remote);
+      // console.log({ parse });
+    }
 
     // auto recreate git directory
     if (!existsSync(gitdir)) {
@@ -99,6 +117,14 @@ export class git {
       this.submodule = new submodule(gitdir);
     }
     if (!hasInstance(gitdir)) setInstance(gitdir, this);
+  }
+
+  setToken(token: string) {
+    this.token = token;
+  }
+
+  getToken() {
+    return this.token as string;
   }
 
   /**
@@ -154,6 +180,7 @@ export class git {
 
   /**
    * call spawn async
+   * * default option is `{ cwd: this.cwd }`
    * @param cmd
    * @param args
    * @param spawnOpt
@@ -371,17 +398,8 @@ export class git {
     return status.length > 0;
   }
 
-  /**
-   * is file ignored by `.gitignore`?
-   * @param filePath
-   * @param options
-   * @returns
-   */
-  isIgnored(filePath: string, options?: isIgnoredOpt) {
-    if (!options) options = {};
-    options.cwd = this.cwd;
-    return isIgnored(filePath, options);
-  }
+  isIgnored = isIgnored;
+  static isIgnored = isIgnored;
 
   /**
    * git add
@@ -521,7 +539,10 @@ export class git {
    * git add remote customName https://
    */
   public async setremote(remoteURL: string | URL, name?: string, spawnOpt: SpawnOptions = {}) {
-    this.remote = remoteURL instanceof URL ? remoteURL.toString() : remoteURL;
+    const newremote = String(remoteURL);
+    if (this.remote !== newremote) {
+      this.remote = newremote;
+    }
     const opt = this.spawnOpt(Object.assign({ stdio: 'pipe' }, spawnOpt || {}));
     try {
       return await spawn('git', ['remote', 'add', name || 'origin', this.remote], opt);
@@ -639,6 +660,10 @@ export class git {
       stdio: 'inherit',
       cwd: this.cwd
     });
+  }
+
+  toString() {
+    return jsonStringifyWithCircularRefs(this);
   }
 }
 

@@ -1,7 +1,6 @@
-import { spawnAsync } from 'cross-spawn';
 import fs from 'fs-extra';
 import path from 'upath';
-import gitCommandHelper from '../src';
+import gitCommandHelper, { spawnAsync } from '../src';
 
 const base = path.join(__dirname, '../tmp/github-pages');
 if (!fs.existsSync(base)) fs.mkdirSync(base, { recursive: true });
