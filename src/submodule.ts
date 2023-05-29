@@ -9,9 +9,12 @@ import { spawn } from './spawner';
 import extractSubmodule from './utils/extract-submodule';
 
 export class submodule {
+  /** current working directory */
   cwd: string;
+  /** .gitmodules exist */
   hasConfig: boolean;
-  private github: Record<string, git> = {};
+  /** git-command-helper class */
+  github: Record<string, git> = {};
 
   constructor(cwd: string) {
     this.cwd = cwd;
