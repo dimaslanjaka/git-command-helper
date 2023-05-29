@@ -32,10 +32,11 @@ jobs:
       YARN_ENABLE_IMMUTABLE_INSTALLS: false
       ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
       node_version: 14.x
+      YARN_CHECKSUM_BEHAVIOR: update
 
     runs-on: ubuntu-latest
 
-    name: Build Monorepo
+    name: Build pre-release
     steps:
       - uses: actions/checkout@v3
         with:
@@ -43,16 +44,12 @@ jobs:
           token: ${{ secrets.ACCESS_TOKEN }}
           ref: pre-release
 
-      - name: Set EOL git configs
+      - name: fix git configs
         continue-on-error: true
         run: |
           git config core.eol lf
           git config core.autocrlf input
           git checkout-index --force --all
-
-      - name: Pull & update submodules recursively
-        continue-on-error: true
-        run: |
           git submodule update --init --recursive
           git submodule update --recursive --remote
           git pull -X theirs
@@ -126,24 +123,20 @@ jobs:
             ${{ runner.os }}-${{ env.node_version }}
             ${{ runner.os }}-
 
-      - name: Check Updates
-        shell: bash
-        continue-on-error: true
-        run: npm run update
-
       - name: Install Global Packages
         run: npm i -g typescript ts-node gulp-cli hexo-cli webpack-cli
 
       - name: Install
-        run: yarn install
+        run: |
+          yarn cache clean --all
+          rm yarn.lock
+          touch yarn.lock
+          yarn install
         id: install
         shell: bash
-        continue-on-error: true
 
-      - name: Clean Install
-        id: install-clean
-        shell: bash
-        if: steps.install.outcome == 'failure'
+      - name: Install cross-spawn
+        working-directory: cross-spawn
         run: |
           yarn cache clean --all
           rm yarn.lock
