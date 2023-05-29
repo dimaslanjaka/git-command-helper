@@ -44,16 +44,12 @@ jobs:
           token: ${{ secrets.ACCESS_TOKEN }}
           ref: pre-release
 
-      - name: Set EOL git configs
+      - name: fix git configs
         continue-on-error: true
         run: |
           git config core.eol lf
           git config core.autocrlf input
           git checkout-index --force --all
-
-      - name: Pull & update submodules recursively
-        continue-on-error: true
-        run: |
           git submodule update --init --recursive
           git submodule update --recursive --remote
           git pull -X theirs
