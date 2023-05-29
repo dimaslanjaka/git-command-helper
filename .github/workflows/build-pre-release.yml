@@ -131,20 +131,13 @@ jobs:
         run: npm i -g typescript ts-node gulp-cli hexo-cli webpack-cli
 
       - name: Install
-        run: touch yarn.lock && yarn install
-        id: install
-        shell: bash
-        continue-on-error: true
-
-      - name: Clean Install
-        id: install-clean
-        shell: bash
-        if: steps.install.outcome == 'failure'
         run: |
           yarn cache clean --all
           rm yarn.lock
           touch yarn.lock
           yarn install
+        id: install
+        shell: bash
 
       - name: Dump
         shell: bash
