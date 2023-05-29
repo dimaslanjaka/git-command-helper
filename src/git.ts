@@ -29,6 +29,7 @@ import { safeURL } from './utils/safe-url';
 // module 'git-command-helper';
 
 export interface GitOpt {
+  [key: string]: any;
   user?: string;
   email?: string;
   /** branch */
