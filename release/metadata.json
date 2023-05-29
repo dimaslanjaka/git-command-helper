@@ -10,12 +10,12 @@
   },
   "/release/git-command-helper.tgz": {
     "integrity": {
-      "sha1": "9edb7e409e34c433ca956940c9308eab51d147d6",
-      "sha256": "gIxp1r+vZLkXDjQObIGFW2xNYM1o2/r/EGNe+8w6BrY=",
-      "md5": "4c09e0f4778fe37a66738df64635cf5d",
-      "sha512": "UorE7ginIOOu0lNkvmd624O62RvFVGwwwpR0cXIqMvBM74bq7l9+xm2AUtoNid5GXB/UFzD7TY2zfUflyKvWEA=="
+      "sha1": "6354d7480d1e78843bca1c627be2b88367f9ea11",
+      "sha256": "CFPacra/twfD0x9wteMnFukUpzaInL0GcazLZQgP5V0=",
+      "md5": "69c87d7641a78ee7e2a81c3ac28f2ee8",
+      "sha512": "YSANc1YCB5aYFbCNfn0ZskmsLTzPDekZuJb0eW37Pn/il0Ohf9ACLKRP3thVroH+sRhWFCOGwAzvk7otjxWPXg=="
     },
-    "size": "27.67 KB"
+    "size": "53.93 KB"
   },
   "/package-lock.json": {
     "integrity": {
@@ -154,12 +154,12 @@
   },
   "/yarn.lock": {
     "integrity": {
-      "sha1": "97660c1552053c1ce264848d0250f7904b96e309",
-      "sha256": "9Z3hJMfNrKtKpr7mbCOQDyykeMvy49SumYE4xWrfTsg=",
-      "md5": "f296c56e1e4d8ebfc0eb6b78469a094f",
-      "sha512": "s2j048yrmYgigvwNM7FHxll+NPUxCc2AoEh+pNuENCKgEMFzHQKfE9jRZXNOtEGrfSVlhRlA76soF2q0Z9r94Q=="
+      "sha1": "0339c0c0894a4330f06199f0a7c0c9de0cd58a04",
+      "sha256": "EDvLWfwz6LGpQ44r8vfeMluWQ9d1sdlWOmDNzUts0/A=",
+      "md5": "c784159f2dda8e1a8e22921c1a590084",
+      "sha512": "5K51afoxEEuJ8NTuBabu+e0gHDFEaE1FLtHwwpVeglJJUoqfzFZ/hhRe8pCm207QVHxrSq7ZVW31UbvilEnbLA=="
     },
-    "size": "380.82 KB"
+    "size": "382.67 KB"
   },
   "/release/git-command-helper-1.2.1.tgz": {
     "integrity": {
@@ -181,11 +181,11 @@
   },
   "/release/git-command-helper-1.2.5.tgz": {
     "integrity": {
-      "sha1": "9edb7e409e34c433ca956940c9308eab51d147d6",
-      "sha256": "gIxp1r+vZLkXDjQObIGFW2xNYM1o2/r/EGNe+8w6BrY=",
-      "md5": "4c09e0f4778fe37a66738df64635cf5d",
-      "sha512": "UorE7ginIOOu0lNkvmd624O62RvFVGwwwpR0cXIqMvBM74bq7l9+xm2AUtoNid5GXB/UFzD7TY2zfUflyKvWEA=="
+      "sha1": "6354d7480d1e78843bca1c627be2b88367f9ea11",
+      "sha256": "CFPacra/twfD0x9wteMnFukUpzaInL0GcazLZQgP5V0=",
+      "md5": "69c87d7641a78ee7e2a81c3ac28f2ee8",
+      "sha512": "YSANc1YCB5aYFbCNfn0ZskmsLTzPDekZuJb0eW37Pn/il0Ohf9ACLKRP3thVroH+sRhWFCOGwAzvk7otjxWPXg=="
     },
-    "size": "27.67 KB"
+    "size": "53.93 KB"
   }
 }
