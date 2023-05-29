@@ -1,0 +1,4 @@
+[submodule "lib"]
+	path = lib
+	url = https://github.com/dimaslanjaka/git-command-helper.git
+	branch = pre-release
