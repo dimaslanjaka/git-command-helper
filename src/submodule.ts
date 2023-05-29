@@ -85,15 +85,12 @@ export class submodule {
    */
   safeUpdate(reset = false) {
     return new Bluebird((resolve) => {
-      const info = this.get();
+      const infos = this.get();
       const doUp = () => {
         return new Bluebird((resolveDoUp: (...v: any[]) => any) => {
-          let { github } = info[0];
-          const { branch, cwd, remote } = info[0].github;
-          //console.log("safe", info[0]);
-          if (!github) {
-            github = new git(cwd);
-          }
+          if (!infos[0]) return;
+          const github = infos[0];
+          const { branch, remote } = infos[0].github;
           const doReset = () => github.reset(branch);
           const doPull = () => github.pull(['origin', branch, '--recurse-submodule']);
           // update from remote name origin
@@ -117,10 +114,10 @@ export class submodule {
         return new Bluebird((resolveIt: (...v: any[]) => any) => {
           doUp()
             .then(() => {
-              info.shift();
+              infos.shift();
             })
             .then(() => {
-              if (info.length > 0) {
+              if (infos.length > 0) {
                 return iterate().then(resolveIt);
               } else {
                 resolveIt();
@@ -128,7 +125,7 @@ export class submodule {
             });
         });
       };
-      if (info.length > 0) {
+      if (infos.length > 0) {
         resolve(iterate());
       }
     });
