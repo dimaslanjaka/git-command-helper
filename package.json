@@ -1,0 +1,23 @@
+{
+  "name": "git-command-helper",
+  "version": "2.0.0",
+  "description": "git command helper",
+  "private": true,
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dimaslanjaka/git-command-helper.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dimaslanjaka/git-command-helper/issues"
+  },
+  "homepage": "https://github.com/dimaslanjaka/git-command-helper#readme"
+}
