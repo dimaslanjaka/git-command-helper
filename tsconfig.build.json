@@ -1,11 +1,10 @@
 {
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    // "tsBuildInfoFile": "./dist/tsconfig.build.tsbuildinfo",
-    "rootDir": "src",
+    "rootDirs": ["src", "utility/packages/sbg-utility/src"],
     "outDir": "dist",
     "resolveJsonModule": true
   },
-  "include": ["src/index.ts", "src/**/*.json", "utility/packages/sbg-utility/src"],
+  "include": ["src/index.ts", "src/**/*.json"],
   "exclude": ["*.test.*", "**/node_modules", "**/dist/**", "**/tmp/**", "**/*.builder.ts"]
 }
