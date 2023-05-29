@@ -124,6 +124,7 @@
   },
   "resolutions": {
     "cross-spawn": "https://github.com/dimaslanjaka/node-cross-spawn/raw/bf2d8bb/release/cross-spawn.tgz",
+    "sbg-utility": "https://github.com/dimaslanjaka/static-blog-generator/raw/12892b3a4/packages/sbg-utility/release/sbg-utility.tgz",
     "ansi-regex": "^4",
     "glob-parent": "^6.0.2",
     "node.extend": "^2.0.2",
