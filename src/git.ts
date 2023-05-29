@@ -57,6 +57,7 @@ export class git {
   branch = 'master';
   submodule: import('./submodule').default | undefined;
   cwd!: string;
+  token?: string;
 
   // external funcs
   helper = helper;
@@ -92,6 +93,12 @@ export class git {
     }
     if (hasInstance(gitdir)) return getInstance(gitdir);
     this.cwd = gitdir;
+
+    if (this.remote) {
+      // @fixme parse token from url
+      // const parse = new URL(this.remote);
+      // console.log({ parse });
+    }
 
     // auto recreate git directory
     if (!existsSync(gitdir)) {
