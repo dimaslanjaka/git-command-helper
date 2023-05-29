@@ -30,7 +30,11 @@
   },
   "[json]": {
     "editor.formatOnSave": false, // custom formating with default vscode formatter
-    "editor.defaultFormatter": "vscode.json-language-features"
+    "editor.defaultFormatter": "vscode.json-language-features",
+    "editor.codeActionsOnSave": {
+      "source.fixAll": false,
+      "source.organizeImports": false
+    }
   },
   "editor.formatOnSave": false, // default vscode formatter
   "git.enabled": true, // enable git
