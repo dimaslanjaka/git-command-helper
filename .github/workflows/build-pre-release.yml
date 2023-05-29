@@ -139,6 +139,10 @@ jobs:
         id: install
         shell: bash
 
+      - name: Install cross-spawn
+        working-directory: cross-spawn
+        run: npm install
+
       - name: Dump
         shell: bash
         run: |
