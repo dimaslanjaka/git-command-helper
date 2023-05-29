@@ -8,6 +8,7 @@ import Bluebird from 'bluebird';
 import fs, { existsSync, mkdirSync } from 'fs-extra';
 import _ from 'lodash';
 import { join } from 'upath';
+import * as crossSpawn from './cross-spawn/src';
 import { spawnAsync } from './cross-spawn/src';
 import * as GithubInfo from './functions';
 import { isIgnored } from './functions/gitignore';
@@ -64,6 +65,8 @@ export class git {
   static ext = extension;
   util = gitUtil;
   static util = gitUtil;
+  crossSpawn = crossSpawn;
+  static crossSpawn = crossSpawn;
 
   // exports infos
   infos = GithubInfo;
@@ -160,6 +163,7 @@ export class git {
 
   /**
    * call spawn async
+   * * default option is `{ cwd: this.cwd }`
    * @param cmd
    * @param args
    * @param spawnOpt
