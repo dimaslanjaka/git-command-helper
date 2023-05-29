@@ -8,5 +8,5 @@
     "strict": true,
     "noEmit": true
   },
-  "include": ["src", "test", "utility/packages/sbg-utility/src"]
+  "include": ["src", "test", "utility/packages/sbg-utility/src", "cross-spawn/src"]
 }

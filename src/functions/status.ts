@@ -1,7 +1,7 @@
 'use strict';
 
-import * as spawn from '../cross-spawn/src';
-import { spawnSyncReturn } from '../cross-spawn/src/spawn';
+import * as spawn from '../../cross-spawn/src';
+import { spawnSyncReturn } from '../../cross-spawn/src/spawn';
 
 type ObjResult = { U: string } | { M: string } | { D: string };
 

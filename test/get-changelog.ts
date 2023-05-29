@@ -1,4 +1,4 @@
-import spawn from '../src/cross-spawn/dist';
+import spawn from '../cross-spawn/src';
 
 // git log <commit hash 1>..<commit hash 2> --oneline | cut -d " " -f 1
 // git rev-list --ancestry-path 7b4a07a..ecf5891

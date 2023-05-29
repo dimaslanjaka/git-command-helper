@@ -1,7 +1,7 @@
 import { afterAll, beforeAll, describe, expect, it } from '@jest/globals';
 import { writeFileSync } from 'fs-extra';
 import { basename, join } from 'path';
-import { spawnSync } from '../src/cross-spawn/src';
+import { spawnSync } from '../cross-spawn/src';
 import { getIgnores, isIgnored } from '../src/functions/gitignore';
 import { testcfg } from './config';
 

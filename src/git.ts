@@ -8,9 +8,8 @@ import Bluebird from 'bluebird';
 import fs, { existsSync, mkdirSync } from 'fs-extra';
 import _ from 'lodash';
 import { join } from 'upath';
+import * as crossSpawn from '../cross-spawn/src';
 import { jsonStringifyWithCircularRefs } from '../utility/packages/sbg-utility/src';
-import * as crossSpawn from './cross-spawn/src';
-import { spawnAsync } from './cross-spawn/src';
 import * as GithubInfo from './functions';
 import { isIgnored } from './functions/gitignore';
 import { isUntracked } from './functions/isFileChanged';
@@ -195,7 +194,7 @@ export class git {
    * @returns
    */
   setAutoRebase() {
-    return spawnAsync('git', ['config', 'pull.rebase', 'false']);
+    return this.spawn('git', ['config', 'pull.rebase', 'false']);
   }
 
   /**
@@ -204,7 +203,7 @@ export class git {
    * @returns
    */
   setForceLF() {
-    return spawnAsync('git', ['config', 'core.autocrlf', 'false']);
+    return this.spawn('git', ['config', 'core.autocrlf', 'false']);
   }
 
   /**
