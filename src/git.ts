@@ -7,6 +7,7 @@
 import Bluebird from 'bluebird';
 import fs, { existsSync, mkdirSync } from 'fs-extra';
 import _ from 'lodash';
+import { jsonStringifyWithCircularRefs } from 'sbg-utility';
 import { join } from 'upath';
 import * as crossSpawn from './cross-spawn/src';
 import { spawnAsync } from './cross-spawn/src';
@@ -658,6 +659,10 @@ export class git {
       stdio: 'inherit',
       cwd: this.cwd
     });
+  }
+
+  toString() {
+    return jsonStringifyWithCircularRefs(this);
   }
 }
 
