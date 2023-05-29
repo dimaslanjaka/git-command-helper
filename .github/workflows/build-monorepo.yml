@@ -1,0 +1,8 @@
+name: Build Monorepo
+
+on:
+  push:
+    branches: ['monorepo']
+  pull_request:
+    branches: ['monorepo']
+  workflow_dispatch:
