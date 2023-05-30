@@ -130,7 +130,7 @@ jobs:
         with:
           path: |
             **/.yarn
-            **/release
+            **/release*
             **/yarn.lock
             **/node_modules
             **/tmp

@@ -99,11 +99,12 @@ jobs:
         id: cache
         with:
           path: |
-            **/dist
-            **/release
-            **/node_modules
             **/.yarn
+            **/release*
             **/yarn.lock
+            **/node_modules
+            **/tmp
+            **/dist
           key: ${{ runner.os }}-${{ matrix.node-version }}
           restore-keys: |
             ${{ runner.os }}-${{ matrix.node-version }}
@@ -247,11 +248,12 @@ jobs:
         id: cache
         with:
           path: |
-            **/dist
-            **/tmp
-            **/node_modules
             **/.yarn
+            **/release*
             **/yarn.lock
+            **/node_modules
+            **/tmp
+            **/dist
           key: ${{ runner.os }}-${{ matrix.node-version }}
           restore-keys: |
             ${{ runner.os }}-${{ matrix.node-version }}
