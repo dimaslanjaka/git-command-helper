@@ -5,9 +5,9 @@
  */
 
 import Bluebird from 'bluebird';
-import fs, { existsSync, mkdirSync } from 'fs-extra';
+import fs from 'fs-extra';
 import _ from 'lodash';
-import path, { join } from 'upath';
+import path from 'upath';
 import * as crossSpawn from '../cross-spawn/src';
 import { jsonStringifyWithCircularRefs } from '../utility/packages/sbg-utility/src';
 import * as GithubInfo from './functions';
@@ -87,7 +87,7 @@ export class git implements GitOpt {
       if (branch) this.branch = branch;
     } else {
       gitdir = obj.cwd;
-      if (obj.ref || obj.branch) this.branch = (obj.ref || obj.branch) as string;
+      if (obj.ref || obj.branch) this.branch = obj.ref || obj.branch || branch;
       this.remote = obj.url || obj.remote;
       this.email = obj.email;
       this.user = obj.user;
@@ -102,9 +102,9 @@ export class git implements GitOpt {
     }
 
     // auto recreate git directory
-    if (!existsSync(gitdir)) {
+    if (!fs.existsSync(gitdir)) {
       // create .git folder
-      fs.mkdirSync(join(gitdir, '.git'), { recursive: true });
+      fs.mkdirSync(path.join(gitdir, '.git'), { recursive: true });
       const self = this;
       this.spawn('git', ['init']).then(function () {
         if (typeof self.remote === 'function') this.setremote(self.remote);
@@ -112,8 +112,7 @@ export class git implements GitOpt {
     }
 
     if (fs.existsSync(path.join(gitdir, '.gitmodules'))) {
-      //console.log('init submodules', gitdir);
-      this.submodules = extractSubmodule(join(gitdir, '.gitmodules'));
+      this.submodules = extractSubmodule(path.join(gitdir, '.gitmodules'));
       this.submodule = new submodule(gitdir);
     }
     if (!hasInstance(gitdir)) setInstance(gitdir, this);
@@ -509,7 +508,7 @@ export class git implements GitOpt {
    * @returns
    */
   async init(spawnOpt: SpawnOptions = { stdio: 'inherit' }) {
-    if (!existsSync(join(this.cwd, '.git'))) mkdirSync(join(this.cwd, '.git'), { recursive: true });
+    if (!fs.existsSync(path.join(this.cwd, '.git'))) fs.mkdirSync(path.join(this.cwd, '.git'), { recursive: true });
     return spawnSilent('git', ['init'], this.spawnOpt(spawnOpt)).catch(_.noop);
   }
 
@@ -625,7 +624,7 @@ export class git implements GitOpt {
   }
 
   checkLock() {
-    return existsSync(join(this.cwd, '.git/index.lock'));
+    return fs.existsSync(path.join(this.cwd, '.git/index.lock'));
   }
 
   /**
