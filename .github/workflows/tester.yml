@@ -75,8 +75,8 @@ jobs:
             **/dist
             **/tmp
             **/node_modules
-            /.yarn
-            ./yarn.lock
+            **/.yarn
+            **/yarn.lock
           key: ${{ runner.os }}-${{ matrix.node-version }}
           restore-keys: |
             ${{ runner.os }}-${{ matrix.node-version }}
@@ -126,7 +126,7 @@ jobs:
           esac
           echo "machine=$machine" >> $GITHUB_OUTPUT
           echo "machine=$machine" >> $GITHUB_ENV
-          
+
       - run: corepack enable
         name: enable NodeJS corepack
 
