@@ -245,6 +245,11 @@ jobs:
           repository: dimaslanjaka/test-repo
           path: tmp/project-test
           ref: test
+      - uses: actions/checkout@v3
+        with:
+          repository: dimaslanjaka/dimaslanjaka.github.io
+          path: tmp/.deploy_git
+          ref: master
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
