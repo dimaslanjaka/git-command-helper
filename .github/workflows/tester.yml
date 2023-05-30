@@ -24,6 +24,11 @@ on:
       - '**/package-lock.json'
   workflow_dispatch:
 
+# run single job
+concurrency:
+  group: tester-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
     strategy:
