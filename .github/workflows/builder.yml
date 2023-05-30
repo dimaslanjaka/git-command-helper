@@ -54,6 +54,10 @@ jobs:
           rm -rf .git/modules
           bash ./bin/submodule-install
 
+      - name: download lock file from 'master'
+        run: curl -L https://github.com/dimaslanjaka/git-command-helper/raw/master/yarn.lock > yarn.lock
+        shell: bash
+
       - uses: actions/cache@v3
         name: save cache
         with:
@@ -77,10 +81,6 @@ jobs:
       - name: Enable corepack
         run: corepack enable
 
-      - name: download lock file from 'master'
-        run: curl -L https://github.com/dimaslanjaka/git-command-helper/raw/master/yarn.lock > yarn.lock
-        shell: bash
-
       - name: Install Global Packages
         run: npm i -g typescript ts-node gulp-cli hexo-cli webpack-cli
 
@@ -93,5 +93,3 @@ jobs:
         run: npm run build
       - name: Pack
         run: npm run pack -- --commit
-
-
