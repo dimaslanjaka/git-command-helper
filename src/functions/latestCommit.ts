@@ -51,5 +51,7 @@ export const latestCommit = async (filePath?: string | null, options: Partial<Ge
     const result = res.stdout[0] as string;
     //console.log('git', ...args, result);
     return result;
+  } else {
+    return undefined;
   }
 };
