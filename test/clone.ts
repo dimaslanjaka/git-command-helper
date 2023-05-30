@@ -28,7 +28,7 @@ async function clone(options: { cwd: string; remote: string; branch: string; tok
     console.log({ processCwd, relative });
     await spawn('git', ['clone', '-b', options.branch, options.remote, relative], {
       cwd: processCwd,
-      stdio: 'inherit'
+      stdio: git.isGithubCI ? 'pipe' : 'inherit'
     });
   }
 }
