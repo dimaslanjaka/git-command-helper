@@ -87,7 +87,7 @@ export class git implements GitOpt {
       if (branch) this.branch = branch;
     } else {
       gitdir = obj.cwd;
-      if (obj.ref || obj.branch) this.branch = (obj.ref || obj.branch) as string;
+      if (obj.ref || obj.branch) this.branch = obj.ref || obj.branch || branch;
       this.remote = obj.url || obj.remote;
       this.email = obj.email;
       this.user = obj.user;
