@@ -1,4 +1,8 @@
-import { join } from 'path';
+import path, { join } from 'upath';
+
+if (!process.env.ACCESS_TOKEN) {
+  process.env.ACCESS_TOKEN = 'token_' + Math.random();
+}
 
 export const TestConfig = {
   /**
@@ -21,3 +25,11 @@ export const testcfg = TestConfig;
 export function areWeTestingWithJest() {
   return process.env.JEST_WORKER_ID !== undefined;
 }
+
+export const myGithubPages = {
+  cwd: path.join(__dirname, '../../tmp', '.deploy_git'),
+  branch: 'master',
+  remote: `https://${process.env.ACCESS_TOKEN}@github.com/dimaslanjaka/dimaslanjaka.github.io.git`,
+  user: 'dimaslanjaka',
+  email: 'dimaslanjaka@gmail.com'
+};
