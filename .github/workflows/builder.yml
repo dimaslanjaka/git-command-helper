@@ -54,6 +54,21 @@ jobs:
           rm -rf .git/modules
           bash ./bin/submodule-install
 
+      - uses: actions/cache@v3
+        name: save cache
+        with:
+          path: |
+            **/.yarn
+            **/release*
+            **/yarn.lock
+            **/node_modules
+            **/tmp
+            **/dist
+          key: ${{ runner.os }}-${{ env.node-version }}
+          restore-keys: |
+            ${{ runner.os }}-${{ matrix.node-version }}
+            ${{ runner.os }}-
+
       - name: initialize Node ${{ env.node-version }}
         uses: actions/setup-node@v3
         with:
@@ -79,17 +94,4 @@ jobs:
       - name: Pack
         run: npm run pack -- --commit
 
-      - uses: actions/cache@v3
-        name: save cache
-        with:
-          path: |
-            **/.yarn
-            **/release*
-            **/yarn.lock
-            **/node_modules
-            **/tmp
-            **/dist
-          key: ${{ runner.os }}-${{ env.node-version }}
-          restore-keys: |
-            ${{ runner.os }}-${{ matrix.node-version }}
-            ${{ runner.os }}-
+
