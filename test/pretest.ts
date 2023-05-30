@@ -1,17 +1,25 @@
 import path from 'path';
-import gitHelper from '../src';
+import gitHelper, { GitOpt } from '../src';
 import clone from './clone';
 import { TestConfig } from './config';
 
+if (!process.env.ACCESS_TOKEN) {
+  process.env.ACCESS_TOKEN = 'token_' + Math.random();
+}
+
 (async function () {
+  const init = async (cfg: GitOpt) => {
+    const git = new gitHelper(cfg.cwd);
+    await git.setremote(cfg.remote);
+    if (cfg.branch) await git.setbranch(cfg.branch);
+    if (cfg.user) await git.setuser(cfg.user);
+    if (cfg.email) await git.setemail(cfg.email);
+    await git.fetch(['--all'], { stdio: 'pipe' }).then(console.log);
+  };
+
   // clone test repo
   await clone(TestConfig);
-  const git = new gitHelper(TestConfig.cwd);
-  await git.setremote(TestConfig.remote);
-  await git.setbranch(TestConfig.branch);
-  await git.setuser(TestConfig.username);
-  await git.setemail(TestConfig.email);
-  await git.fetch(['--all'], { stdio: 'pipe' }).then(console.log);
+  await init(TestConfig);
 
   // clone my github pages
   const obj = {
@@ -19,7 +27,9 @@ import { TestConfig } from './config';
     branch: 'master',
     remote: `https://${process.env.ACCESS_TOKEN}@github.com/dimaslanjaka/dimaslanjaka.github.io.git`,
     user: 'dimaslanjaka',
-    email: 'dimaslanjaka@gmail.com'
+    email: 'dimaslanjaka@gmail.com',
+    token: process.env.ACCESS_TOKEN
   };
   await clone(obj);
+  await init(obj);
 })();
