@@ -248,7 +248,7 @@ jobs:
         uses: tj-actions/verify-changed-files@v14
         with:
           files: |
-            release
+            release*
             dist
             lib
             !node_modules
