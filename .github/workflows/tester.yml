@@ -59,6 +59,17 @@ jobs:
           git submodule update --init --recursive
           git submodule update --recursive --remote
           git pull -X theirs
+          echo "init submodules"
+          git submodule init
+          git submodule foreach "git submodule init"
+          echo "sync submodules"
+          git submodule sync
+          git submodule foreach "git submodule sync"
+          echo "update submodules"
+          mkdir -p bin >/dev/null 2>&1
+          curl -L https://github.com/dimaslanjaka/bin/raw/master/bin/submodule-install > bin/submodule-install
+          rm -rf .git/modules
+          bash ./bin/submodule-install
 
       - name: initialize nodejs
         uses: actions/setup-node@v3
@@ -68,15 +79,15 @@ jobs:
       - name: Enable corepack
         run: corepack enable
 
-      - uses: actions/cache@v3
+      - uses: actions/cache/restore@v3
         id: cache
         with:
           path: |
             **/dist
-            **/tmp
+            **/release
             **/node_modules
-            /.yarn
-            ./yarn.lock
+            **/.yarn
+            **/yarn.lock
           key: ${{ runner.os }}-${{ matrix.node-version }}
           restore-keys: |
             ${{ runner.os }}-${{ matrix.node-version }}
@@ -126,9 +137,6 @@ jobs:
           esac
           echo "machine=$machine" >> $GITHUB_OUTPUT
           echo "machine=$machine" >> $GITHUB_ENV
-          
-      - run: corepack enable
-        name: enable NodeJS corepack
 
       - name: Install Legacy Peer Dependencies
         run: |

@@ -7,7 +7,7 @@
 import Bluebird from 'bluebird';
 import fs, { existsSync, mkdirSync } from 'fs-extra';
 import _ from 'lodash';
-import { join } from 'upath';
+import path, { join } from 'upath';
 import * as crossSpawn from '../cross-spawn/src';
 import { jsonStringifyWithCircularRefs } from '../utility/packages/sbg-utility/src';
 import * as GithubInfo from './functions';
@@ -22,7 +22,7 @@ import { SpawnOptions, spawn, spawnSilent } from './spawn';
 import submodule from './submodule';
 import { StatusResult } from './types/status';
 import * as gitUtil from './utils';
-import extractSubmodule, { Submodule } from './utils/extract-submodule';
+import extractSubmodule from './utils/extract-submodule';
 import { safeURL } from './utils/safe-url';
 
 // module 'git-command-helper';
@@ -44,19 +44,19 @@ export interface GitOpt {
 /**
  * GitHub Command Helper For NodeJS
  */
-export class git {
+export class git implements GitOpt {
   /** is current device is github actions */
   static isGithubCI =
     typeof process.env['GITHUB_WORKFLOW'] === 'string' && typeof process.env['GITHUB_WORKFLOW_SHA'] === 'string';
   /** is current device is github actions */
   isGithubCI =
     typeof process.env['GITHUB_WORKFLOW'] === 'string' && typeof process.env['GITHUB_WORKFLOW_SHA'] === 'string';
-  submodules!: (Submodule | undefined)[];
-  user: string | undefined;
-  email: string | undefined;
-  remote: string | undefined;
+  submodules?: (gitUtil.Submodule | undefined)[];
+  user?: string;
+  email?: string;
+  remote!: string;
   branch = 'master';
-  submodule: import('./submodule').default | undefined;
+  submodule?: import('./submodule').default;
   cwd!: string;
   token?: string;
 
@@ -111,7 +111,8 @@ export class git {
       });
     }
 
-    if (existsSync(join(gitdir, '.gitmodules'))) {
+    if (fs.existsSync(path.join(gitdir, '.gitmodules'))) {
+      //console.log('init submodules', gitdir);
       this.submodules = extractSubmodule(join(gitdir, '.gitmodules'));
       this.submodule = new submodule(gitdir);
     }

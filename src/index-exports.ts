@@ -1,3 +1,4 @@
+export * from './config';
 export * from './functions/index';
 export * from './git';
 export * from './spawn';

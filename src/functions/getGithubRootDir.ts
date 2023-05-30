@@ -1,6 +1,6 @@
 import path from 'upath';
+import { trueCasePathSync } from '../../utility/packages/sbg-utility/src/utils/filemanager/case-path';
 import { spawnAsync } from '../spawn';
-import { trueCasePathSync } from '../utils/case-path';
 import { infoOptions } from './infoOptions';
 
 /**
