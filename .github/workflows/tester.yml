@@ -25,37 +25,48 @@ on:
   workflow_dispatch:
 
 jobs:
-  tester:
+  build:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
         node-version: ['14.x', '16.x', '18.x']
       fail-fast: false
-      #max-parallel: 6
+    uses: ./.github/workflows/builder.yml
+    with:
+      node-version: ${{ matrix.node-version }}
+      os: ${{ matrix.os }}
+    secrets: inherit
+  tester:
+    needs: [build]
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node-version: ['14.x', '16.x', '18.x']
+      fail-fast: false
     env:
       NODE_OPTIONS: '--max_old_space_size=8192' #8192 4096 --expose-gc
-      YARN_ENABLE_IMMUTABLE_INSTALLS: false
       ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+      node-version: 14.x
+      YARN_ENABLE_IMMUTABLE_INSTALLS: false
+      YARN_CHECKSUM_BEHAVIOR: update
+      YARN_ENABLE_SCRIPTS: true
+      YARN_NODE_LINKER: node-modules
 
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
 
-    name: Tester
+    name: ${{ matrix.os }} Node ${{ matrix.node-version }} Tester
     steps:
       - uses: actions/checkout@v3
         with:
           token: ${{ secrets.ACCESS_TOKEN }}
           submodules: recursive
 
-      - name: Set EOL git configs
+      - name: fix git configs
         continue-on-error: true
         run: |
           git config core.eol lf
           git config core.autocrlf input
           git checkout-index --force --all
-
-      - name: Pull & update submodules recursively
-        continue-on-error: true
-        run: |
           git submodule update --init --recursive
           git submodule update --recursive --remote
           git pull -X theirs
@@ -206,12 +217,14 @@ jobs:
         run: npm test
 
   coverage:
-    needs: tester
+    needs: [tester]
     runs-on: ${{ matrix.os }}
     env:
       NODE_OPTIONS: '--max_old_space_size=8192' #8192 4096 --expose-gc
       YARN_ENABLE_IMMUTABLE_INSTALLS: false
       ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+      YARN_ENABLE_SCRIPTS: true
+      YARN_NODE_LINKER: node-modules
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
