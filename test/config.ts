@@ -9,7 +9,7 @@ export const TestConfig = {
   remote: 'https://github.com/dimaslanjaka/test-repo.git',
   username: 'dimaslanjaka',
   email: 'dimaslanjaka@gmail.com',
-  password: process.env.GITHUB_TOKEN
+  token: process.env.GITHUB_TOKEN
 };
 
 export const testcfg = TestConfig;
