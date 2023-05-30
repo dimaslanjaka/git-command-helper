@@ -49,5 +49,8 @@ const latestCommit = async (filePath, options = {}) => {
         //console.log('git', ...args, result);
         return result;
     }
+    else {
+        return undefined;
+    }
 };
 exports.latestCommit = latestCommit;
