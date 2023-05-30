@@ -1,4 +1,4 @@
-import { trueCasePathSync } from '../utils/case-path';
+import { trueCasePathSync } from '../../utility/packages/sbg-utility/src/utils/filemanager/case-path';
 import { safeURL } from '../utils/safe-url';
 import { getGithubCurrentBranch } from './getGithubCurrentBranch';
 import { getGithubRemote } from './getGithubRemote';
