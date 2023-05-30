@@ -68,12 +68,12 @@ jobs:
       - name: Enable corepack
         run: corepack enable
 
-      - uses: actions/cache@v3
+      - uses: actions/cache/restore@v3
         id: cache
         with:
           path: |
             **/dist
-            **/tmp
+            **/release
             **/node_modules
             **/.yarn
             **/yarn.lock
