@@ -238,15 +238,15 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-      - uses: actions/cache@v3
+      - uses: actions/cache/restore@v3
         id: cache
         with:
           path: |
             **/dist
             **/tmp
             **/node_modules
-            /.yarn
-            ./yarn.lock
+            **/.yarn
+            **/yarn.lock
           key: ${{ runner.os }}-${{ matrix.node-version }}
           restore-keys: |
             ${{ runner.os }}-${{ matrix.node-version }}
