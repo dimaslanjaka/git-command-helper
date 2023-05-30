@@ -33,9 +33,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.git = void 0;
 const bluebird_1 = __importDefault(require("bluebird"));
-const fs_extra_1 = __importStar(require("fs-extra"));
+const fs_extra_1 = __importDefault(require("fs-extra"));
 const lodash_1 = __importDefault(require("lodash"));
-const upath_1 = __importStar(require("upath"));
+const upath_1 = __importDefault(require("upath"));
 const crossSpawn = __importStar(require("../cross-spawn/src"));
 const src_1 = require("../utility/packages/sbg-utility/src");
 const GithubInfo = __importStar(require("./functions"));
@@ -80,7 +80,7 @@ class git {
         else {
             gitdir = obj.cwd;
             if (obj.ref || obj.branch)
-                this.branch = (obj.ref || obj.branch);
+                this.branch = obj.ref || obj.branch || branch;
             this.remote = obj.url || obj.remote;
             this.email = obj.email;
             this.user = obj.user;
@@ -94,9 +94,9 @@ class git {
             // console.log({ parse });
         }
         // auto recreate git directory
-        if (!(0, fs_extra_1.existsSync)(gitdir)) {
+        if (!fs_extra_1.default.existsSync(gitdir)) {
             // create .git folder
-            fs_extra_1.default.mkdirSync((0, upath_1.join)(gitdir, '.git'), { recursive: true });
+            fs_extra_1.default.mkdirSync(upath_1.default.join(gitdir, '.git'), { recursive: true });
             const self = this;
             this.spawn('git', ['init']).then(function () {
                 if (typeof self.remote === 'function')
@@ -104,8 +104,7 @@ class git {
             });
         }
         if (fs_extra_1.default.existsSync(upath_1.default.join(gitdir, '.gitmodules'))) {
-            //console.log('init submodules', gitdir);
-            this.submodules = (0, extract_submodule_1.default)((0, upath_1.join)(gitdir, '.gitmodules'));
+            this.submodules = (0, extract_submodule_1.default)(upath_1.default.join(gitdir, '.gitmodules'));
             this.submodule = new submodule_1.default(gitdir);
         }
         if (!(0, instances_1.hasInstance)(gitdir))
@@ -473,8 +472,8 @@ class git {
      * @returns
      */
     async init(spawnOpt = { stdio: 'inherit' }) {
-        if (!(0, fs_extra_1.existsSync)((0, upath_1.join)(this.cwd, '.git')))
-            (0, fs_extra_1.mkdirSync)((0, upath_1.join)(this.cwd, '.git'), { recursive: true });
+        if (!fs_extra_1.default.existsSync(upath_1.default.join(this.cwd, '.git')))
+            fs_extra_1.default.mkdirSync(upath_1.default.join(this.cwd, '.git'), { recursive: true });
         return (0, spawn_1.spawnSilent)('git', ['init'], this.spawnOpt(spawnOpt)).catch(lodash_1.default.noop);
     }
     setcwd(v) {
@@ -566,7 +565,7 @@ class git {
         }
     }
     checkLock() {
-        return (0, fs_extra_1.existsSync)((0, upath_1.join)(this.cwd, '.git/index.lock'));
+        return fs_extra_1.default.existsSync(upath_1.default.join(this.cwd, '.git/index.lock'));
     }
     /**
      * set branch (git checkout branchName)

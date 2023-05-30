@@ -11,16 +11,27 @@ var __createBinding = (this && this.__createBinding) || (Object.create ? (functi
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
 }));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.isMarkdown = exports.isAsset = exports.createWriteStream = exports.pathJoin = exports.joinPath = void 0;
-const fs_extra_1 = __importDefault(require("fs-extra"));
-const upath_1 = __importDefault(require("upath"));
+exports.isMarkdown = exports.isAsset = exports.createWriteStream = exports.path = exports.fs = exports.pathJoin = exports.joinPath = void 0;
+const fs = __importStar(require("fs-extra"));
+exports.fs = fs;
+const path = __importStar(require("upath"));
+exports.path = path;
 __exportStar(require("./del"), exports);
 __exportStar(require("./emptyDir"), exports);
 __exportStar(require("./getAppRootDir"), exports);
@@ -38,9 +49,9 @@ __exportStar(require("./writefile"), exports);
  * @returns
  */
 function createWriteStream(dest, options) {
-    if (!fs_extra_1.default.existsSync(upath_1.default.dirname(dest)))
-        fs_extra_1.default.mkdirSync(upath_1.default.dirname(dest));
-    return fs_extra_1.default.createWriteStream(dest, options);
+    if (!fs.existsSync(path.dirname(dest)))
+        fs.mkdirSync(path.dirname(dest));
+    return fs.createWriteStream(dest, options);
 }
 exports.createWriteStream = createWriteStream;
 /**

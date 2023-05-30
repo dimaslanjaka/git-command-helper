@@ -1,5 +1,6 @@
 /// <reference types="node" />
-import fs from 'fs-extra';
+import * as fs from 'fs-extra';
+import * as path from 'upath';
 export * from './del';
 export * from './emptyDir';
 export * from './getAppRootDir';
@@ -8,6 +9,7 @@ export * from './normalizePath';
 export { normalizePath as joinPath, normalizePath as pathJoin } from './normalizePath';
 export * from './readDir';
 export * from './writefile';
+export { fs, path };
 /**
  * create writestream (auto create dirname)
  * @param dest
