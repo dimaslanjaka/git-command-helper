@@ -95,7 +95,7 @@ jobs:
       - name: Enable corepack
         run: corepack enable
 
-      - uses: actions/cache/restore@v3
+      - uses: actions/cache@v3
         id: cache
         with:
           path: |
@@ -244,7 +244,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-      - uses: actions/cache/restore@v3
+      - uses: actions/cache@v3
         id: cache
         with:
           path: |

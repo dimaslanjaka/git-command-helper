@@ -79,7 +79,7 @@ jobs:
       - name: Pack
         run: npm run pack -- --commit
 
-      - uses: actions/cache/save@v3
+      - uses: actions/cache@v3
         name: save cache
         with:
           path: |
@@ -90,3 +90,6 @@ jobs:
             **/tmp
             **/dist
           key: ${{ runner.os }}-${{ env.node-version }}
+          restore-keys: |
+            ${{ runner.os }}-${{ matrix.node-version }}
+            ${{ runner.os }}-
