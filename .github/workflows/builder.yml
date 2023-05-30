@@ -1,6 +1,17 @@
 name: Build
 
-on: [push, pull_request, workflow_call, workflow_dispatch]
+on:
+  push:
+  pull_request:
+  workflow_call:
+    inputs:
+      node-version:
+        required: true
+        type: string
+    secrets:
+      ACCESS_TOKEN:
+        required: true
+  workflow_dispatch:
 
 jobs:
   build:
@@ -8,7 +19,7 @@ jobs:
       NODE_OPTIONS: '--max_old_space_size=8192' #8192 4096 --expose-gc
       YARN_ENABLE_IMMUTABLE_INSTALLS: false
       ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-      node_version: 14.x
+      node-version: ${{ inputs.node-version || '14.x' }}
       YARN_CHECKSUM_BEHAVIOR: update
       YARN_ENABLE_SCRIPTS: true
       YARN_NODE_LINKER: node-modules
@@ -39,10 +50,10 @@ jobs:
           rm -rf .git/modules
           bash ./bin/submodule-install
 
-      - name: initialize nodejs
+      - name: initialize Node ${{ env.node-version }}
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ env.node_version }}
+          node-version: ${{ env.node-version }}
 
       - name: Enable corepack
         run: corepack enable
@@ -74,4 +85,4 @@ jobs:
             **/tmp
             **/dist
             **/release
-          key: ${{ runner.os }}-${{ env.node_version }}
+          key: ${{ runner.os }}-${{ env.node-version }}
