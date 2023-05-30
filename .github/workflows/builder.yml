@@ -2,11 +2,6 @@ name: Build
 
 on: [push, pull_request, workflow_call, workflow_dispatch]
 
-# run single job
-concurrency:
-  group: build-pre-release
-  cancel-in-progress: true
-
 jobs:
   build:
     env:
