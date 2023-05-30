@@ -25,7 +25,7 @@ export function areWeTestingWithJest() {
 }
 
 export const myGithubPages = {
-  cwd: path.join(__dirname, '../../tmp', '.deploy_git'),
+  cwd: path.join(__dirname, '../tmp', '.deploy_git'),
   branch: 'master',
   remote: `https://${token}@github.com/dimaslanjaka/dimaslanjaka.github.io.git`,
   user: 'dimaslanjaka',
