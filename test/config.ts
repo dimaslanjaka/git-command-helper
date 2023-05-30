@@ -1,8 +1,6 @@
 import path, { join } from 'upath';
 
-if (!process.env.ACCESS_TOKEN) {
-  process.env.ACCESS_TOKEN = 'token_' + Math.random();
-}
+export const token = process.env.ACCESS_TOKEN || process.env.GITHUB_TOKEN || 'token_' + Math.random();
 
 export const TestConfig = {
   /**
@@ -13,7 +11,7 @@ export const TestConfig = {
   remote: 'https://github.com/dimaslanjaka/test-repo.git',
   user: 'dimaslanjaka',
   email: 'dimaslanjaka@gmail.com',
-  token: process.env.GITHUB_TOKEN
+  token
 };
 
 export const testcfg = TestConfig;
@@ -29,7 +27,8 @@ export function areWeTestingWithJest() {
 export const myGithubPages = {
   cwd: path.join(__dirname, '../../tmp', '.deploy_git'),
   branch: 'master',
-  remote: `https://${process.env.ACCESS_TOKEN}@github.com/dimaslanjaka/dimaslanjaka.github.io.git`,
+  remote: `https://${token}@github.com/dimaslanjaka/dimaslanjaka.github.io.git`,
   user: 'dimaslanjaka',
-  email: 'dimaslanjaka@gmail.com'
+  email: 'dimaslanjaka@gmail.com',
+  token
 };
