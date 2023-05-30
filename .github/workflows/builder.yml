@@ -56,22 +56,6 @@ jobs:
         run: curl -L https://github.com/dimaslanjaka/git-command-helper/raw/master/yarn.lock > yarn.lock
         shell: bash
 
-      - uses: actions/cache@v3
-        id: cache
-        with:
-          path: |
-            **/.yarn
-            ./release
-            ./yarn.lock
-            ./releases/yarn.lock
-            **/node_modules
-            **/tmp
-            **/dist
-          key: ${{ runner.os }}-${{ env.node_version }}
-          restore-keys: |
-            ${{ runner.os }}-${{ env.node_version }}
-            ${{ runner.os }}-
-
       - name: Install Global Packages
         run: npm i -g typescript ts-node gulp-cli hexo-cli webpack-cli
 
@@ -84,3 +68,15 @@ jobs:
         run: npm run build
       - name: Pack
         run: npm run pack -- --commit
+
+      - uses: actions/cache/save@v3
+        name: save cache
+        with:
+          path: |
+            **/.yarn
+            ./release
+            **/yarn.lock
+            **/node_modules
+            **/tmp
+            **/dist
+          key: ${{ runner.os }}-${{ env.node_version }}
