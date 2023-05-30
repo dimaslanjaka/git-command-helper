@@ -10,8 +10,8 @@ const spawn = git.crossSpawn.spawnAsync;
  */
 async function clone(options: { cwd: string; remote: string; branch: string; token?: string }) {
   // if (existsSync(TestConfig.cwd)) await rm(TestConfig.cwd, { recursive: true, force: true });
-  const cfg = structuredClone(options);
-  delete cfg.token;
+  //const cfg = structuredClone(options);
+  //delete cfg.token;
 
   let doClone = false;
   if (!fs.existsSync(options.cwd)) {
@@ -22,13 +22,13 @@ async function clone(options: { cwd: string; remote: string; branch: string; tok
   }
 
   if (doClone) {
-    console.log('cloning', cfg);
+    // console.log('cloning', cfg);
     const processCwd = path.join(__dirname, '..');
     const relative = path.toUnix(options.cwd).replace(processCwd, '').replace(/^\/+/, '');
     console.log({ processCwd, relative });
     await spawn('git', ['clone', '-b', options.branch, options.remote, relative], {
       cwd: processCwd,
-      stdio: 'inherit'
+      stdio: git.isGithubCI ? 'pipe' : 'inherit'
     });
   }
 }

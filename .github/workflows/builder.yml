@@ -54,30 +54,9 @@ jobs:
           rm -rf .git/modules
           bash ./bin/submodule-install
 
-      - name: initialize Node ${{ env.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ env.node-version }}
-
-      - name: Enable corepack
-        run: corepack enable
-
       - name: download lock file from 'master'
         run: curl -L https://github.com/dimaslanjaka/git-command-helper/raw/master/yarn.lock > yarn.lock
         shell: bash
-
-      - name: Install Global Packages
-        run: npm i -g typescript ts-node gulp-cli hexo-cli webpack-cli
-
-      - name: Install
-        run: touch yarn.lock && yarn install --inline-builds
-        id: install
-        shell: bash
-
-      - name: Build
-        run: npm run build
-      - name: Pack
-        run: npm run pack -- --commit
 
       - uses: actions/cache@v3
         name: save cache
@@ -93,3 +72,24 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-${{ matrix.node-version }}
             ${{ runner.os }}-
+
+      - name: initialize Node ${{ env.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.node-version }}
+
+      - name: Enable corepack
+        run: corepack enable
+
+      - name: Install Global Packages
+        run: npm i -g typescript ts-node gulp-cli hexo-cli webpack-cli
+
+      - name: Install
+        run: touch yarn.lock && yarn install --inline-builds
+        id: install
+        shell: bash
+
+      - name: Build
+        run: npm run build
+      - name: Pack
+        run: npm run pack -- --commit
