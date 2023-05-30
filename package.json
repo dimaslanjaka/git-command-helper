@@ -15,7 +15,7 @@
     "!**/node_modules/**"
   ],
   "scripts": {
-    "build:exports": "node index-builder.js",
+    "build-exports": "node index-builder.js",
     "build:tsc": "tsc -b tsconfig.build.json",
     "build": "run-s \"build:**\"",
     "pack": "node packer.js --yarn",
