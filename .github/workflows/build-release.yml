@@ -31,15 +31,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
-    name: build using ubuntu node 14.x
-    uses: ./.github/workflows/builder.yml
-    with:
-      node-version: 14.x
-      os: ubuntu-latest
-    secrets: inherit
   build-release:
-    needs: [build]
+    name: build release
     env:
       NODE_OPTIONS: '--max_old_space_size=8192' #8192 4096 --expose-gc
       YARN_ENABLE_IMMUTABLE_INSTALLS: false
@@ -49,7 +42,6 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    name: Build
     steps:
       - uses: actions/checkout@v3
         with:
@@ -133,7 +125,7 @@ jobs:
       - name: Enable corepack
         run: corepack enable
 
-      - uses: actions/cache/restore@v3
+      - uses: actions/cache@v3
         id: cache
         with:
           path: |
@@ -256,7 +248,7 @@ jobs:
         uses: tj-actions/verify-changed-files@v14
         with:
           files: |
-            release
+            release*
             dist
             lib
             !node_modules
@@ -293,5 +285,5 @@ jobs:
         if: steps.changes.outputs.files_changed == 'true'
         continue-on-error: true
         run: |
-          git commit -m "Update build from ${{ env.GITHUB_COMMIT_URL }}" -m "commit hash: ${{ env.GITHUB_SHA_SHORT }}" -m "commit url: ${{ env.GITHUB_COMMIT_URL }}" -m "runner: ${{ env.GITHUB_RUNNER_URL }}"
+          git commit -m "chore: update build from ${{ env.GITHUB_COMMIT_URL }}" -m "commit hash: ${{ env.GITHUB_SHA_SHORT }}" -m "commit url: ${{ env.GITHUB_COMMIT_URL }}" -m "runner: ${{ env.GITHUB_RUNNER_URL }}"
           git push
