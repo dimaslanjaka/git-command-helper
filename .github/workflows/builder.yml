@@ -74,9 +74,9 @@ jobs:
         with:
           path: |
             **/.yarn
-            ./release
             **/yarn.lock
             **/node_modules
             **/tmp
             **/dist
+            **/release
           key: ${{ runner.os }}-${{ env.node_version }}
