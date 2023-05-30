@@ -79,14 +79,17 @@ jobs:
       - name: Pack
         run: npm run pack -- --commit
 
-      - uses: actions/cache/save@v3
+      - uses: actions/cache@v3
         name: save cache
         with:
           path: |
             **/.yarn
+            **/release*
             **/yarn.lock
             **/node_modules
             **/tmp
             **/dist
-            **/release
           key: ${{ runner.os }}-${{ env.node-version }}
+          restore-keys: |
+            ${{ runner.os }}-${{ matrix.node-version }}
+            ${{ runner.os }}-
