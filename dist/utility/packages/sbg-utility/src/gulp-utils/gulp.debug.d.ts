@@ -1,9 +1,7 @@
-/// <reference types="node" />
-/// <reference types="hexo/dist/hexo/router" />
-export declare function gulpDebug(filename?: string): import("stream").Transform;
+export declare function gulpDebug(filename?: string): any;
 /**
  * log all files
  * @returns
  */
-export declare function gulpLog(logname?: string): import("stream").Transform;
+export declare function gulpLog(logname?: string): any;
 export default gulpDebug;
