@@ -4,9 +4,21 @@
   "description": "github command helper for nodejs",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
+  "directories": {
+    "doc": "docs/git-command-helper",
+    "test": "test",
+    "lib": "dist",
+    "bin": "bin"
+  },
+  "packageManager": "yarn@3.5.1",
+  "engines": {
+    "node": ">=14"
+  },
   "files": [
     "dist",
     "bin",
+    "utility/packages/sbg-utility/package.json",
+    "cross-spawn/package.json",
     "!**/*.tsbuildinfo",
     "!**/package-lock.json",
     "!**/yarn.lock",
@@ -63,7 +75,7 @@
     "binary-collections": "^1.0.3",
     "bluebird": "^3.7.2",
     "core-js": "^3.30.2",
-    "cross-spawn": "https://github.com/dimaslanjaka/node-cross-spawn/raw/2cf620b9c848068544a2d26726a5a9b4faa7cc80/release/cross-spawn.tgz",
+    "cross-spawn": "./cross-spawn",
     "deepmerge-ts": "^5.1.0",
     "fs-extra": "^11.1.1",
     "glob": "^10.2.6",
@@ -71,6 +83,7 @@
     "ini": "^4.1.1",
     "lodash": "^4.17.21",
     "minimatch": "^9.0.1",
+    "sbg-utility": "./utility/packages/sbg-utility",
     "upath": "^2.0.1"
   },
   "devDependencies": {
@@ -112,16 +125,6 @@
     "typedoc": "^0.24.7",
     "typedoc-plugin-missing-exports": "^2.0.0",
     "typescript": "^5.0.4"
-  },
-  "directories": {
-    "doc": "docs/git-command-helper",
-    "test": "test",
-    "lib": "dist",
-    "bin": "bin"
-  },
-  "packageManager": "yarn@3.5.1",
-  "engines": {
-    "node": ">=14"
   },
   "resolutions": {
     "cross-spawn": "https://github.com/dimaslanjaka/node-cross-spawn/raw/bf2d8bb/release/cross-spawn.tgz",
