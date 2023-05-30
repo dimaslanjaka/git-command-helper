@@ -32,7 +32,7 @@ const fs_extra_1 = __importDefault(require("fs-extra"));
 const glob = __importStar(require("glob"));
 const ignore_1 = __importDefault(require("ignore"));
 const upath_1 = __importDefault(require("upath"));
-const case_path_1 = require("../utils/case-path");
+const case_path_1 = require("../../utility/packages/sbg-utility/src/utils/filemanager/case-path");
 const getGithubRootDir_1 = require("./getGithubRootDir");
 /**
  * get all ignored files by .gitignore

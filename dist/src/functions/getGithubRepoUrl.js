@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getGithubRepoUrl = void 0;
-const case_path_1 = require("../utils/case-path");
+const case_path_1 = require("../../utility/packages/sbg-utility/src/utils/filemanager/case-path");
 const safe_url_1 = require("../utils/safe-url");
 const getGithubCurrentBranch_1 = require("./getGithubCurrentBranch");
 const getGithubRemote_1 = require("./getGithubRemote");

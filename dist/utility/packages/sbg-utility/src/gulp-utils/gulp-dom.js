@@ -7,13 +7,13 @@ exports.gulpDom = exports.gulpDomPath = exports.customPath = void 0;
 const jsdom_1 = __importDefault(require("jsdom"));
 const plugin_error_1 = __importDefault(require("plugin-error"));
 const through2_1 = __importDefault(require("through2"));
-const true_case_path_1 = __importDefault(require("true-case-path"));
 const upath_1 = __importDefault(require("upath"));
+const case_path_1 = require("../utils/filemanager/case-path");
 const pluginName = 'gulp-dom';
 const path = {
-    join: (...str) => upath_1.default.toUnix(true_case_path_1.default.trueCasePathSync(upath_1.default.join(...str))),
-    dirname: (str) => upath_1.default.toUnix(true_case_path_1.default.trueCasePathSync(upath_1.default.dirname(str))),
-    toUnix: (str) => upath_1.default.toUnix(true_case_path_1.default.trueCasePathSync(str))
+    join: (...str) => upath_1.default.toUnix((0, case_path_1.trueCasePathSync)(upath_1.default.join(...str))),
+    dirname: (str) => upath_1.default.toUnix((0, case_path_1.trueCasePathSync)(upath_1.default.dirname(str))),
+    toUnix: (str) => upath_1.default.toUnix((0, case_path_1.trueCasePathSync)(str))
 };
 exports.customPath = path;
 exports.gulpDomPath = path;

@@ -28,10 +28,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getDefaultConfigYaml = exports.getDefaultConfig = void 0;
 const fs_extra_1 = __importDefault(require("fs-extra"));
-const true_case_path_1 = require("true-case-path");
 const upath_1 = require("upath");
 const yaml = __importStar(require("yaml"));
 const utils_1 = require("../utils");
+const case_path_1 = require("../utils/filemanager/case-path");
 const _config_json_1 = __importDefault(require("./_config.json"));
 /**
  * get default configuration
@@ -121,7 +121,7 @@ function getDefaultConfig() {
         meta_generator: true
     };
     const sbgDefaultConfig = {
-        cwd: (0, upath_1.toUnix)((0, true_case_path_1.trueCasePathSync)(process.cwd()))
+        cwd: (0, upath_1.toUnix)((0, case_path_1.trueCasePathSync)(process.cwd()))
     };
     const configYML = yaml.parse(getDefaultConfigYaml());
     return Object.assign(hexoDefaultConfig, sbgDefaultConfig, configYML);

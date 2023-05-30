@@ -18,6 +18,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.gitSubmodule = void 0;
+__exportStar(require("./config"), exports);
 __exportStar(require("./functions/index"), exports);
 __exportStar(require("./git"), exports);
 __exportStar(require("./spawn"), exports);

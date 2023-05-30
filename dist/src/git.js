@@ -35,7 +35,7 @@ exports.git = void 0;
 const bluebird_1 = __importDefault(require("bluebird"));
 const fs_extra_1 = __importStar(require("fs-extra"));
 const lodash_1 = __importDefault(require("lodash"));
-const upath_1 = require("upath");
+const upath_1 = __importStar(require("upath"));
 const crossSpawn = __importStar(require("../cross-spawn/src"));
 const src_1 = require("../utility/packages/sbg-utility/src");
 const GithubInfo = __importStar(require("./functions"));
@@ -103,7 +103,8 @@ class git {
                     this.setremote(self.remote);
             });
         }
-        if ((0, fs_extra_1.existsSync)((0, upath_1.join)(gitdir, '.gitmodules'))) {
+        if (fs_extra_1.default.existsSync(upath_1.default.join(gitdir, '.gitmodules'))) {
+            //console.log('init submodules', gitdir);
             this.submodules = (0, extract_submodule_1.default)((0, upath_1.join)(gitdir, '.gitmodules'));
             this.submodule = new submodule_1.default(gitdir);
         }

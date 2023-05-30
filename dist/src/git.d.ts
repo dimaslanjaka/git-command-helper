@@ -12,7 +12,6 @@ import * as extension from './index-exports';
 import { SpawnOptions } from './spawn';
 import { StatusResult } from './types/status';
 import * as gitUtil from './utils';
-import { Submodule } from './utils/extract-submodule';
 export interface GitOpt {
     [key: string]: any;
     user?: string;
@@ -29,17 +28,17 @@ export interface GitOpt {
 /**
  * GitHub Command Helper For NodeJS
  */
-export declare class git {
+export declare class git implements GitOpt {
     /** is current device is github actions */
     static isGithubCI: boolean;
     /** is current device is github actions */
     isGithubCI: boolean;
-    submodules: (Submodule | undefined)[];
-    user: string | undefined;
-    email: string | undefined;
-    remote: string | undefined;
+    submodules?: (gitUtil.Submodule | undefined)[];
+    user?: string;
+    email?: string;
+    remote: string;
     branch: string;
-    submodule: import('./submodule').default | undefined;
+    submodule?: import('./submodule').default;
     cwd: string;
     token?: string;
     helper: typeof helper;

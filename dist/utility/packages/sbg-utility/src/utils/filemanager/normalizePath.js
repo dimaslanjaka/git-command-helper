@@ -5,8 +5,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.joinSolve = exports.normalizePath = void 0;
 const fs_extra_1 = __importDefault(require("fs-extra"));
-const true_case_path_1 = require("true-case-path");
 const upath_1 = __importDefault(require("upath"));
+const case_path_1 = require("./case-path");
 /**
  * UNIX join path with true-case-path
  * @description normalize path and make drive letter uppercase
@@ -16,7 +16,7 @@ const upath_1 = __importDefault(require("upath"));
 function normalizePath(...str) {
     const join = upath_1.default.join(...str);
     if (fs_extra_1.default.existsSync(join)) {
-        const casePath = (0, true_case_path_1.trueCasePathSync)(join);
+        const casePath = (0, case_path_1.trueCasePathSync)(join);
         return upath_1.default.toUnix(casePath);
     }
     else {

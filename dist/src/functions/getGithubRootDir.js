@@ -5,8 +5,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getGithubRootDir = void 0;
 const upath_1 = __importDefault(require("upath"));
+const case_path_1 = require("../../utility/packages/sbg-utility/src/utils/filemanager/case-path");
 const spawn_1 = require("../spawn");
-const case_path_1 = require("../utils/case-path");
 /**
  * get root directory of local repository
  * * see {@link https://stackoverflow.com/a/957978}

@@ -14,7 +14,8 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-__exportStar(require("./extract-submodule"), exports);
+__exportStar(require("./fix-case-sensitive"), exports);
+__exportStar(require("./fix-end-of-line"), exports);
+__exportStar(require("./gitConfig"), exports);
 __exportStar(require("./index"), exports);
-__exportStar(require("./safe-url"), exports);
 //
