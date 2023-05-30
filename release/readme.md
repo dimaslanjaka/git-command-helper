@@ -2,8 +2,6 @@
 ## Releases
 | version | tarball url |
 | :--- | :--- |
-| 1.2.5 | https://github.com/dimaslanjaka/git-command-helper/raw/undefined/release/git-command-helper-1.2.5.tgz |
-| 2.0.0 | https://github.com/dimaslanjaka/git-command-helper/raw/undefined/release/git-command-helper-2.0.0.tgz |
 | latest | https://github.com/dimaslanjaka/git-command-helper/raw/f0a27df/release/git-command-helper.tgz |
 | latest | https://github.com/dimaslanjaka/git-command-helper/raw/pre-release/release/git-command-helper.tgz |
 
