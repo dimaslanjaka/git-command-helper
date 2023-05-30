@@ -3,7 +3,8 @@
  * @param name
  * @returns
  */
-export default function debug(name: string): any;
+export declare function debug(name: string): any;
+export default debug;
 /**
  * debug with default name `sbg`
  * @returns

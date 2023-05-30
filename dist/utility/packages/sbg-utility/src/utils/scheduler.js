@@ -8,6 +8,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.scheduler = exports.bindProcessExit = void 0;
 const ansi_colors_1 = __importDefault(require("ansi-colors"));
+const bluebird_1 = __importDefault(require("bluebird"));
 const chain_1 = require("./chain");
 const _log = typeof hexo !== 'undefined' ? hexo.log : console;
 const logname = ansi_colors_1.default.magentaBright('[scheduler]');
@@ -73,7 +74,7 @@ function triggerProcess() {
     process.on('uncaughtException', exitHandler.bind(undefined, { exit: true }));
 }
 ///// task queue manager
-const functions = [];
+const functions = {};
 /**
  * @example
  * ```js
@@ -146,21 +147,13 @@ class scheduler {
     /**
      * Execute all function lists
      */
-    static executeAll() {
-        Object.keys(functions).forEach((key) => {
+    static async executeAll() {
+        const keys = Object.keys(functions);
+        for (let i = 0; i < keys.length; i++) {
+            const key = keys[i];
             if (scheduler.verbose)
                 _log.info(logname, 'executing', key);
-            functions[key]();
-        });
-        scheduler.clearArray(functions);
-    }
-    /**
-     * Clear Array
-     * @param array
-     */
-    static clearArray(array) {
-        while (array.length) {
-            array.pop();
+            await bluebird_1.default.promisify(functions[key])();
         }
     }
 }

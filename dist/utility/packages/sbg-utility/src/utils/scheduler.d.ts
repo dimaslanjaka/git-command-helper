@@ -46,11 +46,6 @@ export declare class scheduler {
     /**
      * Execute all function lists
      */
-    static executeAll(): void;
-    /**
-     * Clear Array
-     * @param array
-     */
-    private static clearArray;
+    static executeAll(): Promise<void>;
 }
 export default scheduler;

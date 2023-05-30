@@ -6,8 +6,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.envNunjucks = void 0;
 const hexo_util_1 = require("hexo-util");
 const nunjucks_1 = __importDefault(require("nunjucks"));
-function envNunjucks() {
-    const env = new nunjucks_1.default.Environment();
+function envNunjucks(loader, opts) {
+    const env = new nunjucks_1.default.Environment(loader, opts);
     env.addFilter('uriencode', (str) => {
         return (0, hexo_util_1.encodeURL)(str);
     });
