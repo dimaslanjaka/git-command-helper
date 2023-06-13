@@ -2,3 +2,11 @@
 	path = lib
 	url = https://github.com/dimaslanjaka/git-command-helper.git
 	branch = pre-release
+[submodule "packages/cross-spawn"]
+	path = packages/cross-spawn
+	url = https://github.com/dimaslanjaka/node-cross-spawn.git
+	branch = private
+[submodule "packages/sbg-utility"]
+	path = packages/sbg-utility
+	url = https://github.com/dimaslanjaka/static-blog-generator.git
+	branch = sbg-utility

@@ -7,8 +7,11 @@
     "lib": "lib"
   },
   "scripts": {
-    "build": "yarn workspace git-command-helper run build",
-    "pack": "yarn workspace git-command-helper run pack"
+    "build:cross-spawn": "yarn workspace cross-spawn run build",
+    "build:sbg-utility": "yarn workspace sbg-utility run build",
+    "build:git-command-helper": "yarn workspace git-command-helper run build",
+    "build": "run-s \"build:**\"",
+    "pack": "yarn workspaces --no-private foreach run pack"
   },
   "repository": {
     "type": "git",
@@ -16,12 +19,22 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/dimaslanjaka/git-command-helper/issues"
   },
   "homepage": "https://github.com/dimaslanjaka/git-command-helper#readme",
   "workspaces": [
-    "lib"
-  ]
+    "lib",
+    "packages/cross-spawn",
+    "packages/sbg-utility/packages/sbg-utility"
+  ],
+  "engines": {
+    "node": ">=14",
+    "npm": "^8"
+  },
+  "dependencies": {
+    "binary-collections": "^1.0.3"
+  },
+  "packageManager": "yarn@3.6.0"
 }
