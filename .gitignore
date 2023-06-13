@@ -19,3 +19,4 @@ package-lock.json
 .nyc*
 release/git-command-helper-*.tgz
 yarn.lock
+test/fixtures

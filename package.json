@@ -11,7 +11,9 @@
     "build:sbg-utility": "yarn workspace sbg-utility run build",
     "build:git-command-helper": "yarn workspace git-command-helper run build",
     "build": "run-s \"build:**\"",
-    "pack": "yarn workspaces --no-private foreach run pack"
+    "pack:all": "yarn workspaces --no-private foreach exec \"npm run pack -- --commit\"",
+    "pack:resolutions": "node get-latest-commit.js",
+    "pack": "run-s \"pack:**\""
   },
   "repository": {
     "type": "git",
