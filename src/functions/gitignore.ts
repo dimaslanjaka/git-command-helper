@@ -2,8 +2,8 @@ import Bluebird from 'bluebird';
 import fs from 'fs-extra';
 import * as glob from 'glob';
 import ignore from 'ignore';
+import { trueCasePathSync } from 'sbg-utility';
 import path from 'upath';
-import { trueCasePathSync } from '../../utility/packages/sbg-utility/src/utils/filemanager/case-path';
 import { getGithubRootDir } from './getGithubRootDir';
 
 /**
