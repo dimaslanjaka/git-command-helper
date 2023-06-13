@@ -5,11 +5,11 @@
  */
 
 import Bluebird from 'bluebird';
+import * as crossSpawn from 'cross-spawn';
 import fs from 'fs-extra';
 import _ from 'lodash';
+import { jsonStringifyWithCircularRefs } from 'sbg-utility';
 import path from 'upath';
-import * as crossSpawn from '../cross-spawn/src';
-import { jsonStringifyWithCircularRefs } from '../utility/packages/sbg-utility/src';
 import * as GithubInfo from './functions';
 import { isIgnored } from './functions/gitignore';
 import { isUntracked } from './functions/isFileChanged';

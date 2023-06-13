@@ -14,8 +14,6 @@
   "files": [
     "dist",
     "bin",
-    "utility/packages/sbg-utility/package.json",
-    "cross-spawn/package.json",
     "!**/*.tsbuildinfo",
     "!**/package-lock.json",
     "!**/yarn.lock",
@@ -72,7 +70,7 @@
     "binary-collections": "^1.0.3",
     "bluebird": "^3.7.2",
     "core-js": "^3.30.2",
-    "cross-spawn": "./cross-spawn",
+    "cross-spawn": "*",
     "deepmerge-ts": "^5.1.0",
     "fs-extra": "^11.1.1",
     "glob": "^10.2.6",
@@ -80,10 +78,8 @@
     "ini": "^4.1.1",
     "lodash": "^4.17.21",
     "minimatch": "^9.0.1",
-    "sbg-utility": "./utility/packages/sbg-utility",
-    "shebang-command": "^2.0.0",
-    "upath": "^2.0.1",
-    "which": "^3.0.1"
+    "sbg-utility": "*",
+    "upath": "^2.0.1"
   },
   "devDependencies": {
     "@jest/environment": "^29.5.0",
