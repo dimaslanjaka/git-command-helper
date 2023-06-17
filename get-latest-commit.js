@@ -36,5 +36,5 @@ gchjson.resolutions = Object.assign(gchjson.resolutions, resolutions);
 // write modified package
 fs.writeFileSync(
 	path.join(__dirname, "lib/package.json"),
-	JSON.stringify(gchjson, null, 2)
+	JSON.stringify(gchjson, null, 2) + "\n"
 );
