@@ -13,7 +13,8 @@
     "build": "run-s \"build:**\"",
     "pack:all": "yarn workspaces foreach --no-private exec \"npm run pack --if-present -- --commit\"",
     "pack:resolutions": "node get-latest-commit.js",
-    "pack": "run-s \"pack:**\""
+    "pack": "run-s \"pack:**\"",
+    "test": "npm run build && yarn workspace git-command-helper test"
   },
   "repository": {
     "type": "git",
