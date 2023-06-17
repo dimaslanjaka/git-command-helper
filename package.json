@@ -129,7 +129,7 @@
     "node.extend": "^2.0.2",
     "socket.io-parser": "^3.4.3",
     "unset-value": "^2.0.1",
-    "sbg-utility": "https://github.com/dimaslanjaka/static-blog-generator/raw/b9d2e7bfa/packages/sbg-utility/release/sbg-utility.tgz"
+    "sbg-utility": "https://github.com/dimaslanjaka/static-blog-generator/raw/a99584545/packages/sbg-utility/release/sbg-utility.tgz"
   },
   "engines": {
     "node": ">=14",
