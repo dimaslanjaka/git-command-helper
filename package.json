@@ -113,14 +113,14 @@
     "lint-staged": "^13.2.2",
     "minimist": "^1.2.8",
     "nyc": "^15.1.0",
-    "prettier": "^2.8.8",
+    "prettier": "^3.0.0",
     "semver": "^7.5.1",
     "ts-jest": "^29.1.0",
     "ts-node": "^10.9.1",
     "ts-prune": "^0.10.3",
     "typedoc": "^0.24.7",
     "typedoc-plugin-missing-exports": "^2.0.0",
-    "typescript": "^5.0.4"
+    "typescript": "^5.1.6"
   },
   "resolutions": {
     "cross-spawn": "https://github.com/dimaslanjaka/node-cross-spawn/raw/7aff56c/release/cross-spawn.tgz",
