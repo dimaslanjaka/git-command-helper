@@ -98,7 +98,7 @@ export async function getAllIgnoresConfig(options: glob.GlobOptionsWithFileTypes
  * @returns
  */
 export function getGitignoreFiles(opt: glob.GlobOptionsWithFileTypesFalse): Promise<string[]> {
-  const searchDirRootGit = getGithubRootDir(opt);
+  const searchDirRootGit = getGithubRootDir(opt as any);
   return new Bluebird((res) => {
     const ignore = ['**/node_modules/**'];
     if (Array.isArray(opt.ignore)) {
