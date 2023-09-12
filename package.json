@@ -123,22 +123,22 @@
     "typescript": "^5.1.6"
   },
   "resolutions": {
-    "cross-spawn": "https://github.com/dimaslanjaka/node-cross-spawn/raw/ff4b648/release/cross-spawn.tgz",
+    "cross-spawn": "https://github.com/dimaslanjaka/node-cross-spawn/raw/7bcbcde/release/cross-spawn.tgz",
     "ansi-regex": "^4",
     "glob-parent": "^6.0.2",
     "node.extend": "^2.0.2",
     "socket.io-parser": "^3.4.3",
     "unset-value": "^2.0.1",
-    "sbg-utility": "https://github.com/dimaslanjaka/static-blog-generator/raw/a99584545/packages/sbg-utility/release/sbg-utility.tgz"
+    "sbg-utility": "https://github.com/dimaslanjaka/static-blog-generator/raw/91a01639c/packages/sbg-utility/release/sbg-utility.tgz"
   },
   "overrides": {
-    "cross-spawn": "https://github.com/dimaslanjaka/node-cross-spawn/raw/ff4b648/release/cross-spawn.tgz",
+    "cross-spawn": "https://github.com/dimaslanjaka/node-cross-spawn/raw/7bcbcde/release/cross-spawn.tgz",
     "ansi-regex": "^4",
     "glob-parent": "^6.0.2",
     "node.extend": "^2.0.2",
     "socket.io-parser": "^3.4.3",
     "unset-value": "^2.0.1",
-    "sbg-utility": "https://github.com/dimaslanjaka/static-blog-generator/raw/a99584545/packages/sbg-utility/release/sbg-utility.tgz"
+    "sbg-utility": "https://github.com/dimaslanjaka/static-blog-generator/raw/91a01639c/packages/sbg-utility/release/sbg-utility.tgz"
   },
   "engines": {
     "node": ">=14",
