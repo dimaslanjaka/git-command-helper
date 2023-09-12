@@ -10,7 +10,7 @@ const resolutions = {
 		"https://github.com/dimaslanjaka/static-blog-generator/raw/master/packages/sbg-utility/release/sbg-utility.tgz",
 };
 
-const csp = cp.spawnSync("git rev-parse --short HEAD", {
+const csp = cp.spawnSync('git log --pretty=tformat:"%h" -n1 release/cross-spawn.tgz', {
 	cwd: path.join(__dirname, "packages/cross-spawn"),
 	shell: true,
 });
@@ -21,7 +21,7 @@ resolutions[
 	.toString()
 	.trim()}/release/cross-spawn.tgz`;
 
-const sbu = cp.spawnSync("git rev-parse --short HEAD", {
+const sbu = cp.spawnSync('git log --pretty=tformat:"%h" -n1 packages/sbg-utility/release/sbg-utility.tgz', {
 	cwd: path.join(__dirname, "packages/sbg-utility"),
 	shell: true,
 });
@@ -33,6 +33,7 @@ resolutions[
 
 // merge resolutions
 gchjson.resolutions = Object.assign(gchjson.resolutions, resolutions);
+gchjson.overrides = Object.assign(gchjson.overrides, resolutions);
 // write modified package
 fs.writeFileSync(
 	path.join(__dirname, "lib/package.json"),
