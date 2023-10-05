@@ -15,7 +15,7 @@ _*.js
 **/.yarn/version*
 .pnp.*
 package-lock.json
-/dist/
+
 .nyc*
 release/git-command-helper-*.tgz
 yarn.lock
