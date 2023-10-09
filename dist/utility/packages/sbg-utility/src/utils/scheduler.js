@@ -1,7 +1,6 @@
 "use strict";
 /** SCHEDULER JOB **/
 /*** Postpone executing functions ***/
-/* global hexo */
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -10,7 +9,8 @@ exports.scheduler = exports.bindProcessExit = void 0;
 const ansi_colors_1 = __importDefault(require("ansi-colors"));
 const bluebird_1 = __importDefault(require("bluebird"));
 const chain_1 = require("./chain");
-const _log = typeof hexo !== 'undefined' ? hexo.log : console;
+//const _log = typeof hexo !== 'undefined' ? hexo.log : console;
+const _log = console;
 const logname = ansi_colors_1.default.magentaBright('[scheduler]');
 const fns = {};
 let triggered;

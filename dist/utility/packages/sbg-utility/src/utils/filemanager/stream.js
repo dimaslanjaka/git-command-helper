@@ -22,16 +22,19 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-var __exportStar = (this && this.__exportStar) || function(m, exports) {
-    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.path = exports.fs = void 0;
+exports.createWriteStream = void 0;
 const fs = __importStar(require("fs-extra"));
-exports.fs = fs;
 const path = __importStar(require("upath"));
-exports.path = path;
-const wildcards = __importStar(require("./index-exports"));
-__exportStar(require("./index-exports"), exports);
-exports.default = wildcards;
-//
+/**
+ * create writestream (auto create dirname)
+ * @param dest
+ * @param options
+ * @returns
+ */
+function createWriteStream(dest, options) {
+    if (!fs.existsSync(path.dirname(dest)))
+        fs.mkdirSync(path.dirname(dest));
+    return fs.createWriteStream(dest, options);
+}
+exports.createWriteStream = createWriteStream;
