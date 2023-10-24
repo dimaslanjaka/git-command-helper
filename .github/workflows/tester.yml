@@ -88,7 +88,7 @@ jobs:
           bash ./bin/submodule-install
 
       - name: initialize nodejs
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
 
@@ -251,7 +251,7 @@ jobs:
           path: tmp/.deploy_git
           ref: master
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
       - uses: actions/cache@v3
