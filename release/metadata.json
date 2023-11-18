@@ -145,12 +145,12 @@
   },
   "/yarn.lock": {
     "integrity": {
-      "sha1": "0774b735bc23afaee8df2edf2817194acb6d7253",
-      "sha256": "iZgUXCP3DWD9Ocv5qvT7HThruIE9/6MwPPlb9O6V8lA=",
-      "md5": "81a21f53997209c6ff2d0c6525ea9b32",
-      "sha512": "wiRJfyb4G7wNEgIk1R0ju1A31z+xSwgwy/9zSYfdWv8X6X0kx9KDDxG13+pjikFknmzZChWBrLE/iX8FskRwfA=="
+      "sha1": "55ca789873ff6b8a0b3b2e8705cae5c3753b9c3f",
+      "sha256": "fGWUObBZ1f31jAZoq4/t0828pepF2DiahQW6l0HuTac=",
+      "md5": "4b15554862dec1cc2907906284ebbe19",
+      "sha512": "MMCgWyfkzdD+BhhtBs7eP1LUkI/VIEGO5QbztGRK2vZMi5kIy0RCrojNjFyQrSfxaiFu5J9KUQzNiURkvxoYXw=="
     },
-    "size": "365.20 KB"
+    "size": "365.23 KB"
   },
   "/release/git-command-helper-1.2.0.tgz": {
     "integrity": {
