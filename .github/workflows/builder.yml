@@ -58,7 +58,7 @@ jobs:
         run: curl -L https://github.com/dimaslanjaka/git-command-helper/raw/master/yarn.lock > yarn.lock
         shell: bash
 
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         name: save cache
         with:
           path: |
