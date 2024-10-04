@@ -16,3 +16,4 @@ _*.js
 .pnp.*
 .nyc*
 package-lock.json
+/lib
