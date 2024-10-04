@@ -1,6 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.hasInstance = exports.setInstance = exports.getInstance = void 0;
+exports.getInstance = getInstance;
+exports.setInstance = setInstance;
+exports.hasInstance = hasInstance;
 const instances = {};
 /**
  * get git instance
@@ -10,7 +12,6 @@ const instances = {};
 function getInstance(key) {
     return instances[key];
 }
-exports.getInstance = getInstance;
 /**
  * set git instance
  * @param key
@@ -19,7 +20,6 @@ exports.getInstance = getInstance;
 function setInstance(key, instance) {
     instances[key] = instance;
 }
-exports.setInstance = setInstance;
 /**
  * check git instance
  * @param key
@@ -28,4 +28,3 @@ exports.setInstance = setInstance;
 function hasInstance(key) {
     return typeof instances[key] !== 'undefined';
 }
-exports.hasInstance = hasInstance;

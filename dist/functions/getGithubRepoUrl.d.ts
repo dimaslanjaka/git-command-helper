@@ -4,10 +4,7 @@ import { infoOptions } from './infoOptions';
  * @param path path subfolder or file
  * @returns safe url
  */
-export declare function getGithubRepoUrl(
-  path: string,
-  opt?: infoOptions
-): Promise<{
-  remoteURL: string;
-  rawURL: string;
+export declare function getGithubRepoUrl(path: string, opt?: infoOptions): Promise<{
+    remoteURL: string;
+    rawURL: string;
 }>;

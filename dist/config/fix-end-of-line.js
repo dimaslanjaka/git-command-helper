@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.forceEolLF = void 0;
+exports.forceEolLF = forceEolLF;
 const gitConfig_1 = require("./gitConfig");
 /**
  * force end of line LF
@@ -15,4 +15,3 @@ async function forceEolLF(cwd) {
     // update index
     await config.git.spawn('git', ['checkout-index', '-r', '--all']);
 }
-exports.forceEolLF = forceEolLF;

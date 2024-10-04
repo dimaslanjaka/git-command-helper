@@ -30,6 +30,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.spawnSilent = exports.spawn = exports.spawnAsync = void 0;
+exports.default = promiseSpawn;
 const bluebird_1 = __importDefault(require("bluebird"));
 const sysSpawn = __importStar(require("cross-spawn"));
 var spawn_async_1 = require("@expo/spawn-async");
@@ -92,7 +93,6 @@ function promiseSpawn(command, args = [], options = {}) {
         }
     });
 }
-exports.default = promiseSpawn;
 function getCache(stream, encoding) {
     const buf = stream.getCache();
     stream.destroy();

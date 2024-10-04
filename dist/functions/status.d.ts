@@ -1,27 +1,24 @@
 import { spawnSyncReturn } from 'cross-spawn';
-type ObjResult =
-  | {
-      U: string;
-    }
-  | {
-      M: string;
-    }
-  | {
-      D: string;
-    };
+type ObjResult = {
+    U: string;
+} | {
+    M: string;
+} | {
+    D: string;
+};
 /**
  * git status
  * @param opt
  * @returns raw result
  */
 export declare function gitStatus(opt: {
-  [key: string]: any;
-  /** current working directory */
-  cwd: string;
-  /** true = --porcelain */
-  porcelain?: boolean;
-  /** show raw output instead parsed object */
-  raw: true;
+    [key: string]: any;
+    /** current working directory */
+    cwd: string;
+    /** true = --porcelain */
+    porcelain?: boolean;
+    /** show raw output instead parsed object */
+    raw: true;
 }): spawnSyncReturn;
 /**
  * git status
@@ -29,13 +26,13 @@ export declare function gitStatus(opt: {
  * @returns parsed result
  */
 export declare function gitStatus(opt: {
-  [key: string]: any;
-  /** current working directory */
-  cwd: string;
-  /** true = --porcelain */
-  porcelain?: boolean;
-  /** show raw output instead parsed object */
-  raw: false;
+    [key: string]: any;
+    /** current working directory */
+    cwd: string;
+    /** true = --porcelain */
+    porcelain?: boolean;
+    /** show raw output instead parsed object */
+    raw: false;
 }): ObjResult[];
 /**
  * git status
@@ -43,11 +40,11 @@ export declare function gitStatus(opt: {
  * @returns parsed result
  */
 export declare function gitStatus(opt: {
-  [key: string]: any;
-  /** current working directory */
-  cwd: string;
-  /** true = --porcelain */
-  porcelain?: boolean;
+    [key: string]: any;
+    /** current working directory */
+    cwd: string;
+    /** true = --porcelain */
+    porcelain?: boolean;
 }): ObjResult[];
 /**
  * git status
@@ -55,8 +52,8 @@ export declare function gitStatus(opt: {
  * @returns parsed result
  */
 export declare function gitStatus(opt: {
-  [key: string]: any;
-  /** current working directory */
-  cwd: string;
+    [key: string]: any;
+    /** current working directory */
+    cwd: string;
 }): ObjResult[];
 export {};

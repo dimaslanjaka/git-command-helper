@@ -1,6 +1,6 @@
 'use strict';
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.gitHasChanges = void 0;
+exports.gitHasChanges = gitHasChanges;
 const status_1 = require("./status");
 /**
  * check any files changed
@@ -11,4 +11,3 @@ function gitHasChanges(opt) {
     const get = (0, status_1.gitStatus)(opt);
     return get.length > 0;
 }
-exports.gitHasChanges = gitHasChanges;

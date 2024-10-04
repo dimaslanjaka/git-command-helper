@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getGithubCurrentBranch = void 0;
+exports.getGithubCurrentBranch = getGithubCurrentBranch;
 const lodash_1 = __importDefault(require("lodash"));
 const spawn_1 = require("../spawn");
 /**
@@ -19,4 +19,3 @@ async function getGithubCurrentBranch(opt = {}) {
         return lodash_1.default.noop(err);
     }
 }
-exports.getGithubCurrentBranch = getGithubCurrentBranch;

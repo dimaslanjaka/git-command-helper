@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getGithubRootDir = void 0;
+exports.getGithubRootDir = getGithubRootDir;
 const sbg_utility_1 = require("sbg-utility");
 const upath_1 = __importDefault(require("upath"));
 const spawn_1 = require("../spawn");
@@ -24,4 +24,3 @@ async function getGithubRootDir(opt = {}) {
             throw err;
     }
 }
-exports.getGithubRootDir = getGithubRootDir;

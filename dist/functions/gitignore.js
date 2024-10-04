@@ -26,7 +26,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getGitignoreFiles = exports.getAllIgnoresConfig = exports.isIgnored = exports.getIgnores = void 0;
+exports.getIgnores = void 0;
+exports.isIgnored = isIgnored;
+exports.getAllIgnoresConfig = getAllIgnoresConfig;
+exports.getGitignoreFiles = getGitignoreFiles;
 const bluebird_1 = __importDefault(require("bluebird"));
 const fs_extra_1 = __importDefault(require("fs-extra"));
 const glob = __importStar(require("glob"));
@@ -100,7 +103,6 @@ async function isIgnored(filePath, options) {
     }
     return ig.ignores(relative);
 }
-exports.isIgnored = isIgnored;
 /**
  * get and parse all `.gitignore` files
  */
@@ -115,7 +117,6 @@ async function getAllIgnoresConfig(options) {
         .filter((str) => str.length > 0 && !str.startsWith('#'));
     return lines;
 }
-exports.getAllIgnoresConfig = getAllIgnoresConfig;
 /**
  * get all `.gitignore` files
  * @param searchDir
@@ -148,4 +149,3 @@ function getGitignoreFiles(opt) {
             .then((o) => res(o));
     });
 }
-exports.getGitignoreFiles = getGitignoreFiles;

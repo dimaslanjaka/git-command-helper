@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getGithubRepoUrl = void 0;
+exports.getGithubRepoUrl = getGithubRepoUrl;
 const sbg_utility_1 = require("sbg-utility");
 const safe_url_1 = require("../utils/safe-url");
 const getGithubCurrentBranch_1 = require("./getGithubCurrentBranch");
@@ -32,4 +32,3 @@ async function getGithubRepoUrl(path, opt = { cwd: process.cwd() }) {
         rawURL
     };
 }
-exports.getGithubRepoUrl = getGithubRepoUrl;

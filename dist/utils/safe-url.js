@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.safeURL = void 0;
+exports.safeURL = safeURL;
 /**
  * remove `token` from url.
  *
@@ -15,4 +15,3 @@ function safeURL(url) {
     const safe = parse.origin + parse.pathname + parse.hash;
     return safe;
 }
-exports.safeURL = safeURL;

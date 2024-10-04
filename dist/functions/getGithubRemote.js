@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getGithubRemote = void 0;
+exports.getGithubRemote = getGithubRemote;
 const lodash_1 = __importDefault(require("lodash"));
 const spawn_1 = require("../spawn");
 const safe_url_1 = require("../utils/safe-url");
@@ -26,4 +26,3 @@ async function getGithubRemote(name = 'origin', opt = {}) {
         return lodash_1.default.noop(err);
     }
 }
-exports.getGithubRemote = getGithubRemote;

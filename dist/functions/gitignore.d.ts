@@ -4,24 +4,21 @@ import * as glob from 'glob';
  * @param param0
  * @returns
  */
-export declare const getIgnores: ({ cwd }: { cwd?: string }) => Promise<
-  {
+export declare const getIgnores: ({ cwd }: {
+    cwd?: string;
+}) => Promise<{
     absolute: string;
     relative: string;
-  }[]
->;
+}[]>;
 /**
  * is file ignored by `.gitignore`?
  * @param filePath `absolute` file path, but `relative` path must have `options.cwd`
  * @param options
  * @returns
  */
-export declare function isIgnored(
-  filePath: string,
-  options?: {
+export declare function isIgnored(filePath: string, options?: {
     cwd: string;
-  }
-): Promise<boolean>;
+}): Promise<boolean>;
 /**
  * get and parse all `.gitignore` files
  */

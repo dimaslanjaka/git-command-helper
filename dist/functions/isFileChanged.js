@@ -23,7 +23,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.isUntracked = void 0;
+exports.isUntracked = isUntracked;
 const cp = __importStar(require("cross-spawn"));
 /**
  * check file is untracked
@@ -39,4 +39,3 @@ async function isUntracked(filePath, opt) {
         .filter((str) => str.length > 0);
     return untrack.length === 1;
 }
-exports.isUntracked = isUntracked;

@@ -23,7 +23,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.gitStatus = void 0;
+exports.gitStatus = gitStatus;
 const spawn = __importStar(require("cross-spawn"));
 /**
  * git status
@@ -59,4 +59,3 @@ function gitStatus(opt) {
         return result;
     }
 }
-exports.gitStatus = gitStatus;

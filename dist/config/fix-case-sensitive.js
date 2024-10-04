@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.fixCaseSensitive = void 0;
+exports.fixCaseSensitive = fixCaseSensitive;
 const gitConfig_1 = require("./gitConfig");
 /**
  * fix case-sensitive conflict
@@ -14,4 +14,3 @@ async function fixCaseSensitive(cwd, messageCommit) {
     await config.git.spawn('git', ['rm', '-r', '--cached', '.']);
     await config.git.spawn('git', ['commit', '-a', '-m', messageCommit ? messageCommit : 'fix: file name casing']);
 }
-exports.fixCaseSensitive = fixCaseSensitive;

@@ -1,10 +1,9 @@
-/// <reference types="node" />
 import { SpawnOptions } from 'child_process';
 export type GetLatestCommitHashOptions = Partial<SpawnOptions> & {
-  /**
-   * short hash format. default: `true`
-   */
-  short?: boolean;
+    /**
+     * short hash format. default: `true`
+     */
+    short?: boolean;
 };
 /**
  * get latest commit hash (support get last commit hash from file)
@@ -21,7 +20,4 @@ export type GetLatestCommitHashOptions = Partial<SpawnOptions> & {
  * // get last commit of single file
  * latestCommit(path.join(__dirname, 'path/to/folder/file')).then(console.log);
  */
-export declare const latestCommit: (
-  filePath?: string | null,
-  options?: Partial<GetLatestCommitHashOptions>
-) => Promise<string>;
+export declare const latestCommit: (filePath?: string | null, options?: Partial<GetLatestCommitHashOptions>) => Promise<string>;
