@@ -1,9 +1,9 @@
 /* eslint-disable no-useless-escape */
+const { spawn } = require('child_process');
 const fs = require('fs-extra');
 const { resolve, join, dirname, toUnix, basename } = require('upath');
 const packagejson = require('./package.json');
 const crypto = require('crypto');
-const { spawn } = require('child_process');
 
 // const os = require('os');
 
@@ -131,7 +131,7 @@ function bundleWithYarn() {
   }
 
   if (withFilename) {
-    const tgzlatest = join(releaseDir, `${targetFname}.tgz`);
+    const tgzlatest = join(releaseDir, targetFname + '.tgz');
     if (fs.existsSync(tgz)) {
       fs.copySync(tgz, tgzlatest, { overwrite: true });
     }
@@ -248,10 +248,12 @@ async function addReadMe() {
   const tarballs = fs
     .readdirSync(releaseDir)
     .filter((str) => str.endsWith('tgz'))
-    .map((str) => ({
-      absolute: resolve(releaseDir, str),
-      relative: resolve(releaseDir, str).replace(toUnix(__dirname), '')
-    }))
+    .map((str) => {
+      return {
+        absolute: resolve(releaseDir, str),
+        relative: resolve(releaseDir, str).replace(toUnix(__dirname), '')
+      };
+    })
     .filter((o) => fs.statSync(o.absolute).isFile());
 
   let md = `# Release \`${packagejson.name}\` tarball\n`;
@@ -292,7 +294,7 @@ async function addReadMe() {
           ) > 0;
         if (isChanged) {
           //  commit tarball
-          await git.commit(`chore(tarball): update ${gitlatest}`, '-m', { stdio: 'pipe' });
+          await git.commit('chore(tarball): update ' + gitlatest, '-m', { stdio: 'pipe' });
         }
       }
     }
@@ -301,7 +303,7 @@ async function addReadMe() {
     const raw = await git.getGithubRepoUrl(tarball.relative.replace(/^\/+/, ''));
     let tarballUrl;
     const dev = raw.rawURL;
-    const prod = raw.rawURL.replace(`/raw/${branch}`, `/raw/${hash}`);
+    const prod = raw.rawURL.replace('/raw/' + branch, '/raw/' + hash);
     let ver = basename(tarball.relative, '.tgz').replace(`${packagejson.name}-`, '');
     if (typeof hash === 'string') {
       if (isNaN(parseFloat(ver))) {
@@ -382,7 +384,7 @@ function isPackageInstalled(packageName) {
   try {
     const modules = Array.from(process.moduleLoadList).filter((str) => !str.startsWith('NativeModule internal/'));
     return modules.indexOf(`NativeModule ${packageName}`) >= 0 || fs.existsSync(require.resolve(packageName));
-  } catch (e) {
+  } catch (_e) {
     return false;
   }
 }

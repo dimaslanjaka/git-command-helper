@@ -32,7 +32,7 @@
     "update:typedoc-runner": "curl -L https://github.com/dimaslanjaka/nodejs-package-types/raw/main/typedoc-runner.js > typedoc-runner.js",
     "update:typedoc-server": "curl -L https://github.com/dimaslanjaka/nodejs-package-types/raw/main/typedoc-server.js > typedoc-server.js",
     "update:packer": "curl -L https://github.com/dimaslanjaka/nodejs-package-types/raw/main/packer.js > packer.js",
-    "update:ncu": "npx npm-check-updates -u -x chalk --enginesNode",
+    "update:ncu": "npx npm-check-updates -u -x chalk",
     "update:lockfile": "curl -L https://github.com/dimaslanjaka/git-command-helper/raw/master/yarn.lock > yarn.lock",
     "update": "run-s \"update:**\"",
     "patch": "npm version patch",
@@ -123,7 +123,7 @@
     "typescript": "^5.1.6"
   },
   "resolutions": {
-    "cross-spawn": "https://github.com/dimaslanjaka/node-cross-spawn/raw/private/release/cross-spawn.tgz",
+    "cross-spawn": "https://github.com/dimaslanjaka/node-cross-spawn/raw/80999ac/release/cross-spawn.tgz",
     "ansi-regex": "^4",
     "glob-parent": "^6.0.2",
     "node.extend": "^2.0.2",
@@ -131,7 +131,7 @@
     "unset-value": "^2.0.1"
   },
   "overrides": {
-    "cross-spawn": "https://github.com/dimaslanjaka/node-cross-spawn/raw/private/release/cross-spawn.tgz",
+    "cross-spawn": "https://github.com/dimaslanjaka/node-cross-spawn/raw/80999ac/release/cross-spawn.tgz",
     "ansi-regex": "^4",
     "glob-parent": "^6.0.2",
     "node.extend": "^2.0.2",
