@@ -61,7 +61,7 @@ jobs:
 
     name: ${{ matrix.os }} Node ${{ matrix.node-version }} Tester
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           token: ${{ secrets.ACCESS_TOKEN }}
           submodules: recursive
@@ -237,15 +237,15 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
         node-version: ['14.x', '16.x', '18.x']
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: true
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           repository: dimaslanjaka/test-repo
           path: tmp/project-test
           ref: test
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           repository: dimaslanjaka/dimaslanjaka.github.io
           path: tmp/.deploy_git
