@@ -73,7 +73,7 @@
     "cross-spawn": "*",
     "deepmerge-ts": "4",
     "fs-extra": "^11.1.1",
-    "glob": "^10.4.5",
+    "glob": "^11.0.1",
     "ignore": "^6.0.2",
     "ini": "^4.1.1",
     "lodash": "^4.17.21",
