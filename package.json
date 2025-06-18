@@ -42,7 +42,7 @@
     "docs": "npm run clean && npm run build && gulp docs",
     "clean": "rm -rf dist && npm run build",
     "deadcode": "ts-prune",
-    "prepare": "husky install"
+    "prepare": "husky"
   },
   "repository": {
     "type": "git",

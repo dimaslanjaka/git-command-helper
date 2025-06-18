@@ -29,8 +29,6 @@ if [ -x "$(command -v wslpath)" ]; then
   fi
 fi
 
-. "$(dirname "$0")/_/husky.sh"
-
 # declare functions
 no_node_dir() {
   # if this didn't work, then everything else below will fail
