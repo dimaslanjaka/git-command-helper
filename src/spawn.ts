@@ -86,6 +86,7 @@ function getCache(stream: CacheStream, encoding: BufferEncoding) {
  * spawn async
  */
 export const spawn = promiseSpawn;
+
 /**
  * spawn async suppress errors
  * @param command

@@ -1,4 +1,6 @@
-import { beforeAll, describe, test } from '@jest/globals';
+import { beforeAll, describe, expect, test } from '@jest/globals';
+import path from 'node:path';
+import { writefile } from 'sbg-utility';
 import git, { gitCommandHelper } from '../src';
 import { testcfg } from './config';
 
@@ -17,4 +19,12 @@ describe('main class', () => {
     expect(info).toHaveProperty('root');
     expect(info).toHaveProperty('branch');
   }, 90000);*/
+  test('isStaged()', async function () {
+    const relativePath = 'sample/test_is_staged.js';
+    const absolutePath = path.join(testcfg.cwd, relativePath);
+    writefile(absolutePath, new Date().toISOString());
+    await gh.add(relativePath);
+    const isStaged = await gh.isStaged(relativePath);
+    expect(isStaged).toBe(true);
+  });
 });
