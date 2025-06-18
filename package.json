@@ -123,6 +123,7 @@
     "typescript": "^5.8.3"
   },
   "resolutions": {
+    "binary-collections": "https://github.com/dimaslanjaka/bin/raw/463f3fe14fd732715e7637d38e34746473beccd6/releases/bin.tgz",
     "cross-spawn": "https://github.com/dimaslanjaka/node-cross-spawn/raw/80999ac/release/cross-spawn.tgz",
     "ansi-regex": "^4",
     "glob-parent": "^6.0.2",
@@ -131,6 +132,7 @@
     "unset-value": "^2.0.1"
   },
   "overrides": {
+    "binary-collections": "https://github.com/dimaslanjaka/bin/raw/463f3fe14fd732715e7637d38e34746473beccd6/releases/bin.tgz",
     "cross-spawn": "https://github.com/dimaslanjaka/node-cross-spawn/raw/80999ac/release/cross-spawn.tgz",
     "ansi-regex": "^4",
     "glob-parent": "^6.0.2",
