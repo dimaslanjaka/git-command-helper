@@ -20,3 +20,6 @@ package-lock.json
 release/git-command-helper-*.tgz
 yarn.lock
 package-lock.json
+
+# pre-release
+dist/
