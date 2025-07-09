@@ -7,7 +7,12 @@
     "outDir": "tmp/dist",
     "strict": true,
     "noEmit": true,
-    "lib": ["ES2020"]
+    "lib": [
+      "ES2020"
+    ]
   },
-  "include": ["src", "test", "utility/packages/sbg-utility/src", "cross-spawn/src"]
+  "include": [
+    "src",
+    "test"
+  ]
 }
