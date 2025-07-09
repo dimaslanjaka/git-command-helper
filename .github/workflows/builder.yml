@@ -36,24 +36,6 @@ jobs:
           token: ${{ secrets.ACCESS_TOKEN }}
           submodules: recursive
 
-      - name: Pull & update submodules recursively
-        continue-on-error: true
-        run: |
-          git submodule update --init --recursive
-          git submodule update --recursive --remote
-          git pull -X theirs
-          echo "init submodules"
-          git submodule init
-          git submodule foreach "git submodule init"
-          echo "sync submodules"
-          git submodule sync
-          git submodule foreach "git submodule sync"
-          echo "update submodules"
-          mkdir -p bin >/dev/null 2>&1
-          curl -L https://github.com/dimaslanjaka/bin/raw/master/bin/submodule-install > bin/submodule-install
-          rm -rf .git/modules
-          bash ./bin/submodule-install
-
       - name: download lock file from 'master'
         run: curl -L https://github.com/dimaslanjaka/git-command-helper/raw/master/yarn.lock > yarn.lock
         shell: bash
@@ -80,6 +62,24 @@ jobs:
 
       - name: Enable corepack
         run: corepack enable
+
+      - name: Pull & update submodules recursively
+        continue-on-error: true
+        run: |
+          git submodule update --init --recursive
+          git submodule update --recursive --remote
+          git pull -X theirs
+          echo "init submodules"
+          git submodule init
+          git submodule foreach "git submodule init"
+          echo "sync submodules"
+          git submodule sync
+          git submodule foreach "git submodule sync"
+          echo "update submodules"
+          mkdir -p bin >/dev/null 2>&1
+          npm install -g binary-collections@https://raw.githubusercontent.com/dimaslanjaka/bin/master/releases/bin.tgz
+          rm -rf .git/modules
+          npx submodule-install
 
       - name: Install Global Packages
         run: npm i -g typescript ts-node gulp-cli hexo-cli webpack-cli
