@@ -40,7 +40,7 @@
     "test": "npx jest --runInBand --detectOpenHandles --logHeapUsage --collect-coverage --update-snapshot --config=jest.config.ts",
     "test-cov": "npx nyc --reporter=lcovonly npm test",
     "docs": "npm run clean && npm run build && gulp docs",
-    "clean": "rm -rf dist && npm run build",
+    "clean": "rimraf dist && npm run build",
     "deadcode": "ts-prune",
     "prepare": "husky"
   },
@@ -117,6 +117,7 @@
     "minimist": "^1.2.8",
     "nyc": "^17.1.0",
     "prettier": "^3.5.3",
+    "rimraf": "^6.0.1",
     "semver": "^7.7.2",
     "ts-jest": "^29.4.0",
     "ts-node": "^10.9.2",
