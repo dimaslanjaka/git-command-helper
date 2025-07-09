@@ -1,5 +1,5 @@
-import _ from 'lodash';
-import { spawnAsync } from '../spawn';
+import _ from "lodash";
+import { spawnAsync } from "../spawn";
 
 /**
  * get current branch
@@ -7,7 +7,7 @@ import { spawnAsync } from '../spawn';
  */
 export async function getGithubCurrentBranch(opt: spawnAsync.SpawnOptions = {}) {
   try {
-    const result = await spawnAsync('git', ['branch', '--show-current'], opt);
+    const result = await spawnAsync("git", ["branch", "--show-current"], opt);
     return result.stdout.trim();
   } catch (err) {
     return _.noop(err);

@@ -1,4 +1,4 @@
-import * as cp from 'cross-spawn';
+import * as cp from "cross-spawn";
 
 /**
  * check file is untracked
@@ -10,7 +10,7 @@ export async function isUntracked(filePath: string, opt?: { cwd: string }) {
   };
   opt = Object.assign(defaults, opt || {});
 
-  const untrack = (await cp.async('git', ['diff', '--no-index', '--numstat', '/dev/null', filePath], opt)).stdout
+  const untrack = (await cp.async("git", ["diff", "--no-index", "--numstat", "/dev/null", filePath], opt)).stdout
     .split(/\r?\n/)
     .filter((str) => str.length > 0);
   return untrack.length === 1;

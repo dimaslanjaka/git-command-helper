@@ -1,5 +1,5 @@
-import { SpawnOptions } from 'child_process';
-import spawner from '../spawner';
+import { SpawnOptions } from "child_process";
+import spawner from "../spawner";
 
 export type GetLatestCommitHashOptions = Partial<SpawnOptions> & {
   /**
@@ -29,24 +29,24 @@ export const latestCommit = async (filePath?: string | null, options: Partial<Ge
     cwd: process.cwd()
   };
   options = Object.assign(default_options, options);
-  const shortHashFormat = typeof options.short === 'undefined' || options.short === null ? true : options.short;
+  const shortHashFormat = typeof options.short === "undefined" || options.short === null ? true : options.short;
   const args: string[] = [];
   if (!filePath) {
     // get last commit hash of cwd
-    args.push('rev-parse');
-    if (shortHashFormat) args.push('--short');
-    args.push('HEAD');
+    args.push("rev-parse");
+    if (shortHashFormat) args.push("--short");
+    args.push("HEAD");
   } else {
     // get last commit hash of specific path
-    args.push('log');
+    args.push("log");
     // determine short or long hash format
-    args.push('--pretty=tformat:%' + (shortHashFormat ? 'h' : 'H'));
-    args.push('-n');
-    args.push('1');
+    args.push("--pretty=tformat:%" + (shortHashFormat ? "h" : "H"));
+    args.push("-n");
+    args.push("1");
     args.push(filePath);
   }
 
-  const res = await spawner.promise(options, 'git', ...args);
+  const res = await spawner.promise(options, "git", ...args);
   if (res.stdout) {
     const result = res.stdout[0] as string;
     //console.log('git', ...args, result);

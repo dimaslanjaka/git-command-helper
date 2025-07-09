@@ -1,9 +1,9 @@
-import { beforeAll, describe, expect, it, jest } from '@jest/globals';
-import gitHelper from '../../src';
-import submodule from '../../src/submodule';
-import { testcfg } from '../config';
+import { beforeAll, describe, expect, it, jest } from "@jest/globals";
+import gitHelper from "../../src";
+import submodule from "../../src/submodule";
+import { testcfg } from "../config";
 
-describe('test submodules', () => {
+describe("test submodules", () => {
   jest.setTimeout(60000);
   let github: gitHelper;
 
@@ -12,19 +12,19 @@ describe('test submodules', () => {
     await github.reset(testcfg.branch);
   });
 
-  it('.gitmodules not found', () => {
+  it(".gitmodules not found", () => {
     expect(github.submodule).toBe(undefined);
     // assign submodule manually
     github.submodule = new submodule(github.cwd);
   });
 
-  it('have submodule', async () => {
-    await github.submodule?.add({ remote: 'https://github.com/dimaslanjaka/hexo-is', dest: 'packages/hexo-is' });
+  it("have submodule", async () => {
+    await github.submodule?.add({ remote: "https://github.com/dimaslanjaka/hexo-is", dest: "packages/hexo-is" });
     expect(github.submodule?.hasSubmodule()).toBe(true);
   });
 
-  it('remove submodule', async () => {
-    await github.submodule?.remove('packages/hexo-is');
+  it("remove submodule", async () => {
+    await github.submodule?.remove("packages/hexo-is");
     expect(github.submodule?.hasSubmodule()).toBe(false);
   });
 });

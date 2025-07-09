@@ -1,4 +1,4 @@
-import { gitConfig } from './gitConfig';
+import { gitConfig } from "./gitConfig";
 
 /**
  * fix case-sensitive conflict
@@ -9,6 +9,6 @@ import { gitConfig } from './gitConfig';
 export async function fixCaseSensitive(cwd: string, messageCommit?: string) {
   const config = new gitConfig({ cwd });
   await config.ignoreCase(false);
-  await config.git.spawn('git', ['rm', '-r', '--cached', '.']);
-  await config.git.spawn('git', ['commit', '-a', '-m', messageCommit ? messageCommit : 'fix: file name casing']);
+  await config.git.spawn("git", ["rm", "-r", "--cached", "."]);
+  await config.git.spawn("git", ["commit", "-a", "-m", messageCommit ? messageCommit : "fix: file name casing"]);
 }

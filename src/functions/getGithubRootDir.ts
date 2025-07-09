@@ -1,7 +1,7 @@
-import { trueCasePathSync } from 'sbg-utility';
-import path from 'upath';
-import { spawnAsync } from '../spawn';
-import { infoOptions } from './infoOptions';
+import { trueCasePathSync } from "sbg-utility";
+import path from "upath";
+import { spawnAsync } from "../spawn";
+import { infoOptions } from "./infoOptions";
 
 /**
  * get root directory of local repository
@@ -11,7 +11,7 @@ import { infoOptions } from './infoOptions';
 export async function getGithubRootDir(opt: infoOptions = {}) {
   if (!opt.cwd) opt.cwd = process.cwd();
   try {
-    const result = await spawnAsync('git', ['rev-parse', '--show-toplevel'], opt);
+    const result = await spawnAsync("git", ["rev-parse", "--show-toplevel"], opt);
     return path.toUnix(trueCasePathSync(result.stdout.trim()));
   } catch (err) {
     if (opt.throwable) throw err;

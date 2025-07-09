@@ -1,4 +1,4 @@
-import spawn from '../cross-spawn/src';
+import * as spawn from "cross-spawn";
 
 // git log <commit hash 1>..<commit hash 2> --oneline | cut -d " " -f 1
 // git rev-list --ancestry-path 7b4a07a..ecf5891
@@ -8,7 +8,7 @@ import spawn from '../cross-spawn/src';
 // git log monorepo --since="<date 486f19e>" --until="<date ad3e9ee>" --oneline
 
 spawn
-  .spawnAsync('git', ['log', '486f19e..ad3e9ee', '--oneline'], {
+  .spawnAsync("git", ["log", "486f19e..ad3e9ee", "--oneline"], {
     cwd: __dirname
   })
   .then((res) => {
@@ -25,7 +25,7 @@ spawn
           return { [exec[1]]: commitMsg };
         }
       })
-      .filter((o) => typeof o === 'object') as { [key: string]: string }[];
+      .filter((o) => typeof o === "object") as { [key: string]: string }[];
     /** convert array of objects into single object */
     const obj = parse.reduce((prev, curr) => ({ ...prev, ...curr }), {});
     console.log(obj);

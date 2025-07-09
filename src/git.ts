@@ -3,27 +3,27 @@
  * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
  */
 
-import Bluebird from 'bluebird';
-import * as crossSpawn from 'cross-spawn';
-import fs from 'fs-extra';
-import _ from 'lodash';
-import { jsonStringifyWithCircularRefs } from 'sbg-utility';
-import path from 'upath';
-import * as GithubInfo from './functions';
-import { isIgnored } from './functions/gitignore';
-import { isUntracked } from './functions/isFileChanged';
-import { latestCommit } from './functions/latestCommit';
-import { isCanPush } from './functions/push-checker';
-import { isStaged } from './git/staged';
-import helper from './helper';
-import * as extension from './index-exports';
-import { getInstance, hasInstance, setInstance } from './instances';
-import { SpawnOptions, spawn, spawnSilent } from './spawn';
-import submodule from './submodule';
-import { StatusResult } from './types/status';
-import * as gitUtil from './utils';
-import extractSubmodule from './utils/extract-submodule';
-import { safeURL } from './utils/safe-url';
+import Bluebird from "bluebird";
+import * as crossSpawn from "cross-spawn";
+import fs from "fs-extra";
+import _ from "lodash";
+import { jsonStringifyWithCircularRefs } from "sbg-utility";
+import path from "upath";
+import * as GithubInfo from "./functions";
+import { isIgnored } from "./functions/gitignore";
+import { isUntracked } from "./functions/isFileChanged";
+import { latestCommit } from "./functions/latestCommit";
+import { isCanPush } from "./functions/push-checker";
+import { isStaged } from "./git/staged";
+import helper from "./helper";
+import * as extension from "./index-exports";
+import { getInstance, hasInstance, setInstance } from "./instances";
+import { SpawnOptions, spawn, spawnSilent } from "./spawn";
+import submodule from "./submodule";
+import { StatusResult } from "./types/status";
+import * as gitUtil from "./utils";
+import extractSubmodule from "./utils/extract-submodule";
+import { safeURL } from "./utils/safe-url";
 
 // module 'git-command-helper';
 
@@ -47,16 +47,16 @@ export interface GitOpt {
 export class git implements GitOpt {
   /** is current device is github actions */
   static isGithubCI =
-    typeof process.env['GITHUB_WORKFLOW'] === 'string' && typeof process.env['GITHUB_WORKFLOW_SHA'] === 'string';
+    typeof process.env["GITHUB_WORKFLOW"] === "string" && typeof process.env["GITHUB_WORKFLOW_SHA"] === "string";
   /** is current device is github actions */
   isGithubCI =
-    typeof process.env['GITHUB_WORKFLOW'] === 'string' && typeof process.env['GITHUB_WORKFLOW_SHA'] === 'string';
+    typeof process.env["GITHUB_WORKFLOW"] === "string" && typeof process.env["GITHUB_WORKFLOW_SHA"] === "string";
   submodules?: (gitUtil.Submodule | undefined)[];
   user?: string;
   email?: string;
   remote!: string;
-  branch = 'master';
-  submodule?: import('./submodule').default;
+  branch = "master";
+  submodule?: import("./submodule").default;
   cwd!: string;
   token?: string;
 
@@ -80,9 +80,9 @@ export class git implements GitOpt {
   constructor(obj: string, branch?: string);
   // only allow single param
   constructor(obj: GitOpt);
-  constructor(obj: string | GitOpt, branch = 'master') {
+  constructor(obj: string | GitOpt, branch = "master") {
     let gitdir: string;
-    if (typeof obj === 'string') {
+    if (typeof obj === "string") {
       gitdir = obj;
       if (branch) this.branch = branch;
     } else {
@@ -104,15 +104,15 @@ export class git implements GitOpt {
     // auto recreate git directory
     if (!fs.existsSync(gitdir)) {
       // create .git folder
-      fs.mkdirSync(path.join(gitdir, '.git'), { recursive: true });
+      fs.mkdirSync(path.join(gitdir, ".git"), { recursive: true });
       const self = this;
-      this.spawn('git', ['init']).then(function () {
-        if (typeof self.remote === 'function') this.setremote(self.remote);
+      this.spawn("git", ["init"]).then(function () {
+        if (typeof self.remote === "function") this.setremote(self.remote);
       });
     }
 
-    if (fs.existsSync(path.join(gitdir, '.gitmodules'))) {
-      this.submodules = extractSubmodule(path.join(gitdir, '.gitmodules'));
+    if (fs.existsSync(path.join(gitdir, ".gitmodules"))) {
+      this.submodules = extractSubmodule(path.join(gitdir, ".gitmodules"));
       this.submodule = new submodule(gitdir);
     }
     if (!hasInstance(gitdir)) setInstance(gitdir, this);
@@ -155,10 +155,10 @@ export class git implements GitOpt {
   }
 
   async info() {
-    const opt = this.spawnOpt({ stdio: 'pipe' });
+    const opt = this.spawnOpt({ stdio: "pipe" });
     return {
       root: await this.getGithubRootDir(opt),
-      remote: await this.getremote(['-v']),
+      remote: await this.getremote(["-v"]),
       branch: await this.getbranch(),
       status: await this.status()
     };
@@ -169,12 +169,12 @@ export class git implements GitOpt {
    */
   addSafe() {
     return spawnSilent(
-      'git',
-      'config --global --add safe.directory'.split(' ').concat([this.cwd]),
-      this.spawnOpt({ stdio: 'inherit' })
+      "git",
+      "config --global --add safe.directory".split(" ").concat([this.cwd]),
+      this.spawnOpt({ stdio: "inherit" })
     )
       .catch(_.noop)
-      .finally(() => console.log(this.cwd, 'added to safe directory'));
+      .finally(() => console.log(this.cwd, "added to safe directory"));
   }
 
   /**
@@ -186,7 +186,7 @@ export class git implements GitOpt {
    * @returns
    */
   spawn(cmd: string, args: string[], spawnOpt?: SpawnOptions) {
-    return spawn(cmd, args, this.spawnOpt(spawnOpt || { stdio: 'pipe' }));
+    return spawn(cmd, args, this.spawnOpt(spawnOpt || { stdio: "pipe" }));
   }
 
   /**
@@ -194,7 +194,7 @@ export class git implements GitOpt {
    * @returns
    */
   setAutoRebase() {
-    return this.spawn('git', ['config', 'pull.rebase', 'false']);
+    return this.spawn("git", ["config", "pull.rebase", "false"]);
   }
 
   /**
@@ -203,7 +203,7 @@ export class git implements GitOpt {
    * @returns
    */
   setForceLF() {
-    return this.spawn('git', ['config', 'core.autocrlf', 'false']);
+    return this.spawn("git", ["config", "core.autocrlf", "false"]);
   }
 
   /**
@@ -212,17 +212,17 @@ export class git implements GitOpt {
    * @param optionSpawn
    * @returns
    */
-  fetch(arg?: string[], optionSpawn: SpawnOptions = { stdio: 'inherit' }) {
+  fetch(arg?: string[], optionSpawn: SpawnOptions = { stdio: "inherit" }) {
     let args: string[] = [];
     if (Array.isArray(arg)) args = args.concat(arg);
     if (args.length === 0) {
-      args.push('origin', this.branch);
+      args.push("origin", this.branch);
     }
     // return default git fetch when branch not set
-    if (!this.branch) return spawn('git', ['fetch'], this.spawnOpt(optionSpawn));
+    if (!this.branch) return spawn("git", ["fetch"], this.spawnOpt(optionSpawn));
     // remove non-string paramters
-    args = ['fetch'].concat(args).filter((str) => typeof str === 'string' && str.length > 0);
-    return spawn('git', args, this.spawnOpt(optionSpawn));
+    args = ["fetch"].concat(args).filter((str) => typeof str === "string" && str.length > 0);
+    return spawn("git", args, this.spawnOpt(optionSpawn));
   }
 
   /**
@@ -231,18 +231,18 @@ export class git implements GitOpt {
    * @param optionSpawn
    * @returns
    */
-  async pull(arg?: string[], optionSpawn: SpawnOptions = { stdio: 'inherit' }) {
+  async pull(arg?: string[], optionSpawn: SpawnOptions = { stdio: "inherit" }) {
     let args: string[] = [];
     if (Array.isArray(arg)) args = args.concat(arg);
     if (args.length === 0) {
-      args.push('origin', this.branch);
+      args.push("origin", this.branch);
     }
-    const opt = this.spawnOpt(optionSpawn || { stdio: 'inherit' });
+    const opt = this.spawnOpt(optionSpawn || { stdio: "inherit" });
     try {
-      return await spawn('git', ['pull'].concat(args), opt);
+      return await spawn("git", ["pull"].concat(args), opt);
     } catch (e) {
       if (e instanceof Error) {
-        if (opt.stdio === 'inherit') console.log(e.message);
+        if (opt.stdio === "inherit") console.log(e.message);
         return e.message;
       }
     }
@@ -253,9 +253,9 @@ export class git implements GitOpt {
    * @see https://stackoverflow.com/a/21777677
    * @see https://www.folkstalk.com/tech/git-accept-incoming-changes-for-all-with-code-examples/
    */
-  async pullAcceptTheirs(optionSpawn: SpawnOptions = { stdio: 'inherit' }) {
-    await this.pull(['-X', 'theirs'], optionSpawn);
-    await this.spawn('git', ['checkout', '--theirs', '.'], optionSpawn);
+  async pullAcceptTheirs(optionSpawn: SpawnOptions = { stdio: "inherit" }) {
+    await this.pull(["-X", "theirs"], optionSpawn);
+    await this.spawn("git", ["checkout", "--theirs", "."], optionSpawn);
   }
 
   /**
@@ -265,12 +265,12 @@ export class git implements GitOpt {
    * @param optionSpawn
    * @returns
    */
-  commit(msg: string, mode: 'am' | 'm' | string = 'm', optionSpawn: SpawnOptions = { stdio: 'inherit' }) {
-    if (!mode.startsWith('-')) mode = '-' + mode;
+  commit(msg: string, mode: "am" | "m" | string = "m", optionSpawn: SpawnOptions = { stdio: "inherit" }) {
+    if (!mode.startsWith("-")) mode = "-" + mode;
     return new Bluebird((resolve: (result?: string) => any, reject) => {
       const opt = this.spawnOpt(optionSpawn);
-      const child = spawn('git', ['commit', mode, msg], opt);
-      if (opt.stdio !== 'inherit') {
+      const child = spawn("git", ["commit", mode, msg], opt);
+      if (opt.stdio !== "inherit") {
         child.then((str) => {
           resolve(str);
         });
@@ -288,10 +288,10 @@ export class git implements GitOpt {
    * @param mode am/m
    * @returns
    */
-  addAndCommit(path: string, msg: string, mode = 'm') {
+  addAndCommit(path: string, msg: string, mode = "m") {
     return new Bluebird((resolve, reject) => {
-      this.add(path, { stdio: 'pipe' }).then((_) =>
-        this.commit(msg, mode, { stdio: 'pipe' }).then(resolve).catch(reject)
+      this.add(path, { stdio: "pipe" }).then((_) =>
+        this.commit(msg, mode, { stdio: "pipe" }).then(resolve).catch(reject)
       );
     });
   }
@@ -308,7 +308,7 @@ export class git implements GitOpt {
       if (options.length > 0) {
         try {
           try {
-            await self.addAndCommit(options[0].path, options[0].msg || 'update ' + options[0].path + ' ' + new Date());
+            await self.addAndCommit(options[0].path, options[0].msg || "update " + options[0].path + " " + new Date());
           } catch (e) {
             errors.push(e as any);
           }
@@ -329,15 +329,15 @@ export class git implements GitOpt {
    * @param optionSpawn
    * @returns
    */
-  async push(force = false, optionSpawn: SpawnOptions = { stdio: 'inherit' }) {
-    let args = ['push'];
-    if (force) args = args.concat('-f');
+  async push(force = false, optionSpawn: SpawnOptions = { stdio: "inherit" }) {
+    let args = ["push"];
+    if (force) args = args.concat("-f");
     const opt = this.spawnOpt(optionSpawn);
     try {
-      return await spawn('git', args, opt);
+      return await spawn("git", args, opt);
     } catch (e) {
       if (e instanceof Error) {
-        if (opt.stdio === 'inherit') {
+        if (opt.stdio === "inherit") {
           console.log(e.message);
         }
         //console.log(e.message);
@@ -386,7 +386,7 @@ export class git implements GitOpt {
    * @returns
    */
   spawnOpt<T>(opt: SpawnOptions = {}) {
-    return Object.assign({ cwd: this.cwd, stdio: 'pipe' }, opt) as SpawnOptions & T;
+    return Object.assign({ cwd: this.cwd, stdio: "pipe" }, opt) as SpawnOptions & T;
   }
 
   /**
@@ -406,12 +406,12 @@ export class git implements GitOpt {
    * @param optionSpawn
    * @returns
    */
-  add(path: string, optionSpawn: SpawnOptions = { stdio: 'inherit' }) {
-    return spawn('git', ['add', path], this.spawnOpt(optionSpawn));
+  add(path: string, optionSpawn: SpawnOptions = { stdio: "inherit" }) {
+    return spawn("git", ["add", path], this.spawnOpt(optionSpawn));
   }
 
   isStaged(path: string) {
-    return isStaged(path, this.spawnOpt({ stdio: 'pipe' }));
+    return isStaged(path, this.spawnOpt({ stdio: "pipe" }));
   }
 
   /**
@@ -420,8 +420,8 @@ export class git implements GitOpt {
    * @param optionSpawn
    * @returns
    */
-  async checkout(branchName: string, optionSpawn: SpawnOptions = { stdio: 'inherit' }) {
-    return await spawn('git', ['checkout', branchName], this.spawnOpt(optionSpawn || {}));
+  async checkout(branchName: string, optionSpawn: SpawnOptions = { stdio: "inherit" }) {
+    return await spawn("git", ["checkout", branchName], this.spawnOpt(optionSpawn || {}));
   }
 
   /**
@@ -429,7 +429,7 @@ export class git implements GitOpt {
    * @returns
    */
   async getbranch() {
-    return await spawn('git', ['branch'], this.spawnOpt({ stdio: 'pipe' })).then((str) =>
+    return await spawn("git", ["branch"], this.spawnOpt({ stdio: "pipe" })).then((str) =>
       str
         .split(/\n/)
         .map((str) => str.split(/\s/).map((str) => str.trim()))
@@ -440,7 +440,7 @@ export class git implements GitOpt {
             branch: item[1]
           };
         })
-        .filter((item) => typeof item.branch === 'string' && item.branch.trim().length > 0)
+        .filter((item) => typeof item.branch === "string" && item.branch.trim().length > 0)
     );
   }
 
@@ -451,7 +451,7 @@ export class git implements GitOpt {
   isUpToDate() {
     const rgUpToDate = /^your branch is up to date with/gim;
     return new Bluebird((resolve: (v: boolean) => any) => {
-      spawn('git', ['status'], this.spawnOpt({ stdio: 'pipe' })).then((stdout) => {
+      spawn("git", ["status"], this.spawnOpt({ stdio: "pipe" })).then((stdout) => {
         resolve(rgUpToDate.test(stdout));
       });
     });
@@ -467,40 +467,40 @@ export class git implements GitOpt {
     const rgUntracked = /^untracked files:([\s\S]*?)\n\n/gim;
 
     return new Bluebird((resolve: (result: StatusResult[]) => any, reject) => {
-      spawn('git', ['status'], this.spawnOpt({ stdio: 'pipe' }))
+      spawn("git", ["status"], this.spawnOpt({ stdio: "pipe" }))
         .then((response) => {
           // check changed
           if (rgChanged.test(response)) {
             // modded, added, deleted
             const result = response
-              .split('\n')
+              .split("\n")
               .map((str) => str.trim())
               .filter((str) => rgMod.test(str))
               .map((str) => {
                 const split = str.split(/:\s+/);
                 return {
                   changes: split[0],
-                  path: (split[1] || '').replace(/\(.*\)$/, '').trim()
+                  path: (split[1] || "").replace(/\(.*\)$/, "").trim()
                 } as StatusResult;
               });
             resolve(result);
           }
 
           // untracked
-          const result = (Array.from(response.match(rgUntracked) || [])[0] || '')
+          const result = (Array.from(response.match(rgUntracked) || [])[0] || "")
             .split(/\n/)
             .map((str) => str.trim())
             .filter((str) => {
               return !/^\(use/gim.test(str) && str.length > 0;
             })
             .map((str) => {
-              if (!str.includes(':'))
+              if (!str.includes(":"))
                 return {
-                  changes: 'untracked',
+                  changes: "untracked",
                   path: str
                 } as StatusResult;
             })
-            .filter((str) => typeof str === 'object') as StatusResult[];
+            .filter((str) => typeof str === "object") as StatusResult[];
           resolve(result);
         })
         .catch(reject);
@@ -511,9 +511,9 @@ export class git implements GitOpt {
    * git init
    * @returns
    */
-  async init(spawnOpt: SpawnOptions = { stdio: 'inherit' }) {
-    if (!fs.existsSync(path.join(this.cwd, '.git'))) fs.mkdirSync(path.join(this.cwd, '.git'), { recursive: true });
-    return spawnSilent('git', ['init'], this.spawnOpt(spawnOpt)).catch(_.noop);
+  async init(spawnOpt: SpawnOptions = { stdio: "inherit" }) {
+    if (!fs.existsSync(path.join(this.cwd, ".git"))) fs.mkdirSync(path.join(this.cwd, ".git"), { recursive: true });
+    return spawnSilent("git", ["init"], this.spawnOpt(spawnOpt)).catch(_.noop);
   }
 
   public setcwd(v: string) {
@@ -522,12 +522,12 @@ export class git implements GitOpt {
 
   public setemail(v: string) {
     this.email = v;
-    return spawn('git', ['config', 'user.email', this.email], this.spawnOpt());
+    return spawn("git", ["config", "user.email", this.email], this.spawnOpt());
   }
 
   public setuser(v: string) {
     this.user = v;
-    return spawn('git', ['config', 'user.name', this.user], this.spawnOpt());
+    return spawn("git", ["config", "user.name", this.user], this.spawnOpt());
   }
 
   /**
@@ -546,11 +546,11 @@ export class git implements GitOpt {
     if (this.remote !== newremote) {
       this.remote = newremote;
     }
-    const opt = this.spawnOpt(Object.assign({ stdio: 'pipe' }, spawnOpt || {}));
+    const opt = this.spawnOpt(Object.assign({ stdio: "pipe" }, spawnOpt || {}));
     try {
-      return await spawn('git', ['remote', 'add', name || 'origin', this.remote], opt);
+      return await spawn("git", ["remote", "add", name || "origin", this.remote], opt);
     } catch {
-      return await helper.suppress(() => spawn('git', ['remote', 'set-url', name || 'origin', this.remote], opt));
+      return await helper.suppress(() => spawn("git", ["remote", "set-url", name || "origin", this.remote], opt));
     }
   }
 
@@ -581,36 +581,36 @@ export class git implements GitOpt {
    * @returns
    */
   public async getremote(args?: string[] | string) {
-    if (typeof args === 'string') return await GithubInfo.getGithubRemote(args, { cwd: this.cwd });
+    if (typeof args === "string") return await GithubInfo.getGithubRemote(args, { cwd: this.cwd });
     try {
-      const res = await spawn('git', ['remote'].concat(args || ['-v']), this.spawnOpt({ stdio: 'pipe' }));
+      const res = await spawn("git", ["remote"].concat(args || ["-v"]), this.spawnOpt({ stdio: "pipe" }));
       const result = {
         fetch: {
-          origin: '',
-          url: ''
+          origin: "",
+          url: ""
         },
         push: {
-          origin: '',
-          url: ''
+          origin: "",
+          url: ""
         }
       };
       const lines = res.split(/\n/gm).filter((split) => split.length > 0);
       lines.map((splitted) => {
-        let key: 'fetch' | 'push' | undefined;
+        let key: "fetch" | "push" | undefined;
         const nameUrl = splitted.split(/\t/).map((str) => {
           const rg = /\((.*)\)/gm;
           if (rg.test(str))
             return str
               .replace(rg, (_whole, v1) => {
                 key = v1;
-                return '';
+                return "";
               })
               .trim();
           return str.trim();
         });
 
         // skip non-origin
-        if (nameUrl[0] != 'origin') return;
+        if (nameUrl[0] != "origin") return;
 
         if (key) {
           (result as any)[key] = {
@@ -618,7 +618,7 @@ export class git implements GitOpt {
             url: safeURL(nameUrl[1])
           };
         } else {
-          throw new Error('key never assigned');
+          throw new Error("key never assigned");
         }
       });
       return result;
@@ -628,7 +628,7 @@ export class git implements GitOpt {
   }
 
   checkLock() {
-    return fs.existsSync(path.join(this.cwd, '.git/index.lock'));
+    return fs.existsSync(path.join(this.cwd, ".git/index.lock"));
   }
 
   /**
@@ -638,18 +638,18 @@ export class git implements GitOpt {
    */
   async setbranch(branchName: string, force = false, spawnOpt?: SpawnOptions) {
     this.branch = branchName;
-    const args = ['checkout'];
-    if (force) args.push('-f');
+    const args = ["checkout"];
+    if (force) args.push("-f");
     args.push(this.branch);
-    const _checkout = await spawn('git', args, this.spawnOpt(spawnOpt || { stdio: 'pipe' })).catch((e) =>
-      console.log('cannot checkout', this.branch, e.message)
+    const _checkout = await spawn("git", args, this.spawnOpt(spawnOpt || { stdio: "pipe" })).catch((e) =>
+      console.log("cannot checkout", this.branch, e.message)
     );
     // git branch --set-upstream-to=origin/<branch> gh-pages
     const _setUpstream = await spawn(
-      'git',
-      ['branch', '--set-upstream-to=origin/' + this.branch, this.branch],
-      this.spawnOpt(spawnOpt || { stdio: 'pipe' })
-    ).catch((e) => console.log('cannot set upstream', this.branch, e.message));
+      "git",
+      ["branch", "--set-upstream-to=origin/" + this.branch, this.branch],
+      this.spawnOpt(spawnOpt || { stdio: "pipe" })
+    ).catch((e) => console.log("cannot set upstream", this.branch, e.message));
     //
     return _checkout;
   }
@@ -659,8 +659,8 @@ export class git implements GitOpt {
    * @param branch
    */
   reset(branch = this.branch) {
-    return spawn('git', ['reset', '--hard', 'origin/' + branch || this.branch], {
-      stdio: 'inherit',
+    return spawn("git", ["reset", "--hard", "origin/" + branch || this.branch], {
+      stdio: "inherit",
       cwd: this.cwd
     });
   }

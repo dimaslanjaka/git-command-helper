@@ -1,6 +1,6 @@
 /** git config */
 
-import { git } from '..';
+import { git } from "..";
 
 export class gitConfig {
   cwd: string;
@@ -15,11 +15,11 @@ export class gitConfig {
    * @param args cli argument without `git config`
    */
   custom(...args: string[]) {
-    return this.git.spawn('git', [...args]);
+    return this.git.spawn("git", [...args]);
   }
 
   ignoreCase(toBe: boolean | string) {
-    return this.custom('core.ignorecase', String(toBe));
+    return this.custom("core.ignorecase", String(toBe));
   }
 
   /**
@@ -27,8 +27,8 @@ export class gitConfig {
    * @param type
    * @returns
    */
-  eol(type: 'lf' | 'crlf') {
-    return this.custom('core.eol', type);
+  eol(type: "lf" | "crlf") {
+    return this.custom("core.eol", type);
   }
 
   /**
@@ -37,6 +37,6 @@ export class gitConfig {
    * @returns
    */
   autocrlf(toBe: boolean | string) {
-    return this.custom('core.autocrlf', String(toBe));
+    return this.custom("core.autocrlf", String(toBe));
   }
 }

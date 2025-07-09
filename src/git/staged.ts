@@ -1,5 +1,5 @@
-import { toUnix } from 'upath';
-import promiseSpawn, { SpawnOptions } from '../spawn';
+import { toUnix } from "upath";
+import promiseSpawn, { SpawnOptions } from "../spawn";
 
 /**
  * Checks if the specified file path is staged in the current Git repository.
@@ -12,12 +12,12 @@ import promiseSpawn, { SpawnOptions } from '../spawn';
  */
 export async function isStaged(path: string, spawnOpt: SpawnOptions) {
   const unixPath = toUnix(path);
-  const output = await promiseSpawn('git', ['diff', '--cached', '--name-only', '--', unixPath], {
-    stdio: 'pipe',
+  const output = await promiseSpawn("git", ["diff", "--cached", "--name-only", "--", unixPath], {
+    stdio: "pipe",
     ...spawnOpt
   });
   const files = output
-    .split('\n')
+    .split("\n")
     .map((f) => toUnix(f.trim()))
     .filter(Boolean);
   console.log(files);
