@@ -96,4 +96,31 @@ describe('parseGitHubUrl', () => {
       path: 'some/path'
     });
   });
+
+  it('parses raw.githubusercontent.com url', () => {
+    const url =
+      'https://raw.githubusercontent.com/dimaslanjaka/git-command-helper/pre-release/.github/workflows/ci.yml';
+    expect(parseGitHubUrl(url)).toEqual({
+      protocol: 'https',
+      username: null,
+      password: null,
+      host: 'raw.githubusercontent.com',
+      owner: 'dimaslanjaka',
+      repo: 'git-command-helper',
+      path: 'pre-release/.github/workflows/ci.yml'
+    });
+  });
+
+  it('parses github.com raw url', () => {
+    const url = 'https://github.com/dimaslanjaka/git-command-helper/raw/pre-release/.github/workflows/ci.yml';
+    expect(parseGitHubUrl(url)).toEqual({
+      protocol: 'https',
+      username: null,
+      password: null,
+      host: 'github.com',
+      owner: 'dimaslanjaka',
+      repo: 'git-command-helper',
+      path: 'raw/pre-release/.github/workflows/ci.yml'
+    });
+  });
 });

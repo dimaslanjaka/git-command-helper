@@ -15,7 +15,7 @@ export interface ParsedGitHubUrl {
  * @returns An object with the parsed components: { protocol, username, password, host, owner, repo, path }, or null if invalid.
  */
 export function parseGitHubUrl(url: string): ParsedGitHubUrl {
-  let match;
+  let match: RegExpMatchArray | null;
 
   // HTTPS or git+https
   if (
