@@ -6,6 +6,7 @@ export interface ParsedGitHubUrl {
   owner: string;
   repo: string;
   path: string | null;
+  branch: string | null;
 }
 
 /**
@@ -16,6 +17,24 @@ export interface ParsedGitHubUrl {
  */
 export function parseGitHubUrl(url: string): ParsedGitHubUrl {
   let match: RegExpMatchArray | null;
+
+  // Raw GitHub URLs: https://raw.githubusercontent.com/owner/repo/branch/path
+  if ((match = url.match(/^https:\/\/raw\.githubusercontent\.com\/([^/]+)\/([^/]+)\/([^/]+)(\/.*)?$/))) {
+    const owner = match[1];
+    const repo = match[2];
+    const branch = match[3];
+    const extraPath = match[4]?.replace(/^\//, "") || null;
+    return {
+      protocol: "https",
+      username: null,
+      password: null,
+      host: "raw.githubusercontent.com",
+      owner,
+      repo,
+      path: extraPath ? branch + "/" + extraPath : branch,
+      branch: branch || null
+    };
+  }
 
   // HTTPS or git+https
   if (
@@ -31,6 +50,16 @@ export function parseGitHubUrl(url: string): ParsedGitHubUrl {
     const repo = match[6];
     const extraPath = match[7];
 
+    // Try to extract branch or hash from extraPath if possible
+    let branch: string | null = null;
+    if (extraPath) {
+      // Common patterns: tree/<branch>, blob/<branch>, raw/<branch>, commit/<hash>
+      const branchMatch = extraPath.match(/^(tree|blob|raw|commit)\/([^/]+)/);
+      if (branchMatch) {
+        branch = branchMatch[2];
+      }
+    }
+
     return {
       protocol,
       username: username || null,
@@ -38,7 +67,8 @@ export function parseGitHubUrl(url: string): ParsedGitHubUrl {
       host,
       owner,
       repo,
-      path: extraPath || null
+      path: extraPath || null,
+      branch
     };
   }
 
@@ -49,18 +79,20 @@ export function parseGitHubUrl(url: string): ParsedGitHubUrl {
     const repo = match[3];
     const extraPath = match[4];
 
+    // No branch info in SSH URLs by default
     return {
-      protocol: 'ssh',
+      protocol: "ssh",
       username: null,
       password: null,
       host,
       owner,
       repo,
-      path: extraPath || null
+      path: extraPath || null,
+      branch: null
     };
   }
 
-  throw new Error('Invalid GitHub URL: ' + url);
+  throw new Error("Invalid GitHub URL: " + url);
 }
 
 export default parseGitHubUrl;

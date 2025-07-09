@@ -23,13 +23,9 @@ config_*
 /docs
 
 # Release artifacts
-*.tgz
-release/git-command-helper-*.tgz
-!release/*
+/*.tgz
+release*/git-command-helper-*.tgz
 
 # TypeScript/Javascript files (underscore-prefixed)
 _*.ts
 _*.js
-
-# Miscellaneous
-release/
