@@ -1,25 +1,35 @@
-config_*
-tmp
-*.tgz
-!release/*
-/coverage
-/docs
-_*.ts
-_*.js
-*.log
-**/*.tsbuildinfo
+# Dependency directories and files
 **/node_modules
 **/.yarn/cache/**
 **/.yarn/unplugged/**
 **/.yarn/*.gz
 **/.yarn/version*
-.pnp.*
 package-lock.json
-
-.nyc*
-release/git-command-helper-*.tgz
 yarn.lock
-package-lock.json
+.pnp.*
 
-# pre-release
+# Build output and coverage
 dist/
+coverage/
+**/*.tsbuildinfo
+
+# Logs and temp files
+*.log
+tmp
+.nyc*
+config_*
+
+# Documentation
+/docs
+
+# Release artifacts
+*.tgz
+release/git-command-helper-*.tgz
+!release/*
+
+# TypeScript/Javascript files (underscore-prefixed)
+_*.ts
+_*.js
+
+# Miscellaneous
+release/
