@@ -15,7 +15,7 @@ export interface ParsedGitHubUrl {
  * @returns An object with the parsed components: { protocol, username, password, host, owner, repo, path }, or null if invalid.
  */
 export function parseGitHubUrl(url: string): ParsedGitHubUrl {
-  let match;
+  let match: RegExpMatchArray | null;
 
   // HTTPS or git+https
   if (
@@ -50,7 +50,7 @@ export function parseGitHubUrl(url: string): ParsedGitHubUrl {
     const extraPath = match[4];
 
     return {
-      protocol: "ssh",
+      protocol: 'ssh',
       username: null,
       password: null,
       host,
@@ -60,7 +60,7 @@ export function parseGitHubUrl(url: string): ParsedGitHubUrl {
     };
   }
 
-  throw new Error("Invalid GitHub URL: " + url);
+  throw new Error('Invalid GitHub URL: ' + url);
 }
 
 export default parseGitHubUrl;
