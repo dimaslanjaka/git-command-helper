@@ -6,35 +6,20 @@
   "bracketSameLine": true,
   "bracketSpacing": true,
   "semi": true,
-  "singleQuote": true,
+  "singleQuote": false,
   "trailingComma": "none",
   "endOfLine": "lf",
   "quoteProps": "as-needed",
   "overrides": [
     {
-      "excludeFiles": [
-        "*.min.js",
-        "*.min.css",
-        "*.min.html",
-        "*.min.scss"
-      ],
-      "files": [
-        "*.js",
-        "*.css",
-        "*.sass",
-        "*.html",
-        "*.md",
-        "*.ts"
-      ],
+      "excludeFiles": ["*.min.js", "*.min.css", "*.min.html", "*.min.scss"],
+      "files": ["*.js", "*.css", "*.sass", "*.html", "*.md", "*.ts"],
       "options": {
         "semi": true
       }
     },
     {
-      "files": [
-        "*.ejs",
-        "*.html"
-      ],
+      "files": ["*.ejs", "*.html"],
       "options": {
         "parser": "html"
       }
