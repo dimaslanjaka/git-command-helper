@@ -8,6 +8,7 @@ on:
       - "**/src/*.js"
       - "**/test/*.js"
       - "**/.github/workflows/tester.yml"
+      - "**/.github/workflows/builder.yml"
       - "**/package.json"
       - "**/yarn.lock"
       - "**/package-lock.json"
