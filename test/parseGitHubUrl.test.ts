@@ -80,8 +80,8 @@ describe("parseGitHubUrl", () => {
     });
   });
 
-  it("returns null for invalid url", () => {
-    expect(parseGitHubUrl("not-a-git-url")).toBeNull();
+  it("throws for invalid url", () => {
+    expect(() => parseGitHubUrl("not-a-git-url")).toThrow("Invalid GitHub URL: not-a-git-url");
   });
 
   it("parses https url with extra path", () => {
