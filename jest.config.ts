@@ -1,14 +1,14 @@
-import { existsSync, mkdirSync, readFileSync } from 'fs';
-import { defaults } from 'jest-config';
-import * as jsonc from 'jsonc-parser';
-import { join } from 'path';
-import type { JestConfigWithTsJest } from 'ts-jest';
+import { existsSync, mkdirSync, readFileSync } from "fs";
+import { defaults } from "jest-config";
+import * as jsonc from "jsonc-parser";
+import { join } from "path";
+import type { JestConfigWithTsJest } from "ts-jest";
 
-const tsconfigBase: typeof import('./tsconfig.base.json') = jsonc.parse(
-  readFileSync(join(__dirname, 'tsconfig.base.json'), 'utf-8')
+const tsconfigBase: typeof import("./tsconfig.base.json") = jsonc.parse(
+  readFileSync(join(__dirname, "tsconfig.base.json"), "utf-8")
 );
-const tsconfigJest: typeof import('./tsconfig.base.json') = jsonc.parse(
-  readFileSync(join(__dirname, 'tsconfig.jest.json'), 'utf-8')
+const tsconfigJest: typeof import("./tsconfig.base.json") = jsonc.parse(
+  readFileSync(join(__dirname, "tsconfig.jest.json"), "utf-8")
 );
 const tsconfig = Object.assign(tsconfigBase.compilerOptions, tsconfigJest.compilerOptions);
 
@@ -17,52 +17,53 @@ const tsconfig = Object.assign(tsconfigBase.compilerOptions, tsconfigJest.compil
  * * how to run single test {@link https://stackoverflow.com/questions/28725955/how-do-i-test-a-single-file-using-jest}
  */
 const config: JestConfigWithTsJest = {
-  preset: 'ts-jest',
-  testEnvironment: 'node',
-  moduleFileExtensions: [...defaults.moduleFileExtensions, 'mts'],
+  preset: "ts-jest",
+  testEnvironment: "node",
+  moduleFileExtensions: [...defaults.moduleFileExtensions, "mts"],
   verbose: false,
   cache: true,
-  cacheDirectory: join(__dirname, 'tmp/jest'),
+  cacheDirectory: join(__dirname, "tmp/jest"),
   collectCoverageFrom: [
-    'src/*.{js,ts}',
-    '!**/node_modules/**',
-    '!**/vendor/**',
-    '!**/test/**',
-    '!**/*.test.{js,ts}',
-    '!**/*.builder.ts',
-    '!**/.deploy_git/**'
+    "src/*.{js,ts}",
+    "!**/node_modules/**",
+    "!**/vendor/**",
+    "!**/test/**",
+    "!**/*.test.{js,ts}",
+    "!**/*.builder.ts",
+    "!**/.deploy_git/**"
   ],
   roots: [`<rootDir>/test`],
-  coveragePathIgnorePatterns: ['/node_modules/', '/dist/', '/tmp/', '/test/'],
+  coveragePathIgnorePatterns: ["/node_modules/", "/dist/", "/tmp/", "/test/"],
   // testPathIgnorePatterns: ['/node_modules/', '/dist/', '/tmp/', '/test/', '**/*.builder.ts'],
   testMatch: [
     `**/__tests__/**/*.+(ts|tsx|js)`,
     `**/?(*.)+(spec|test).+(ts|tsx|js)`,
     `**/test/*.test.ts`,
-    '!**/.deploy_git/**'
+    "!**/.deploy_git/**"
   ],
 
   transform: {
-    '^.+\\.(ts|tsx)$': [
-      'ts-jest',
+    "^.+\\.(ts|tsx)$": [
+      "ts-jest",
       // required due to custom location of tsconfig.json configuration file
       // https://kulshekhar.github.io/ts-jest/docs/getting-started/options/tsconfig
       { tsconfig }
     ]
   },
 
-  detectLeaks: true,
+  // Find memory leaks in your tests by monitoring memory usage, but may slow down your test suite and occasionally report false positives.
+  // detectLeaks: true,
   // Automatically clear mock calls, instances, contexts and results before every test
   clearMocks: true,
 
   // Indicates whether the coverage information should be collected while executing the test
-  collectCoverage: true,
+  // collectCoverage: true,
 
   // An array of glob patterns indicating a set of files for which coverage information should be collected
   // collectCoverageFrom: undefined,
 
   // The directory where Jest should output its coverage files
-  coverageDirectory: 'coverage',
+  coverageDirectory: "coverage",
 
   // An array of regexp pattern strings used to skip coverage collection
   // coveragePathIgnorePatterns: [
@@ -70,7 +71,7 @@ const config: JestConfigWithTsJest = {
   // ],
 
   // Indicates which provider should be used to instrument code for coverage
-  coverageProvider: 'v8'
+  coverageProvider: "v8"
 
   // A list of reporter names that Jest uses when writing coverage reports
   // coverageReporters: [
