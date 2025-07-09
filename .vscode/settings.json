@@ -11,8 +11,8 @@
     "PATH": "${env:PATH};${workspaceFolder}\\node_modules\\.bin;${workspaceFolder}\\bin"
   },
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true, // let ESLint take formating and linting
-    "source.organizeImports": true // auto remove unused imports
+    "source.fixAll.eslint": "explicit",
+    "source.organizeImports": "explicit"
   },
   "[ts]": {
     "editor.formatOnSave": false // custom formating with default vscode formatter
@@ -32,8 +32,8 @@
     "editor.formatOnSave": false, // custom formating with default vscode formatter
     "editor.defaultFormatter": "vscode.json-language-features",
     "editor.codeActionsOnSave": {
-      "source.fixAll": false,
-      "source.organizeImports": false
+      "source.fixAll": "never",
+      "source.organizeImports": "never"
     }
   },
   "editor.formatOnSave": false, // default vscode formatter
@@ -58,5 +58,6 @@
   },
   "search.exclude": {
     "**/dist/**": true
-  } // code runner save all files before run
+  },
+  "eslint.useFlatConfig": false // code runner save all files before run
 }

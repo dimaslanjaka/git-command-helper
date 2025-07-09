@@ -1,4 +1,4 @@
-import { async as spawnAsync } from '../../cross-spawn/src';
+import { async as spawnAsync } from 'cross-spawn';
 
 /**
  * check if can be pushed

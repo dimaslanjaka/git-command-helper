@@ -1,6 +1,9 @@
-type syncFunc = (...args: any[]) => any;
-type asyncFunc = (...args: any[]) => Promise<any>;
-type typeFunc = syncFunc | asyncFunc;
+/** synchronous function type */
+export type syncFunc = (...args: any[]) => any;
+/** asynchronous function type */
+export type asyncFunc = (...args: any[]) => Promise<any>;
+/** mixed function type */
+export type typeFunc = syncFunc | asyncFunc;
 
 export default class helper {
   /**

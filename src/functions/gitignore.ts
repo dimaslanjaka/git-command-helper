@@ -2,8 +2,8 @@ import Bluebird from 'bluebird';
 import fs from 'fs-extra';
 import * as glob from 'glob';
 import ignore from 'ignore';
+import { trueCasePathSync } from 'sbg-utility';
 import path from 'upath';
-import { trueCasePathSync } from '../../utility/packages/sbg-utility/src/utils/filemanager/case-path';
 import { getGithubRootDir } from './getGithubRootDir';
 
 /**
@@ -98,7 +98,7 @@ export async function getAllIgnoresConfig(options: glob.GlobOptionsWithFileTypes
  * @returns
  */
 export function getGitignoreFiles(opt: glob.GlobOptionsWithFileTypesFalse): Promise<string[]> {
-  const searchDirRootGit = getGithubRootDir(opt);
+  const searchDirRootGit = getGithubRootDir(opt as any);
   return new Bluebird((res) => {
     const ignore = ['**/node_modules/**'];
     if (Array.isArray(opt.ignore)) {

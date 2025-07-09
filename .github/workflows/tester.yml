@@ -66,6 +66,14 @@ jobs:
           token: ${{ secrets.ACCESS_TOKEN }}
           submodules: recursive
 
+      - name: initialize nodejs
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Enable corepack
+        run: corepack enable
+
       - name: fix git configs
         continue-on-error: true
         run: |
@@ -83,17 +91,9 @@ jobs:
           git submodule foreach "git submodule sync"
           echo "update submodules"
           mkdir -p bin >/dev/null 2>&1
-          curl -L https://github.com/dimaslanjaka/bin/raw/master/bin/submodule-install > bin/submodule-install
+          npm install -g binary-collections@https://raw.githubusercontent.com/dimaslanjaka/bin/master/releases/bin.tgz
           rm -rf .git/modules
-          bash ./bin/submodule-install
-
-      - name: initialize nodejs
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-
-      - name: Enable corepack
-        run: corepack enable
+          npx submodule-install
 
       - uses: actions/cache@v4
         id: cache

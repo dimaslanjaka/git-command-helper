@@ -1,20 +1,20 @@
-/* eslint-disable no-control-regex */
 /**
  * NodeJS GitHub Helper
  * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
  */
 
 import Bluebird from 'bluebird';
+import * as crossSpawn from 'cross-spawn';
 import fs from 'fs-extra';
 import _ from 'lodash';
+import { jsonStringifyWithCircularRefs } from 'sbg-utility';
 import path from 'upath';
-import * as crossSpawn from '../cross-spawn/src';
-import { jsonStringifyWithCircularRefs } from '../utility/packages/sbg-utility/src';
 import * as GithubInfo from './functions';
 import { isIgnored } from './functions/gitignore';
 import { isUntracked } from './functions/isFileChanged';
 import { latestCommit } from './functions/latestCommit';
 import { isCanPush } from './functions/push-checker';
+import { isStaged } from './git/staged';
 import helper from './helper';
 import * as extension from './index-exports';
 import { getInstance, hasInstance, setInstance } from './instances';
@@ -408,6 +408,10 @@ export class git implements GitOpt {
    */
   add(path: string, optionSpawn: SpawnOptions = { stdio: 'inherit' }) {
     return spawn('git', ['add', path], this.spawnOpt(optionSpawn));
+  }
+
+  isStaged(path: string) {
+    return isStaged(path, this.spawnOpt({ stdio: 'pipe' }));
   }
 
   /**
