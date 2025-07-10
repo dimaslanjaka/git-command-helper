@@ -103,11 +103,11 @@ jobs:
     env:
       NODE_OPTIONS: "--max_old_space_size=8192" #8192 4096 --expose-gc
       ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
-      node-version: 14.x
       YARN_ENABLE_IMMUTABLE_INSTALLS: false
       YARN_CHECKSUM_BEHAVIOR: update
       YARN_ENABLE_SCRIPTS: true
       YARN_NODE_LINKER: node-modules
+      YARN_IGNORE_NODE: ${{ contains('14.x,16.x', matrix.node-version) && '1' || '' }}
 
     runs-on: ${{ matrix.os }}
 
