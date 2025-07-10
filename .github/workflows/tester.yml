@@ -30,40 +30,43 @@ concurrency:
   group: tester-${{ github.ref }}
   cancel-in-progress: true
 
+# YAML anchor for matrix reuse
+matrix-config: &node_matrix
+  include:
+    - node-version: "14.x"
+      yarn-version: "3.6.4"
+      os: ubuntu-latest
+    - node-version: "16.x"
+      yarn-version: "3.6.4"
+      os: ubuntu-latest
+    - node-version: "18.x"
+      yarn-version: "4.1.1"
+      os: ubuntu-latest
+
+    - node-version: "14.x"
+      yarn-version: "3.6.4"
+      os: windows-latest
+    - node-version: "16.x"
+      yarn-version: "3.6.4"
+      os: windows-latest
+    - node-version: "18.x"
+      yarn-version: "4.1.1"
+      os: windows-latest
+
+    - node-version: "14.x"
+      yarn-version: "3.6.4"
+      os: macos-latest
+    - node-version: "16.x"
+      yarn-version: "3.6.4"
+      os: macos-latest
+    - node-version: "18.x"
+      yarn-version: "4.1.1"
+      os: macos-latest
+
 jobs:
   build:
     strategy:
-      matrix:
-        include:
-          - node-version: "14.x"
-            yarn-version: "3.6.4"
-            os: ubuntu-latest
-          - node-version: "16.x"
-            yarn-version: "3.6.4"
-            os: ubuntu-latest
-          - node-version: "18.x"
-            yarn-version: "4.1.1"
-            os: ubuntu-latest
-
-          - node-version: "14.x"
-            yarn-version: "3.6.4"
-            os: windows-latest
-          - node-version: "16.x"
-            yarn-version: "3.6.4"
-            os: windows-latest
-          - node-version: "18.x"
-            yarn-version: "4.1.1"
-            os: windows-latest
-
-          - node-version: "14.x"
-            yarn-version: "3.6.4"
-            os: macos-latest
-          - node-version: "16.x"
-            yarn-version: "3.6.4"
-            os: macos-latest
-          - node-version: "18.x"
-            yarn-version: "4.1.1"
-            os: macos-latest
+      matrix: *node_matrix
       fail-fast: false
     uses: ./.github/workflows/builder.yml
     with:
@@ -77,37 +80,7 @@ jobs:
   tester:
     needs: [build]
     strategy:
-      matrix:
-        include:
-          - node-version: "14.x"
-            yarn-version: "3.6.4"
-            os: ubuntu-latest
-          - node-version: "16.x"
-            yarn-version: "3.6.4"
-            os: ubuntu-latest
-          - node-version: "18.x"
-            yarn-version: "4.1.1"
-            os: ubuntu-latest
-
-          - node-version: "14.x"
-            yarn-version: "3.6.4"
-            os: windows-latest
-          - node-version: "16.x"
-            yarn-version: "3.6.4"
-            os: windows-latest
-          - node-version: "18.x"
-            yarn-version: "4.1.1"
-            os: windows-latest
-
-          - node-version: "14.x"
-            yarn-version: "3.6.4"
-            os: macos-latest
-          - node-version: "16.x"
-            yarn-version: "3.6.4"
-            os: macos-latest
-          - node-version: "18.x"
-            yarn-version: "4.1.1"
-            os: macos-latest
+      matrix: *node_matrix
       fail-fast: false
     env:
       NODE_OPTIONS: "--max_old_space_size=8192" #8192 4096 --expose-gc
