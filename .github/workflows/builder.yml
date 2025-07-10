@@ -94,12 +94,21 @@ jobs:
         run: npm i -g typescript ts-node gulp-cli hexo-cli webpack-cli
 
       - name: Install
-        run: |
-          touch yarn.lock
-          yarn set version ${{ inputs.yarn-version }}
-          yarn install --inline-builds
         id: install
         shell: bash
+        run: |
+          touch yarn.lock
+          (
+            curl -o .yarn/releases/yarn-${{ inputs.yarn-version }}.cjs https://repo.yarnpkg.com/${{ inputs.yarn-version }}/packages/yarnpkg-cli/bin/yarn.js \
+            || curl -o .yarn/releases/yarn-${{ inputs.yarn-version }}.cjs https://raw.githubusercontent.com/yarnpkg/berry/%40yarnpkg/cli/${{ inputs.yarn-version }}/packages/yarnpkg-cli/bin/yarn.js
+          )
+          if grep -q '^yarnPath:' .yarnrc.yml 2>/dev/null; then
+            sed -i.bak "s|^yarnPath:.*$|yarnPath: .yarn/releases/yarn-${{ inputs.yarn-version }}.cjs|" .yarnrc.yml
+          else
+            echo "yarnPath: .yarn/releases/yarn-${{ inputs.yarn-version }}.cjs" >> .yarnrc.yml
+          fi
+          yarn set version ${{ inputs.yarn-version }}
+          yarn install
 
       - name: Build
         run: npm run build
