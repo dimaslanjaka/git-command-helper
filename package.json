@@ -10,7 +10,6 @@
     "lib": "dist",
     "bin": "bin"
   },
-  "packageManager": "yarn@4.9.2",
   "files": [
     "dist",
     "bin",
@@ -147,5 +146,6 @@
   "engines": {
     "node": ">=14",
     "npm": "^8"
-  }
+  },
+  "packageManager": "yarn@4.9.2"
 }
