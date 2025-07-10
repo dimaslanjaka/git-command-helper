@@ -43,6 +43,10 @@ matrix-config: &node_matrix
       yarn-version: "4.1.1"
       os: ubuntu-latest
 
+    - node-version: "20.x"
+      yarn-version: "4.1.1"
+      os: ubuntu-latest
+
     - node-version: "14.x"
       yarn-version: "3.6.4"
       os: windows-latest
@@ -53,6 +57,10 @@ matrix-config: &node_matrix
       yarn-version: "4.1.1"
       os: windows-latest
 
+    - node-version: "20.x"
+      yarn-version: "4.1.1"
+      os: windows-latest
+
     - node-version: "14.x"
       yarn-version: "3.6.4"
       os: macos-latest
@@ -60,6 +68,10 @@ matrix-config: &node_matrix
       yarn-version: "3.6.4"
       os: macos-latest
     - node-version: "18.x"
+      yarn-version: "4.1.1"
+      os: macos-latest
+
+    - node-version: "20.x"
       yarn-version: "4.1.1"
       os: macos-latest
 
