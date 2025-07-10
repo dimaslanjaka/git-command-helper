@@ -18,6 +18,10 @@ on:
         required: true
         type: string
         default: master
+      yarn-version:
+        required: false
+        type: string
+        default: stable
     secrets:
       ACCESS_TOKEN:
         required: true
@@ -91,7 +95,7 @@ jobs:
       - name: Install
         run: |
           touch yarn.lock
-          yarn set version stable
+          yarn set version ${{ inputs.yarn-version }}
           yarn install --inline-builds
         id: install
         shell: bash
