@@ -44,10 +44,6 @@ jobs:
           repository: ${{ inputs.repository }}
           ref: ${{ inputs.branch }}
 
-      - name: download lock file from 'master'
-        run: curl -L https://github.com/dimaslanjaka/git-command-helper/raw/master/yarn.lock > yarn.lock
-        shell: bash
-
       - uses: actions/cache@v4
         name: save cache
         with:
@@ -93,7 +89,9 @@ jobs:
         run: npm i -g typescript ts-node gulp-cli hexo-cli webpack-cli
 
       - name: Install
-        run: touch yarn.lock && yarn install --inline-builds
+        run: |
+          touch yarn.lock
+          yarn install --inline-builds
         id: install
         shell: bash
 
