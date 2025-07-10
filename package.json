@@ -10,7 +10,7 @@
     "lib": "dist",
     "bin": "bin"
   },
-  "packageManager": "yarn@4.5.0",
+  "packageManager": "yarn@4.9.2",
   "files": [
     "dist",
     "bin",
