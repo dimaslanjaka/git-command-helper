@@ -91,6 +91,7 @@ jobs:
       - name: Install
         run: |
           touch yarn.lock
+          yarn set version stable
           yarn install --inline-builds
         id: install
         shell: bash
@@ -98,4 +99,4 @@ jobs:
       - name: Build
         run: npm run build
       - name: Pack
-        run: npm run pack -- --commit
+        run: npm run pack
