@@ -83,6 +83,7 @@ jobs:
             yarn-version: "4.9.2"
             os: macos-latest
       fail-fast: false
+    name: "Build | OS: ${{ matrix.os }} | Node: ${{ matrix.node-version }} | Yarn: ${{ matrix.yarn-version }}"
     uses: ./.github/workflows/builder.yml
     with:
       node-version: ${{ matrix.node-version }}
@@ -156,7 +157,7 @@ jobs:
 
     runs-on: ${{ matrix.os }}
 
-    name: ${{ matrix.os }} Node ${{ matrix.node-version }} Tester
+    name: "Test | OS: ${{ matrix.os }} | Node: ${{ matrix.node-version }} | Yarn: ${{ matrix.yarn-version }}"
     steps:
       - uses: actions/checkout@v4
         with:
