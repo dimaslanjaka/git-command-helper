@@ -11,6 +11,13 @@ on:
         required: false
         type: string
         default: ubuntu-latest
+      repository:
+        required: true
+        type: string
+      branch:
+        required: true
+        type: string
+        default: master
     secrets:
       ACCESS_TOKEN:
         required: true
@@ -34,7 +41,8 @@ jobs:
       - uses: actions/checkout@v4
         with:
           token: ${{ secrets.ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
-          # submodules: recursive
+          repository: ${{ inputs.repository }}
+          ref: ${{ inputs.branch }}
 
       - name: download lock file from 'master'
         run: curl -L https://github.com/dimaslanjaka/git-command-helper/raw/master/yarn.lock > yarn.lock

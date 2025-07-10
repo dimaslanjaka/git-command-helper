@@ -41,7 +41,10 @@ jobs:
     with:
       node-version: ${{ matrix.node-version }}
       os: ${{ matrix.os }}
-    secrets: inherit
+      repository: dimaslanjaka/git-command-helper
+      branch: ${{ github.ref_name }}
+    secrets:
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
   tester:
     needs: [build]
     strategy:
@@ -64,8 +67,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          token: ${{ secrets.ACCESS_TOKEN }}
-          # submodules: recursive
+          token: ${{ secrets.ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
 
       - name: initialize nodejs
         uses: actions/setup-node@v4
