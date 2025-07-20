@@ -23,7 +23,8 @@
   "scripts": {
     "build:exports": "node index-builder.js",
     "build:tsc": "tsc -b tsconfig.build.json",
-    "build": "npm run build:exports && npm run build:tsc",
+    "build:rollup": "rollup --bundleConfigAsCjs -c rollup.config.js",
+    "build": "npm run build:exports && npm run build:tsc && npm run build:rollup",
     "pack": "node packer.js --yarn",
     "update:build-release": "curl -L https://github.com/dimaslanjaka/nodejs-package-types/raw/main/.github/workflows/build-release.yml > .github/workflows/build-release.yml",
     "update:typedoc": "curl -L https://github.com/dimaslanjaka/nodejs-package-types/raw/main/typedoc.js > typedoc.config.js",
@@ -57,7 +58,11 @@
     "cli-parser",
     "git-cli-parser"
   ],
-  "author": "Dimas Lanjaka <dimaslanjaka@gmail.com>",
+  "author": {
+    "name": "Dimas Lanjaka",
+    "email": "dimaslanjaka@gmail.com",
+    "url": "https://www.webmanajemen.com"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/dimaslanjaka/git-command-helper/issues"
@@ -79,12 +84,22 @@
     "upath": "^2.0.1"
   },
   "devDependencies": {
+    "@babel/core": "^7.28.0",
+    "@babel/preset-env": "^7.28.0",
+    "@babel/preset-typescript": "^7.27.1",
     "@eslint/eslintrc": "^3.3.1",
     "@eslint/js": "^9.31.0",
     "@jest/environment": "^30.0.4",
     "@jest/expect": "^30.0.4",
     "@jest/globals": "^30.0.4",
     "@jest/types": "^30.0.1",
+    "@rollup/plugin-babel": "^6.0.4",
+    "@rollup/plugin-commonjs": "^28.0.6",
+    "@rollup/plugin-json": "^6.1.0",
+    "@rollup/plugin-node-resolve": "^16.0.1",
+    "@rollup/plugin-typescript": "^12.1.4",
+    "@types/babel__core": "^7",
+    "@types/babel__preset-env": "^7",
     "@types/bluebird": "^3",
     "@types/core-js": "^2.5.8",
     "@types/fs-extra": "^11",
@@ -116,6 +131,7 @@
     "nyc": "^17.1.0",
     "prettier": "^3.6.2",
     "rimraf": "^6.0.1",
+    "rollup": "^4.45.1",
     "semver": "^7.7.2",
     "ts-jest": "^29.4.0",
     "ts-node": "^10.9.2",
