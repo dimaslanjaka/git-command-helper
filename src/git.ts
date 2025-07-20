@@ -77,20 +77,20 @@ export class git implements GitOpt {
   getGithubRemote = GithubInfo.getGithubRemote;
   getGithubRootDir = GithubInfo.getGithubRootDir;
 
-  constructor(obj: string, branch?: string);
+  constructor(gitInput: string, branch?: string);
   // only allow single param
-  constructor(obj: GitOpt);
-  constructor(obj: string | GitOpt, branch = "master") {
+  constructor(gitInput: GitOpt);
+  constructor(gitInput: string | GitOpt, branch = "master") {
     let gitdir: string;
-    if (typeof obj === "string") {
-      gitdir = obj;
+    if (typeof gitInput === "string") {
+      gitdir = gitInput;
       if (branch) this.branch = branch;
     } else {
-      gitdir = obj.cwd;
-      if (obj.ref || obj.branch) this.branch = obj.ref || obj.branch || branch;
-      this.remote = obj.url || obj.remote;
-      this.email = obj.email;
-      this.user = obj.user;
+      gitdir = gitInput.cwd;
+      if (gitInput.ref || gitInput.branch) this.branch = gitInput.ref || gitInput.branch || branch;
+      this.remote = gitInput.url || gitInput.remote;
+      this.email = gitInput.email;
+      this.user = gitInput.user;
     }
     if (hasInstance(gitdir)) return getInstance(gitdir);
     this.cwd = gitdir;
