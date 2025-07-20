@@ -118,6 +118,19 @@ export class git implements GitOpt {
     if (!hasInstance(gitdir)) setInstance(gitdir, this);
   }
 
+  /**
+   * Clone the repository
+   * @returns
+   */
+  async clone() {
+    if (!this.remote) throw new Error("remote is not set!");
+    if (!this.cwd) throw new Error("cwd is not set!");
+    if (fs.existsSync(this.cwd)) {
+      throw new Error("cwd already exists! " + this.cwd);
+    }
+    return await this.spawn("git", ["clone", this.remote, this.cwd], { stdio: "inherit" });
+  }
+
   setToken(token: string) {
     this.token = token;
   }
