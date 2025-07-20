@@ -144,8 +144,7 @@
     "unset-value": "^2.0.1"
   },
   "engines": {
-    "node": ">=14",
-    "npm": "^8"
+    "node": ">=14"
   },
   "packageManager": "yarn@4.9.2"
 }
