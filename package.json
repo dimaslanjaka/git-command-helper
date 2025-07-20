@@ -127,6 +127,7 @@
     "why-is-node-running": "^3.2.2"
   },
   "resolutions": {
+    "sbg-utility": "https://github.com/dimaslanjaka/static-blog-generator/raw/67e658f4cdc6bab94fef60a9a146a441df43f050/packages/sbg-utility/release/sbg-utility.tgz",
     "binary-collections": "https://github.com/dimaslanjaka/bin/raw/035c9539e980462508ad474e5f70dc89f39f7ca1/releases/bin.tgz",
     "cross-spawn": "https://github.com/dimaslanjaka/node-cross-spawn/raw/80999ac7a7031a81e11ddb5fab0f8ba433041c98/release/cross-spawn.tgz",
     "ansi-regex": "^4",
@@ -136,6 +137,7 @@
     "unset-value": "^2.0.1"
   },
   "overrides": {
+    "sbg-utility": "https://github.com/dimaslanjaka/static-blog-generator/raw/7696e66ab84f319909c5dab9054303e91f898454/packages/sbg-utility/release/sbg-utility.tgz",
     "binary-collections": "https://github.com/dimaslanjaka/bin/raw/master/releases/bin.tgz",
     "cross-spawn": "https://github.com/dimaslanjaka/node-cross-spawn/raw/80999ac/release/cross-spawn.tgz",
     "ansi-regex": "^4",
