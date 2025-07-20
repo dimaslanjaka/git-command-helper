@@ -294,6 +294,7 @@
     "@types/fs-extra": "^11",
     "@types/git-command-helper": "https://github.com/dimaslanjaka/git-command-helper/raw/pre-release/release/git-command-helper.tgz",
     "@types/ini": "^4.1.1",
+    "@types/jest": "^30.0.0",
     "@types/lodash": "^4",
     "@types/minimist": "^1",
     "@types/node": "^24.0.15",
