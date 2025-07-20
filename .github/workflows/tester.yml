@@ -306,19 +306,6 @@ jobs:
               yarn install --inline-builds
           fi
 
-      - name: Check Updates
-        shell: bash
-        #if: steps.install-clean.outcome == 'failure'
-        continue-on-error: true
-        if: ${{ false }}
-        run: |
-          curl -L https://github.com/dimaslanjaka/nodejs-package-types/raw/main/postinstall.js > postinstall.js
-          if [ "${{ steps.set-env.outputs.PACKAGE-MANAGER }}" == "npm" ]; then
-              node postinstall.js
-          else
-              node postinstall.js --yarn
-          fi
-
       - name: test
         run: npm test
 
