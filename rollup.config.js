@@ -9,7 +9,15 @@ const fs = require("fs");
 const { author, dependencies, devDependencies, name, version } = packageJson;
 
 // Packages that should be bundled
-const bundledPackages = ["p-limit", "deepmerge-ts", "is-stream", "markdown-it", "node-cache", "chalk"];
+const bundledPackages = [
+  "p-limit",
+  "deepmerge-ts",
+  "is-stream",
+  "markdown-it",
+  "node-cache",
+  "chalk",
+  "@expo/spawn-async"
+];
 
 // List external dependencies, excluding specific packages that should be bundled
 const external = [...Object.keys(dependencies), ...Object.keys(devDependencies)].filter(
