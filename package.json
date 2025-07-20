@@ -3,7 +3,196 @@
   "version": "2.1.0",
   "description": "github command helper for nodejs",
   "main": "dist/index.js",
+  "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./package.json": "./package.json",
+    "./dist/submodule": {
+      "import": "./dist/submodule.mjs",
+      "require": "./dist/submodule.js",
+      "types": "./dist/submodule.d.ts"
+    },
+    "./dist/spawner": {
+      "import": "./dist/spawner.mjs",
+      "require": "./dist/spawner.js",
+      "types": "./dist/spawner.d.ts"
+    },
+    "./dist/spawn": {
+      "import": "./dist/spawn.mjs",
+      "require": "./dist/spawn.js",
+      "types": "./dist/spawn.d.ts"
+    },
+    "./dist/instances": {
+      "import": "./dist/instances.mjs",
+      "require": "./dist/instances.js",
+      "types": "./dist/instances.d.ts"
+    },
+    "./dist/index": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./dist/index-exports": {
+      "import": "./dist/index-exports.mjs",
+      "require": "./dist/index-exports.js",
+      "types": "./dist/index-exports.d.ts"
+    },
+    "./dist/helper": {
+      "import": "./dist/helper.mjs",
+      "require": "./dist/helper.js",
+      "types": "./dist/helper.d.ts"
+    },
+    "./dist/git": {
+      "import": "./dist/git.mjs",
+      "require": "./dist/git.js",
+      "types": "./dist/git.d.ts"
+    },
+    "./dist/git.es": {
+      "import": "./dist/git.es.mjs",
+      "require": "./dist/git.es.js",
+      "types": "./dist/git.es.d.ts"
+    },
+    "./dist/cache-stream": {
+      "import": "./dist/cache-stream.mjs",
+      "require": "./dist/cache-stream.js",
+      "types": "./dist/cache-stream.d.ts"
+    },
+    "./dist/utils/safe-url": {
+      "import": "./dist/utils/safe-url.mjs",
+      "require": "./dist/utils/safe-url.js",
+      "types": "./dist/utils/safe-url.d.ts"
+    },
+    "./dist/utils/index": {
+      "import": "./dist/utils/index.mjs",
+      "require": "./dist/utils/index.js",
+      "types": "./dist/utils/index.d.ts"
+    },
+    "./dist/utils/index-exports": {
+      "import": "./dist/utils/index-exports.mjs",
+      "require": "./dist/utils/index-exports.js",
+      "types": "./dist/utils/index-exports.d.ts"
+    },
+    "./dist/utils/extract-submodule": {
+      "import": "./dist/utils/extract-submodule.mjs",
+      "require": "./dist/utils/extract-submodule.js",
+      "types": "./dist/utils/extract-submodule.d.ts"
+    },
+    "./dist/types/status": {
+      "import": "./dist/types/status.mjs",
+      "require": "./dist/types/status.js",
+      "types": "./dist/types/status.d.ts"
+    },
+    "./dist/git/staged": {
+      "import": "./dist/git/staged.mjs",
+      "require": "./dist/git/staged.js",
+      "types": "./dist/git/staged.d.ts"
+    },
+    "./dist/functions/status": {
+      "import": "./dist/functions/status.mjs",
+      "require": "./dist/functions/status.js",
+      "types": "./dist/functions/status.d.ts"
+    },
+    "./dist/functions/push-checker": {
+      "import": "./dist/functions/push-checker.mjs",
+      "require": "./dist/functions/push-checker.js",
+      "types": "./dist/functions/push-checker.d.ts"
+    },
+    "./dist/functions/parseGitHubUrl": {
+      "import": "./dist/functions/parseGitHubUrl.mjs",
+      "require": "./dist/functions/parseGitHubUrl.js",
+      "types": "./dist/functions/parseGitHubUrl.d.ts"
+    },
+    "./dist/functions/latestCommit": {
+      "import": "./dist/functions/latestCommit.mjs",
+      "require": "./dist/functions/latestCommit.js",
+      "types": "./dist/functions/latestCommit.d.ts"
+    },
+    "./dist/functions/isFileChanged": {
+      "import": "./dist/functions/isFileChanged.mjs",
+      "require": "./dist/functions/isFileChanged.js",
+      "types": "./dist/functions/isFileChanged.d.ts"
+    },
+    "./dist/functions/infoOptions": {
+      "import": "./dist/functions/infoOptions.mjs",
+      "require": "./dist/functions/infoOptions.js",
+      "types": "./dist/functions/infoOptions.d.ts"
+    },
+    "./dist/functions/index": {
+      "import": "./dist/functions/index.mjs",
+      "require": "./dist/functions/index.js",
+      "types": "./dist/functions/index.d.ts"
+    },
+    "./dist/functions/index-exports": {
+      "import": "./dist/functions/index-exports.mjs",
+      "require": "./dist/functions/index-exports.js",
+      "types": "./dist/functions/index-exports.d.ts"
+    },
+    "./dist/functions/hasChanges": {
+      "import": "./dist/functions/hasChanges.mjs",
+      "require": "./dist/functions/hasChanges.js",
+      "types": "./dist/functions/hasChanges.d.ts"
+    },
+    "./dist/functions/gitignore": {
+      "import": "./dist/functions/gitignore.mjs",
+      "require": "./dist/functions/gitignore.js",
+      "types": "./dist/functions/gitignore.d.ts"
+    },
+    "./dist/functions/getGithubRootDir": {
+      "import": "./dist/functions/getGithubRootDir.mjs",
+      "require": "./dist/functions/getGithubRootDir.js",
+      "types": "./dist/functions/getGithubRootDir.d.ts"
+    },
+    "./dist/functions/getGithubRepoUrl": {
+      "import": "./dist/functions/getGithubRepoUrl.mjs",
+      "require": "./dist/functions/getGithubRepoUrl.js",
+      "types": "./dist/functions/getGithubRepoUrl.d.ts"
+    },
+    "./dist/functions/getGithubRemote": {
+      "import": "./dist/functions/getGithubRemote.mjs",
+      "require": "./dist/functions/getGithubRemote.js",
+      "types": "./dist/functions/getGithubRemote.d.ts"
+    },
+    "./dist/functions/getGithubCurrentBranch": {
+      "import": "./dist/functions/getGithubCurrentBranch.mjs",
+      "require": "./dist/functions/getGithubCurrentBranch.js",
+      "types": "./dist/functions/getGithubCurrentBranch.d.ts"
+    },
+    "./dist/functions/getGithubBranches": {
+      "import": "./dist/functions/getGithubBranches.mjs",
+      "require": "./dist/functions/getGithubBranches.js",
+      "types": "./dist/functions/getGithubBranches.d.ts"
+    },
+    "./dist/config/index": {
+      "import": "./dist/config/index.mjs",
+      "require": "./dist/config/index.js",
+      "types": "./dist/config/index.d.ts"
+    },
+    "./dist/config/index-exports": {
+      "import": "./dist/config/index-exports.mjs",
+      "require": "./dist/config/index-exports.js",
+      "types": "./dist/config/index-exports.d.ts"
+    },
+    "./dist/config/gitConfig": {
+      "import": "./dist/config/gitConfig.mjs",
+      "require": "./dist/config/gitConfig.js",
+      "types": "./dist/config/gitConfig.d.ts"
+    },
+    "./dist/config/fix-end-of-line": {
+      "import": "./dist/config/fix-end-of-line.mjs",
+      "require": "./dist/config/fix-end-of-line.js",
+      "types": "./dist/config/fix-end-of-line.d.ts"
+    },
+    "./dist/config/fix-case-sensitive": {
+      "import": "./dist/config/fix-case-sensitive.mjs",
+      "require": "./dist/config/fix-case-sensitive.js",
+      "types": "./dist/config/fix-case-sensitive.d.ts"
+    }
+  },
   "directories": {
     "doc": "docs/git-command-helper",
     "test": "test",
