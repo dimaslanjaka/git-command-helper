@@ -19,7 +19,7 @@ const tsconfig = Object.assign(tsconfigBase.compilerOptions, tsconfigJest.compil
 const config: JestConfigWithTsJest = {
   preset: "ts-jest",
   testEnvironment: "node",
-  moduleFileExtensions: [...defaults.moduleFileExtensions, "mts"],
+  moduleFileExtensions: [...defaults.moduleFileExtensions, "mts", "mjs"],
   verbose: false,
   cache: true,
   cacheDirectory: join(__dirname, "tmp/jest"),
@@ -36,9 +36,9 @@ const config: JestConfigWithTsJest = {
   coveragePathIgnorePatterns: ["/node_modules/", "/dist/", "/tmp/", "/test/"],
   // testPathIgnorePatterns: ['/node_modules/', '/dist/', '/tmp/', '/test/', '**/*.builder.ts'],
   testMatch: [
-    `**/__tests__/**/*.+(ts|tsx|js)`,
-    `**/?(*.)+(spec|test).+(ts|tsx|js)`,
-    `**/test/*.test.ts`,
+    `**/__tests__/**/*.+(ts|tsx|js|mjs|mts)`,
+    `**/?(*.)+(spec|test).+(ts|tsx|js|mjs|mts)`,
+    `**/test/*.test.{ts,js,mjs,mts}`,
     "!**/.deploy_git/**"
   ],
 
@@ -48,7 +48,8 @@ const config: JestConfigWithTsJest = {
       // required due to custom location of tsconfig.json configuration file
       // https://kulshekhar.github.io/ts-jest/docs/getting-started/options/tsconfig
       { tsconfig }
-    ]
+    ],
+    "^.+\\.(mjs)$": ["babel-jest", { presets: ["@babel/preset-env"] }]
   },
 
   // Find memory leaks in your tests by monitoring memory usage, but may slow down your test suite and occasionally report false positives.
