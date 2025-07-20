@@ -107,7 +107,6 @@ const config = [
       preserveModulesRoot: "tmp/dist",
       entryFileNames: entryFileNamesWithExt("js"),
       entryChunkFileNames: chunkFileNamesWithExt("js"),
-      exports: "named",
       banner
     },
     plugins,
