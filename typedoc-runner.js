@@ -2,7 +2,7 @@ const { join } = require('upath');
 const typedocModule = require('typedoc');
 const semver = require('semver');
 const { mkdirSync, existsSync, writeFileSync, readdirSync, statSync } = require('fs');
-const typedocOptions = require('./typedoc.config');
+const localTypedocOptions = require('./typedoc.config');
 const pkgjson = require('./package.json');
 const { EOL } = require('os');
 const { spawnAsync } = require('cross-spawn');
@@ -44,7 +44,10 @@ const compile = async function (options = {}, callback = null) {
   if (compiled > 0) setTypedocOptions({ cleanOutputDir: false });
   compiled++;
 
-  const app = new typedocModule.Application();
+  // Application.bootstrap also exists, which will not load plugins
+  // Also accepts an array of option readers if you want to disable
+  // TypeDoc's tsconfig.json/package.json/typedoc.json option readers
+  const app = await typedocModule.Application.bootstrapWithPlugins(getTypedocOptions());
   if (semver.gte(typedocModule.Application.VERSION, '0.16.1')) {
     app.options.addReader(new typedocModule.TSConfigReader());
     app.options.addReader(new typedocModule.TypeDocReader());
@@ -53,8 +56,7 @@ const compile = async function (options = {}, callback = null) {
   //console.log(options);
   //delete options.run;
 
-  app.bootstrap(getTypedocOptions());
-  const project = app.convert();
+  const project = await app.convert();
   if (typeof project !== 'undefined') {
     await app.generateDocs(project, projectDocsDir);
     await app.generateJson(project, join(projectDocsDir, 'info.json'));
@@ -115,8 +117,9 @@ const publish = async function (options = {}, callback = null) {
   });
 
   try {
-    const commit = await new git(__dirname).latestCommit().catch(noop);
-    const remote = (await new git(__dirname).getremote().catch(noop)).push.url.replace(/.git$/, '').trim();
+    const currentGit = new git(__dirname);
+    const commit = await currentGit.latestCommit().catch(noop);
+    const remote = (await currentGit.getremote().catch(noop)).push.url.replace(/.git$/, '').trim();
     if (remote.length > 0) {
       console.log('current git project', remote);
       await github.add(pkgjson.name).catch(noop);
@@ -141,12 +144,14 @@ function noop(..._) {
   return;
 }
 
-let opt = typedocOptions;
+let opt = localTypedocOptions;
 /**
  * Get typedoc options
- * @returns {typeof import('./typedoc')}
+ * @returns {typeof import('./typedoc.config')}
  */
 function getTypedocOptions() {
+  if (opt['$schema']) delete opt['$schema']; // non-config
+  if (opt['logger']) delete opt['logger']; // deprecated
   return opt;
 }
 
@@ -156,7 +161,8 @@ function getTypedocOptions() {
  */
 function setTypedocOptions(newOpt) {
   opt = Object.assign(opt, newOpt || {});
-  writefile(join(__dirname, 'tmp/typedocs/options.json'), JSON.stringify(opt));
+  opt['$schema'] = 'https://typedoc.org/schema.json';
+  writefile(join(__dirname, 'tmp/typedoc/options.json'), JSON.stringify(opt, null, 2));
   return opt;
 }
 
@@ -200,25 +206,6 @@ async function createIndex() {
   });
 
   writeFileSync(join(__dirname, 'docs/index.html'), body.trim());
-}
-
-/**
- * read file with validation
- * @param {string} str
- * @param {import('fs').EncodingOption} encoding
- * @returns
- */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function readfile(str, encoding = 'utf-8') {
-  if (fs.existsSync(str)) {
-    if (fs.statSync(str).isFile()) {
-      return fs.readFileSync(str, encoding);
-    } else {
-      throw str + ' is directory';
-    }
-  } else {
-    throw str + ' not found';
-  }
 }
 
 /**
