@@ -171,4 +171,4 @@ export class submodule {
 }
 
 export default submodule;
-export const gitSubmodule = submodule;
+export { submodule as gitSubmodule };
