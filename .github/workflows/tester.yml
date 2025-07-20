@@ -204,10 +204,10 @@ jobs:
             **/node_modules
             **/tmp
             **/dist
-          key: ${{ runner.os }}-${{ matrix.node-version }}
+          key: ${{ matrix.os }}-${{ matrix.node-version }}-${{ hashFiles('**/package-lock.json', '**/yarn.lock', '**/package.json') }}
           restore-keys: |
-            ${{ runner.os }}-${{ matrix.node-version }}
-            ${{ runner.os }}-
+            ${{ matrix.os }}-${{ matrix.node-version }}-
+            ${{ matrix.os }}-
 
       - name: Set env
         id: set-env
