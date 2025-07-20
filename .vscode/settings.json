@@ -50,7 +50,7 @@
   "code-runner.respectShebang": true, // code runner follow executor maps
   "code-runner.executorMapByGlob": {
     // code runner executor map by glob
-    "*.test.ts": "npm test -- $fileNameWithoutExt"
+    "*.test.{ts,cjs,mjs}": "npm test"
   },
   "eslint.codeActionsOnSave.mode": "all",
   "workbench.localHistory.exclude": {
