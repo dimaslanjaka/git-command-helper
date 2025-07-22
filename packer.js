@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-require-imports */
-/* eslint-disable no-useless-escape */
 const { spawn } = require("child_process");
 const fs = require("fs-extra");
 const { resolve, join, dirname, toUnix, basename } = require("upath");
@@ -167,6 +165,7 @@ function bundleWithNpm() {
   if (!fs.existsSync(tgz)) {
     const filename2 = slugifyPkgName(`${packagejson.name}-${packagejson.version}.tgz`);
     const origintgz = join(__dirname, filename2);
+    // Only rename if source exists and is different from destination
     if (fs.existsSync(origintgz) && origintgz !== tgz) {
       fs.renameSync(origintgz, tgz);
     }
