@@ -6,7 +6,7 @@ const packageJson = require("./package.json");
 const upath = require("upath");
 const fs = require("fs");
 
-const { author, dependencies, devDependencies, name, version } = packageJson;
+const { author, dependencies = {}, devDependencies = {}, name, version } = packageJson;
 
 // Packages that should be bundled
 const bundledPackages = [
@@ -16,7 +16,8 @@ const bundledPackages = [
   "markdown-it",
   "node-cache",
   "chalk",
-  "@expo/spawn-async"
+  "@expo/spawn-async",
+  "glob"
 ];
 
 // List external dependencies, excluding specific packages that should be bundled
