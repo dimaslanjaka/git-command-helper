@@ -2,7 +2,10 @@ const gch = require("../dist/index.js");
 const util = require("util");
 
 function isClass(obj) {
-  return typeof obj === "function" && /^class\s/.test(Function.prototype.toString.call(obj));
+  return (
+    typeof obj === "function" &&
+    (/^class\s/.test(Function.prototype.toString.call(obj)) || Object.getOwnPropertyNames(obj.prototype).length > 1)
+  );
 }
 module.exports.isClass = isClass;
 
