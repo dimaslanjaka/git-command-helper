@@ -64,7 +64,7 @@ process.env.ACCESS_TOKEN ||= "token_" + Math.random();
     if (cfg.email) await git.setemail(cfg.email);
     await git
       .fetch(["--all"], { stdio: "pipe" })
-      .then((out) => console.log(ansi.cyan("[PRETEST] git fetch output:\n" + out)));
+      .then((out) => out.length > 0 && console.log(ansi.cyan("[PRETEST] git fetch output:\n" + out)));
   };
 
   // clone test repo and initialize
