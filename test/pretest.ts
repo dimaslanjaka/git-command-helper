@@ -2,32 +2,34 @@ import ansi from "ansi-colors";
 import { execSync } from "child_process";
 import crypto from "crypto";
 import fs from "fs";
+import * as glob from "glob";
 import path from "path";
 import gitHelper, { GitOpt } from "../src";
 import clone from "../src/clone";
 import { TestConfig } from "./config";
 
+/**
+ * Calculate a checksum for the given target paths.
+ * This checksum is used to determine if the source files have changed
+ * and whether a build is necessary.
+ *
+ * @param targetPaths - An array of file or directory paths to include in the checksum.
+ * @returns A SHA-256 hash of the contents of the specified files and directories.
+ */
 function getChecksum(...targetPaths: string[]): string {
   const hash = crypto.createHash("sha256");
   const addFile = (file: string) => {
     hash.update(file);
     hash.update(fs.readFileSync(file));
   };
-  const walk = (dir: string, files: string[] = []): string[] => {
-    for (const f of fs.readdirSync(dir)) {
-      const p = path.join(dir, f);
-      if (fs.statSync(p).isDirectory()) walk(p, files);
-      else files.push(p);
-    }
-    return files;
-  };
-  for (const targetPath of targetPaths) {
-    if (fs.statSync(targetPath).isDirectory()) {
-      walk(targetPath).sort().forEach(addFile);
-    } else {
-      addFile(targetPath);
-    }
+  let files: string[] = [];
+  for (const pattern of targetPaths) {
+    // Use glob to expand patterns, including directories and files
+    const matches = glob.sync(pattern, { nodir: true, absolute: true });
+    files.push(...matches);
   }
+  files = Array.from(new Set(files)).sort();
+  files.forEach(addFile);
   return hash.digest("hex");
 }
 
