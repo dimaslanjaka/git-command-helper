@@ -78,6 +78,11 @@ jobs:
           npx rimraf .git/modules
           npx submodule-install
 
+      - name: Enable corepack
+        run: |
+          corepack enable
+          curl -L https://raw.githubusercontent.com/dimaslanjaka/nodejs-package-types/refs/heads/main/.yarnrc-template.yml -o .yarnrc.yml
+
       - name: Set env
         id: set-env
         shell: bash
@@ -122,9 +127,6 @@ jobs:
           esac
           echo "machine=$machine" >> $GITHUB_OUTPUT
           echo "machine=$machine" >> $GITHUB_ENV
-
-      - name: Enable corepack
-        run: corepack enable
 
       - uses: actions/cache@v4
         id: cache
