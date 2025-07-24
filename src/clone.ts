@@ -1,7 +1,7 @@
 import "core-js/actual";
 import fs from "fs-extra";
 import path from "upath";
-import git from "../src";
+import git from "./git";
 
 const spawn = git.crossSpawn.spawnAsync;
 
@@ -23,7 +23,7 @@ async function clone(options: { cwd: string; remote: string; branch: string; tok
 
   if (doClone) {
     // console.log('cloning', cfg);
-    const processCwd = path.join(__dirname, "..");
+    const processCwd = process.cwd();
     const relative = path.toUnix(options.cwd).replace(processCwd, "").replace(/^\/+/, "");
     console.log({ processCwd, relative });
     await spawn("git", ["clone", "-b", options.branch, options.remote, relative], {
