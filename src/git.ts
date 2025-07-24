@@ -364,10 +364,14 @@ export class git implements GitOpt {
   }
 
   /**
-   * check if can be pushed
+   * Determines whether the current branch can be pushed to the specified remote origin.
+   *
+   * @param originName - The name of the remote origin. Defaults to `"origin"`.
+   * @param branchName - The name of the branch to check. If not provided, uses the current branch.
+   * @returns A promise that resolves to a boolean indicating if the branch can be pushed.
    */
-  async canPush() {
-    return isCanPush.dryRun(this.cwd);
+  async canPush(originName: string = "origin", branchName?: string) {
+    return isCanPush({ cwd: this.cwd, origin: originName, branch: branchName || this.branch });
   }
 
   /*
