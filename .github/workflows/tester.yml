@@ -57,7 +57,7 @@ jobs:
           - node-version: "22.x"
             os: windows-latest
       fail-fast: false
-    name: "Build | OS: ${{ matrix.os }} | Node: ${{ matrix.node-version }}"
+    name: "Build ${{ matrix.os }} Node ${{ matrix.node-version }}"
     uses: ./.github/workflows/builder.yml
     with:
       node-version: ${{ matrix.node-version }}
@@ -105,7 +105,7 @@ jobs:
 
     runs-on: ${{ matrix.os }}
 
-    name: "Test (${{ matrix.os }}, Node ${{ matrix.node-version }})"
+    name: "Test ${{ matrix.os }} Node ${{ matrix.node-version }}"
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
