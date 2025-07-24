@@ -140,9 +140,13 @@ jobs:
             **/node_modules
             **/tmp
             **/dist
-          key: ${{ runner.os }}-${{ env.node-version }}
+            **/lib
+            **/package-lock.json
+            ${{ steps.set-env.outputs.CACHE_YARN }}
+            ${{ steps.set-env.outputs.CACHE_NPM }}
+          key: ${{ runner.os }}-${{ env.node-version }}-${{ hashFiles('**/yarn.lock', '**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-${{ env.node-version }}
+            ${{ runner.os }}-${{ env.node-version }}-${{ hashFiles('**/yarn.lock', '**/package-lock.json') }}
             ${{ runner.os }}-
 
       - name: Check Updates
