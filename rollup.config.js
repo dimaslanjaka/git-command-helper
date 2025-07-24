@@ -19,7 +19,8 @@ const bundledPackages = [
   "chalk",
   "@expo/spawn-async",
   "glob",
-  "lru-cache"
+  "lru-cache",
+  "path-scurry"
 ];
 
 // List external dependencies, excluding specific packages that should be bundled
@@ -27,8 +28,27 @@ const externalPackages = [...Object.keys(dependencies), ...Object.keys(devDepend
   (pkgName) => !bundledPackages.includes(pkgName)
 );
 
+/**
+ * Rollup external filter function.
+ * Determines if a module should be treated as external (not bundled) or bundled.
+ *
+ * @param {string} source - The import path or module ID.
+ * @param {string} importer - The path of the importing file.
+ * @param {boolean} isResolved - Whether the import has been resolved.
+ * @returns {boolean} True if the module should be external, false if it should be bundled.
+ */
 function externalFilter(source, importer, isResolved) {
   function getPackageNameFromSource(source) {
+    // Handle absolute paths (Windows/Unix)
+    const nm = /node_modules[\\/]+([^\\/]+)(?:[\\/]+([^\\/]+))?/.exec(source);
+    if (nm) {
+      // Scoped package
+      if (nm[1].startsWith("@") && nm[2]) {
+        return nm[1] + "/" + nm[2];
+      }
+      return nm[1];
+    }
+    // Handle bare imports
     if (source.startsWith("@")) {
       return source.split("/").slice(0, 2).join("/");
     }
@@ -39,7 +59,7 @@ function externalFilter(source, importer, isResolved) {
   const isBundled = bundledPackages.includes(pkgName);
   const isExternal = externalPackages.includes(pkgName);
 
-  if (bundledPackages.includes(pkgName)) {
+  if (bundledPackages.some((pkg) => source.includes(pkg))) {
     // Helper to color booleans
     const boolColor = (val) => (val ? color.green("true") : color.red("false"));
     const treeLog = [
@@ -84,9 +104,11 @@ const plugins = [
 
 /**
  * Returns a function to generate entry file names with the given extension for Rollup output.
- * For node_modules, places in dependencies folder and logs the mapping.
- * @param {string} ext - The file extension (e.g. 'js', 'cjs', 'mjs').
- * @returns {(info: { facadeModuleId: string }) => string}
+ *
+ * For files from node_modules, places them in the dependencies folder and logs the mapping.
+ *
+ * @param {string} ext The file extension (e.g. 'js', 'cjs', 'mjs').
+ * @returns {(info: { facadeModuleId: string }) => string} Function that generates the output file name for a given entry.
  */
 export function entryFileNamesWithExt(ext) {
   // Ensure the extension does not start with a dot
@@ -119,9 +141,11 @@ export function entryFileNamesWithExt(ext) {
 
 /**
  * Returns a function to generate chunk file names with the given extension for Rollup output.
- * For node_modules chunks, places in dependencies folder and removes extension.
- * @param {string} ext - The file extension (e.g. 'js', 'cjs', 'mjs').
- * @returns {(info: { name: string }) => string}
+ *
+ * For chunks from node_modules, places them in the dependencies folder and removes the original extension.
+ *
+ * @param {string} ext The file extension (e.g. 'js', 'cjs', 'mjs').
+ * @returns {(info: { name: string }) => string} Function that generates the output file name for a given chunk.
  */
 export function chunkFileNamesWithExt(ext) {
   return function ({ name }) {
