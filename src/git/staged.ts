@@ -1,4 +1,4 @@
-import { toUnix } from "upath";
+import path from "upath";
 import promiseSpawn, { SpawnOptions } from "../spawn";
 
 /**
@@ -10,15 +10,15 @@ import promiseSpawn, { SpawnOptions } from "../spawn";
  * @param spawnOpt - Options to pass to the process spawn function.
  * @returns A promise that resolves to `true` if the file is staged, otherwise `false`.
  */
-export async function isStaged(path: string, spawnOpt: SpawnOptions) {
-  const unixPath = toUnix(path);
+export async function isStaged(filePath: string, spawnOpt: SpawnOptions) {
+  const unixPath = path.toUnix(filePath);
   const output = await promiseSpawn("git", ["diff", "--cached", "--name-only", "--", unixPath], {
     stdio: "pipe",
     ...spawnOpt
   });
   const files = output
     .split("\n")
-    .map((f) => toUnix(f.trim()))
+    .map((f) => path.toUnix(f.trim()))
     .filter(Boolean);
   console.log(files);
   return files.includes(unixPath);
