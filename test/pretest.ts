@@ -3,8 +3,8 @@ import { execSync } from "child_process";
 import fs from "fs";
 import { getChecksum } from "sbg-utility";
 import path from "upath";
+import gitHelper, { GitOpt } from "../src";
 import clone from "../src/clone";
-import gitHelper, { GitOpt } from "../src/index";
 import { TestConfig } from "./config";
 
 const rootDir = path.join(__dirname, "..");
@@ -13,7 +13,7 @@ if (!fs.existsSync(tmpDir)) fs.mkdirSync(tmpDir, { recursive: true });
 const checksumFile = path.join(tmpDir, ".checksum");
 const oldChecksum = fs.existsSync(checksumFile) ? fs.readFileSync(checksumFile, "utf8") : "";
 const newChecksum = getChecksum(
-  "src/**/*.{ts,js,cjs,mjs}",
+  path.join(rootDir, "src/**/*.{ts,js,cjs,mjs}"),
   path.join(rootDir, "package.json"),
   path.join(rootDir, "tsconfig*.json"),
   path.join(rootDir, "rollup.config.js")
