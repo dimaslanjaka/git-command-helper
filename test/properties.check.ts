@@ -1,4 +1,4 @@
-import git from "../src";
+import git from "../src/index.js";
 import { TestConfig, myGithubPages } from "./config";
 
 console.log(new git(TestConfig).cwd);

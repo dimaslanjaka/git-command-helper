@@ -2,7 +2,7 @@ import whyIsNodeRunning from "why-is-node-running";
 // should be imported before any other modules
 
 import { noop } from "sbg-utility";
-import src from "../src";
+import src from "../src/index.js";
 import { repoDir, repoUrl } from "./env.cjs";
 
 (async () => {

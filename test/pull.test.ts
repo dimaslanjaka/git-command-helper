@@ -1,5 +1,5 @@
 import { describe, expect, it, jest } from "@jest/globals";
-import gitHelper from "../src";
+import gitHelper from "../src/index.js";
 import { TestConfig } from "./config";
 
 describe("test pull", () => {
