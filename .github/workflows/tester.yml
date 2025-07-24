@@ -36,58 +36,42 @@ jobs:
       matrix:
         include:
           - node-version: "14.x"
-            yarn-version: "3.6.4"
             os: ubuntu-latest
           - node-version: "16.x"
-            yarn-version: "3.6.4"
             os: ubuntu-latest
           - node-version: "18.x"
-            yarn-version: "4.1.1"
             os: ubuntu-latest
           - node-version: "20.x"
-            yarn-version: "4.1.1"
             os: ubuntu-latest
           - node-version: "22.x"
-            yarn-version: "4.9.2"
             os: ubuntu-latest
 
           - node-version: "14.x"
-            yarn-version: "3.6.4"
             os: windows-latest
           - node-version: "16.x"
-            yarn-version: "3.6.4"
             os: windows-latest
           - node-version: "18.x"
-            yarn-version: "4.1.1"
             os: windows-latest
           - node-version: "20.x"
-            yarn-version: "4.1.1"
             os: windows-latest
           - node-version: "22.x"
-            yarn-version: "4.9.2"
             os: windows-latest
 
           - node-version: "14.x"
-            yarn-version: "3.6.4"
             os: macos-latest
           - node-version: "16.x"
-            yarn-version: "3.6.4"
             os: macos-latest
           - node-version: "18.x"
-            yarn-version: "4.1.1"
             os: macos-latest
           - node-version: "20.x"
-            yarn-version: "4.1.1"
             os: macos-latest
           - node-version: "22.x"
-            yarn-version: "4.9.2"
             os: macos-latest
       fail-fast: false
-    name: "Build | OS: ${{ matrix.os }} | Node: ${{ matrix.node-version }} | Yarn: ${{ matrix.yarn-version }}"
+    name: "Build | OS: ${{ matrix.os }} | Node: ${{ matrix.node-version }}"
     uses: ./.github/workflows/builder.yml
     with:
       node-version: ${{ matrix.node-version }}
-      yarn-version: ${{ matrix.yarn-version }}
       os: ${{ matrix.os }}
       repository: dimaslanjaka/git-command-helper
       branch: ${{ github.ref_name }}
@@ -99,51 +83,36 @@ jobs:
       matrix:
         include:
           - node-version: "14.x"
-            yarn-version: "3.6.4"
             os: ubuntu-latest
           - node-version: "16.x"
-            yarn-version: "3.6.4"
             os: ubuntu-latest
           - node-version: "18.x"
-            yarn-version: "4.1.1"
             os: ubuntu-latest
           - node-version: "20.x"
-            yarn-version: "4.1.1"
             os: ubuntu-latest
           - node-version: "22.x"
-            yarn-version: "4.9.2"
             os: ubuntu-latest
 
           - node-version: "14.x"
-            yarn-version: "3.6.4"
             os: windows-latest
           - node-version: "16.x"
-            yarn-version: "3.6.4"
             os: windows-latest
           - node-version: "18.x"
-            yarn-version: "4.1.1"
             os: windows-latest
           - node-version: "20.x"
-            yarn-version: "4.1.1"
             os: windows-latest
           - node-version: "22.x"
-            yarn-version: "4.9.2"
             os: windows-latest
 
           - node-version: "14.x"
-            yarn-version: "3.6.4"
             os: macos-latest
           - node-version: "16.x"
-            yarn-version: "3.6.4"
             os: macos-latest
           - node-version: "18.x"
-            yarn-version: "4.1.1"
             os: macos-latest
           - node-version: "20.x"
-            yarn-version: "4.1.1"
             os: macos-latest
           - node-version: "22.x"
-            yarn-version: "4.9.2"
             os: macos-latest
       fail-fast: false
     env:
@@ -157,7 +126,7 @@ jobs:
 
     runs-on: ${{ matrix.os }}
 
-    name: "Test | OS: ${{ matrix.os }} | Node: ${{ matrix.node-version }} | Yarn: ${{ matrix.yarn-version }}"
+    name: "Test | OS: ${{ matrix.os }} | Node: ${{ matrix.node-version }}"
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -172,7 +141,7 @@ jobs:
       - name: Setup Corepack & Yarn
         run: |
           corepack enable
-          corepack prepare yarn@${{ matrix.yarn-version }} --activate
+          corepack prepare yarn@latest --activate
           curl -L https://raw.githubusercontent.com/dimaslanjaka/nodejs-package-types/refs/heads/main/.yarnrc-template.yml -o .yarnrc.yml
 
       - name: Git Configuration & Submodules
