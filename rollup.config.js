@@ -5,6 +5,7 @@ const json = require("@rollup/plugin-json");
 const packageJson = require("./package.json");
 const path = require("upath");
 const fs = require("fs");
+const color = require("ansi-colors");
 
 const { author, dependencies = {}, devDependencies = {}, name, version } = packageJson;
 
@@ -17,24 +18,57 @@ const bundledPackages = [
   "node-cache",
   "chalk",
   "@expo/spawn-async",
-  "glob"
+  "glob",
+  "lru-cache"
 ];
 
 // List external dependencies, excluding specific packages that should be bundled
-const external = [...Object.keys(dependencies), ...Object.keys(devDependencies)].filter(
+const externalPackages = [...Object.keys(dependencies), ...Object.keys(devDependencies)].filter(
   (pkgName) => !bundledPackages.includes(pkgName)
 );
+
+function externalFilter(source, importer, isResolved) {
+  function getPackageNameFromSource(source) {
+    if (source.startsWith("@")) {
+      return source.split("/").slice(0, 2).join("/");
+    }
+    return source.split("/")[0];
+  }
+
+  const pkgName = getPackageNameFromSource(source);
+  const isBundled = bundledPackages.includes(pkgName);
+  const isExternal = externalPackages.includes(pkgName);
+
+  if (bundledPackages.includes(pkgName)) {
+    // Helper to color booleans
+    const boolColor = (val) => (val ? color.green("true") : color.red("false"));
+    const treeLog = [
+      color.bold(color.cyan("externalFilter")),
+      `\t├─ ${color.cyan("source:")}     ${color.yellow(source)}`,
+      `\t├─ ${color.cyan("pkgName:")}    ${color.yellow(pkgName)}`,
+      `\t├─ ${color.cyan("external:")}   ${boolColor(isExternal)}`,
+      `\t├─ ${color.cyan("bundled:")}    ${boolColor(isBundled)}`,
+      `\t├─ ${color.cyan("importer:")}   ${color.yellow((importer || "-").replace(process.cwd(), "").replace(/^\//, ""))}`,
+      `\t└─ ${color.cyan("isResolved:")} ${boolColor(isResolved)}`
+    ].join("\n");
+    console.log(treeLog);
+  }
+
+  if (isBundled) return false; // <-- force bundle
+  if (isExternal) return true; // <-- mark as external
+  return false; // fallback: bundle it
+}
 
 const banner = `// ${name} ${version} by ${author.name} <${author.email}> (${author.url})`.trim();
 
 const plugins = [
-  nodeResolve({ extensions: [".js", ".ts"] }),
+  nodeResolve({ extensions: [".js", ".ts", ".cjs", ".mjs", ".json", ".node"] }),
   commonjs(),
   json(),
   babel({
     babelHelpers: "bundled",
-    extensions: [".js", ".ts"],
-    exclude: "node_modules/**",
+    extensions: [".js", ".ts", ".cjs", ".mjs", ".json", ".node"],
+    exclude: "**/node_modules/**",
     presets: [
       [
         require.resolve("@babel/preset-env"),
@@ -135,7 +169,7 @@ const config = {
     }
   ],
   plugins,
-  external
+  external: externalFilter
 };
 
 module.exports = config; // Export the Rollup configuration
