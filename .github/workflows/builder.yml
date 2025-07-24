@@ -34,7 +34,7 @@ jobs:
       YARN_CHECKSUM_BEHAVIOR: update
       YARN_ENABLE_SCRIPTS: true
       YARN_NODE_LINKER: node-modules
-      YARN_IGNORE_NODE: ${{ contains('14.x,16.x', inputs.node-version) && '1' || '' }}
+      YARN_IGNORE_NODE: false
 
     runs-on: ${{ inputs.os }}
 
