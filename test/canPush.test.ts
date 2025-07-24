@@ -1,7 +1,7 @@
 import { beforeAll, describe, expect, it } from "@jest/globals";
 import fs from "fs";
 import path from "path";
-import { git } from "../src/index.js";
+import { git } from "../src/index";
 import { testcfg } from "./config";
 
 describe("canPush()", () => {

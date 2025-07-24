@@ -1,5 +1,5 @@
 import { afterAll, beforeAll, describe, expect, it } from "@jest/globals";
-import git, { gitCommandHelper, spawnAsync } from "../src/index.js";
+import git, { gitCommandHelper, spawnAsync } from "../src/index";
 import { testcfg } from "./config";
 
 describe("get remote", () => {

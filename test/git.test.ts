@@ -1,7 +1,7 @@
 import { beforeAll, describe, expect, test } from "@jest/globals";
 import path from "node:path";
 import { writefile } from "sbg-utility";
-import git, { gitCommandHelper } from "../src/index.js";
+import git, { gitCommandHelper } from "../src/index";
 import { testcfg } from "./config";
 
 describe("main class", () => {

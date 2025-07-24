@@ -1,5 +1,5 @@
 import { beforeAll, describe, expect, it } from "@jest/globals";
-import git, { gitCommandHelper } from "../src/index.js";
+import git, { gitCommandHelper } from "../src/index";
 import { TestConfig } from "./config";
 
 describe("latestCommit() - get latest commit", () => {
