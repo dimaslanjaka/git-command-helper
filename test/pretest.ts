@@ -45,11 +45,12 @@ const newChecksum = getChecksum(
   path.join(rootDir, "rollup.config.js")
 );
 if (newChecksum !== oldChecksum) {
-  console.log(ansi.yellow("src folder or package.json changed, running build..."));
+  console.log(ansi.yellow("[PRETEST] Detected changes in source or config files. Triggering build..."));
   execSync("npm run build", { stdio: "inherit", cwd: rootDir });
   fs.writeFileSync(checksumFile, newChecksum);
+  console.log(ansi.green("[PRETEST] Build completed and checksum updated."));
 } else {
-  console.log(ansi.green("src folder and package.json unchanged, skipping build."));
+  console.log(ansi.green("[PRETEST] No changes detected. Skipping build."));
 }
 
 process.env.ACCESS_TOKEN ||= "token_" + Math.random();
@@ -61,7 +62,9 @@ process.env.ACCESS_TOKEN ||= "token_" + Math.random();
     if (cfg.branch) await git.setbranch(cfg.branch);
     if (cfg.user) await git.setuser(cfg.user);
     if (cfg.email) await git.setemail(cfg.email);
-    await git.fetch(["--all"], { stdio: "pipe" }).then((out) => console.log(ansi.cyan(out)));
+    await git
+      .fetch(["--all"], { stdio: "pipe" })
+      .then((out) => console.log(ansi.cyan("[PRETEST] git fetch output:\n" + out)));
   };
 
   // clone test repo and initialize
