@@ -4,7 +4,7 @@ import fs from "fs";
 import path from "path";
 import { getChecksum } from "sbg-utility";
 import clone from "../src/clone";
-import gitHelper, { GitOpt } from "../src/index.js";
+import gitHelper, { GitOpt } from "../src/index";
 import { TestConfig } from "./config";
 
 const rootDir = path.join(__dirname, "..");
@@ -18,10 +18,11 @@ const newChecksum = getChecksum(
   path.join(rootDir, "tsconfig.json"),
   path.join(rootDir, "rollup.config.js")
 );
-if (newChecksum !== oldChecksum) {
+const isChecksumChanged = oldChecksum !== newChecksum;
+
+if (isChecksumChanged) {
   console.log(ansi.yellow("[PRETEST] Detected changes in source or config files. Triggering build..."));
   execSync("npm run build", { stdio: "inherit", cwd: rootDir });
-  fs.writeFileSync(checksumFile, newChecksum);
   console.log(ansi.green("[PRETEST] Build completed and checksum updated."));
 } else {
   console.log(ansi.green("[PRETEST] No changes detected. Skipping build."));
@@ -56,4 +57,9 @@ process.env.ACCESS_TOKEN ||= "token_" + Math.random();
   };
   await clone(obj);
   await init(obj);
+
+  // Write checksum if it has changed at end of the process
+  if (isChecksumChanged) {
+    fs.writeFileSync(checksumFile, newChecksum);
+  }
 })();
