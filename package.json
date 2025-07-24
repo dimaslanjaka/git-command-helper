@@ -339,7 +339,7 @@
   },
   "resolutions": {
     "sbg-utility": "https://github.com/dimaslanjaka/static-blog-generator/raw/67e658f4cdc6bab94fef60a9a146a441df43f050/packages/sbg-utility/release/sbg-utility.tgz",
-    "binary-collections": "https://github.com/dimaslanjaka/bin/raw/035c9539e980462508ad474e5f70dc89f39f7ca1/releases/bin.tgz",
+    "binary-collections": "https://github.com/dimaslanjaka/bin/raw/91258d39076bb44e9b1c1c70542b5cdcec4e8eb1/releases/bin.tgz",
     "cross-spawn": "https://github.com/dimaslanjaka/node-cross-spawn/raw/80999ac7a7031a81e11ddb5fab0f8ba433041c98/release/cross-spawn.tgz",
     "ansi-regex": "^4",
     "glob-parent": "^6.0.2",
