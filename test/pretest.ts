@@ -30,11 +30,11 @@ function getChecksum(...targetPaths: string[]): string {
         files.push(path.resolve(pattern));
       } else if (stat.isDirectory()) {
         // Recursively add all files in the directory
-        const dirFiles = glob.sync("**/*", { cwd: pattern, nodir: true, absolute: true });
+        const dirFiles = glob.sync("**/*", { cwd: pattern, nodir: true, absolute: true, dot: true });
         files.push(...dirFiles);
       }
     } else {
-      const matches = glob.sync(pattern, { nodir: true, absolute: true });
+      const matches = glob.sync(pattern, { nodir: true, absolute: true, dot: true });
       files.push(...matches);
     }
   }
