@@ -57,6 +57,11 @@
       "require": "./dist/git.es.js",
       "types": "./dist/git.es.d.ts"
     },
+    "./dist/clone": {
+      "import": "./dist/clone.mjs",
+      "require": "./dist/clone.js",
+      "types": "./dist/clone.d.ts"
+    },
     "./dist/cache-stream": {
       "import": "./dist/cache-stream.mjs",
       "require": "./dist/cache-stream.js",
