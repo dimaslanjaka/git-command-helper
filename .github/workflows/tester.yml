@@ -179,7 +179,7 @@ jobs:
 
       - name: Diagnose Dependency Issues
         if: failure() && steps.install.conclusion == 'failure'
-        run: npx npm-check
+        run: npx npm-check --skip-unused
         shell: bash
 
       - name: Run Tests
