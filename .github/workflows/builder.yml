@@ -65,8 +65,11 @@ jobs:
         with:
           node-version: ${{ env.node-version }}
 
-      - name: Enable corepack
-        run: corepack enable
+      - name: Setup Corepack & Yarn
+        run: |
+          corepack enable
+          corepack prepare yarn@latest --activate
+          curl -L https://raw.githubusercontent.com/dimaslanjaka/nodejs-package-types/refs/heads/main/.yarnrc-template.yml -o .yarnrc.yml
 
       - name: Pull & update submodules recursively
         continue-on-error: true
