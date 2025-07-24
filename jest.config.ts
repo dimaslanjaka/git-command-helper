@@ -19,7 +19,7 @@ const config: JestConfigWithTsJest = {
   preset: "ts-jest",
   testEnvironment: "node",
   moduleFileExtensions: ["ts", "js", "json", "mjs", "mts", "node"],
-  // extensionsToTreatAsEsm: [".ts", ".mjs", ".mts"],
+  extensionsToTreatAsEsm: [".ts"],
   verbose: false,
   cache: true,
   cacheDirectory: join(__dirname, "tmp/jest"),
@@ -33,8 +33,8 @@ const config: JestConfigWithTsJest = {
     "!**/.deploy_git/**"
   ],
   roots: [`<rootDir>/test`],
-  coveragePathIgnorePatterns: ["/node_modules/", "/dist/", "/tmp/", "/test/"],
-  // testPathIgnorePatterns: ['/node_modules/', '/dist/', '/tmp/', '/test/', '**/*.builder.ts'],
+  coveragePathIgnorePatterns: ["**/node_modules/**", "**/dist/**", "**/tmp/**", "**/test/**"],
+  testPathIgnorePatterns: ["**/node_modules/**", "**/dist/**", "**/tmp/**", "**/test/**"],
   testMatch: [
     `**/__tests__/**/*.+(ts|tsx|js|mjs|mts)`,
     `**/?(*.)+(spec|test).+(ts|tsx|js|mjs|mts)`,
