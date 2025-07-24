@@ -2,21 +2,21 @@ name: Clean Caches
 
 on:
   push:
-    branches: ['master', 'beta']
+    branches: ["master", "beta"]
     paths:
-      - '**/package-lock.json'
-      - '**/yarn.lock'
-      - '**/package.json'
+      - "**/package-lock.json"
+      - "**/yarn.lock"
+      - "**/package.json"
   pull_request:
     types:
       - closed
     paths:
-      - '**/package-lock.json'
-      - '**/yarn.lock'
-      - '**/package.json'
+      - "**/package-lock.json"
+      - "**/yarn.lock"
+      - "**/package.json"
   workflow_dispatch:
   schedule:
-    - cron: '0 0 1 * *'
+    - cron: "0 0 1 * *"
 # Run monthly, at 00:00 on the 1st day of month.
 
 # run single job
@@ -34,7 +34,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          token: ${{ secrets.ACCESS_TOKEN }}
+          token: ${{ secrets.ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
       # https://github.com/actions/cache/blob/main/tips-and-workarounds.md#force-deletion-of-caches-overriding-default-cache-eviction-policy
       - name: Cleanup caches
         shell: bash
@@ -53,4 +53,4 @@ jobs:
           done
           echo "Done"
         env:
-          GH_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          GH_TOKEN: ${{ secrets.ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
