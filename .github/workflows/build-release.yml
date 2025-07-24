@@ -298,6 +298,7 @@ jobs:
         run: |
           git config set advice.addIgnoredFile false
           git add release || true
+          git add releases || true
           git add dist || true
           git add lib || true
       - name: Pull before push
