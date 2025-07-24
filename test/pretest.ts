@@ -24,9 +24,19 @@ function getChecksum(...targetPaths: string[]): string {
   };
   let files: string[] = [];
   for (const pattern of targetPaths) {
-    // Use glob to expand patterns, including directories and files
-    const matches = glob.sync(pattern, { nodir: true, absolute: true });
-    files.push(...matches);
+    if (fs.existsSync(pattern)) {
+      const stat = fs.statSync(pattern);
+      if (stat.isFile()) {
+        files.push(path.resolve(pattern));
+      } else if (stat.isDirectory()) {
+        // Recursively add all files in the directory
+        const dirFiles = glob.sync("**/*", { cwd: pattern, nodir: true, absolute: true });
+        files.push(...dirFiles);
+      }
+    } else {
+      const matches = glob.sync(pattern, { nodir: true, absolute: true });
+      files.push(...matches);
+    }
   }
   files = Array.from(new Set(files)).sort();
   files.forEach(addFile);
