@@ -82,7 +82,7 @@ jobs:
       - name: Enable corepack
         run: |
           corepack enable
-          corepack prepare yarn@latest --activate
+          corepack prepare yarn@stable --activate
           curl -L https://raw.githubusercontent.com/dimaslanjaka/nodejs-package-types/refs/heads/main/.yarnrc-template.yml -o .yarnrc.yml
 
       - name: Set env
