@@ -32,13 +32,16 @@ function getChecksum(...targetPaths: string[]): string {
 }
 
 const rootDir = path.join(__dirname, "..");
-const srcDir = path.join(rootDir, "src");
-const pkgFile = path.join(rootDir, "package.json");
 const tmpDir = path.join(rootDir, "tmp");
 if (!fs.existsSync(tmpDir)) fs.mkdirSync(tmpDir, { recursive: true });
 const checksumFile = path.join(tmpDir, ".checksum");
 const oldChecksum = fs.existsSync(checksumFile) ? fs.readFileSync(checksumFile, "utf8") : "";
-const newChecksum = getChecksum(srcDir, pkgFile);
+const newChecksum = getChecksum(
+  path.join(rootDir, "src"),
+  path.join(rootDir, "package.json"),
+  path.join(rootDir, "tsconfig.json"),
+  path.join(rootDir, "rollup.config.js")
+);
 if (newChecksum !== oldChecksum) {
   console.log(ansi.yellow("src folder or package.json changed, running build..."));
   execSync("npm run build", { stdio: "inherit", cwd: rootDir });
