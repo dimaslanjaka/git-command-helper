@@ -270,15 +270,13 @@ jobs:
         run: |
           git config --global user.name 'dimaslanjaka'
           git config --global user.email 'dimaslanjaka@gmail.com'
-      - run: git add release
+      - name: Add files to git
         if: steps.changes.outputs.files_changed == 'true'
         continue-on-error: true
-      - run: git add dist
-        if: steps.changes.outputs.files_changed == 'true'
-        continue-on-error: true
-      - run: git add lib
-        if: steps.changes.outputs.files_changed == 'true'
-        continue-on-error: true
+        run: |
+          git add release || true
+          git add dist || true
+          git add lib || true
       - run: git add postinstall.js packer.js .github
         if: steps.changes.outputs.files_changed == 'true'
         continue-on-error: true
