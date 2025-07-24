@@ -305,8 +305,15 @@ jobs:
       - name: Git push
         if: steps.changes.outputs.files_changed == 'true'
         continue-on-error: true
+        shell: bash
         run: |
           if [ $(git diff --cached --name-only | wc -l) -gt "0" ]; then
+            echo "Staged files and their sizes:"
+            for file in $(git diff --cached --name-only); do
+              if [ -f "$file" ]; then
+                echo "$(du -h "$file" | cut -f1) $file"
+              fi
+            done
             git commit -m "chore: update build from ${{ env.GITHUB_COMMIT_URL }}" -m "commit hash: ${{ env.GITHUB_SHA_SHORT }}" -m "commit url: ${{ env.GITHUB_COMMIT_URL }}" -m "runner: ${{ env.GITHUB_RUNNER_URL }}"
             git push
           fi
