@@ -248,7 +248,17 @@ jobs:
         name: List the state of node modules
         shell: bash
         continue-on-error: true
-        run: npm list
+        run: |
+          if [ -f "package-lock.json" ]; then
+            npm list
+          else
+            YARN_VERSION=$(yarn -v)
+            if [[ "$YARN_VERSION" =~ ^[2-9] ]]; then
+              yarn info --all
+            else
+              yarn list
+            fi
+          fi
 
       - name: Build
         run: npm run build
