@@ -198,15 +198,9 @@
       "types": "./dist/config/fix-case-sensitive.d.ts"
     }
   },
-  "directories": {
-    "doc": "docs/git-command-helper",
-    "test": "test",
-    "lib": "dist",
-    "bin": "bin"
-  },
   "files": [
-    "dist",
-    "bin",
+    "./dist",
+    "./bin",
     "!**/*.tsbuildinfo",
     "!**/package-lock.json",
     "!**/yarn.lock",
