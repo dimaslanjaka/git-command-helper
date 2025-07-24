@@ -126,7 +126,7 @@ jobs:
 
     runs-on: ${{ matrix.os }}
 
-    name: "Test | OS: ${{ matrix.os }} | Node: ${{ matrix.node-version }}"
+    name: "Test (${{ matrix.os }}, Node ${{ matrix.node-version }})"
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
