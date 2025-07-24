@@ -1,6 +1,6 @@
 import { writefile } from "sbg-utility";
 import path from "upath";
-import { gitCommandHelper } from "../src";
+import { gitCommandHelper } from "../src/index.js";
 import { testcfg } from "./config";
 
 const gh = new gitCommandHelper(testcfg.cwd, testcfg.branch);

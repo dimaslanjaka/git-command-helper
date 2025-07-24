@@ -1,5 +1,5 @@
 import { describe, expect, it } from "@jest/globals";
-import git from "../../src";
+import git from "../../src/index.js";
 import { myGithubPages } from "../config";
 
 describe("git - constructor with object", () => {

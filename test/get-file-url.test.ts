@@ -1,7 +1,7 @@
 import { beforeAll, describe, expect, it } from "@jest/globals";
 import { join } from "path";
-import git, { gitCommandHelper } from "../src";
 import { getGithubRepoUrl } from "../src/functions/getGithubRepoUrl";
+import git, { gitCommandHelper } from "../src/index.js";
 
 describe("getGithubRepoUrl() - get file url", () => {
   let gh: git;

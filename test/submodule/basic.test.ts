@@ -1,5 +1,5 @@
 import { beforeAll, describe, expect, it, jest } from "@jest/globals";
-import gitHelper from "../../src";
+import gitHelper from "../../src/index.js";
 import submodule from "../../src/submodule";
 import { testcfg } from "../config";
 

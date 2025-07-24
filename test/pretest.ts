@@ -3,8 +3,8 @@ import { execSync } from "child_process";
 import fs from "fs";
 import path from "path";
 import { getChecksum } from "sbg-utility";
-import gitHelper, { GitOpt } from "../src";
 import clone from "../src/clone";
+import gitHelper, { GitOpt } from "../src/index.js";
 import { TestConfig } from "./config";
 
 const rootDir = path.join(__dirname, "..");
