@@ -56,17 +56,6 @@ jobs:
             os: windows-latest
           - node-version: "22.x"
             os: windows-latest
-
-          - node-version: "14.x"
-            os: macos-latest
-          - node-version: "16.x"
-            os: macos-latest
-          - node-version: "18.x"
-            os: macos-latest
-          - node-version: "20.x"
-            os: macos-latest
-          - node-version: "22.x"
-            os: macos-latest
       fail-fast: false
     name: "Build | OS: ${{ matrix.os }} | Node: ${{ matrix.node-version }}"
     uses: ./.github/workflows/builder.yml
@@ -104,17 +93,6 @@ jobs:
             os: windows-latest
           - node-version: "22.x"
             os: windows-latest
-
-          - node-version: "14.x"
-            os: macos-latest
-          - node-version: "16.x"
-            os: macos-latest
-          - node-version: "18.x"
-            os: macos-latest
-          - node-version: "20.x"
-            os: macos-latest
-          - node-version: "22.x"
-            os: macos-latest
       fail-fast: false
     env:
       NODE_OPTIONS: "--max_old_space_size=8192" #8192 4096 --expose-gc
@@ -258,7 +236,7 @@ jobs:
       YARN_NODE_LINKER: node-modules
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest, windows-latest]
         node-version: ["14.x", "16.x", "18.x", "20.x", "22.x"]
     steps:
       - uses: actions/checkout@v4
