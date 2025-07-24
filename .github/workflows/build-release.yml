@@ -300,8 +300,8 @@ jobs:
           git add release || true
           git add dist || true
           git add lib || true
-      - run: git pull -X theirs
-        name: Pull before push
+      - name: Pull before push
+        run: git pull -X theirs
         if: steps.changes.outputs.files_changed == 'true'
       - name: Git push
         if: steps.changes.outputs.files_changed == 'true'
@@ -324,3 +324,7 @@ jobs:
             git commit -m "chore: update build from ${{ env.GITHUB_COMMIT_URL }}" -m "commit hash: ${{ env.GITHUB_SHA_SHORT }}" -m "commit url: ${{ env.GITHUB_COMMIT_URL }}" -m "runner: ${{ env.GITHUB_RUNNER_URL }}"
             git push
           fi
+
+      - name: Clean GitHub Actions cache
+        run: npx clean-github-actions-cache
+        continue-on-error: true

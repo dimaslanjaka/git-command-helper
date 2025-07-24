@@ -8,6 +8,9 @@ package-lock.json
 yarn.lock
 .pnp.*
 
+# Secret files
+.env
+
 # Build output and coverage
 dist/
 coverage/
