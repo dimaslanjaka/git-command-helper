@@ -268,8 +268,8 @@ jobs:
         if: steps.changes.outputs.files_changed == 'true'
         continue-on-error: true
         run: |
-          git config --global user.name 'dimaslanjaka'
-          git config --global user.email 'dimaslanjaka@gmail.com'
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
       - name: Add files to git
         if: steps.changes.outputs.files_changed == 'true'
         continue-on-error: true
