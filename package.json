@@ -347,16 +347,6 @@
     "socket.io-parser": "^3.4.3",
     "unset-value": "^2.0.1"
   },
-  "overrides": {
-    "sbg-utility": "https://github.com/dimaslanjaka/static-blog-generator/raw/7696e66ab84f319909c5dab9054303e91f898454/packages/sbg-utility/release/sbg-utility.tgz",
-    "binary-collections": "https://github.com/dimaslanjaka/bin/raw/master/releases/bin.tgz",
-    "cross-spawn": "https://github.com/dimaslanjaka/node-cross-spawn/raw/80999ac/release/cross-spawn.tgz",
-    "ansi-regex": "^4",
-    "glob-parent": "^6.0.2",
-    "node.extend": "^2.0.2",
-    "socket.io-parser": "^3.4.3",
-    "unset-value": "^2.0.1"
-  },
   "engines": {
     "node": ">=14"
   }
