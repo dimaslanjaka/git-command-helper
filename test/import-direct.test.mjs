@@ -1,21 +1,35 @@
 import { beforeAll, describe, expect, it } from "@jest/globals";
 import { isClass } from "./import-direct.cjs";
 
-describe("Import dist test", () => {
+describe("Import CJS and ESM dist bundles", () => {
   let gchCJS;
+  let gchESM;
   beforeAll(async () => {
     // Import the CJS version to ensure it works correctly
     gchCJS = await import("../dist/index.js");
+    // Import the ESM version to ensure it works correctly
+    gchESM = await import("../dist/index.mjs");
   });
-  it("should detect if gch is a class", () => {
+  it("CJS: gch is not a class", () => {
     expect(isClass(gchCJS)).toBe(false);
   });
 
-  it("should detect if gch.gitCommandHelper is a class", () => {
+  it("ESM: gch is not a class", () => {
+    expect(isClass(gchESM)).toBe(false);
+  });
+
+  it("CJS: gch.gitCommandHelper is a class", () => {
     expect(isClass(gchCJS.gitCommandHelper)).toBe(true);
   });
 
-  it("should detect if gch.gitHelper is a class", () => {
+  it("ESM: gch.gitCommandHelper is a class", () => {
+    expect(isClass(gchESM.gitCommandHelper)).toBe(true);
+  });
+
+  it("CJS: gch.gitHelper is a class", () => {
     expect(isClass(gchCJS.gitHelper)).toBe(true);
+  });
+  it("ESM: gch.gitHelper is a class", () => {
+    expect(isClass(gchESM.gitHelper)).toBe(true);
   });
 });
