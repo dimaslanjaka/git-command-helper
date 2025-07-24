@@ -34,7 +34,7 @@ jobs:
       YARN_CHECKSUM_BEHAVIOR: update
       YARN_ENABLE_SCRIPTS: true
       YARN_NODE_LINKER: node-modules
-      YARN_IGNORE_NODE: false
+      YARN_IGNORE_NODE: 0
 
     runs-on: ${{ inputs.os }}
 
