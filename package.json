@@ -102,11 +102,6 @@
       "require": "./dist/functions/status.js",
       "types": "./dist/functions/status.d.ts"
     },
-    "./dist/functions/push-checker": {
-      "import": "./dist/functions/push-checker.mjs",
-      "require": "./dist/functions/push-checker.js",
-      "types": "./dist/functions/push-checker.d.ts"
-    },
     "./dist/functions/parseGitHubUrl": {
       "import": "./dist/functions/parseGitHubUrl.mjs",
       "require": "./dist/functions/parseGitHubUrl.js",
@@ -171,6 +166,11 @@
       "import": "./dist/functions/getGithubBranches.mjs",
       "require": "./dist/functions/getGithubBranches.js",
       "types": "./dist/functions/getGithubBranches.d.ts"
+    },
+    "./dist/functions/dry-helper": {
+      "import": "./dist/functions/dry-helper.mjs",
+      "require": "./dist/functions/dry-helper.js",
+      "types": "./dist/functions/dry-helper.d.ts"
     },
     "./dist/config/index": {
       "import": "./dist/config/index.mjs",
