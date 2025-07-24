@@ -34,7 +34,6 @@ const config: JestConfigWithTsJest = {
   ],
   roots: [`<rootDir>/test`],
   coveragePathIgnorePatterns: ["**/node_modules/**", "**/dist/**", "**/tmp/**", "**/test/**"],
-  testPathIgnorePatterns: ["**/node_modules/**", "**/dist/**", "**/tmp/**", "**/test/**"],
   testMatch: [
     `**/__tests__/**/*.+(ts|tsx|js|mjs|mts)`,
     `**/?(*.)+(spec|test).+(ts|tsx|js|mjs|mts)`,
