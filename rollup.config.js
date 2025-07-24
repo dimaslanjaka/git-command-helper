@@ -17,9 +17,7 @@ const bundledPackages = [
   "markdown-it",
   "node-cache",
   "chalk",
-  "@expo/spawn-async",
-  "glob",
-  "lru-cache"
+  "@expo/spawn-async"
 ];
 
 // List external dependencies, excluding specific packages that should be bundled
