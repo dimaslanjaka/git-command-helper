@@ -4,11 +4,38 @@
   },
   "terminal.integrated.env.linux": {
     // linux custom PATH environment variable
-    "PATH": "${env:PATH}:${workspaceFolder}/node_modules/.bin:${workspaceFolder}/bin"
+    "PATH": "${workspaceFolder}/bin:${workspaceFolder}/.venv/bin:${workspaceFolder}/vendor/bin:${env:PATH}:${workspaceFolder}/node_modules/.bin"
   },
   "terminal.integrated.env.windows": {
     // windows custom PATH environment variable
-    "PATH": "${env:PATH};${workspaceFolder}\\node_modules\\.bin;${workspaceFolder}\\bin"
+    "PATH": "${workspaceFolder}\\bin;${workspaceFolder}\\.venv\\Scripts;${workspaceFolder}\\vendor\\bin;${env:PATH};${workspaceFolder}\\node_modules\\.bin"
+  },
+  "terminal.integrated.defaultProfile.windows": "Short Command Prompt",
+  "terminal.integrated.profiles.windows": {
+    "Cygwin": {
+      "args": ["--login", "-i"],
+      "env": {
+        "CHERE_INVOKING": "1"
+      },
+      "path": "C:\\cygwin64\\bin\\bash.exe"
+    },
+    "Short Command Prompt": {
+      "path": ["${env:windir}\\System32\\cmd.exe"],
+      "args": ["/k", "prompt $g"],
+      "icon": "terminal-cmd"
+    },
+    "Command Prompt": {
+      "args": [],
+      "icon": "terminal-cmd",
+      "path": ["${env:windir}\\Sysnative\\cmd.exe", "${env:windir}\\System32\\cmd.exe"]
+    },
+    "Git Bash": {
+      "source": "Git Bash"
+    },
+    "PowerShell": {
+      "icon": "terminal-powershell",
+      "source": "PowerShell"
+    }
   },
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit",
