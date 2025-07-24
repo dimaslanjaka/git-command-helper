@@ -34,28 +34,8 @@ jobs:
   build:
     strategy:
       matrix:
-        include:
-          - node-version: "14.x"
-            os: ubuntu-latest
-          - node-version: "16.x"
-            os: ubuntu-latest
-          - node-version: "18.x"
-            os: ubuntu-latest
-          - node-version: "20.x"
-            os: ubuntu-latest
-          - node-version: "22.x"
-            os: ubuntu-latest
-
-          - node-version: "14.x"
-            os: windows-latest
-          - node-version: "16.x"
-            os: windows-latest
-          - node-version: "18.x"
-            os: windows-latest
-          - node-version: "20.x"
-            os: windows-latest
-          - node-version: "22.x"
-            os: windows-latest
+        os: [ubuntu-latest, windows-latest]
+        node-version: ["14.x", "16.x", "18.x", "20.x", "22.x"]
       fail-fast: false
     name: "Build ${{ matrix.os }} Node ${{ matrix.node-version }}"
     uses: ./.github/workflows/builder.yml
@@ -71,28 +51,8 @@ jobs:
     needs: [build]
     strategy:
       matrix:
-        include:
-          - node-version: "14.x"
-            os: ubuntu-latest
-          - node-version: "16.x"
-            os: ubuntu-latest
-          - node-version: "18.x"
-            os: ubuntu-latest
-          - node-version: "20.x"
-            os: ubuntu-latest
-          - node-version: "22.x"
-            os: ubuntu-latest
-
-          - node-version: "14.x"
-            os: windows-latest
-          - node-version: "16.x"
-            os: windows-latest
-          - node-version: "18.x"
-            os: windows-latest
-          - node-version: "20.x"
-            os: windows-latest
-          - node-version: "22.x"
-            os: windows-latest
+        os: [ubuntu-latest, windows-latest]
+        node-version: ["14.x", "16.x", "18.x", "20.x", "22.x"]
       fail-fast: false
     env:
       NODE_OPTIONS: "--max_old_space_size=8192" #8192 4096 --expose-gc
