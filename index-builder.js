@@ -3,7 +3,7 @@ const Bluebird = require("bluebird");
 const { spawnAsync } = require("./src/spawn");
 const glob = require("glob");
 const packageJson = require("./package.json");
-const { fs } = require("sbg-utility");
+const fs = require("fs");
 
 (async () => {
   const ignore = ["**/node_modules/**", "**/dist/**", "**/tmp/**"];
