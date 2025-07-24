@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "upath";
+import clone from "../src/clone";
 import { isIgnored } from "../src/functions/gitignore";
-import clone from "./clone";
 import { testcfg } from "./config";
 
 // clone expects: { cwd: string; remote: string; branch: string; token?: string }

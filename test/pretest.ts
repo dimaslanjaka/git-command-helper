@@ -1,6 +1,6 @@
 import path from "path";
 import gitHelper, { GitOpt } from "../src";
-import clone from "./clone";
+import clone from "../src/clone";
 import { TestConfig } from "./config";
 
 if (!process.env.ACCESS_TOKEN) {
