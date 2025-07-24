@@ -262,11 +262,11 @@ jobs:
           if [ "${{ steps.set-env.outputs.PACKAGE-MANAGER }}" == "npm" ]; then
             npm install --legacy-peer-deps || npm install --verbose || npm install --no-shrinkwrap --update-binary || npm install
           else
-            yarn install --inline-builds || yarn install --verbose || yarn install --inline-builds || (touch yarn.lock && yarn install --inline-builds)
+            touch yarn.lock
+            yarn install --inline-builds || yarn install --verbose || yarn install --inline-builds || yarn install --inline-builds
           fi
         id: install
         shell: bash
-        continue-on-error: true
 
       - name: Run Tests
         run: npm test
