@@ -296,6 +296,7 @@ jobs:
         if: steps.changes.outputs.files_changed == 'true'
         continue-on-error: true
         run: |
+          git config set advice.addIgnoredFile false
           git add release || true
           git add dist || true
           git add lib || true
