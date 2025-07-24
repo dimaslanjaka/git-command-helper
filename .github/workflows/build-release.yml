@@ -260,8 +260,12 @@ jobs:
             fi
           fi
 
+      - name: Clean
+        run: npm run clean
+
       - name: Build
         run: npm run build
+
       - name: Pack
         run: npm run pack --if-present
 
