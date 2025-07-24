@@ -18,6 +18,10 @@ on:
         required: true
         type: string
         default: master
+      yarn-version:
+        required: false
+        type: string
+        default: stable
     secrets:
       ACCESS_TOKEN:
         required: true
@@ -25,7 +29,7 @@ on:
 
 jobs:
   build:
-    name: "Builder | OS: ${{ inputs.os }} | Node: ${{ inputs.node-version }}"
+    name: "Builder | OS: ${{ inputs.os }} | Node: ${{ inputs.node-version }} | Yarn: ${{ inputs.yarn-version }}"
     env:
       NODE_OPTIONS: "--max_old_space_size=8192" #8192 4096 --expose-gc
       YARN_ENABLE_IMMUTABLE_INSTALLS: false
@@ -94,16 +98,19 @@ jobs:
         shell: bash
         run: |
           touch yarn.lock
+          (
+            curl -o .yarn/releases/yarn-${{ inputs.yarn-version }}.cjs https://repo.yarnpkg.com/${{ inputs.yarn-version }}/packages/yarnpkg-cli/bin/yarn.js \
+            || curl -o .yarn/releases/yarn-${{ inputs.yarn-version }}.cjs https://raw.githubusercontent.com/yarnpkg/berry/%40yarnpkg/cli/${{ inputs.yarn-version }}/packages/yarnpkg-cli/bin/yarn.js
+          )
+          if grep -q '^yarnPath:' .yarnrc.yml 2>/dev/null; then
+            sed -i.bak "s|^yarnPath:.*$|yarnPath: .yarn/releases/yarn-${{ inputs.yarn-version }}.cjs|" .yarnrc.yml
+          else
+            echo "yarnPath: .yarn/releases/yarn-${{ inputs.yarn-version }}.cjs" >> .yarnrc.yml
+          fi
+          yarn set version ${{ inputs.yarn-version }}
           yarn install
 
       - name: Build
-        id: build
         run: npm run build
-
-      - name: Diagnose Dependency or Build Issues
-        if: failure() && (steps.install.conclusion == 'failure' || steps.build.conclusion == 'failure')
-        run: npx npm-check
-        shell: bash
-
       - name: Pack
         run: npm run pack
