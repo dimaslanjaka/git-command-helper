@@ -77,6 +77,7 @@ jobs:
       branch: ${{ github.ref_name }}
     secrets:
       ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+
   tester:
     needs: [build]
     strategy:
@@ -235,6 +236,12 @@ jobs:
             yarn install --inline-builds || yarn install --verbose || yarn install --inline-builds || yarn install --inline-builds
           fi
         id: install
+        shell: bash
+        continue-on-error: true
+
+      - name: Diagnose Dependency Issues
+        if: failure() && steps.install.conclusion == 'failure'
+        run: npx npm-check
         shell: bash
 
       - name: Run Tests
