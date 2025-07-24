@@ -19,8 +19,7 @@ const bundledPackages = [
   "chalk",
   "@expo/spawn-async",
   "glob",
-  "lru-cache",
-  "path-scurry"
+  "lru-cache"
 ];
 
 // List external dependencies, excluding specific packages that should be bundled
