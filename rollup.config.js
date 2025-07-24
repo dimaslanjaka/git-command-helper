@@ -110,12 +110,12 @@ export function chunkFileNamesWithExt(ext) {
 }
 
 /**
- * @type {import('rollup').RollupOptions[]}
+ * @type {import('rollup').RollupOptions}
  */
-const config = [
-  {
-    input: "tmp/dist/index.js",
-    output: {
+const config = {
+  input: "tmp/dist/index.js",
+  output: [
+    {
       dir: "dist",
       format: "cjs",
       preserveModules: true,
@@ -124,12 +124,7 @@ const config = [
       entryChunkFileNames: chunkFileNamesWithExt("js"),
       banner
     },
-    plugins,
-    external
-  },
-  {
-    input: "tmp/dist/index.js",
-    output: {
+    {
       dir: "dist",
       format: "esm",
       preserveModules: true,
@@ -137,10 +132,10 @@ const config = [
       entryFileNames: entryFileNamesWithExt("mjs"),
       entryChunkFileNames: chunkFileNamesWithExt("mjs"),
       banner
-    },
-    plugins,
-    external
-  }
-];
+    }
+  ],
+  plugins,
+  external
+};
 
 module.exports = config; // Export the Rollup configuration
