@@ -1,6 +1,6 @@
 import { describe, expect, it } from "@jest/globals";
 import path from "path";
-import git from "../src/index.js";
+import git from "../src/index";
 
 describe("git - constructor with object", () => {
   const obj = {

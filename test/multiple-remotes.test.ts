@@ -1,5 +1,5 @@
 import { afterAll, beforeAll, describe, expect, it } from "@jest/globals";
-import { gitHelper, spawn } from "../src/index.js";
+import { gitHelper, spawn } from "../src/index";
 import { testcfg } from "./config";
 
 describe("test multiple url", () => {

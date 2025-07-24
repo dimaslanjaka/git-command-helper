@@ -2,7 +2,7 @@ import { beforeAll, describe, expect, test } from "@jest/globals";
 import { writeFileSync } from "fs";
 import { join } from "path";
 import { isUntracked } from "../src/functions/isFileChanged";
-import git, { gitHelper } from "../src/index.js";
+import git, { gitHelper } from "../src/index";
 import { testcfg } from "./config";
 
 describe("untrack", () => {
