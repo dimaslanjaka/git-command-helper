@@ -105,7 +105,7 @@ jobs:
 
       - name: Diagnose Dependency or Build Issues
         if: failure() && (steps.install.conclusion == 'failure' || steps.build.conclusion == 'failure')
-        run: npx npm-check
+        run: npx npm-check --skip-unused
         shell: bash
 
       - name: Pack
