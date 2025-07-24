@@ -3,7 +3,7 @@ const commonjs = require("@rollup/plugin-commonjs");
 const nodeResolve = require("@rollup/plugin-node-resolve").nodeResolve;
 const json = require("@rollup/plugin-json");
 const packageJson = require("./package.json");
-const upath = require("upath");
+const path = require("upath");
 const fs = require("fs");
 
 const { author, dependencies = {}, devDependencies = {}, name, version } = packageJson;
@@ -60,16 +60,25 @@ export function entryFileNamesWithExt(ext) {
     ext = ext.slice(1);
   }
   return function ({ facadeModuleId }) {
+    facadeModuleId = path.toUnix(facadeModuleId);
     if (!facadeModuleId.includes("node_modules")) {
       return `[name].${ext}`;
     }
-    let rel = upath.relative(upath.resolve(__dirname, "tmp/dist"), facadeModuleId);
+    // Find the first occurrence of 'node_modules' and slice from there
+    const nodeModulesIdx = facadeModuleId.indexOf("node_modules");
+    let rel = facadeModuleId.slice(nodeModulesIdx);
     rel = rel.replace("node_modules", "dependencies");
-    rel = rel.replace(/^(?:\.{2}\/|\.\/)+/, "");
     // Remove extension using upath.extname
-    rel = rel.slice(0, -upath.extname(rel).length) + `.${ext}`;
+    rel = rel.slice(0, -path.extname(rel).length) + `.${ext}`;
+    // Remove any null bytes (\x00) that may be present (Rollup sometimes injects these)
+    rel = rel.replace(/\0/g, "");
+    // Remove any leading slashes
+    rel = rel.replace(/^\/\/+/, "");
 
-    fs.appendFileSync("tmp/rollup.log", `Processed: ${facadeModuleId} -> ${rel}\n`);
+    fs.appendFileSync(
+      "tmp/rollup.log",
+      `entryFileNamesWithExt:\n  [facadeModuleId] ${facadeModuleId}\n  [rel] ${rel}\n`
+    );
     return rel;
   };
 }
@@ -84,10 +93,15 @@ export function chunkFileNamesWithExt(ext) {
   return function ({ name }) {
     // For node_modules chunks, place in dependencies folder
     if (name && name.includes("node_modules")) {
-      let rel = name.replace("node_modules", "dependencies");
-      rel = rel.replace(/^(?:\.\/|\.\.\/)+/, "");
+      const nodeModulesIdx = name.indexOf("node_modules");
+      let rel = name.slice(nodeModulesIdx);
+      rel = rel.replace("node_modules", "dependencies");
       // Remove extension using upath.extname
-      rel = rel.slice(0, -upath.extname(rel).length);
+      rel = rel.slice(0, -path.extname(rel).length);
+      // Remove any null bytes (\x00) that may be present
+      rel = rel.replace(/\0/g, "");
+      // Remove any leading slashes
+      rel = rel.replace(/^\/\/+/, "");
       return `${rel}-[hash].${ext}`;
     }
     // For local chunks, keep the default pattern
