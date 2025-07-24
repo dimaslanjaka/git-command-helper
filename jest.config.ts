@@ -1,5 +1,4 @@
 import { existsSync, mkdirSync, readFileSync } from "fs";
-import { defaults } from "jest-config";
 import * as jsonc from "jsonc-parser";
 import { join } from "path";
 import type { JestConfigWithTsJest } from "ts-jest";
@@ -19,7 +18,8 @@ const tsconfig = Object.assign(tsconfigBase.compilerOptions, tsconfigJest.compil
 const config: JestConfigWithTsJest = {
   preset: "ts-jest",
   testEnvironment: "node",
-  moduleFileExtensions: [...defaults.moduleFileExtensions, "mts", "mjs"],
+  moduleFileExtensions: ["ts", "js", "json", "mjs", "mts", "node"],
+  // extensionsToTreatAsEsm: [".ts", ".mjs", ".mts"],
   verbose: false,
   cache: true,
   cacheDirectory: join(__dirname, "tmp/jest"),
@@ -42,12 +42,29 @@ const config: JestConfigWithTsJest = {
     "!**/.deploy_git/**"
   ],
 
+  // Allow transformation of all ESM in node_modules for all external dependencies
+  transformIgnorePatterns: ["/node_modules/(?!.*\\.mjs$)/"],
+
   transform: {
     "^.+\\.(ts|tsx)$": [
       "ts-jest",
       // required due to custom location of tsconfig.json configuration file
       // https://kulshekhar.github.io/ts-jest/docs/getting-started/options/tsconfig
-      { tsconfig }
+      {
+        babelConfig: {
+          presets: [
+            [
+              "@babel/preset-env",
+              {
+                targets: { node: "current" }
+              }
+            ],
+            "@babel/preset-typescript"
+          ]
+        },
+        // useESM: true,
+        tsconfig
+      }
     ],
     "^.+\\.(mjs)$": ["babel-jest", { presets: ["@babel/preset-env"] }]
   },
