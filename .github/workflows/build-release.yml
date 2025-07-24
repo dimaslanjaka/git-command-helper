@@ -299,16 +299,11 @@ jobs:
           git add release || true
           git add dist || true
           git add lib || true
-      - run: git add postinstall.js packer.js .github
-        if: steps.changes.outputs.files_changed == 'true'
-        continue-on-error: true
       - run: git pull -X theirs
         name: Pull before push
         if: steps.changes.outputs.files_changed == 'true'
-        continue-on-error: true
       - name: Git push
         if: steps.changes.outputs.files_changed == 'true'
-        continue-on-error: true
         shell: bash
         run: |
           if [ $(git diff --cached --name-only | wc -l) -gt "0" ]; then
