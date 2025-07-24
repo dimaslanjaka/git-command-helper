@@ -1,11 +1,12 @@
 import Bluebird from "bluebird";
 import { SpawnOptions } from "child_process";
-import { existsSync, statSync } from "fs-extra";
-import { rm } from "fs/promises";
-import { join, toUnix } from "upath";
+import fs from "fs-extra";
+import path from "upath";
 import git from "./git";
 import { spawn } from "./spawner";
 import extractSubmodule from "./utils/extract-submodule";
+
+// Use path.join and path.toUnix directly throughout the file
 
 export class submodule {
   /** current working directory */
@@ -17,7 +18,7 @@ export class submodule {
 
   constructor(cwd: string) {
     this.cwd = cwd;
-    this.hasConfig = existsSync(join(this.cwd, ".gitmodules"));
+    this.hasConfig = fs.existsSync(path.join(this.cwd, ".gitmodules"));
   }
 
   private spawnOpt(opt: SpawnOptions = {}) {
@@ -40,12 +41,12 @@ export class submodule {
 
   /**
    * remove submodule
-   * @param path path to submodule
+   * @param submodulePath path to submodule
    */
-  async remove(path: string) {
-    await spawn("git", ["submodule", "deinit", "-f", toUnix(path)], { cwd: this.cwd, stdio: "pipe" });
-    await rm(join(this.cwd, ".git/modules", toUnix(path)), { recursive: true, force: true });
-    await spawn("git", ["rm", "-f", toUnix(path)], { cwd: this.cwd, stdio: "pipe" });
+  async remove(submodulePath: string) {
+    await spawn("git", ["submodule", "deinit", "-f", path.toUnix(submodulePath)], { cwd: this.cwd, stdio: "pipe" });
+    await fs.rm(path.join(this.cwd, ".git/modules", path.toUnix(submodulePath)), { recursive: true, force: true });
+    await spawn("git", ["rm", "-f", path.toUnix(submodulePath)], { cwd: this.cwd, stdio: "pipe" });
   }
 
   /**
@@ -53,11 +54,11 @@ export class submodule {
    * @returns
    */
   hasSubmodule() {
-    const gitmodules = join(this.cwd, ".gitmodules");
-    const exist = existsSync(gitmodules);
+    const gitmodules = path.join(this.cwd, ".gitmodules");
+    const exist = fs.existsSync(gitmodules);
     // check empty .gitmodules
     if (exist) {
-      const size = statSync(gitmodules).size;
+      const size = fs.statSync(gitmodules).size;
       return size > 0;
     }
     return exist;
@@ -160,7 +161,7 @@ export class submodule {
   get() {
     if (!this.hasSubmodule()) return []; //throw new Error('This directory not have submodule installed');
 
-    const extract = extractSubmodule(join(this.cwd, ".gitmodules"));
+    const extract = extractSubmodule(path.join(this.cwd, ".gitmodules"));
     for (let i = 0; i < extract.length; i++) {
       const item = extract[i];
       if (!item) continue;
