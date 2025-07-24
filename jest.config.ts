@@ -40,7 +40,10 @@ const config: JestConfigWithTsJest = {
     `**/test/*.test.{ts,js,mjs,mts}`,
     "!**/.deploy_git/**"
   ],
-
+  // Use moduleNameMapper to handle ESM imports in tests
+  moduleNameMapper: {
+    "^(\\.{1,2}/.*)\\.js$": "$1"
+  },
   // Allow transformation of all ESM in node_modules for all external dependencies
   transformIgnorePatterns: ["/node_modules/(?!.*\\.mjs$)/"],
 
