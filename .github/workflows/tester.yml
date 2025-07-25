@@ -182,6 +182,9 @@ jobs:
         run: npx npm-check --skip-unused
         shell: bash
 
+      - name: build
+        run: npm run build
+
       - name: Run Tests
         run: npm test
 
@@ -232,6 +235,8 @@ jobs:
             ${{ runner.os }}-
       - name: Install Dependencies
         run: npm install
+      - name: Build
+        run: npm run build
       - name: Coverage
         run: npm run test-cov
         env:
