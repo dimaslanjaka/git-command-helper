@@ -14,6 +14,10 @@ const checksumFile = path.join(tmpDir, ".checksum");
 if (!fs.existsSync(checksumFile)) {
   fs.ensureDirSync(path.dirname(checksumFile));
   fs.writeFileSync(checksumFile, "");
+} else if (!fs.statSync(checksumFile).isFile()) {
+  fs.rmSync(checksumFile, { force: true, recursive: true });
+  fs.ensureDirSync(path.dirname(checksumFile));
+  fs.writeFileSync(checksumFile, "");
 }
 const oldChecksum = fs.readFileSync(checksumFile, "utf-8");
 const newChecksum = getChecksum(
