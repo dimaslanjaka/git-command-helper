@@ -280,8 +280,6 @@ jobs:
                 echo "${size_mb}MB $file"
                 if [ "$size_mb" -gt 30 ]; then
                   echo "Error: $file exceeds 30MB ($size_mb MB). Aborting push."
-                  echo "Directory contents:\n\n"
-                  node dir-tree.js
                   echo "Listing contents of $file:\n\n"
                   tar -tzvf "$file"
                   exit 1
