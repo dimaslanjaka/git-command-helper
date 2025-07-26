@@ -167,74 +167,18 @@ jobs:
         run: npm i -g typescript ts-node gulp-cli hexo-cli webpack-cli
         if: steps.cache.outputs.cache-hit != 'true'
 
-      - name: Install Legacy Peer Dependencies
+      - name: Install dependencies
+        shell: bash
         run: |
           if [ -f "package-lock.json" ]; then
-              npm install --legacy-peer-deps
+            npm install --legacy-peer-deps || npm install --verbose || npm install --no-shrinkwrap --update-binary
           else
-              touch yarn.lock
-              yarn install
-          fi
-        id: install-legacy
-        shell: bash
-        continue-on-error: true
-
-      - name: Install Verbose
-        if: steps.install-legacy.outcome == 'failure'
-        id: install-verbose
-        continue-on-error: true
-        shell: bash
-        run: |
-          rm -rf node_modules
-          FILE=package-lock.json
-          if [ -f "$FILE" ]; then
-              npm install --verbose
-          else
-              touch yarn.lock
-              yarn install --verbose
-          fi
-
-      - name: Install Update Binary
-        id: install-update
-        if: steps.install-verbose.outcome == 'failure'
-        shell: bash
-        run: |
-          rm -rf node_modules
-          FILE=package-lock.json
-          if [ -f "$FILE" ]; then
-              npm install --no-shrinkwrap --update-binary
-          else
-              touch yarn.lock
-              yarn install
-          fi
-        continue-on-error: true
-
-      - name: Clean Install
-        id: install-clean
-        shell: bash
-        if: steps.install-update.outcome == 'failure'
-        run: |
-          find . -name "yarn.lock" -type d -prune -exec rm -rf '{}' +
-          find . -name "package-lock.json" -type d -prune -exec rm -rf '{}' +
-          find . -name "node_modules" -type d -prune -exec rm -rf '{}' +
-          if [ "${{ steps.set-env.outputs.PACKAGE-MANAGER }}" == "npm" ]; then
-              npm install
-          else
-              touch yarn.lock
-              yarn install
+            yarn install || yarn install --verbose
           fi
 
       - name: Dump
         shell: bash
         run: |
-          echo "install-legacy.outcome ${{ steps.install-legacy.outcome }}"
-          echo "install-legacy.conclusion ${{ steps.install-legacy.conclusion }}"
-          echo "install-verbose.outcome ${{ steps.install-verbose.outcome }}"
-          echo "install-verbose.conclusion ${{ steps.install-verbose.conclusion }}"
-          echo "install-update.outcome ${{ steps.install-update.outcome }}"
-          echo "install-update.conclusion ${{ steps.install-update.conclusion }}"
-          echo "install-clean.outcome ${{ steps.install-clean.outcome }}"
-          echo "install-clean.conclusion ${{ steps.install-clean.conclusion }}"
           echo "branch      : ${{ steps.set-env.outputs.GITHUB_BRANCH }}"
           echo "commit msg  : ${{ github.event.head_commit.message }}"
           echo "commit hash : ${{ steps.set-env.outputs.GITHUB_SHA_SHORT }}"
