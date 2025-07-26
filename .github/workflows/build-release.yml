@@ -82,19 +82,25 @@ jobs:
 
       - name: "🔁 Pull & update submodules recursively"
         continue-on-error: true
+        shell: bash
         run: |
-          git submodule update --init --recursive
-          git submodule update --recursive --remote
-          git pull -X theirs
-          echo "init submodules"
-          git submodule init
-          git submodule foreach "git submodule init"
-          echo "sync submodules"
-          git submodule sync
-          git submodule foreach "git submodule sync"
-          echo "update submodules"
-          yarn dlx rimraf .git/modules
-          yarn dlx binary-collections@https://raw.githubusercontent.com/dimaslanjaka/bin/master/releases/bin.tgz submodule-install
+          if [ -f ".gitmodules" ] && [ -s ".gitmodules" ]; then
+            git submodule update --init --recursive
+            git submodule update --recursive --remote
+            git pull -X theirs
+            echo "init submodules"
+            git submodule init
+            git submodule foreach "git submodule init"
+            echo "sync submodules"
+            git submodule sync
+            git submodule foreach "git submodule sync"
+            echo "update submodules"
+            yarn dlx rimraf .git/modules
+            yarn dlx binary-collections@https://raw.githubusercontent.com/dimaslanjaka/bin/master/releases/bin.tgz submodule-install
+          else
+            echo "No submodules found or .gitmodules is empty, skipping update."
+            exit 0
+          fi
 
       - name: "🌎 Set environment variables"
         id: set-env
