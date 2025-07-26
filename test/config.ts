@@ -1,4 +1,7 @@
+import dotenv from "dotenv";
 import path from "upath";
+
+dotenv.config({ path: path.join(__dirname, "../.env") });
 
 export const token = process.env.ACCESS_TOKEN || process.env.GITHUB_TOKEN || "token_" + Math.random();
 
