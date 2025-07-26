@@ -8,8 +8,10 @@ describe("canPush()", () => {
   let github: git;
   // jest.setTimeout(60000);
 
-  beforeAll(function () {
+  beforeAll(async function () {
     github = new git(testcfg.cwd);
+    await github.setuser(testcfg.user);
+    await github.setemail(testcfg.email);
   }, 90000);
 
   it("cannot push after reset", async () => {
