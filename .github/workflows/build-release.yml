@@ -89,13 +89,15 @@ jobs:
           npm install -g rimraf binary-collections@https://raw.githubusercontent.com/dimaslanjaka/bin/master/releases/bin.tgz
           npx rimraf .git/modules
           npx submodule-install
+          # yarn dlx rimraf .git/modules
+          # yarn dlx binary-collections@https://raw.githubusercontent.com/dimaslanjaka/bin/master/releases/bin.tgz submodule-install
 
       - name: "🧰 Enable Corepack & prepare Yarn"
         run: |
           corepack enable
-          npm uninstall -g yarn
-          corepack prepare yarn@4.9.2 --activate
-          curl -L https://raw.githubusercontent.com/dimaslanjaka/nodejs-package-types/refs/heads/main/.yarnrc-template.yml -o .yarnrc.yml
+          # npm uninstall -g yarn
+          # corepack prepare yarn@4.9.2 --activate
+          # curl -L https://raw.githubusercontent.com/dimaslanjaka/nodejs-package-types/refs/heads/main/.yarnrc-template.yml -o .yarnrc.yml
           yarn set version 4.9.2
 
       - name: "🌎 Set environment variables"
