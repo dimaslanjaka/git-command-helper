@@ -3,7 +3,7 @@ import { safeURL } from "../utils/safe-url";
 import { getGithubCurrentBranch } from "./getGithubCurrentBranch";
 import { getGithubRemote } from "./getGithubRemote";
 import { getGithubRootDir } from "./getGithubRootDir";
-import { infoOptions } from "./infoOptions";
+import { ExtendedSpawnOptions } from "./infoOptions";
 
 /**
  * Get GitHub URL for a single file or folder in a repository.
@@ -13,7 +13,7 @@ import { infoOptions } from "./infoOptions";
  * @param remoteUrl - Optional remote URL to override the git config remote. Useful for testing or custom remotes.
  * @returns An object containing `remoteURL` (tree view) and `rawURL` (raw file view) for the file/folder on GitHub.
  */
-export async function getGithubRepoUrl(repositoryPath: string, opt?: infoOptions, remoteUrl?: string) {
+export async function getGithubRepoUrl(repositoryPath: string, opt?: ExtendedSpawnOptions, remoteUrl?: string) {
   repositoryPath = trueCasePathSync(repositoryPath);
   // Default cwd to repositoryPath if not set
   if (!opt || !opt.cwd) {
