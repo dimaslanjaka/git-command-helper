@@ -1,4 +1,4 @@
-import path, { join } from "upath";
+import path from "upath";
 
 export const token = process.env.ACCESS_TOKEN || process.env.GITHUB_TOKEN || "token_" + Math.random();
 
@@ -6,7 +6,7 @@ export const TestConfig = {
   /**
    * Git directory
    */
-  cwd: join(__dirname, "../tmp/project-test"),
+  cwd: path.join(__dirname, "../tmp/project-test"),
   branch: "test",
   remote: "https://github.com/dimaslanjaka/test-repo.git",
   user: "github-actions[bot]",
