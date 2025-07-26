@@ -26,7 +26,7 @@ const newChecksum = getChecksum(
   path.join(rootDir, "tsconfig*.json"),
   path.join(rootDir, "rollup.config.js")
 );
-const isChecksumChanged = oldChecksum !== newChecksum;
+const isChecksumChanged = oldChecksum !== newChecksum || !fs.existsSync(path.join(rootDir, "dist"));
 
 if (isChecksumChanged) {
   console.log(ansi.yellow("[PRETEST] Detected changes in source or config files. Triggering build..."));
