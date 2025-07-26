@@ -88,6 +88,16 @@ jobs:
           npx rimraf .git/modules
           npx submodule-install
 
+      - name: "💾 Restore Yarn Cache"
+        uses: actions/cache@v4
+        with:
+          path: |
+            .yarn/cache
+            .yarn/unplugged
+          key: yarn-${{ hashFiles('**/yarn.lock', 'src/', 'package.json') }}
+          restore-keys: |
+            yarn-
+
       - name: "🧰 Enable Corepack & prepare Yarn"
         run: |
           corepack enable
@@ -95,10 +105,6 @@ jobs:
           corepack prepare yarn@4.9.2 --activate
           curl -L https://raw.githubusercontent.com/dimaslanjaka/nodejs-package-types/refs/heads/main/.yarnrc-template.yml -o .yarnrc.yml
           yarn set version 4.9.2
-          which yarn
-          yarn --version
-          node -v
-          corepack --version
 
       - name: "🌎 Set environment variables"
         id: set-env
