@@ -1,7 +1,7 @@
 import { afterAll, beforeAll, describe, expect, it } from "@jest/globals";
 import { spawnSync } from "cross-spawn";
-import * as fs from "fs-extra";
 import * as path from "path";
+import { writefile } from "sbg-utility";
 import { getIgnores, isIgnored } from "../src/functions/gitignore";
 import { testcfg } from "./config";
 
@@ -11,8 +11,8 @@ describe(".gitignore test", () => {
 
   beforeAll(() => {
     spawnSync("git", ["reset", "--hard", "origin/" + testcfg.branch], { cwd: testcfg.cwd });
-    fs.writeFileSync(ignoredFile, "");
-    fs.writeFileSync(ignoredFile2, "");
+    writefile(ignoredFile, "");
+    writefile(ignoredFile2, "");
   }, 900000);
 
   afterAll(() => {
@@ -47,8 +47,8 @@ describe(".gitignore test", () => {
      * this file should be ignored
      */
     const ignored = path.join(testcfg.cwd, "new-file-another.txt");
-    fs.writeFileSync(ignored, "");
-    fs.writeFileSync(indexed, "");
+    writefile(ignored, "");
+    writefile(indexed, "");
 
     expect(await isIgnored(ignored)).toBeTruthy();
     expect(await isIgnored(indexed)).toBeFalsy();
