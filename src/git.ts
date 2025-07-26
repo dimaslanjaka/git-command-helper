@@ -548,6 +548,31 @@ export class git implements GitOpt {
   }
 
   /**
+   * Apply `this.user` to the specified remote URL (inserts username into URL if possible)
+   * @param originName remote name, defaults to "origin"
+   * @returns true if user was applied and remote updated, false otherwise
+   */
+  public async applyUserToOriginUrl(originName: string = "origin"): Promise<boolean> {
+    if (!this.remote || !this.user) return false;
+    try {
+      const urlObj = new URL(this.remote);
+      // Only set username if not already present
+      if (!urlObj.username) {
+        urlObj.username = this.user;
+        this.remote = urlObj.toString();
+        // Optionally update the remote URL in git config
+        await spawn("git", ["remote", "set-url", originName, this.remote], this.spawnOpt());
+        return true;
+      }
+      // Username already present, nothing changed
+      return false;
+    } catch {
+      // Not a valid URL, do nothing
+      return false;
+    }
+  }
+
+  /**
    * set remote url
    * @param remoteURL repository url
    * @param name custom object name
