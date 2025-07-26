@@ -11,7 +11,8 @@ export const TestConfig = {
   remote: "https://github.com/dimaslanjaka/test-repo.git",
   user: "github-actions[bot]",
   email: "41898282+github-actions[bot]@users.noreply.github.com",
-  token
+  token,
+  originName: "origin"
 };
 
 export const testcfg = TestConfig;
