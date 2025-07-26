@@ -317,6 +317,8 @@ jobs:
                 echo "${size_mb}MB $file"
                 if [ "$size_mb" -gt 30 ]; then
                   echo "Error: $file exceeds 30MB ($size_mb MB). Aborting push."
+                  echo -e "\n\n"
+                  node dir-tree.js
                   exit 1
                 fi
               fi
