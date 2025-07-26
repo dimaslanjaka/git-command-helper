@@ -91,9 +91,9 @@ jobs:
       - name: "🧰 Enable Corepack & prepare Yarn"
         run: |
           corepack enable
-          corepack prepare yarn@stable --activate
+          corepack prepare yarn@4.9.2 --activate
           curl -L https://raw.githubusercontent.com/dimaslanjaka/nodejs-package-types/refs/heads/main/.yarnrc-template.yml -o .yarnrc.yml
-          yarn --version
+          yarn set version 4.9.2
 
       - name: "🌎 Set environment variables"
         id: set-env
