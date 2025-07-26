@@ -12,6 +12,7 @@ describe("canPush()", () => {
     github = new git(testcfg.cwd);
     await github.setuser(testcfg.user);
     await github.setemail(testcfg.email);
+    await github.applyUserToOriginUrl("origin");
   }, 90000);
 
   it("cannot push after reset", async () => {
