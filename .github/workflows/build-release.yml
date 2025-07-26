@@ -1,9 +1,17 @@
-name: Build Release
+# =========================================
+# Build Release Workflow
+# -----------------------------------------
+# Automates building, packaging, and releasing
+# -----------------------------------------
+# Source repo:
+#   https://github.com/dimaslanjaka/nodejs-package-types/blob/main/.github/workflows/build-release.yml
+# Raw file:
+#   https://raw.githubusercontent.com/dimaslanjaka/nodejs-package-types/main/.github/workflows/build-release.yml
+# Update workflow:
+#   curl -L https://github.com/dimaslanjaka/nodejs-package-types/raw/main/.github/workflows/build-release.yml > .github/workflows/build-release.yml
+# =========================================
 
-# automated build dist and tarball
-# repo    : https://github.com/dimaslanjaka/nodejs-package-types/blob/main/.github/workflows/build-release.yml
-# raw     : https://raw.githubusercontent.com/dimaslanjaka/nodejs-package-types/main/.github/workflows/build-release.yml
-# update  : curl -L https://github.com/dimaslanjaka/nodejs-package-types/raw/main/.github/workflows/build-release.yml > .github/workflows/build-release.yml
+name: Build Release
 
 on:
   push:
