@@ -11,10 +11,12 @@ else
 fi
 
 # Verify tarballs in release directory should not exceed 10MB
-if [ -d "release" ]; then
-  if find release -type f -name "*.tgz" -size +10M -exec echo "Error: Tarball {} exceeds 10MB limit" \; | grep -q "Error:"; then
-    exit 1
+for dir in release releases; do
+  if [ -d "$dir" ]; then
+    if find "$dir" -type f -name "*.tgz" -size +10M -exec echo "Error: Tarball {} exceeds 10MB limit" \; | grep -q "Error:"; then
+      exit 1
+    fi
   fi
-fi
+done
 
 npx lint-staged
