@@ -93,7 +93,6 @@ jobs:
           corepack enable
           corepack prepare yarn@stable --activate
           curl -L https://raw.githubusercontent.com/dimaslanjaka/nodejs-package-types/refs/heads/main/.yarnrc-template.yml -o .yarnrc.yml
-          yarn set version stable
 
       - name: "🌎 Set environment variables"
         id: set-env
