@@ -97,3 +97,8 @@ fi
 
 # execute lint-staged
 "$NODE_EXE" "$NPX_CLI_JS" lint-staged
+
+# Remove packageManager from package.json if it exists
+if command -v jq >/dev/null 2>&1; then
+  jq 'del(.packageManager)' package.json > temp.json && mv temp.json package.json
+fi
