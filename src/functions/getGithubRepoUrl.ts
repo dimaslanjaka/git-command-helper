@@ -7,22 +7,22 @@ import { infoOptions } from "./infoOptions";
 
 /**
  * Get github url for single file or folder
- * @param path path subfolder or file
+ * @param repositoryPath path subfolder or file
  * @returns safe url
  */
-export async function getGithubRepoUrl(path: string, opt: infoOptions = { cwd: process.cwd() }) {
-  path = trueCasePathSync(path);
+export async function getGithubRepoUrl(repositoryPath: string, opt: infoOptions = { cwd: process.cwd() }) {
+  repositoryPath = trueCasePathSync(repositoryPath);
   const root = trueCasePathSync((await getGithubRootDir(opt)) || "");
   const remote = ((await getGithubRemote(null, opt)) || "").replace(/(.git|\/)$/i, "");
 
   let url = new URL(remote);
-  url.pathname += "/tree/" + (await getGithubCurrentBranch(opt)) + path.replace(root, "");
+  url.pathname += "/tree/" + (await getGithubCurrentBranch(opt)) + repositoryPath.replace(root, "");
   /**
    * url from repository url
    */
   const remoteURL = safeURL(url.toString());
   url = new URL(remote);
-  url.pathname += "/raw/" + (await getGithubCurrentBranch(opt)) + path.replace(root, "");
+  url.pathname += "/raw/" + (await getGithubCurrentBranch(opt)) + repositoryPath.replace(root, "");
   /**
    * url raw file
    */

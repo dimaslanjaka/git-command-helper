@@ -297,14 +297,14 @@ export class git implements GitOpt {
 
   /**
    * add and commit file
-   * @param path
+   * @param gitFilePath
    * @param msg
    * @param mode am/m
    * @returns
    */
-  addAndCommit(path: string, msg: string, mode = "m") {
+  addAndCommit(gitFilePath: string, msg: string, mode = "m") {
     return new Bluebird((resolve, reject) => {
-      this.add(path, { stdio: "pipe" }).then((_) =>
+      this.add(gitFilePath, { stdio: "pipe" }).then((_) =>
         this.commit(msg, mode, { stdio: "pipe" }).then(resolve).catch(reject)
       );
     });
@@ -420,16 +420,21 @@ export class git implements GitOpt {
 
   /**
    * git add
-   * @param path specific path or argument -A
+   * @param gitFilePath specific path or argument -A
    * @param optionSpawn
    * @returns
    */
-  add(path: string, optionSpawn: SpawnOptions = { stdio: "inherit" }) {
-    return spawn("git", ["add", path], this.spawnOpt(optionSpawn));
+  add(gitFilePath: string, optionSpawn: SpawnOptions = { stdio: "inherit" }) {
+    return spawn("git", ["add", gitFilePath], this.spawnOpt(optionSpawn));
   }
 
-  isStaged(path: string) {
-    return isStaged(path, this.spawnOpt({ stdio: "pipe" }));
+  /**
+   * Check if a file is staged for commit.
+   * @param gitFilePath Path to the file relative to the git root.
+   * @returns Promise that resolves to a boolean indicating if the file is staged.
+   */
+  isStaged(gitFilePath: string) {
+    return isStaged(gitFilePath, this.spawnOpt({ stdio: "pipe" }));
   }
 
   /**
