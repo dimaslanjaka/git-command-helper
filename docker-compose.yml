@@ -33,7 +33,7 @@ services:
       - ./test:/workspace/test
       - ./tmp/.deploy_git:/workspace/tmp/.deploy_git
       - ./tmp/docker-caches/node-12/dist:/workspace/dist
-      - ./tmp/docker-caches/node-12/logs:/workspace/tmp/logs
+      - ./tmp/docker-caches/node-12/tmp/logs:/workspace/tmp/logs
       - ./tmp/docker-caches/node-12/tmp/jest:/workspace/tmp/jest
       - ./tmp/project-test:/workspace/tmp/project-test
       - ./tsconfig.base.json:/workspace/tsconfig.base.json
@@ -62,7 +62,7 @@ services:
       - ./test:/workspace/test
       - ./tmp/.deploy_git:/workspace/tmp/.deploy_git
       - ./tmp/docker-caches/node-14/dist:/workspace/dist
-      - ./tmp/docker-caches/node-14/logs:/workspace/tmp/logs
+      - ./tmp/docker-caches/node-14/tmp/logs:/workspace/tmp/logs
       - ./tmp/docker-caches/node-14/tmp/jest:/workspace/tmp/jest
       - ./tmp/project-test:/workspace/tmp/project-test
       - ./tsconfig.base.json:/workspace/tsconfig.base.json
@@ -91,7 +91,7 @@ services:
       - ./test:/workspace/test
       - ./tmp/.deploy_git:/workspace/tmp/.deploy_git
       - ./tmp/docker-caches/node-16/dist:/workspace/dist
-      - ./tmp/docker-caches/node-16/logs:/workspace/tmp/logs
+      - ./tmp/docker-caches/node-16/tmp/logs:/workspace/tmp/logs
       - ./tmp/docker-caches/node-16/tmp/jest:/workspace/tmp/jest
       - ./tmp/project-test:/workspace/tmp/project-test
       - ./tsconfig.base.json:/workspace/tsconfig.base.json
@@ -120,7 +120,7 @@ services:
       - ./test:/workspace/test
       - ./tmp/.deploy_git:/workspace/tmp/.deploy_git
       - ./tmp/docker-caches/node-18/dist:/workspace/dist
-      - ./tmp/docker-caches/node-18/logs:/workspace/tmp/logs
+      - ./tmp/docker-caches/node-18/tmp/logs:/workspace/tmp/logs
       - ./tmp/docker-caches/node-18/tmp/jest:/workspace/tmp/jest
       - ./tmp/project-test:/workspace/tmp/project-test
       - ./tsconfig.base.json:/workspace/tsconfig.base.json
@@ -149,7 +149,7 @@ services:
       - ./test:/workspace/test
       - ./tmp/.deploy_git:/workspace/tmp/.deploy_git
       - ./tmp/docker-caches/node-20/dist:/workspace/dist
-      - ./tmp/docker-caches/node-20/logs:/workspace/tmp/logs
+      - ./tmp/docker-caches/node-20/tmp/logs:/workspace/tmp/logs
       - ./tmp/docker-caches/node-20/tmp/jest:/workspace/tmp/jest
       - ./tmp/project-test:/workspace/tmp/project-test
       - ./tsconfig.base.json:/workspace/tsconfig.base.json
@@ -178,7 +178,7 @@ services:
       - ./test:/workspace/test
       - ./tmp/.deploy_git:/workspace/tmp/.deploy_git
       - ./tmp/docker-caches/node-22/dist:/workspace/dist
-      - ./tmp/docker-caches/node-22/logs:/workspace/tmp/logs
+      - ./tmp/docker-caches/node-22/tmp/logs:/workspace/tmp/logs
       - ./tmp/docker-caches/node-22/tmp/jest:/workspace/tmp/jest
       - ./tmp/project-test:/workspace/tmp/project-test
       - ./tsconfig.base.json:/workspace/tsconfig.base.json
