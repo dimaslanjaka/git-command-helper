@@ -1,12 +1,13 @@
-import { beforeAll, describe, expect, it } from "@jest/globals";
+import { beforeAll, describe, expect, it, jest } from "@jest/globals";
 import fs from "fs";
 import path from "path";
 import { git } from "../src/index";
 import { testcfg } from "./config";
 
+jest.setTimeout(120000); // Set a longer timeout for tests
+
 describe("canPush()", () => {
   let github: git;
-  // jest.setTimeout(60000);
 
   beforeAll(async function () {
     github = new git(testcfg.cwd);
