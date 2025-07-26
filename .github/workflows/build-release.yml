@@ -70,6 +70,7 @@ jobs:
         with:
           node-version: ${{ env.node-version }}
           cache: "yarn"
+          cache-dependency-path: ./package.json
 
       - name: "🔁 Pull & update submodules recursively"
         continue-on-error: true
