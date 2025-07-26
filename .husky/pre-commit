@@ -10,4 +10,11 @@ else
   node -e "let f='package.json';let j=require('./'+f);delete j.packageManager;require('fs').writeFileSync(f,JSON.stringify(j,null,2)+'\n');"
 fi
 
+# Verify tarballs in release directory should not exceed 10MB
+if [ -d "release" ]; then
+  if find release -type f -name "*.tgz" -size +10M -exec echo "Error: Tarball {} exceeds 10MB limit" \; | grep -q "Error:"; then
+    exit 1
+  fi
+fi
+
 npx lint-staged
