@@ -1,8 +1,8 @@
-import { ESLint } from "eslint";
+import { spawnAsync } from "cross-spawn";
 import fs from "fs-extra";
 import { glob } from "glob";
 import path from "path";
-import { normalizePathUnix } from "sbg-utility";
+import { getBinaryPath, normalizePathUnix } from "sbg-utility";
 
 // index.ts exports builder
 // this only for development and excluded from build config
@@ -50,16 +50,5 @@ glob("**/*.{ts,js,jsx,tsx,cjs,mjs}", {
     [`export * from './index-exports'`, `import * as lib from './index-exports'`, "export default lib"].join("\n")
   );
 
-  const lint = new ESLint({ fix: true });
-  // Lint the specified TypeScript file.
-  const results = await lint.lintFiles(["src/**/*.ts"]);
-
-  // Apply the fixes to the file.
-  await ESLint.outputFixes(results);
-
-  // Format and display the results.
-  const formatter = await lint.loadFormatter("stylish");
-  const resultText = formatter.format(results);
-
-  console.log(resultText);
+  await spawnAsync(getBinaryPath("eslint"), ["--fix", "--ext", ".ts,.js,.jsx,.tsx,.cjs,.mjs", __dirname]);
 });
