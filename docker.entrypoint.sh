@@ -20,3 +20,8 @@ if command -v tee >/dev/null 2>&1; then
 else
   npm test > tmp/logs/node-14.test.log 2>&1
 fi
+
+# Re-remove packageManager from package.json if it exists
+if command -v jq >/dev/null 2>&1; then
+  jq 'del(.packageManager)' package.json > temp.json && mv temp.json package.json
+fi
