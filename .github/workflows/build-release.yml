@@ -84,6 +84,15 @@ jobs:
           corepack enable
           corepack prepare yarn@stable --activate
           curl -L https://raw.githubusercontent.com/dimaslanjaka/nodejs-package-types/refs/heads/main/.yarnrc-template.yml -o .yarnrc.yml
+          # Remove packageManager from package.json if it exists
+          # Prefer jq if available, otherwise use Node.js (cross-platform)
+          if command -v jq >/dev/null 2>&1; then
+            jq 'del(.packageManager)' package.json > temp.json && mv temp.json package.json
+            # Ensure package.json ends with a single empty line
+            awk 'NR==1{print $0} NR>1{print $0} END{print ""}' package.json > temp.json && mv temp.json package.json
+          else
+            node -e "let f='package.json';let j=require('./'+f);delete j.packageManager;require('fs').writeFileSync(f,JSON.stringify(j,null,2)+'\n');"
+          fi
 
       - name: Set env
         id: set-env
