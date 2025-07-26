@@ -2,8 +2,9 @@ const minimatch = require("minimatch");
 const path = require("upath");
 const fs = require("fs-extra");
 const crypto = require("crypto");
+const pkg = require("./package.json");
 
-const targets = [path.join(__dirname, "dist"), path.join(__dirname, "release")];
+const targets = pkg.files.map((file) => path.join(__dirname, file));
 
 function humanFileSize(bytes) {
   if (bytes < 1024) return bytes + " B";
