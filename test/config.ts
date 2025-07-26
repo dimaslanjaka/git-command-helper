@@ -15,6 +15,9 @@ export const TestConfig = {
   originName: "origin"
 };
 
+// Mock process.cwd for testing purposes
+process.cwd = () => TestConfig.cwd;
+
 export const testcfg = TestConfig;
 
 /**
