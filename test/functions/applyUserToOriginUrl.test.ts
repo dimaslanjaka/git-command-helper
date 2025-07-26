@@ -2,7 +2,7 @@ import { applyUserToOriginUrl } from "../../src";
 import git from "../../src/git";
 import { testcfg } from "../config";
 
-describe("git.applyUserToOriginUrl", () => {
+describe("applyUserToOriginUrl", () => {
   const parsedUrl = new URL(testcfg.remote);
 
   beforeAll(async () => {

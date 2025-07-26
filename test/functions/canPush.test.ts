@@ -1,8 +1,8 @@
-import { beforeAll, describe, expect, it, jest } from "@jest/globals";
+import { afterAll, beforeAll, describe, expect, it, jest } from "@jest/globals";
 import fs from "fs";
 import path from "path";
-import { git } from "../src/index";
-import { testcfg } from "./config";
+import { applyTokenToOriginUrl, git } from "../../src/index";
+import { testcfg } from "../config";
 
 jest.setTimeout(120000); // Set a longer timeout for tests
 
@@ -13,8 +13,13 @@ describe("canPush()", () => {
     github = new git(testcfg.cwd);
     await github.setuser(testcfg.user);
     await github.setemail(testcfg.email);
-    await github.applyUserToOriginUrl("origin");
+    await applyTokenToOriginUrl(testcfg.remote, testcfg.token, "origin");
   }, 90000);
+
+  afterAll(async () => {
+    // Reset git
+    await github.reset(testcfg.branch);
+  });
 
   it("cannot push after reset", async () => {
     await github.reset(testcfg.branch);
