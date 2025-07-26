@@ -331,8 +331,8 @@
     "why-is-node-running": "^3.2.2"
   },
   "resolutions": {
-    "sbg-utility": "https://github.com/dimaslanjaka/static-blog-generator/raw/a180ee596d6a84784c2cce06c02fab0821147a2e/packages/sbg-utility/release/sbg-utility.tgz",
-    "binary-collections": "https://github.com/dimaslanjaka/bin/raw/91258d39076bb44e9b1c1c70542b5cdcec4e8eb1/releases/bin.tgz",
+    "sbg-utility": "https://github.com/dimaslanjaka/static-blog-generator/raw/df939d4cb3e31fded39412534bcef11de9fe0dcc/packages/sbg-utility/release/sbg-utility.tgz",
+    "binary-collections": "https://github.com/dimaslanjaka/bin/raw/22e0e798d99c851b803552874559b761153a0cc1/releases/bin.tgz",
     "cross-spawn": "https://github.com/dimaslanjaka/node-cross-spawn/raw/80999ac7a7031a81e11ddb5fab0f8ba433041c98/release/cross-spawn.tgz",
     "ansi-regex": "^4",
     "glob-parent": "^6.0.2",
