@@ -44,24 +44,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: "🔄 Checkout repository and submodules"
+        uses: actions/checkout@v4
         with:
           token: ${{ secrets.ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
           submodules: recursive
 
-      - name: Set EOL git configs
+      - name: "⚙️ Set EOL git configs"
         continue-on-error: true
         run: |
           git config core.eol lf
           git config core.autocrlf input
           git checkout-index --force --all
 
-      - name: initialize nodejs
+      - name: "🟢 Initialize Node.js"
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.node-version }}
 
-      - name: Pull & update submodules recursively
+      - name: "🔁 Pull & update submodules recursively"
         continue-on-error: true
         run: |
           git submodule update --init --recursive
@@ -79,7 +80,7 @@ jobs:
           npx rimraf .git/modules
           npx submodule-install
 
-      - name: Enable corepack
+      - name: "🧰 Enable Corepack & prepare Yarn"
         run: |
           corepack enable
           corepack prepare yarn@stable --activate
@@ -94,7 +95,7 @@ jobs:
             node -e "let f='package.json';let j=require('./'+f);delete j.packageManager;require('fs').writeFileSync(f,JSON.stringify(j,null,2)+'\n');"
           fi
 
-      - name: Set env
+      - name: "🌎 Set environment variables"
         id: set-env
         shell: bash
         run: |
@@ -139,7 +140,8 @@ jobs:
           echo "machine=$machine" >> $GITHUB_OUTPUT
           echo "machine=$machine" >> $GITHUB_ENV
 
-      - uses: actions/cache@v4
+      - name: "💾 Restore cache"
+        uses: actions/cache@v4
         id: cache
         with:
           path: |
@@ -158,7 +160,7 @@ jobs:
             ${{ runner.os }}-${{ env.node-version }}-${{ hashFiles('**/yarn.lock', '**/package-lock.json', 'src/**/*.{js,ts,cjs,mjs}', 'rollup*.*', 'tsconfig*.json') }}
             ${{ runner.os }}-
 
-      - name: Check Updates
+      - name: "🔎 Check for updates (disabled)"
         shell: bash
         continue-on-error: true
         if: ${{ false }}
@@ -172,11 +174,11 @@ jobs:
             fi
           fi
 
-      - name: Install Global Packages
+      - name: "🌐 Install global packages"
         run: npm i -g typescript ts-node gulp-cli hexo-cli webpack-cli
         if: steps.cache.outputs.cache-hit != 'true'
 
-      - name: Install dependencies
+      - name: "📥 Install dependencies"
         shell: bash
         run: |
           if [ -f "package-lock.json" ]; then
@@ -185,7 +187,7 @@ jobs:
             yarn install || yarn install --verbose
           fi
 
-      - name: Dump
+      - name: "📝 Dump environment info"
         shell: bash
         run: |
           echo "branch      : ${{ steps.set-env.outputs.GITHUB_BRANCH }}"
@@ -198,7 +200,7 @@ jobs:
           echo "package mgr : "${{ steps.set-env.outputs.PACKAGE-MANAGER }}""
 
       - if: ${{ steps.cache.outputs.cache-hit != 'true' }}
-        name: List the state of node modules
+        name: "📚 List the state of node modules"
         shell: bash
         continue-on-error: true
         run: |
@@ -214,16 +216,17 @@ jobs:
           fi
 
       - name: Clean
+      - name: "🧹 Clean project"
         run: npm run clean
 
-      - name: Build
+      - name: "🔨 Build project"
         run: npm run build
 
-      - name: Pack
+      - name: "📦 Pack project"
         run: npm run pack --if-present
 
       # https://github.com/marketplace/actions/verify-changed-files
-      - name: Check if there are changes
+      - name: "🕵️‍♂️ Check for changes in build artifacts"
         id: changes
         uses: tj-actions/verify-changed-files@v20
         with:
@@ -235,17 +238,17 @@ jobs:
             !tmp
 
       - shell: bash
-        name: "What's changed?"
+        name: "📋 Show changed files"
         run: |
           echo "Changed files: ${{ steps.changes.outputs.changed_files }}"
 
-      - name: Git setup user email
+      - name: "👤 Configure git user/email"
         if: steps.changes.outputs.files_changed == 'true'
         continue-on-error: true
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
-      - name: Add files to git
+      - name: "➕ Add build files to git"
         if: steps.changes.outputs.files_changed == 'true'
         continue-on-error: true
         run: |
@@ -254,10 +257,10 @@ jobs:
           git add releases || true
           git add dist || true
           git add lib || true
-      - name: Pull before push
+      - name: "⬇️ Pull latest before push"
         run: git pull -X theirs
         if: steps.changes.outputs.files_changed == 'true'
-      - name: Git push
+      - name: "🚀 Push changes to remote"
         if: steps.changes.outputs.files_changed == 'true'
         shell: bash
         run: |
@@ -283,6 +286,6 @@ jobs:
             git push
           fi
 
-      - name: Clean GitHub Actions cache
+      - name: "🧹 Clean GitHub Actions cache (npx)"
         run: npx clean-github-actions-cache
         continue-on-error: true
