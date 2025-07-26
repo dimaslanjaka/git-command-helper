@@ -23,6 +23,7 @@ const isChecksumChanged = oldChecksum !== newChecksum;
 if (isChecksumChanged) {
   console.log(ansi.yellow("[PRETEST] Detected changes in source or config files. Triggering build..."));
   execSync("npm run build", { stdio: "inherit", cwd: rootDir });
+  execSync("npm run pack", { stdio: "inherit", cwd: rootDir });
   console.log(ansi.green("[PRETEST] Build completed and checksum updated."));
 } else {
   console.log(ansi.green("[PRETEST] No changes detected. Skipping build."));
