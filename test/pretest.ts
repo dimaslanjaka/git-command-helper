@@ -1,6 +1,6 @@
 import ansi from "ansi-colors";
 import { execSync } from "child_process";
-import fs from "fs";
+import fs from "fs-extra";
 import { getChecksum } from "sbg-utility";
 import path from "upath";
 import gitHelper, { GitOpt } from "../src";
@@ -11,7 +11,11 @@ const rootDir = path.join(__dirname, "..");
 const tmpDir = path.join(rootDir, "tmp");
 if (!fs.existsSync(tmpDir)) fs.mkdirSync(tmpDir, { recursive: true });
 const checksumFile = path.join(tmpDir, ".checksum");
-const oldChecksum = fs.existsSync(checksumFile) ? fs.readFileSync(checksumFile, "utf8") : "";
+if (!fs.existsSync(checksumFile)) {
+  fs.ensureDirSync(path.dirname(checksumFile));
+  fs.writeFileSync(checksumFile, "");
+}
+const oldChecksum = fs.readFileSync(checksumFile, "utf-8");
 const newChecksum = getChecksum(
   path.join(rootDir, "src/**/*.{ts,js,cjs,mjs}"),
   path.join(rootDir, "package.json"),
