@@ -69,6 +69,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.node-version }}
+          cache: "yarn"
 
       - name: "🔁 Pull & update submodules recursively"
         continue-on-error: true
@@ -87,16 +88,6 @@ jobs:
           npm install -g rimraf binary-collections@https://raw.githubusercontent.com/dimaslanjaka/bin/master/releases/bin.tgz
           npx rimraf .git/modules
           npx submodule-install
-
-      - name: "💾 Restore Yarn Cache"
-        uses: actions/cache@v4
-        with:
-          path: |
-            .yarn/cache
-            .yarn/unplugged
-          key: yarn-${{ hashFiles('**/yarn.lock', 'src/', 'package.json') }}
-          restore-keys: |
-            yarn-
 
       - name: "🧰 Enable Corepack & prepare Yarn"
         run: |
