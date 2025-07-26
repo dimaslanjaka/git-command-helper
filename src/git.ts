@@ -14,6 +14,7 @@ import { isCanPush } from "./functions/dry-helper";
 import { isIgnored } from "./functions/gitignore";
 import { isUntracked } from "./functions/isFileChanged";
 import { latestCommit } from "./functions/latestCommit";
+import { applyUserToOriginUrl } from "./functions/origin-helper";
 import { isStaged } from "./git/staged";
 import helper from "./helper";
 import * as extension from "./index-exports";
@@ -550,26 +551,19 @@ export class git implements GitOpt {
   /**
    * Apply `this.user` to the specified remote URL (inserts username into URL if possible)
    * @param originName remote name, defaults to "origin"
-   * @returns true if user was applied and remote updated, false otherwise
+   * @returns object with error and message
    */
-  public async applyUserToOriginUrl(originName: string = "origin"): Promise<boolean> {
-    if (!this.remote || !this.user) return false;
-    try {
+  public async applyUserToOriginUrl(originName: string = "origin"): Promise<{ error: boolean; message: string }> {
+    const result = await applyUserToOriginUrl(this.remote, this.user, originName, this.spawnOpt());
+    if (!result.error && this.user) {
+      // update local remote string if successful
       const urlObj = new URL(this.remote);
-      // Only set username if not already present
       if (!urlObj.username) {
         urlObj.username = this.user;
         this.remote = urlObj.toString();
-        // Optionally update the remote URL in git config
-        await spawn("git", ["remote", "set-url", originName, this.remote], this.spawnOpt());
-        return true;
       }
-      // Username already present, nothing changed
-      return false;
-    } catch {
-      // Not a valid URL, do nothing
-      return false;
     }
+    return result;
   }
 
   /**
