@@ -10,7 +10,7 @@ import { TestConfig } from "./config";
 const rootDir = path.join(__dirname, "..");
 const tmpDir = path.join(rootDir, "tmp");
 if (!fs.existsSync(tmpDir)) fs.mkdirSync(tmpDir, { recursive: true });
-const checksumFile = path.join(tmpDir, ".checksum");
+const checksumFile = path.join(tmpDir, "jest/.checksum");
 if (!fs.existsSync(checksumFile)) {
   fs.ensureDirSync(path.dirname(checksumFile));
   fs.writeFileSync(checksumFile, "");
