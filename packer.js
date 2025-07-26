@@ -17,6 +17,7 @@ const fs = require("fs-extra");
 const { resolve, join, dirname, toUnix, basename } = require("upath");
 const packagejson = require("./package.json");
 const crypto = require("crypto");
+const path = require("upath");
 
 //// CHECK REQUIRED PACKAGES
 
@@ -225,6 +226,11 @@ function parseVersion(versionString) {
  * create release/readme.md
  */
 async function addReadMe() {
+  if (!fs.existsSync(path.join(__dirname, ".git"))) {
+    // Not a git repository
+    console.log("Not a git repository, skipping readme creation");
+    return;
+  }
   const isCrossSpawn = packagejson.name == "cross-spawn";
   const isGitCommandHelper = packagejson.name == "git-command-helper";
   const { async: spawnAsync } = isCrossSpawn ? await import("./dist/index.js") : await import("cross-spawn");
