@@ -1,13 +1,15 @@
 #!/bin/sh
 
-# Remove packageManager from package.json if it exists
+
+# Remove packageManager from package.json at git root if it exists
 # Prefer jq if available, otherwise use Node.js (cross-platform)
+PACKAGE_JSON="$(git rev-parse --show-toplevel)/package.json"
 if command -v jq >/dev/null 2>&1; then
-  jq 'del(.packageManager)' package.json > temp.json && mv temp.json package.json
+  jq 'del(.packageManager)' "$PACKAGE_JSON" > temp.json && mv temp.json "$PACKAGE_JSON"
   # Ensure package.json ends with a single empty line
-  awk 'NR==1{print $0} NR>1{print $0} END{print ""}' package.json > temp.json && mv temp.json package.json
+  awk 'NR==1{print $0} NR>1{print $0} END{print ""}' "$PACKAGE_JSON" > temp.json && mv temp.json "$PACKAGE_JSON"
 else
-  node -e "let f='package.json';let j=require('./'+f);delete j.packageManager;require('fs').writeFileSync(f,JSON.stringify(j,null,2)+'\n');"
+  node -e "let f=process.env.PACKAGE_JSON||'package.json';let j=require(f);delete j.packageManager;require('fs').writeFileSync(f,JSON.stringify(j,null,2)+'\n');" --PACKAGE_JSON="$PACKAGE_JSON"
 fi
 
 # Verify tarballs in release directory should not exceed 10MB
