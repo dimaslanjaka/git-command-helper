@@ -68,7 +68,7 @@ jobs:
     name: "Test ${{ matrix.os }} Node ${{ matrix.node-version }}"
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           token: ${{ secrets.ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
 
@@ -202,15 +202,15 @@ jobs:
         os: [ubuntu-latest, windows-latest]
         node-version: ["18.x", "20.x", "22.x"]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           submodules: true
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           repository: dimaslanjaka/test-repo
           path: tmp/project-test
           ref: test
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           repository: dimaslanjaka/dimaslanjaka.github.io
           path: tmp/.deploy_git
