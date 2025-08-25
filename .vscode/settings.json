@@ -87,5 +87,31 @@
     "**/dist/**": true
   },
   "eslint.useFlatConfig": false,
-  "git.autoStash": true // code runner save all files before run
+  "git.autoStash": true,
+  "eslint.probe": [
+    "astro",
+    "civet",
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "html",
+    "mdx",
+    "vue",
+    "markdown",
+    "json",
+    "jsonc"
+  ],
+  "eslint.validate": [
+    "astro",
+    "civet",
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "html",
+    "mdx",
+    "vue",
+    "markdown"
+  ]
 }
