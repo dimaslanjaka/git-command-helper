@@ -27,7 +27,7 @@ export class spawner {
         // default option inherit
         if (options === null) {
           options = {
-            cwd: __dirname,
+            cwd: process.cwd(),
             stdio: "inherit"
           };
         }
