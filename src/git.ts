@@ -52,7 +52,7 @@ export class git implements GitOpt {
   /** is current device is github actions */
   isGithubCI =
     typeof process.env["GITHUB_WORKFLOW"] === "string" && typeof process.env["GITHUB_WORKFLOW_SHA"] === "string";
-  submodules?: (gitUtil.Submodule | undefined)[];
+  submodules?: (gitUtil.SubmoduleEntry | undefined)[];
   user?: string;
   email?: string;
   remote!: string;
