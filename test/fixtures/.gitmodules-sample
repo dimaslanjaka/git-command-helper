@@ -1,0 +1,28 @@
+[submodule "packages/proxy-checker-python"]
+	path = packages/proxy-checker-python
+	url = https://github.com/dimaslanjaka/proxy-checker-python.git
+	branch = master
+[submodule "packages/selenium-stealth"]
+	path = packages/selenium-stealth
+	url = https://github.com/dimaslanjaka/selenium-stealth
+	branch = private
+[submodule "packages/browser-with-fingerprints"]
+	path = packages/browser-with-fingerprints
+	url = https://github.com/dimaslanjaka/browser-with-fingerprints.git
+	branch = master
+[submodule "packages/netscape-cookies"]
+	path = packages/netscape-cookies
+	url = https://github.com/dimaslanjaka/netscape-cookies.git
+	branch = master
+[submodule "packages/baileys"]
+	path = packages/baileys
+	url = https://github.com/dimaslanjaka/baileys-api.git
+	branch = master
+[submodule "packages/gh-pages"]
+	path = packages/gh-pages
+	url = https://github.com/dimaslanjaka/github-pages-builder.git
+	branch = master
+[submodule "packages/proxies-grabber"]
+	path = packages/proxies-grabber
+	url = https://github.com/dimaslanjaka/proxies-grabber.git
+	branch = master
