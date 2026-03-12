@@ -5,7 +5,7 @@ const os = require("os");
 const dotenv = require("dotenv");
 const envPath = path.join(__dirname, "../.env");
 
-if (fs.existsSync(envPath)) dotenv.config({ path: envPath });
+if (fs.existsSync(envPath)) dotenv.config({ path: envPath, override: true, quiet: true });
 
 const originalCwd = process.cwd();
 module.exports.originalCwd = originalCwd;
