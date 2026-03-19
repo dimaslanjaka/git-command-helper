@@ -1,7 +1,10 @@
 import dotenv from "dotenv";
 import path from "upath";
 
-dotenv.config({ path: path.join(__dirname, "../.env"), override: true, quiet: true });
+const envPath = path.join(__dirname, "../.env");
+if (require("fs").existsSync(envPath)) {
+  dotenv.config({ path: envPath, override: true, quiet: true });
+}
 
 export const token = process.env.ACCESS_TOKEN || process.env.GITHUB_TOKEN || "token_" + Math.random();
 
