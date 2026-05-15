@@ -193,4 +193,228 @@ describe("parseGitHubUrl", () => {
       branch: "c3e7541d7f92f76ff0d4744a07cc3270d39b3fd7"
     });
   });
+
+  it("parses git protocol url", () => {
+    const url = "git://github.com/owner/repo.git";
+    expect(parseGitHubUrl(url)).toEqual({
+      protocol: "git",
+      username: null,
+      password: null,
+      host: "github.com",
+      owner: "owner",
+      repo: "repo",
+      path: null,
+      branch: null
+    });
+  });
+
+  it("parses ssh protocol url", () => {
+    const url = "ssh://git@github.com/owner/repo.git";
+    expect(parseGitHubUrl(url)).toEqual({
+      protocol: "ssh",
+      username: "git",
+      password: null,
+      host: "github.com",
+      owner: "owner",
+      repo: "repo",
+      path: null,
+      branch: null
+    });
+  });
+
+  it("parses github url without .git suffix", () => {
+    const url = "https://github.com/owner/repo";
+    expect(parseGitHubUrl(url)).toEqual({
+      protocol: "https",
+      username: null,
+      password: null,
+      host: "github.com",
+      owner: "owner",
+      repo: "repo",
+      path: null,
+      branch: null
+    });
+  });
+
+  it("parses github url with trailing slash", () => {
+    const url = "https://github.com/owner/repo/";
+    expect(parseGitHubUrl(url)).toEqual({
+      protocol: "https",
+      username: null,
+      password: null,
+      host: "github.com",
+      owner: "owner",
+      repo: "repo",
+      path: null,
+      branch: null
+    });
+  });
+
+  it("parses github enterprise https url", () => {
+    const url = "https://github.company.com/owner/repo.git";
+    expect(parseGitHubUrl(url)).toEqual({
+      protocol: "https",
+      username: null,
+      password: null,
+      host: "github.company.com",
+      owner: "owner",
+      repo: "repo",
+      path: null,
+      branch: null
+    });
+  });
+
+  it("parses github enterprise ssh url", () => {
+    const url = "git@github.company.com:owner/repo.git";
+    expect(parseGitHubUrl(url)).toEqual({
+      protocol: "ssh",
+      username: null,
+      password: null,
+      host: "github.company.com",
+      owner: "owner",
+      repo: "repo",
+      path: null,
+      branch: null
+    });
+  });
+
+  it("parses archive refs heads url", () => {
+    const url = "https://github.com/owner/repo/archive/refs/heads/main.zip";
+    expect(parseGitHubUrl(url)).toEqual({
+      protocol: "https",
+      username: null,
+      password: null,
+      host: "github.com",
+      owner: "owner",
+      repo: "repo",
+      path: "archive/refs/heads/main.zip",
+      branch: "main"
+    });
+  });
+
+  it("parses releases download url", () => {
+    const url = "https://github.com/owner/repo/releases/download/v1.0.0/app.zip";
+    expect(parseGitHubUrl(url)).toEqual({
+      protocol: "https",
+      username: null,
+      password: null,
+      host: "github.com",
+      owner: "owner",
+      repo: "repo",
+      path: "releases/download/v1.0.0/app.zip",
+      branch: null
+    });
+  });
+
+  it("parses commit url", () => {
+    const url = "https://github.com/owner/repo/commit/c3e7541";
+    expect(parseGitHubUrl(url)).toEqual({
+      protocol: "https",
+      username: null,
+      password: null,
+      host: "github.com",
+      owner: "owner",
+      repo: "repo",
+      path: "commit/c3e7541",
+      branch: null
+    });
+  });
+
+  it("parses compare url", () => {
+    const url = "https://github.com/owner/repo/compare/main...develop";
+    expect(parseGitHubUrl(url)).toEqual({
+      protocol: "https",
+      username: null,
+      password: null,
+      host: "github.com",
+      owner: "owner",
+      repo: "repo",
+      path: "compare/main...develop",
+      branch: null
+    });
+  });
+
+  it("parses pull request url", () => {
+    const url = "https://github.com/owner/repo/pull/123";
+    expect(parseGitHubUrl(url)).toEqual({
+      protocol: "https",
+      username: null,
+      password: null,
+      host: "github.com",
+      owner: "owner",
+      repo: "repo",
+      path: "pull/123",
+      branch: null
+    });
+  });
+
+  it("parses issue url", () => {
+    const url = "https://github.com/owner/repo/issues/123";
+    expect(parseGitHubUrl(url)).toEqual({
+      protocol: "https",
+      username: null,
+      password: null,
+      host: "github.com",
+      owner: "owner",
+      repo: "repo",
+      path: "issues/123",
+      branch: null
+    });
+  });
+
+  it("parses git+https url with token auth", () => {
+    const url = "git+https://oauth2:ghp_123456789@github.com/owner/repo.git";
+    expect(parseGitHubUrl(url)).toEqual({
+      protocol: "git+https",
+      username: "oauth2",
+      password: "ghp_123456789",
+      host: "github.com",
+      owner: "owner",
+      repo: "repo",
+      path: null,
+      branch: null
+    });
+  });
+
+  it("parses https url with github token auth", () => {
+    const url = "https://username:ghp_123456789@github.com/owner/repo.git";
+    expect(parseGitHubUrl(url)).toEqual({
+      protocol: "https",
+      username: "username",
+      password: "ghp_123456789",
+      host: "github.com",
+      owner: "owner",
+      repo: "repo",
+      path: null,
+      branch: null
+    });
+  });
+
+  it("parses ssh url with explicit git username", () => {
+    const url = "ssh://git@github.com/owner/repo.git";
+    expect(parseGitHubUrl(url)).toEqual({
+      protocol: "ssh",
+      username: "git",
+      password: null,
+      host: "github.com",
+      owner: "owner",
+      repo: "repo",
+      path: null,
+      branch: null
+    });
+  });
+
+  it("throws for git protocol with auth", () => {
+    const url = "git://user:token@github.com/owner/repo.git";
+    expect(() => parseGitHubUrl(url)).toThrow(
+      "Invalid GitHub URL: git://user:token@github.com/owner/repo.git"
+    );
+  });
+
+  it("throws for ssh url with password auth", () => {
+    const url = "ssh://user:token@github.com/owner/repo.git";
+    expect(() => parseGitHubUrl(url)).toThrow(
+      "Invalid GitHub URL: ssh://user:token@github.com/owner/repo.git"
+    );
+  });
 });
