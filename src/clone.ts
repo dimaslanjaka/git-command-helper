@@ -1,9 +1,8 @@
+import { spawn as nodeSpawn } from "child_process";
 import "core-js/actual";
 import fs from "fs-extra";
 import path from "upath";
 import git from "./git";
-
-const spawn = git.crossSpawn.spawnAsync;
 
 /**
  * do clone when destination folder not exist
@@ -23,12 +22,21 @@ async function clone(options: { cwd: string; remote: string; branch: string; tok
 
   if (doClone) {
     // console.log('cloning', cfg);
-    const processCwd = process.cwd();
-    const relative = path.toUnix(options.cwd).replace(processCwd, "").replace(/^\/+/, "");
-    console.log({ processCwd, relative });
-    await spawn("git", ["clone", "-b", options.branch, options.remote, relative], {
-      cwd: processCwd,
-      stdio: git.isGithubCI ? "pipe" : "inherit"
+    const targetPath = path.toUnix(options.cwd);
+    const processCwd = path.dirname(targetPath);
+    fs.ensureDirSync(processCwd);
+    console.log({ processCwd, relative: path.basename(targetPath) });
+    await new Promise<void>((resolve, reject) => {
+      const child = nodeSpawn("git", ["clone", "-b", options.branch, options.remote, targetPath], {
+        cwd: processCwd,
+        stdio: git.isGithubCI ? "pipe" : "inherit"
+      });
+
+      child.on("error", reject);
+      child.on("close", (code) => {
+        if (code) return reject(new Error(`git clone failed with exit code ${code}`));
+        resolve();
+      });
     });
   }
 }
