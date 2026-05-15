@@ -39,6 +39,7 @@ export function parseGitHubUrl(url: string): ParsedGitHubUrl {
     const repo = match[2];
     const rawPath = match[3];
     const { branch, extraPath } = normalizeRawBranch(rawPath);
+    const path = rawPath.startsWith("refs/heads/") ? rawPath : extraPath ? branch + "/" + extraPath : branch;
     return {
       protocol: "https",
       username: null,
@@ -46,7 +47,7 @@ export function parseGitHubUrl(url: string): ParsedGitHubUrl {
       host: "raw.githubusercontent.com",
       owner,
       repo,
-      path: extraPath ? branch + "/" + extraPath : branch,
+      path,
       branch: branch || null
     };
   }
