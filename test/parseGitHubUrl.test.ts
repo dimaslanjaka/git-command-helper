@@ -147,6 +147,21 @@ describe("parseGitHubUrl", () => {
     });
   });
 
+  it("parses raw.githubusercontent.com refs heads url", () => {
+    const url =
+      "https://raw.githubusercontent.com/dimaslanjaka/hexo-themes/refs/heads/master/releases/hexo-theme-flowbite.tgz";
+    expect(parseGitHubUrl(url)).toEqual({
+      protocol: "https",
+      username: null,
+      password: null,
+      host: "raw.githubusercontent.com",
+      owner: "dimaslanjaka",
+      repo: "hexo-themes",
+      path: "refs/heads/master/releases/hexo-theme-flowbite.tgz",
+      branch: "master"
+    });
+  });
+
   it("parses hash as branch (blob)", () => {
     const url =
       "https://github.com/dimaslanjaka/git-command-helper/blob/c3e7541d7f92f76ff0d4744a07cc3270d39b3fd7/release/git-command-helper-1.0.13.tgz";
