@@ -2,14 +2,24 @@ import { existsSync, mkdirSync, readFileSync } from "fs";
 import * as jsonc from "jsonc-parser";
 import { join } from "path";
 import type { JestConfigWithTsJest } from "ts-jest";
+import { CompilerOptions, ProjectReference } from 'typescript';
 
-const tsconfigBase: typeof import("./tsconfig.base.json") = jsonc.parse(
+interface TsConfigJson {
+    compilerOptions?: CompilerOptions;
+    extends?: string | string[];
+    include?: string[];
+    exclude?: string[];
+    references?: ProjectReference[];
+    // ... other root properties
+}
+
+const tsconfigBase: TsConfigJson = jsonc.parse(
   readFileSync(join(__dirname, "tsconfig.base.json"), "utf-8")
 );
-const tsconfigJest: typeof import("./tsconfig.base.json") = jsonc.parse(
+const tsconfigJest: TsConfigJson = jsonc.parse(
   readFileSync(join(__dirname, "tsconfig.jest.json"), "utf-8")
 );
-const tsconfig = Object.assign(tsconfigBase.compilerOptions, tsconfigJest.compilerOptions);
+const tsconfig = Object.assign(tsconfigBase.compilerOptions || {}, tsconfigJest.compilerOptions || {});
 
 /**
  * @see {@link https://jestjs.io/docs/configuration}
@@ -91,7 +101,7 @@ const config: JestConfigWithTsJest = {
   // ],
 
   // Indicates which provider should be used to instrument code for coverage
-  coverageProvider: "v8"
+  coverageProvider: "v8",
 
   // A list of reporter names that Jest uses when writing coverage reports
   // coverageReporters: [
@@ -100,6 +110,7 @@ const config: JestConfigWithTsJest = {
   //   "lcov",
   //   "clover"
   // ],
+  setupFiles: ["<rootDir>/jest.setup.ts"]
 };
 
 if (!existsSync(<string>config.cacheDirectory)) mkdirSync(<string>config.cacheDirectory, { recursive: true });

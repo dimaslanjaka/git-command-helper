@@ -3,11 +3,11 @@ import { execSync } from "child_process";
 import fs from "fs-extra";
 import { getChecksum } from "sbg-utility";
 import path from "upath";
-import gitHelper, { GitOpt } from "../src";
-import clone from "../src/clone";
-import { TestConfig } from "./config";
+import gitHelper, { GitOpt } from "./src";
+import clone from "./src/clone";
+import { TestConfig } from "./test/config";
 
-const rootDir = path.join(__dirname, "..");
+const rootDir = __dirname;
 const tmpDir = path.join(rootDir, "tmp");
 if (!fs.existsSync(tmpDir)) fs.mkdirSync(tmpDir, { recursive: true });
 const checksumFile = path.join(tmpDir, "jest/.checksum");
