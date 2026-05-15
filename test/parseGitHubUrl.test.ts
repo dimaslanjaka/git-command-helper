@@ -119,6 +119,20 @@ describe("parseGitHubUrl", () => {
     });
   });
 
+  it("parses github.com raw url with refs heads branch", () => {
+    const url = "https://github.com/dimaslanjaka/hexo-themes/raw/refs/heads/master/releases/hexo-theme-flowbite.tgz";
+    expect(parseGitHubUrl(url)).toEqual({
+      protocol: "https",
+      username: null,
+      password: null,
+      host: "github.com",
+      owner: "dimaslanjaka",
+      repo: "hexo-themes",
+      path: "raw/refs/heads/master/releases/hexo-theme-flowbite.tgz",
+      branch: "master"
+    });
+  });
+
   it("parses github.com raw url", () => {
     const url = "https://github.com/dimaslanjaka/git-command-helper/raw/pre-release/.github/workflows/ci.yml";
     expect(parseGitHubUrl(url)).toEqual({

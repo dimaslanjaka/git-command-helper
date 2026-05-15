@@ -18,12 +18,27 @@ export interface ParsedGitHubUrl {
 export function parseGitHubUrl(url: string): ParsedGitHubUrl {
   let match: RegExpMatchArray | null;
 
+  const normalizeRawBranch = (rawPath: string) => {
+    const segments = rawPath.split("/").filter(Boolean);
+    if (segments[0] === "refs" && segments[1] === "heads" && segments.length >= 3) {
+      return {
+        branch: segments[2],
+        extraPath: segments.slice(3).join("/") || null
+      };
+    }
+
+    return {
+      branch: segments[0] || "",
+      extraPath: segments.slice(1).join("/") || null
+    };
+  };
+
   // Raw GitHub URLs: https://raw.githubusercontent.com/owner/repo/branch/path
-  if ((match = url.match(/^https:\/\/raw\.githubusercontent\.com\/([^/]+)\/([^/]+)\/([^/]+)(\/.*)?$/))) {
+  if ((match = url.match(/^https:\/\/raw\.githubusercontent\.com\/([^/]+)\/([^/]+)\/(.+)$/))) {
     const owner = match[1];
     const repo = match[2];
-    const branch = match[3];
-    const extraPath = match[4]?.replace(/^\//, "") || null;
+    const rawPath = match[3];
+    const { branch, extraPath } = normalizeRawBranch(rawPath);
     return {
       protocol: "https",
       username: null,
@@ -54,9 +69,10 @@ export function parseGitHubUrl(url: string): ParsedGitHubUrl {
     let branch: string | null = null;
     if (extraPath) {
       // Common patterns: tree/<branch>, blob/<branch>, raw/<branch>, commit/<hash>
-      const branchMatch = extraPath.match(/^(tree|blob|raw|commit)\/([^/]+)/);
+      const branchMatch = extraPath.match(/^(tree|blob|raw|commit)\/(.+)$/);
       if (branchMatch) {
-        branch = branchMatch[2];
+        const normalized = normalizeRawBranch(branchMatch[2]);
+        branch = normalized.branch;
       }
     }
 
