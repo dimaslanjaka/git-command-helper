@@ -65,14 +65,17 @@ export function parseGitHubUrl(url: string): ParsedGitHubUrl {
     const repo = match[6];
     const extraPath = match[7];
 
-    // Try to extract branch or hash from extraPath if possible
     let branch: string | null = null;
     if (extraPath) {
-      // Common patterns: tree/<branch>, blob/<branch>, raw/<branch>, commit/<hash>
-      const branchMatch = extraPath.match(/^(tree|blob|raw|commit)\/(.+)$/);
+      const branchMatch = extraPath.match(/^(tree|blob|raw|archive)\/(.+)$/);
       if (branchMatch) {
         const normalized = normalizeRawBranch(branchMatch[2]);
         branch = normalized.branch;
+      }
+
+      const archiveMatch = extraPath.match(/^archive\/refs\/heads\/([^/.]+)(?:\.zip)?$/);
+      if (archiveMatch) {
+        branch = archiveMatch[1];
       }
     }
 
@@ -88,6 +91,45 @@ export function parseGitHubUrl(url: string): ParsedGitHubUrl {
     };
   }
 
+  // git://github.com/owner/repo.git (no auth allowed)
+  if ((match = url.match(/^git:\/\/(?!.*@)([^/]+)\/([^/]+)\/([^/.]+)(?:\.git)?(?:\/(.*))?$/))) {
+    const host = match[1];
+    const owner = match[2];
+    const repo = match[3];
+    const extraPath = match[4];
+
+    return {
+      protocol: "git",
+      username: null,
+      password: null,
+      host,
+      owner,
+      repo,
+      path: extraPath || null,
+      branch: null
+    };
+  }
+
+  // ssh://git@github.com/owner/repo.git (username only, no password)
+  if ((match = url.match(/^ssh:\/\/(?:([^:@/]+)@)?([^@/]+)\/([^/]+)\/([^/.]+)(?:\.git)?(?:\/(.*))?$/))) {
+    const username = match[1];
+    const host = match[2];
+    const owner = match[3];
+    const repo = match[4];
+    const extraPath = match[5];
+
+    return {
+      protocol: "ssh",
+      username: username || null,
+      password: null,
+      host,
+      owner,
+      repo,
+      path: extraPath || null,
+      branch: null
+    };
+  }
+
   // SSH: git@github.com:owner/repo(.git)(/path)?
   if ((match = url.match(/^git@([^:]+):([^/]+)\/([^/.]+)(?:\.git)?(?:\/(.*))?$/))) {
     const host = match[1];
@@ -95,7 +137,6 @@ export function parseGitHubUrl(url: string): ParsedGitHubUrl {
     const repo = match[3];
     const extraPath = match[4];
 
-    // No branch info in SSH URLs by default
     return {
       protocol: "ssh",
       username: null,
