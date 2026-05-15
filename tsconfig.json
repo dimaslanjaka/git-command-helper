@@ -1,6 +1,9 @@
 {
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
+    "module": "CommonJS",
+    "target": "es2018",
+    "moduleResolution": "bundler",
     "composite": true,
     "tsBuildInfoFile": "./tmp/tsconfig.build.tsbuildinfo",
     "declarationMap": false,
@@ -10,9 +13,5 @@
     "lib": [
       "ES2020"
     ]
-  },
-  "include": [
-    "src",
-    "test"
-  ]
+  }
 }
