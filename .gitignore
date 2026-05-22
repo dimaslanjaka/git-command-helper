@@ -1,34 +1,48 @@
-# Dependency directories and files
-**/node_modules
-**/.yarn/cache/**
-**/.yarn/unplugged/**
-**/.yarn/*.gz
-**/.yarn/version*
+# =========================
+# Dependencies
+# =========================
+node_modules/
+.yarn/
+!.yarn/cache/
+!.yarn/unplugged/
+!.yarn/*.gz
+!.yarn/version*
 package-lock.json
 yarn.lock
 .pnp.*
 
-# Secret files
+# =========================
+# Secrets
+# =========================
 .env
 
-# Build output and coverage
+# =========================
+# Build output
+# =========================
 dist/
 coverage/
-**/*.tsbuildinfo
+*.tsbuildinfo
 
-# Logs and temp files
+# =========================
+# Logs / temp
+# =========================
 *.log
-tmp
-.nyc*
-config_*
+tmp/
+.nyc*/
+config_*/
 
-# Documentation
-/docs
+# =========================
+# Docs
+# =========================
+docs/
 
+# =========================
 # Release artifacts
-/*.tgz
-!/release*/*.tgz
+# =========================
+*.tgz
+!release*/**/*.tgz
 
-# TypeScript/Javascript files (underscore-prefixed)
-_*.ts
-_*.js
+# =========================
+# Internal / generated TS/JS
+# =========================
+_*.[tj]s
