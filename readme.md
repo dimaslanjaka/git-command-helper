@@ -14,10 +14,12 @@ GitHub CLI Helper For NodeJS. Parse responses from github CLI to NodeJS Object O
 ```bash
 npm i git-command-helper
 ```
+
 Beta Version
 ```bash
-npm i git-command-helper@https://github.com/dimaslanjaka/git-command-helper.git
+npm i git-command-helper@https://github.com/dimaslanjaka/git-command-helper/raw/cb096c1f021d88679cbfd3cf55a426aed64f1b94/release/git-command-helper.tgz
 ```
+> change commit with latest commit hash
 
 ## CLI usages
 ### Conventional Commits Helper
