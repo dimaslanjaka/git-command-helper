@@ -27,7 +27,7 @@ config_*
 
 # Release artifacts
 /*.tgz
-release*/git-command-helper-*.tgz
+!/release*/*.tgz
 
 # TypeScript/Javascript files (underscore-prefixed)
 _*.ts
