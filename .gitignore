@@ -1,19 +1,48 @@
-config_*
-tmp
-*.tgz
-!release/*
-/coverage
-/docs
-_*.ts
-_*.js
-*.log
-**/*.tsbuildinfo
-**/node_modules
-**/.yarn/cache/**
-**/.yarn/unplugged/**
-**/.yarn/*.gz
-**/.yarn/version*
-.pnp.*
-.nyc*
+# =========================
+# Dependencies
+# =========================
+node_modules/
+.yarn/
+!.yarn/cache/
+!.yarn/unplugged/
+!.yarn/*.gz
+!.yarn/version*
 package-lock.json
-/lib
+yarn.lock
+.pnp.*
+
+# =========================
+# Secrets
+# =========================
+.env
+
+# =========================
+# Build output
+# =========================
+dist/
+coverage/
+*.tsbuildinfo
+
+# =========================
+# Logs / temp
+# =========================
+*.log
+tmp/
+.nyc*/
+config_*/
+
+# =========================
+# Docs
+# =========================
+docs/
+
+# =========================
+# Release artifacts
+# =========================
+*.tgz
+!release*/**/*.tgz
+
+# =========================
+# Internal / generated TS/JS
+# =========================
+_*.[tj]s
