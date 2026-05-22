@@ -2,8 +2,15 @@
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "rootDirs": ["src"],
-    "outDir": "dist",
-    "resolveJsonModule": true
+    "outDir": "tmp/dist",
+    "declaration": true,
+    "declarationDir": "dist",
+    "resolveJsonModule": true,
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true
   },
   "include": ["src/index.ts", "src/**/*.json"],
   "exclude": ["*.test.*", "**/node_modules", "**/dist/**", "**/tmp/**", "**/*.builder.*"]
