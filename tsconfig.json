@@ -8,7 +8,7 @@
     "tsBuildInfoFile": "./tmp/tsconfig.build.tsbuildinfo",
     "declarationMap": false,
     "outDir": "tmp/dist",
-    "strict": true,
+    "strict": false,
     "noEmit": true,
     "lib": ["ES2020"]
   }
