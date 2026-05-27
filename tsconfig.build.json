@@ -1,14 +1,14 @@
 {
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "rootDirs": ["src"],
+    "rootDir": "src",
     "outDir": "tmp/dist",
     "declaration": true,
     "declarationDir": "dist",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "target": "esnext",
     "module": "esnext",
-    "moduleResolution": "node",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true
   },
