@@ -1,24 +1,20 @@
-import { existsSync, mkdirSync, readFileSync } from "fs";
-import * as jsonc from "jsonc-parser";
-import { join } from "path";
-import type { JestConfigWithTsJest } from "ts-jest";
+import { existsSync, mkdirSync, readFileSync } from 'fs';
+import * as jsonc from 'jsonc-parser';
+import { join } from 'path';
+import type { JestConfigWithTsJest } from 'ts-jest';
 import { CompilerOptions, ProjectReference } from 'typescript';
 
 interface TsConfigJson {
-    compilerOptions?: CompilerOptions;
-    extends?: string | string[];
-    include?: string[];
-    exclude?: string[];
-    references?: ProjectReference[];
-    // ... other root properties
+  compilerOptions?: CompilerOptions;
+  extends?: string | string[];
+  include?: string[];
+  exclude?: string[];
+  references?: ProjectReference[];
+  // ... other root properties
 }
 
-const tsconfigBase: TsConfigJson = jsonc.parse(
-  readFileSync(join(__dirname, "tsconfig.base.json"), "utf-8")
-);
-const tsconfigJest: TsConfigJson = jsonc.parse(
-  readFileSync(join(__dirname, "tsconfig.jest.json"), "utf-8")
-);
+const tsconfigBase: TsConfigJson = jsonc.parse(readFileSync(join(__dirname, 'tsconfig.base.json'), 'utf-8'));
+const tsconfigJest: TsConfigJson = jsonc.parse(readFileSync(join(__dirname, 'tsconfig.jest.json'), 'utf-8'));
 const tsconfig = Object.assign(tsconfigBase.compilerOptions || {}, tsconfigJest.compilerOptions || {});
 
 /**
@@ -26,59 +22,59 @@ const tsconfig = Object.assign(tsconfigBase.compilerOptions || {}, tsconfigJest.
  * * how to run single test {@link https://stackoverflow.com/questions/28725955/how-do-i-test-a-single-file-using-jest}
  */
 const config: JestConfigWithTsJest = {
-  preset: "ts-jest",
-  testEnvironment: "node",
-  moduleFileExtensions: ["ts", "js", "json", "mjs", "mts", "node"],
-  extensionsToTreatAsEsm: [".ts"],
+  preset: 'ts-jest',
+  testEnvironment: 'node',
+  moduleFileExtensions: ['ts', 'js', 'json', 'mjs', 'mts', 'node'],
+  extensionsToTreatAsEsm: ['.ts'],
   verbose: false,
   cache: true,
-  cacheDirectory: join(__dirname, "tmp/jest"),
+  cacheDirectory: join(__dirname, 'tmp/jest'),
   collectCoverageFrom: [
-    "src/*.{js,ts}",
-    "!**/node_modules/**",
-    "!**/vendor/**",
-    "!**/test/**",
-    "!**/*.test.{js,ts}",
-    "!**/*.builder.ts",
-    "!**/.deploy_git/**"
+    'src/*.{js,ts}',
+    '!**/node_modules/**',
+    '!**/vendor/**',
+    '!**/test/**',
+    '!**/*.test.{js,ts}',
+    '!**/*.builder.*',
+    '!**/.deploy_git/**'
   ],
   roots: [`<rootDir>/test`],
-  coveragePathIgnorePatterns: ["**/node_modules/**", "**/dist/**", "**/tmp/**", "**/test/**"],
+  coveragePathIgnorePatterns: ['**/node_modules/**', '**/dist/**', '**/tmp/**', '**/test/**'],
   testMatch: [
     `**/__tests__/**/*.+(ts|tsx|js|mjs|mts)`,
     `**/?(*.)+(spec|test).+(ts|tsx|js|mjs|mts)`,
     `**/test/*.test.{ts,js,mjs,mts}`,
-    "!**/.deploy_git/**"
+    '!**/.deploy_git/**'
   ],
   // Use moduleNameMapper to handle ESM imports in tests
   moduleNameMapper: {
-    "^(\\.{1,2}/.*)\\.js$": "$1"
+    '^(\\.{1,2}/.*)\\.js$': '$1'
   },
   // Allow transformation of all ESM in node_modules for all external dependencies
-  transformIgnorePatterns: ["/node_modules/(?!.*\\.mjs$)/"],
+  transformIgnorePatterns: ['/node_modules/(?!.*\\.mjs$)/'],
 
   transform: {
-    "^.+\\.(ts|tsx)$": [
-      "ts-jest",
+    '^.+\\.(ts|tsx)$': [
+      'ts-jest',
       // required due to custom location of tsconfig.json configuration file
       // https://kulshekhar.github.io/ts-jest/docs/getting-started/options/tsconfig
       {
         babelConfig: {
           presets: [
             [
-              "@babel/preset-env",
+              '@babel/preset-env',
               {
-                targets: { node: "current" }
+                targets: { node: 'current' }
               }
             ],
-            "@babel/preset-typescript"
+            '@babel/preset-typescript'
           ]
         },
         // useESM: true,
         tsconfig
       }
     ],
-    "^.+\\.(mjs)$": ["babel-jest", { presets: ["@babel/preset-env"] }]
+    '^.+\\.(mjs)$': ['babel-jest', { presets: ['@babel/preset-env'] }]
   },
 
   // Find memory leaks in your tests by monitoring memory usage, but may slow down your test suite and occasionally report false positives.
@@ -93,7 +89,7 @@ const config: JestConfigWithTsJest = {
   // collectCoverageFrom: undefined,
 
   // The directory where Jest should output its coverage files
-  coverageDirectory: "coverage",
+  coverageDirectory: 'coverage',
 
   // An array of regexp pattern strings used to skip coverage collection
   // coveragePathIgnorePatterns: [
@@ -101,7 +97,7 @@ const config: JestConfigWithTsJest = {
   // ],
 
   // Indicates which provider should be used to instrument code for coverage
-  coverageProvider: "v8",
+  coverageProvider: 'v8',
 
   // A list of reporter names that Jest uses when writing coverage reports
   // coverageReporters: [
@@ -110,7 +106,7 @@ const config: JestConfigWithTsJest = {
   //   "lcov",
   //   "clover"
   // ],
-  setupFiles: ["<rootDir>/jest.setup.ts"]
+  globalSetup: '<rootDir>/jest.setup.ts'
 };
 
 if (!existsSync(<string>config.cacheDirectory)) mkdirSync(<string>config.cacheDirectory, { recursive: true });
