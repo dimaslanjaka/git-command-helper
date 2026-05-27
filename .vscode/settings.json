@@ -1,16 +1,20 @@
 {
   "emmet.includeLanguages": {
-    "ejs": "html" // treat ejs as html
+    "ejs": "html"
   },
   "terminal.integrated.env.linux": {
-    // linux custom PATH environment variable
-    "PATH": "${workspaceFolder}/bin:${workspaceFolder}/.venv/bin:${workspaceFolder}/vendor/bin:${env:PATH}:${workspaceFolder}/node_modules/.bin"
+    "PATH": "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:${workspaceFolder}/bin:${workspaceFolder}/node_modules/.bin:${workspaceFolder}/vendor/bin",
+    "PUPPETEER_SKIP_DOWNLOAD": "true",
+    "PHP_CS_FIXER_IGNORE_ENV": "1",
+    "ESLINT_USE_FLAT_CONFIG": "true"
   },
   "terminal.integrated.env.windows": {
-    // windows custom PATH environment variable
-    "PATH": "${workspaceFolder}\\bin;${workspaceFolder}\\.venv\\Scripts;${workspaceFolder}\\vendor\\bin;${env:PATH};${workspaceFolder}\\node_modules\\.bin"
+    "PATH": "${env:LOCALAPPDATA}\\nvm;C:\\nvm4w\\nodejs;C:\\Program Files\\Git\\cmd;C:\\Program Files\\Git\\usr\\bin;${env:PATH};${workspaceFolder}\\node_modules\\.bin;${workspaceFolder}\\bin;${workspaceFolder}\\vendor\\bin;C:\\laragon\\bin\\mysql\\mysql-8.4.3-winx64\\bin;C:\\Users\\Dell\\AppData\\Local\\Programs\\Ollama",
+    "PUPPETEER_SKIP_DOWNLOAD": "true",
+    "PHP_CS_FIXER_IGNORE_ENV": "1",
+    "ESLINT_USE_FLAT_CONFIG": "true"
   },
-  "terminal.integrated.defaultProfile.windows": "Short Command Prompt",
+  "terminal.integrated.defaultProfile.windows": "Short PowerShell",
   "terminal.integrated.profiles.windows": {
     "Cygwin": {
       "args": ["--login", "-i"],
@@ -21,7 +25,7 @@
     },
     "Short Command Prompt": {
       "path": ["${env:windir}\\System32\\cmd.exe"],
-      "args": ["/k", "prompt $g"],
+      "args": ["/k", "prompt $g", "prompt $p$_$g"],
       "icon": "terminal-cmd"
     },
     "Command Prompt": {
@@ -35,49 +39,37 @@
     "PowerShell": {
       "icon": "terminal-powershell",
       "source": "PowerShell"
+    },
+    "Short PowerShell": {
+      "source": "PowerShell",
+      "args": ["-NoExit", "-Command", "function prompt { \"[$((Get-Item .).Name)]> \" }"],
+      "icon": "terminal-powershell"
     }
   },
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit",
-    "source.organizeImports": "explicit"
+    "source.organizeImports": "never",
+    "source.fixAll.ts": "never",
+    "source.addMissingImports.ts": "never",
+    "source.removeUnused.ts": "never",
+    "source.removeUnusedImports": "never",
+    "source.sort.json": "never",
+    "source.sortImports": "never"
   },
-  "[ts]": {
-    "editor.formatOnSave": false // custom formating with default vscode formatter
-  },
-  "[scss]": {
-    "editor.formatOnSave": true, // custom formating with default vscode formatter
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[css]": {
-    "editor.formatOnSave": true, // custom formating with default vscode formatter
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[ejs]": {
-    "editor.formatOnSave": true // custom formating with default vscode formatter
-  },
-  "[json]": {
-    "editor.formatOnSave": false, // custom formating with default vscode formatter
-    "editor.defaultFormatter": "vscode.json-language-features",
-    "editor.codeActionsOnSave": {
-      "source.fixAll": "never",
-      "source.organizeImports": "never"
-    }
-  },
-  "editor.formatOnSave": false, // default vscode formatter
-  "git.enabled": true, // enable git
-  "code-runner.clearPreviousOutput": true, // code runner clear console when run code
-  "code-runner.saveFileBeforeRun": true, // code runner save current file before run
-  "code-runner.saveAllFilesBeforeRun": true, // code runner save all files before run
-  "code-runner.runInTerminal": true, // code runner run in terminal
+  "editor.formatOnSave": false,
+  "git.enabled": true,
+  "code-runner.clearPreviousOutput": true,
+  "code-runner.saveFileBeforeRun": true,
+  "code-runner.saveAllFilesBeforeRun": true,
+  "code-runner.runInTerminal": true,
   "files.exclude": {
     "**/dist": false,
     "**/node_modules": true,
     "**/vendor": true
   },
-  "code-runner.respectShebang": true, // code runner follow executor maps
+  "code-runner.respectShebang": true,
   "code-runner.executorMapByGlob": {
-    // code runner executor map by glob
-    "*.test.{ts,cjs,mjs}": "npm test --"
+    "*.test.{ts,cjs,mjs}": "npm test -- --testPathPatterns=\"$fileName\""
   },
   "eslint.codeActionsOnSave.mode": "all",
   "workbench.localHistory.exclude": {
@@ -86,7 +78,7 @@
   "search.exclude": {
     "**/dist/**": true
   },
-  "eslint.useFlatConfig": false,
+  "eslint.useFlatConfig": true,
   "git.autoStash": true,
   "eslint.probe": [
     "astro",
@@ -100,7 +92,12 @@
     "vue",
     "markdown",
     "json",
-    "jsonc"
+    "jsonc",
+    "css",
+    "glimmer-js",
+    "glimmer-ts",
+    "svelte",
+    "nunjucks"
   ],
   "eslint.validate": [
     "astro",
@@ -112,6 +109,13 @@
     "html",
     "mdx",
     "vue",
-    "markdown"
+    "markdown",
+    "json",
+    "jsonc",
+    "css",
+    "glimmer-js",
+    "glimmer-ts",
+    "svelte",
+    "nunjucks"
   ]
 }
