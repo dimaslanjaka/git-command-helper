@@ -98,7 +98,9 @@ async function builderAndPacker() {
  */
 async function cloner() {
   // Set default access token if not exists
-  process.env.ACCESS_TOKEN ||= 'token_' + Math.random();
+  process.env.ACCESS_TOKEN ||= process.env.GH_TOKEN || process.env.GITHUB_TOKEN || 'token_' + Math.random();
+
+  const accessToken = process.env.ACCESS_TOKEN || process.env.GH_TOKEN || process.env.GITHUB_TOKEN;
 
   const init = async (cfg: SetupGitConfig) => {
     await runGit(cfg.cwd, ['remote', 'set-url', 'origin', cfg.remote]);
@@ -120,10 +122,10 @@ async function cloner() {
   const githubPagesConfig = {
     cwd: path.join(tmpDir, '.deploy_git'),
     branch: 'master',
-    remote: `https://${process.env.ACCESS_TOKEN}@github.com/dimaslanjaka/dimaslanjaka.github.io.git`,
+    remote: `https://${accessToken}@github.com/dimaslanjaka/dimaslanjaka.github.io.git`,
     user: 'dimaslanjaka',
     email: 'dimaslanjaka@gmail.com',
-    token: process.env.ACCESS_TOKEN
+    token: accessToken
   };
   await cloneRepo(githubPagesConfig);
   await init(githubPagesConfig);
