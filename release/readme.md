@@ -2,9 +2,9 @@
 ## Releases
 | version | tarball url |
 | :--- | :--- |
-| 2.1.1 | https://github.com/dimaslanjaka/git-command-helper/raw/890ef58/release/git-command-helper-2.1.1.tgz |
-| 2.1.2 | https://github.com/dimaslanjaka/git-command-helper/raw/890ef58/release/git-command-helper-2.1.2.tgz |
-| latest | https://github.com/dimaslanjaka/git-command-helper/raw/890ef58/release/git-command-helper.tgz |
+| 2.1.1 | https://github.com/dimaslanjaka/git-command-helper/raw/678f407/release/git-command-helper-2.1.1.tgz |
+| 2.1.2 | https://github.com/dimaslanjaka/git-command-helper/raw/678f407/release/git-command-helper-2.1.2.tgz |
+| latest | https://github.com/dimaslanjaka/git-command-helper/raw/678f407/release/git-command-helper.tgz |
 | latest | https://github.com/dimaslanjaka/git-command-helper/raw/pre-release/release/git-command-helper.tgz |
 
 use this tarball with `resolutions`:
