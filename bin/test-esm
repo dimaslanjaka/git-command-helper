@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+# Detect GitHub Actions or GitLab CI
+CI_ARG=""
+
+if [[ -n "${GITHUB_ACTIONS:-}" || -n "${GITLAB_CI:-}" ]]; then
+  CI_ARG="--ci"
+fi
+
+node --experimental-vm-modules node_modules/jest/bin/jest.js \
+  --runInBand \
+  --forceExit \
+  --testTimeout=120000 \
+  --testPathIgnorePatterns="\\.(ts|js|cjs)$" \
+  ${CI_ARG:+$CI_ARG} \
+  "$@"
