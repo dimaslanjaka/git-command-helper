@@ -222,7 +222,7 @@
     "update:lockfile": "curl -L https://github.com/dimaslanjaka/git-command-helper/raw/master/yarn.lock > yarn.lock",
     "update": "run-s \"update:**\"",
     "patch": "npm version patch",
-    "test": "npx jest --bail=1 --runInBand --detectOpenHandles --logHeapUsage --update-snapshot --config=jest.config.ts",
+    "test": "jest --bail=1 --runInBand --detectOpenHandles --logHeapUsage --update-snapshot --config=jest.config.ts",
     "test-cov": "npx nyc --reporter=lcovonly npm test --collect-coverage",
     "docs": "npm run clean && npm run build && gulp docs",
     "clean": "rimraf dist tmp/dist && npm run build",
