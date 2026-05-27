@@ -69,7 +69,9 @@
   },
   "code-runner.respectShebang": true,
   "code-runner.executorMapByGlob": {
-    "*.test.{ts,cjs,mjs}": "npm test -- --testPathPatterns=\"$fileName\""
+    "*.test.{js,ts,jsx}": "npm test -- --testPathPatterns=$fileName",
+    "*.test.cjs": "test-cjs --testPathPatterns=\"$fileName\"",
+    "*.test.mjs": "test-esm --testPathPatterns=\"$fileName\""
   },
   "eslint.codeActionsOnSave.mode": "all",
   "workbench.localHistory.exclude": {
