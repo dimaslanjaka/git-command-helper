@@ -69,7 +69,7 @@
   },
   "code-runner.respectShebang": true,
   "code-runner.executorMapByGlob": {
-    "*.test.{js,ts,jsx}": "npm run test --testPathPatterns=$fileName",
+    "*.test.{js,ts,jsx}": "npm run test -- $fileName",
     "*.test.cjs": "test-cjs --testPathPatterns=\"$fileName\"",
     "*.test.mjs": "test-esm --testPathPatterns=\"$fileName\""
   },
