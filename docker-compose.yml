@@ -22,7 +22,7 @@ services:
       - ./docker.entrypoint.sh:/workspace/docker.entrypoint.sh
       - ./eslint.config.mjs:/workspace/eslint.config.mjs
       - ./gulpfile.js:/workspace/gulpfile.js
-      - ./index-builder.js:/workspace/index-builder.js
+      - ./index-builder.cjs:/workspace/index-builder.cjs
       - ./jest.config.ts:/workspace/jest.config.ts
       - ./lint-staged.config.js:/workspace/lint-staged.config.js
       - ./package.json:/workspace/package.json
@@ -51,7 +51,7 @@ services:
       - ./docker.entrypoint.sh:/workspace/docker.entrypoint.sh
       - ./eslint.config.mjs:/workspace/eslint.config.mjs
       - ./gulpfile.js:/workspace/gulpfile.js
-      - ./index-builder.js:/workspace/index-builder.js
+      - ./index-builder.cjs:/workspace/index-builder.cjs
       - ./jest.config.ts:/workspace/jest.config.ts
       - ./lint-staged.config.js:/workspace/lint-staged.config.js
       - ./package.json:/workspace/package.json
@@ -80,7 +80,7 @@ services:
       - ./docker.entrypoint.sh:/workspace/docker.entrypoint.sh
       - ./eslint.config.mjs:/workspace/eslint.config.mjs
       - ./gulpfile.js:/workspace/gulpfile.js
-      - ./index-builder.js:/workspace/index-builder.js
+      - ./index-builder.cjs:/workspace/index-builder.cjs
       - ./jest.config.ts:/workspace/jest.config.ts
       - ./lint-staged.config.js:/workspace/lint-staged.config.js
       - ./package.json:/workspace/package.json
@@ -109,7 +109,7 @@ services:
       - ./docker.entrypoint.sh:/workspace/docker.entrypoint.sh
       - ./eslint.config.mjs:/workspace/eslint.config.mjs
       - ./gulpfile.js:/workspace/gulpfile.js
-      - ./index-builder.js:/workspace/index-builder.js
+      - ./index-builder.cjs:/workspace/index-builder.cjs
       - ./jest.config.ts:/workspace/jest.config.ts
       - ./lint-staged.config.js:/workspace/lint-staged.config.js
       - ./package.json:/workspace/package.json
@@ -138,7 +138,7 @@ services:
       - ./docker.entrypoint.sh:/workspace/docker.entrypoint.sh
       - ./eslint.config.mjs:/workspace/eslint.config.mjs
       - ./gulpfile.js:/workspace/gulpfile.js
-      - ./index-builder.js:/workspace/index-builder.js
+      - ./index-builder.cjs:/workspace/index-builder.cjs
       - ./jest.config.ts:/workspace/jest.config.ts
       - ./lint-staged.config.js:/workspace/lint-staged.config.js
       - ./package.json:/workspace/package.json
@@ -167,7 +167,7 @@ services:
       - ./docker.entrypoint.sh:/workspace/docker.entrypoint.sh
       - ./eslint.config.mjs:/workspace/eslint.config.mjs
       - ./gulpfile.js:/workspace/gulpfile.js
-      - ./index-builder.js:/workspace/index-builder.js
+      - ./index-builder.cjs:/workspace/index-builder.cjs
       - ./jest.config.ts:/workspace/jest.config.ts
       - ./lint-staged.config.js:/workspace/lint-staged.config.js
       - ./package.json:/workspace/package.json

@@ -1,8 +1,8 @@
-export * from "./index-exports";
-export * as ext from "./index-exports";
+export * from './index-exports';
+export * as ext from './index-exports';
 
 // separate index file for exporting the git module
-import { git } from "./git";
+import { git } from './git';
 // Exporting the git module as both a named and default export
 export { git, git as gitCommandHelper, git as gitHelper };
 export default git;
