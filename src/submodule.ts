@@ -88,7 +88,7 @@ export class submodule {
     return new Bluebird((resolve) => {
       const infos = this.get();
       const doUp = () => {
-        return new Bluebird((resolveDoUp: (...v: any[]) => any) => {
+        return new Bluebird((resolveDoUp: (..._v: any[]) => any) => {
           if (!infos[0]) return;
           const github = infos[0];
           const { branch, remote } = infos[0].github;
@@ -112,7 +112,7 @@ export class submodule {
         });
       };
       const iterate = () => {
-        return new Bluebird((resolveIt: (...v: any[]) => any) => {
+        return new Bluebird((resolveIt: (..._v: any[]) => any) => {
           doUp()
             .then(() => {
               infos.shift();
