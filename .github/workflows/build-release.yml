@@ -70,7 +70,7 @@ jobs:
 
     steps:
       - name: "🔄 Checkout repository and submodules"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           token: ${{ secrets.ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
           submodules: recursive
