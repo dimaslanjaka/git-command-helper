@@ -1,25 +1,25 @@
-import dotenv from 'dotenv';
-import path from 'upath';
+import dotenv from "dotenv";
+import path from "upath";
 
-const envPath = path.join(__dirname, '../.env');
-if (require('fs').existsSync(envPath)) {
+const envPath = path.join(__dirname, "../.env");
+if (require("fs").existsSync(envPath)) {
   dotenv.config({ path: envPath, override: true, quiet: true });
 }
 
 export const token =
-  process.env.ACCESS_TOKEN || process.env.GH_TOKEN || process.env.GITHUB_TOKEN || 'token_' + Math.random();
+  process.env.ACCESS_TOKEN || process.env.GH_TOKEN || process.env.GITHUB_TOKEN || "token_" + Math.random();
 
 export const TestConfig = {
   /**
    * Git directory
    */
-  cwd: path.join(__dirname, '../tmp/project-test'),
-  branch: 'test',
-  remote: 'https://github.com/dimaslanjaka/test-repo.git',
-  user: 'github-actions[bot]',
-  email: '41898282+github-actions[bot]@users.noreply.github.com',
+  cwd: path.join(__dirname, "../tmp/project-test"),
+  branch: "test",
+  remote: "https://github.com/dimaslanjaka/test-repo.git",
+  user: "github-actions[bot]",
+  email: "41898282+github-actions[bot]@users.noreply.github.com",
   token,
-  originName: 'origin'
+  originName: "origin"
 };
 
 // Mock process.cwd for testing purposes
@@ -36,10 +36,10 @@ export function areWeTestingWithJest() {
 }
 
 export const myGithubPages = {
-  cwd: path.join(__dirname, '../tmp', '.deploy_git'),
-  branch: 'master',
+  cwd: path.join(__dirname, "../tmp", ".deploy_git"),
+  branch: "master",
   remote: `https://${token}@github.com/dimaslanjaka/dimaslanjaka.github.io.git`,
-  user: 'dimaslanjaka',
-  email: 'dimaslanjaka@gmail.com',
+  user: "dimaslanjaka",
+  email: "dimaslanjaka@gmail.com",
   token
 };
