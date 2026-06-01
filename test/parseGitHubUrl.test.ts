@@ -133,6 +133,21 @@ describe("parseGitHubUrl", () => {
     });
   });
 
+  it("parses github.com raw url with refs heads branch for nodejs-package-types", () => {
+    const url =
+      "https://github.com/dimaslanjaka/nodejs-package-types/raw/refs/heads/through2/release/types-through2.tgz";
+    expect(parseGitHubUrl(url)).toEqual({
+      protocol: "https",
+      username: null,
+      password: null,
+      host: "github.com",
+      owner: "dimaslanjaka",
+      repo: "nodejs-package-types",
+      path: "raw/refs/heads/through2/release/types-through2.tgz",
+      branch: "through2"
+    });
+  });
+
   it("parses github.com raw url", () => {
     const url = "https://github.com/dimaslanjaka/git-command-helper/raw/pre-release/.github/workflows/ci.yml";
     expect(parseGitHubUrl(url)).toEqual({
@@ -421,15 +436,11 @@ describe("parseGitHubUrl", () => {
 
   it("throws for git protocol with auth", () => {
     const url = "git://user:token@github.com/owner/repo.git";
-    expect(() => parseGitHubUrl(url)).toThrow(
-      "Invalid GitHub URL: git://user:token@github.com/owner/repo.git"
-    );
+    expect(() => parseGitHubUrl(url)).toThrow("Invalid GitHub URL: git://user:token@github.com/owner/repo.git");
   });
 
   it("throws for ssh url with password auth", () => {
     const url = "ssh://user:token@github.com/owner/repo.git";
-    expect(() => parseGitHubUrl(url)).toThrow(
-      "Invalid GitHub URL: ssh://user:token@github.com/owner/repo.git"
-    );
+    expect(() => parseGitHubUrl(url)).toThrow("Invalid GitHub URL: ssh://user:token@github.com/owner/repo.git");
   });
 });

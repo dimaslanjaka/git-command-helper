@@ -1,6 +1,3 @@
-/* eslint-disable no-var */
-/* eslint-disable @typescript-eslint/no-namespace */
-
 import { default as Git } from "./git";
 
 export namespace gitCmdHelper {

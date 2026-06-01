@@ -22,7 +22,7 @@ import { getInstance, hasInstance, setInstance } from "./instances";
 import { SpawnOptions, spawn, spawnSilent } from "./spawn";
 import submodule from "./submodule";
 import { StatusResult } from "./types/status";
-import * as gitUtil from "./utils";
+import * as gitUtil from "./utils/index.js";
 import extractSubmodule from "./utils/extract-submodule";
 import { safeURL } from "./utils/safe-url";
 
@@ -79,7 +79,7 @@ export class git implements GitOpt {
   getGithubRootDir = GithubInfo.getGithubRootDir;
 
   constructor(gitInput: string, branch?: string);
-  // only allow single param
+  /** only allow single param */
   constructor(gitInput: GitOpt);
   constructor(gitInput: string | GitOpt, branch = "master") {
     let gitdir: string;
