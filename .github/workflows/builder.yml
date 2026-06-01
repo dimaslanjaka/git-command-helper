@@ -45,7 +45,7 @@ jobs:
           repository: ${{ inputs.repository }}
           ref: ${{ inputs.branch }}
 
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         name: save cache
         with:
           path: |
