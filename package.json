@@ -333,7 +333,7 @@
   "resolutions": {
     "sbg-utility": "https://github.com/dimaslanjaka/static-blog-generator/raw/44e5c7b79b4e60f8c2d34857c27b8ce677d7493e/packages/sbg-utility/release/sbg-utility.tgz",
     "binary-collections": "https://github.com/dimaslanjaka/bin/raw/b7d0c3bdad0f0b62b1983e30e990e9af62a7d406/releases/bin.tgz",
-    "cross-spawn": "https://github.com/dimaslanjaka/node-cross-spawn/raw/e6e5bcb36b91ae4114eee08ad52a9460a66bc3b6/release/cross-spawn.tgz",
+    "cross-spawn": "https://github.com/dimaslanjaka/node-cross-spawn/raw/96bdf55a3ac8a88fe04c2a2ccaffe188b1082ec3/release/cross-spawn.tgz",
     "@dimaslanjaka/eslint-base-config": "https://github.com/dimaslanjaka/eslint-base-config/raw/9741b4feac89f303ea585e3ecac2b0e768434135/release/dimaslanjaka-eslint-base-config.tgz",
     "ansi-regex": "^4",
     "glob-parent": "^6.0.2",

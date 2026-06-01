@@ -1,7 +1,7 @@
 "use strict";
 
 import * as spawn from "cross-spawn";
-import { spawnSyncReturn } from "cross-spawn";
+import * as cp from "cross-spawn";
 
 type ObjResult = { U: string } | { M: string } | { D: string };
 
@@ -18,7 +18,7 @@ export function gitStatus(opt: {
   porcelain?: boolean;
   /** show raw output instead parsed object */
   raw: true;
-}): spawnSyncReturn;
+}): cp.spawnSyncReturn;
 
 /**
  * git status
@@ -75,7 +75,7 @@ export function gitStatus(opt: {
 }) {
   // set porcelain true
   if (typeof opt.porcelain !== "boolean") opt.porcelain = true;
-  let result: spawnSyncReturn;
+  let result: cp.spawnSyncReturn;
   if (opt.porcelain) {
     result = spawn.sync("git", ["status", "--porcelain"], opt);
   } else {
