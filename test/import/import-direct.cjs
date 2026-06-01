@@ -1,9 +1,9 @@
-const gch = require('../../dist/index.js');
-const util = require('util');
+const gch = require("../../dist/index.js");
+const util = require("util");
 
 function isClass(obj) {
   return (
-    typeof obj === 'function' &&
+    typeof obj === "function" &&
     (/^class\s/.test(Function.prototype.toString.call(obj)) || Object.getOwnPropertyNames(obj.prototype).length > 1)
   );
 }
