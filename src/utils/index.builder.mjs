@@ -65,7 +65,7 @@ glob
     fs.writeFileSync(indexExportsFile, contents.join("\n"));
     fs.writeFileSync(indexFile, indexContent);
 
-    spawnSync("eslint", ["--fix", "**/*.js"], {
+    spawnSync("eslint", ["--fix", indexExportsFile, indexFile], {
       cwd: __dirname,
       stdio: "inherit"
     });
