@@ -1,3 +1,4 @@
+import { SpawnOptions } from "child_process";
 import _ from "lodash";
 import { spawnAsync } from "cross-spawn";
 
@@ -5,7 +6,7 @@ import { spawnAsync } from "cross-spawn";
  * get current branch
  * @returns
  */
-export async function getGithubCurrentBranch(opt: spawnAsync.SpawnOptions = {}) {
+export async function getGithubCurrentBranch(opt: SpawnOptions = {}) {
   try {
     const result = await spawnAsync("git", ["branch", "--show-current"], opt);
     return result.stdout.trim();

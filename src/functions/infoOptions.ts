@@ -1,7 +1,6 @@
-import { StdioOptions } from "child_process";
-import { spawnAsync } from "cross-spawn";
+import { SpawnOptions, StdioOptions } from "child_process";
 
-export interface ExtendedSpawnOptions extends spawnAsync.SpawnOptions {
+export interface ExtendedSpawnOptions extends SpawnOptions {
   [key: string]: any;
   /**
    * make function throws when error occurs
