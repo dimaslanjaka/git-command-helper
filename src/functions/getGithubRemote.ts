@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { spawnAsync } from "../spawn";
+import { spawnAsync } from "cross-spawn";
 import { safeURL } from "../utils/safe-url";
 import { ExtendedSpawnOptions } from "./infoOptions";
 

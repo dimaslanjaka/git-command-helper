@@ -1,6 +1,6 @@
 import { trueCasePathSync } from "sbg-utility";
 import path from "upath";
-import { spawnAsync } from "../spawn";
+import { spawnAsync } from "cross-spawn";
 import { ExtendedSpawnOptions } from "./infoOptions";
 
 /**

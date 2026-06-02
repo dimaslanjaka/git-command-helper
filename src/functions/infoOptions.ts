@@ -1,5 +1,5 @@
 import { StdioOptions } from "child_process";
-import { spawnAsync } from "../spawn";
+import { spawnAsync } from "cross-spawn";
 
 export interface ExtendedSpawnOptions extends spawnAsync.SpawnOptions {
   [key: string]: any;
