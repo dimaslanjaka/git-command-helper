@@ -44,6 +44,7 @@ class Submodule {
     this.submodules = Object.keys(config).map((key) => {
       if (key.startsWith("submodule")) {
         const submodule = config[key] as SubmoduleEntry;
+        if (!submodule.path || typeof submodule.path !== 'string') return undefined;
         submodule.cwd = path.join(path.dirname(String(this.gitmodulesPath)), submodule.path);
         const github = new git(submodule);
         submodule.github = github;
