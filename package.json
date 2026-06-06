@@ -147,11 +147,6 @@
       "require": "./dist/functions/gitignore.js",
       "types": "./dist/functions/gitignore.d.ts"
     },
-    "./dist/functions/getRawGithubUrl": {
-      "import": "./dist/functions/getRawGithubUrl.mjs",
-      "require": "./dist/functions/getRawGithubUrl.js",
-      "types": "./dist/functions/getRawGithubUrl.d.ts"
-    },
     "./dist/functions/getGithubRootDir": {
       "import": "./dist/functions/getGithubRootDir.mjs",
       "require": "./dist/functions/getGithubRootDir.js",
@@ -166,6 +161,11 @@
       "import": "./dist/functions/getGithubRemote.mjs",
       "require": "./dist/functions/getGithubRemote.js",
       "types": "./dist/functions/getGithubRemote.d.ts"
+    },
+    "./dist/functions/getGithubRawUrl": {
+      "import": "./dist/functions/getGithubRawUrl.mjs",
+      "require": "./dist/functions/getGithubRawUrl.js",
+      "types": "./dist/functions/getGithubRawUrl.d.ts"
     },
     "./dist/functions/getGithubCurrentBranch": {
       "import": "./dist/functions/getGithubCurrentBranch.mjs",
