@@ -4,6 +4,7 @@ export * from './getGithubCurrentBranch.js';
 export * from './getGithubRemote.js';
 export * from './getGithubRepoUrl.js';
 export * from './getGithubRootDir.js';
+export * from './getRawGithubUrl.js';
 export * from './gitignore.js';
 export * from './hasChanges.js';
 export * from './infoOptions.js';

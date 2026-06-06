@@ -147,6 +147,11 @@
       "require": "./dist/functions/gitignore.js",
       "types": "./dist/functions/gitignore.d.ts"
     },
+    "./dist/functions/getRawGithubUrl": {
+      "import": "./dist/functions/getRawGithubUrl.mjs",
+      "require": "./dist/functions/getRawGithubUrl.js",
+      "types": "./dist/functions/getRawGithubUrl.d.ts"
+    },
     "./dist/functions/getGithubRootDir": {
       "import": "./dist/functions/getGithubRootDir.mjs",
       "require": "./dist/functions/getGithubRootDir.js",
