@@ -12,6 +12,8 @@ function run(cmd: string, cwd: string): string {
 
 export interface GetRawGithubUrlOptions {
   branch?: string;
+  /** Working directory for resolving relative file paths (default: process.cwd()) */
+  cwd?: string;
 }
 
 /**
@@ -23,13 +25,14 @@ export interface GetRawGithubUrlOptions {
  * @param localFile - Absolute or relative path to a file inside a git repo
  * @param options - Options object
  * @param options.branch - Branch name (defaults to current branch or HEAD)
+ * @param options.cwd - Working directory for resolving relative file paths
  * @returns Final raw GitHub URL after following redirects
  */
 export async function getGithubRawUrl(localFile: string, options: GetRawGithubUrlOptions = {}): Promise<string> {
-  const absFile = path.resolve(localFile);
-  const cwd = path.dirname(absFile);
+  const absFile = path.resolve(options.cwd || process.cwd(), localFile);
+  const fileDir = path.dirname(absFile);
 
-  const repoRoot = run("git rev-parse --show-toplevel", cwd);
+  const repoRoot = run("git rev-parse --show-toplevel", fileDir);
   const remoteUrl = run("git remote get-url origin", repoRoot);
 
   const { owner, repo } = parseGitHubUrl(remoteUrl);
