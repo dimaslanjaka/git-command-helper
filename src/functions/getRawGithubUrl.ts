@@ -1,5 +1,6 @@
 import path from "path";
 import { execSync } from "child_process";
+import axios from "axios";
 import { parseGitHubUrl } from "./parseGitHubUrl.js";
 
 function run(cmd: string, cwd: string): string {
@@ -14,19 +15,22 @@ export interface GetRawGithubUrlOptions {
   branch?: string;
   /** Working directory for resolving relative file paths (default: process.cwd()) */
   cwd?: string;
+  /** Follow HTTP redirects to resolve the final URL (default: false) */
+  followRedirect?: boolean;
 }
 
 /**
- * Convert a local file path to its final raw GitHub URL (following redirects).
+ * Convert a local file path to its final raw GitHub URL.
  * Resolves the file against the git repo root, reads the origin remote and
- * current branch (or a user-supplied branch), builds a raw.githubusercontent.com URL,
- * then follows any redirects to return the final URL.
+ * current branch (or a user-supplied branch), and builds a raw.githubusercontent.com URL.
+ * Optionally follows HTTP redirects using axios to resolve the final URL.
  *
  * @param localFile - Absolute or relative path to a file inside a git repo
  * @param options - Options object
  * @param options.branch - Branch name (defaults to current branch or HEAD)
  * @param options.cwd - Working directory for resolving relative file paths
- * @returns Final raw GitHub URL after following redirects
+ * @param options.followRedirect - Follow HTTP redirects to resolve final URL (default: false)
+ * @returns Raw GitHub URL, optionally resolved through redirects
  */
 export async function getGithubRawUrl(localFile: string, options: GetRawGithubUrlOptions = {}): Promise<string> {
   const absFile = path.resolve(options.cwd || process.cwd(), localFile);
@@ -43,9 +47,13 @@ export async function getGithubRawUrl(localFile: string, options: GetRawGithubUr
 
   const rawUrl = `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${relativePath}`;
 
+  if (!options.followRedirect) {
+    return rawUrl;
+  }
+
   try {
-    const response = await fetch(rawUrl, { method: "HEAD", redirect: "follow" });
-    return response.url || rawUrl;
+    const response = await axios.get(rawUrl, { maxRedirects: 5 });
+    return response.request.res.responseUrl || rawUrl;
   } catch {
     return rawUrl;
   }
