@@ -60,11 +60,6 @@ runs:
   using: composite
 
   steps:
-    - name: ⬇️ Checkout main repository
-      uses: actions/checkout@v6
-      with:
-        token: ${{ inputs.token }}
-
     - name: ⬇️ Checkout test-repo
       uses: actions/checkout@v6
       with:
