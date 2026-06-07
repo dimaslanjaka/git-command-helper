@@ -251,7 +251,7 @@ runs:
       shell: bash
       run: npm i -g typescript ts-node gulp-cli hexo-cli webpack-cli
 
-    - name: Add custom bins to PATH
+    - name: "📂 Add custom bins to PATH"
       shell: bash
       run: |
         BIN_DIRS=(
