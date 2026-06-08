@@ -13,14 +13,16 @@ describe("untrack", () => {
   });
 
   test("write new file", async () => {
-    const newfile = join(testcfg.cwd, "new.txt");
+    const filename = "untrack-test-" + Math.random().toString(36).substring(2, 10) + ".txt";
+    const newfile = join(testcfg.cwd, filename);
     writeFileSync(newfile, Math.random().toFixed(2));
-    const result = await isUntracked("new.txt", { cwd: testcfg.cwd });
+    const result = await isUntracked(filename, { cwd: testcfg.cwd });
     expect(result).toBeTruthy();
   });
 
   test("file not found", async () => {
-    const result = await isUntracked("newxxx.txt", { cwd: testcfg.cwd });
+    const filename = "untrack-nonexistent-" + Math.random().toString(36).substring(2, 10) + ".txt";
+    const result = await isUntracked(filename, { cwd: testcfg.cwd });
     expect(result).toBeFalsy();
   });
 });

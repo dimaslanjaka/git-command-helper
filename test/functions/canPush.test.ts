@@ -1,24 +1,42 @@
 import { afterAll, beforeAll, describe, expect, it, jest } from "@jest/globals";
 import fs from "fs";
 import path from "path";
-import { applyTokenToOriginUrl, git } from "../../src/index";
+import { async as spawnAsync } from "cross-spawn";
+import { git } from "../../src/index";
 import { testcfg } from "../config";
 
 jest.setTimeout(120000); // Set a longer timeout for tests
 
 describe("canPush()", () => {
   let github: git;
+  const localRemote = path.join(__dirname, "../tmp/remote.git");
+  const originalRemoteOriginUrl = testcfg.remote;
 
-  beforeAll(async function () {
+  beforeAll(async () => {
+    // Create a local bare repo to serve as the "origin" remote
+    // This avoids external auth dependency (the root cause of CI failures)
+    await spawnAsync("git", ["init", "--bare", localRemote]);
+
+    // Init working directory
     github = new git(testcfg.cwd);
-    await github.setuser(testcfg.user);
-    await github.setemail(testcfg.email);
-    await applyTokenToOriginUrl(testcfg.remote, testcfg.token, "origin");
+
+    // Hard reset to clean state before testing
+    await spawnAsync("git", ["reset", "--hard", "HEAD"], { cwd: testcfg.cwd, stdio: "pipe" });
+
+    // Point origin to the local bare repo
+    await spawnAsync("git", ["remote", "set-url", "origin", localRemote], { cwd: testcfg.cwd });
+
+    // Ensure the test branch exists and push initial state to local remote
+    await spawnAsync("git", ["push", "-u", "origin", testcfg.branch], { cwd: testcfg.cwd, stdio: "pipe" });
   }, 90000);
 
   afterAll(async () => {
-    // Reset git
+    // Hard reset to clean state
     await github.reset(testcfg.branch);
+    // Restore original remote URL for other tests
+    await spawnAsync("git", ["remote", "set-url", "origin", originalRemoteOriginUrl], { cwd: testcfg.cwd });
+    // Cleanup local bare repo
+    fs.rmSync(localRemote, { recursive: true, force: true });
   });
 
   it("cannot push after reset", async () => {

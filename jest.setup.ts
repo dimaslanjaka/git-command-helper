@@ -51,7 +51,7 @@ async function cloneRepo(cfg: SetupGitConfig) {
  * Delegates to build.cjs which handles checksum checking internally.
  */
 async function builderAndPacker() {
-  console.log(ansi.cyan("[PRETEST] Running build.cjs..."));
+  console.log(ansi.cyan("\n[PRETEST] Running build.cjs..."));
   const buildScript = path.join(rootDir, "build.cjs");
   await cp.async("node", [buildScript], { cwd: rootDir, stdio: "inherit" });
 }
