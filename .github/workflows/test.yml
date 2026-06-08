@@ -1,0 +1,216 @@
+name: Node.js Package Test
+concurrency:
+  group: test-${{ github.event_name }}
+  cancel-in-progress: true
+on:
+  workflow_dispatch: {}
+  push:
+    paths:
+      - "**/test*/**"
+      - "**/test*"
+      - "**/src/**"
+env:
+  CI_NODE_VERSION: 24.16.0
+  CI_PYTHON_VERSION: "3.11"
+  ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN || secrets.GITHUB_TOKEN || github.token }}
+  GH_TOKEN: ${{ secrets.ACCESS_TOKEN || secrets.GITHUB_TOKEN || github.token }}
+jobs:
+  ci:
+    name: 🔨 Build, Pack & Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇️ Checkout workflow repository
+        uses: actions/checkout@v6
+      - name: ⬇️ Setup CI Environment
+        uses: ./.github/actions/setup-environments
+        with:
+          node-version: ${{ env.CI_NODE_VERSION }}
+          python-version: ${{ env.CI_PYTHON_VERSION }}
+          token: ${{ secrets.ACCESS_TOKEN || secrets.GITHUB_TOKEN || github.token }}
+          prefix-cache-key: ${{ runner.os }}-test-
+      - name: 📦 Install dependencies
+        run: touch yarn.lock && corepack yarn install
+      - name: 🔨 Build project
+        run: corepack yarn build
+      - name: 📦 Pack project
+        run: corepack yarn pack
+      - name: 🧹 Clean GitHub Actions Cache
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.ACCESS_TOKEN || secrets.GITHUB_TOKEN || github.token }}
+        shell: bash
+        run: npx --legacy-peer-deps -y
+          binary-collections@https://raw.githubusercontent.com/dimaslanjaka/bin/master/releases/bin.tgz
+          clean-github-actions-caches --repo "${{ github.repository }}" --sha
+          "${{ github.sha }}"
+      - name: 🧪 Run tests in test/check-ignores.test.ts
+        id: run-test-check-ignores-test-ts
+        shell: bash
+        run: >-
+          if [ -f "test/check-ignores.test.ts" ]; then
+            node node_modules/jest/bin/jest.js --runInBand --forceExit --testTimeout=120000 --detectOpenHandles --testPathPatterns="check-ignores.test.ts"
+          else
+            echo "Skipping missing test file: test/check-ignores.test.ts"
+          fi
+      - name: 🧪 Run tests in test/constructor-object.test.ts
+        id: run-test-constructor-object-test-ts
+        shell: bash
+        run: >-
+          if [ -f "test/constructor-object.test.ts" ]; then
+            node node_modules/jest/bin/jest.js --runInBand --forceExit --testTimeout=120000 --detectOpenHandles --testPathPatterns="constructor-object.test.ts"
+          else
+            echo "Skipping missing test file: test/constructor-object.test.ts"
+          fi
+      - name: 🧪 Run tests in test/extract-submodule.test.ts
+        id: run-test-extract-submodule-test-ts
+        shell: bash
+        run: >-
+          if [ -f "test/extract-submodule.test.ts" ]; then
+            node node_modules/jest/bin/jest.js --runInBand --forceExit --testTimeout=120000 --detectOpenHandles --testPathPatterns="extract-submodule.test.ts"
+          else
+            echo "Skipping missing test file: test/extract-submodule.test.ts"
+          fi
+      - name: 🧪 Run tests in test/functions/applyTokenToOriginUrl.test.ts
+        id: run-test-functions-applyTokenToOriginUrl-test-ts
+        shell: bash
+        run: >-
+          if [ -f "test/functions/applyTokenToOriginUrl.test.ts" ]; then
+            node node_modules/jest/bin/jest.js --runInBand --forceExit --testTimeout=120000 --detectOpenHandles --testPathPatterns="applyTokenToOriginUrl.test.ts"
+          else
+            echo "Skipping missing test file: test/functions/applyTokenToOriginUrl.test.ts"
+          fi
+      - name: 🧪 Run tests in test/functions/applyUserToOriginUrl.test.ts
+        id: run-test-functions-applyUserToOriginUrl-test-ts
+        shell: bash
+        run: >-
+          if [ -f "test/functions/applyUserToOriginUrl.test.ts" ]; then
+            node node_modules/jest/bin/jest.js --runInBand --forceExit --testTimeout=120000 --detectOpenHandles --testPathPatterns="applyUserToOriginUrl.test.ts"
+          else
+            echo "Skipping missing test file: test/functions/applyUserToOriginUrl.test.ts"
+          fi
+      - name: 🧪 Run tests in test/functions/canPush.test.ts
+        id: run-test-functions-canPush-test-ts
+        shell: bash
+        run: >-
+          if [ -f "test/functions/canPush.test.ts" ]; then
+            node node_modules/jest/bin/jest.js --runInBand --forceExit --testTimeout=120000 --detectOpenHandles --testPathPatterns="canPush.test.ts"
+          else
+            echo "Skipping missing test file: test/functions/canPush.test.ts"
+          fi
+      - name: 🧪 Run tests in test/functions/get-file-url.test.ts
+        id: run-test-functions-get-file-url-test-ts
+        shell: bash
+        run: >-
+          if [ -f "test/functions/get-file-url.test.ts" ]; then
+            node node_modules/jest/bin/jest.js --runInBand --forceExit --testTimeout=120000 --detectOpenHandles --testPathPatterns="get-file-url.test.ts"
+          else
+            echo "Skipping missing test file: test/functions/get-file-url.test.ts"
+          fi
+      - name: 🧪 Run tests in test/get-remote.test.ts
+        id: run-test-get-remote-test-ts
+        shell: bash
+        run: >-
+          if [ -f "test/get-remote.test.ts" ]; then
+            node node_modules/jest/bin/jest.js --runInBand --forceExit --testTimeout=120000 --detectOpenHandles --testPathPatterns="get-remote.test.ts"
+          else
+            echo "Skipping missing test file: test/get-remote.test.ts"
+          fi
+      - name: 🧪 Run tests in test/git.test.ts
+        id: run-test-git-test-ts
+        shell: bash
+        run: >-
+          if [ -f "test/git.test.ts" ]; then
+            node node_modules/jest/bin/jest.js --runInBand --forceExit --testTimeout=120000 --detectOpenHandles --testPathPatterns="git.test.ts"
+          else
+            echo "Skipping missing test file: test/git.test.ts"
+          fi
+      - name: 🧪 Run tests in test/import/import-direct.test.mjs
+        id: run-test-import-import-direct-test-mjs
+        shell: bash
+        run: >-
+          if [ -f "test/import/import-direct.test.mjs" ]; then
+            bash bin/test-esm --testPathPatterns="import-direct.test.mjs"
+          else
+            echo "Skipping missing test file: test/import/import-direct.test.mjs"
+          fi
+      - name: 🧪 Run tests in test/latest-commit.test.ts
+        id: run-test-latest-commit-test-ts
+        shell: bash
+        run: >-
+          if [ -f "test/latest-commit.test.ts" ]; then
+            node node_modules/jest/bin/jest.js --runInBand --forceExit --testTimeout=120000 --detectOpenHandles --testPathPatterns="latest-commit.test.ts"
+          else
+            echo "Skipping missing test file: test/latest-commit.test.ts"
+          fi
+      - name: 🧪 Run tests in test/multiple-remotes.test.ts
+        id: run-test-multiple-remotes-test-ts
+        shell: bash
+        run: >-
+          if [ -f "test/multiple-remotes.test.ts" ]; then
+            node node_modules/jest/bin/jest.js --runInBand --forceExit --testTimeout=120000 --detectOpenHandles --testPathPatterns="multiple-remotes.test.ts"
+          else
+            echo "Skipping missing test file: test/multiple-remotes.test.ts"
+          fi
+      - name: 🧪 Run tests in test/parseGitHubUrl.test.ts
+        id: run-test-parseGitHubUrl-test-ts
+        shell: bash
+        run: >-
+          if [ -f "test/parseGitHubUrl.test.ts" ]; then
+            node node_modules/jest/bin/jest.js --runInBand --forceExit --testTimeout=120000 --detectOpenHandles --testPathPatterns="parseGitHubUrl.test.ts"
+          else
+            echo "Skipping missing test file: test/parseGitHubUrl.test.ts"
+          fi
+      - name: 🧪 Run tests in test/pull.test.ts
+        id: run-test-pull-test-ts
+        shell: bash
+        run: >-
+          if [ -f "test/pull.test.ts" ]; then
+            node node_modules/jest/bin/jest.js --runInBand --forceExit --testTimeout=120000 --detectOpenHandles --testPathPatterns="pull.test.ts"
+          else
+            echo "Skipping missing test file: test/pull.test.ts"
+          fi
+      - name: 🧪 Run tests in test/safe-url.test.ts
+        id: run-test-safe-url-test-ts
+        shell: bash
+        run: >-
+          if [ -f "test/safe-url.test.ts" ]; then
+            node node_modules/jest/bin/jest.js --runInBand --forceExit --testTimeout=120000 --detectOpenHandles --testPathPatterns="safe-url.test.ts"
+          else
+            echo "Skipping missing test file: test/safe-url.test.ts"
+          fi
+      - name: 🧪 Run tests in test/submodule/basic.test.ts
+        id: run-test-submodule-basic-test-ts
+        shell: bash
+        run: >-
+          if [ -f "test/submodule/basic.test.ts" ]; then
+            node node_modules/jest/bin/jest.js --runInBand --forceExit --testTimeout=120000 --detectOpenHandles --testPathPatterns="basic.test.ts"
+          else
+            echo "Skipping missing test file: test/submodule/basic.test.ts"
+          fi
+      - name: 🧪 Run tests in test/submodule/validate.test.ts
+        id: run-test-submodule-validate-test-ts
+        shell: bash
+        run: >-
+          if [ -f "test/submodule/validate.test.ts" ]; then
+            node node_modules/jest/bin/jest.js --runInBand --forceExit --testTimeout=120000 --detectOpenHandles --testPathPatterns="validate.test.ts"
+          else
+            echo "Skipping missing test file: test/submodule/validate.test.ts"
+          fi
+      - name: 🧪 Run tests in test/untrack.test.ts
+        id: run-test-untrack-test-ts
+        shell: bash
+        run: >-
+          if [ -f "test/untrack.test.ts" ]; then
+            node node_modules/jest/bin/jest.js --runInBand --forceExit --testTimeout=120000 --detectOpenHandles --testPathPatterns="untrack.test.ts"
+          else
+            echo "Skipping missing test file: test/untrack.test.ts"
+          fi
+      - name: 🧪 Run tests in test/utils/extract-submodule.test.ts
+        id: run-test-utils-extract-submodule-test-ts
+        shell: bash
+        run: >-
+          if [ -f "test/utils/extract-submodule.test.ts" ]; then
+            node node_modules/jest/bin/jest.js --runInBand --forceExit --testTimeout=120000 --detectOpenHandles --testPathPatterns="extract-submodule.test.ts"
+          else
+            echo "Skipping missing test file: test/utils/extract-submodule.test.ts"
+          fi
