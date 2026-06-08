@@ -8,7 +8,7 @@ node_modules/
 !.yarn/*.gz
 !.yarn/version*
 package-lock.json
-yarn.lock
+*.lock
 .pnp.*
 
 # =========================
