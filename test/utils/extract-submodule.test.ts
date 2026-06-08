@@ -1,3 +1,4 @@
+import { describe, expect, it } from "@jest/globals";
 import path from "upath";
 import extractSubmodule from "../../src/utils/extract-submodule";
 
