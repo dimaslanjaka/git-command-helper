@@ -1,4 +1,4 @@
-import { gitConfig } from "./gitConfig";
+import { gitConfig } from "./gitConfig.js";
 
 /**
  * force end of line LF
