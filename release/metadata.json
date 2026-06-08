@@ -8,6 +8,15 @@
     },
     "size": "24.84 KB"
   },
+  "/release/git-command-helper.tgz": {
+    "integrity": {
+      "sha1": "9f8b80e9b2706b7e60f3b08514897bd52a3d3337",
+      "sha256": "yGafMCHP4ToF5b3EMiTHfqeaz9Zu3Txhfr2qdzy0fqU=",
+      "md5": "5da43d55cde3b935a4c377e27482d789",
+      "sha512": "E6OLVFM77EfJ2Mkz8EkUgek7lsNWGLbPkaZHg11sO/9MOZEnb21Nml6KZHDrh6lPvs/A4SC9vQLzStXe2Iv+tQ=="
+    },
+    "size": "49.15 KB"
+  },
   "/release/git-command-helper-1.0.13.tgz": {
     "integrity": {
       "sha1": "d71fc3e5f96731cb1a9c81aa0bb57ad4181f6690",
@@ -43,15 +52,6 @@
       "sha512": "U0IRrYnUZ8L2uuJjdxqr0IOsQBcG7PA8okmKwxrd0XY94wUJFcqh+V3DnhGYacqTcP2meKTZC5wiJMc8jJ5t9Q=="
     },
     "size": "18.32 KB"
-  },
-  "/release/git-command-helper-1.1.10.tgz": {
-    "integrity": {
-      "sha1": "4f4aec670fba430aa7ed1a1412f78209a489805d",
-      "sha256": "Wf5/Qt8o64BA953lH0Pw1hV7ItMdTmA1Aoa3Ix6pyOU=",
-      "md5": "3abf89e763d038fd0ddc72d23502570a",
-      "sha512": "wUf2dJBE9PIcHjyBW3LnEwUTCL+frII0GsQE5Kuz2cp+jYU0e9azpAW5Ys1z7EoC3QXEEJN5KEMiFvEVxAWuiQ=="
-    },
-    "size": "18.21 KB"
   },
   "/release/git-command-helper-1.1.2.tgz": {
     "integrity": {
@@ -125,6 +125,15 @@
     },
     "size": "20.43 KB"
   },
+  "/release/git-command-helper-1.1.10.tgz": {
+    "integrity": {
+      "sha1": "4f4aec670fba430aa7ed1a1412f78209a489805d",
+      "sha256": "Wf5/Qt8o64BA953lH0Pw1hV7ItMdTmA1Aoa3Ix6pyOU=",
+      "md5": "3abf89e763d038fd0ddc72d23502570a",
+      "sha512": "wUf2dJBE9PIcHjyBW3LnEwUTCL+frII0GsQE5Kuz2cp+jYU0e9azpAW5Ys1z7EoC3QXEEJN5KEMiFvEVxAWuiQ=="
+    },
+    "size": "18.21 KB"
+  },
   "/release/git-command-helper-1.2.0.tgz": {
     "integrity": {
       "sha1": "b922945b166e6ff4a0df9fa6018078b2854adb02",
@@ -170,6 +179,15 @@
     },
     "size": "61.92 KB"
   },
+  "/release/git-command-helper-2.0.1.tgz": {
+    "integrity": {
+      "sha1": "b3c0caba6142a69e1c50c9e64e58d14cd9fab2de",
+      "sha256": "ciEavesrP8SmyieEb3/qmufXs85y3v/rGQvlVRlrd/E=",
+      "md5": "2d67c17fc1b1b7b41aa04423317e77df",
+      "sha512": "uxOgUrvh9catpZSqsr0fmftzl7J0MU61dIyF/AjxhpdpXV9QG9tH33yLsYF17apvURU4uUwF4qheQUj+x7kVqA=="
+    },
+    "size": "21.22 KB"
+  },
   "/release/git-command-helper-2.0.2.tgz": {
     "integrity": {
       "sha1": "2443a0731d4f461b6d7df9c12a2387ab0747e41a",
@@ -179,22 +197,31 @@
     },
     "size": "21.88 KB"
   },
-  "/release/git-command-helper.tgz": {
+  "/release/git-command-helper-2.1.0.tgz": {
     "integrity": {
-      "sha1": "2443a0731d4f461b6d7df9c12a2387ab0747e41a",
-      "sha256": "wFlP/2Zs5j82lENGrMM96qymHY/CyDn+XT9OIM2zGis=",
-      "md5": "3593970b671720fbb9af111e2a625442",
-      "sha512": "baAURSL7y5LK4A7PshX4N0MNCzgpglIVyiMmKfW8dzNyI0C73Nl8CVOFB/s22B8eWYiZKkh8zp2CMM0wTPXaLg=="
+      "sha1": "9d9a124854ea72ee450cda82b214d1070b8ecdb8",
+      "sha256": "/axBeL+kSx+2PALfzVzfRjvPGuMf2flODFO5dUCvtW8=",
+      "md5": "7a9dec53a56f75ba74e098e62e1543b4",
+      "sha512": "pcE1IrB2OAaxXs8S5Y3sMuT0RiyA6wR7ngoxWG/qTyfeo/lW/bLVxJPjE3vNoZHmj2hFW56FuJoQ1Bz0qD6W3g=="
     },
-    "size": "21.88 KB"
+    "size": "30.50 KB"
   },
-  "/yarn.lock": {
+  "/release/git-command-helper-2.1.1.tgz": {
     "integrity": {
-      "sha1": "7d8eb5f9351787807cf80092900c393c2d2a76a2",
-      "sha256": "yiVhK9t/WiXli6Y7eGiKe9voufIdv9geU0VmdPYZDV0=",
-      "md5": "bae333ed75f60e756382f19165b9f972",
-      "sha512": "QVg+H89FuXDMszZvjWWFIORBL3KZC17HZhKDU+jhG4whJZvXsRelY4Xk4x/qHBMYcP2Gu1fsOGICYLSchggIuQ=="
+      "sha1": "7b80144ae8f872dff64bac66f006d0a8bf203132",
+      "sha256": "THjh4vFlditrAE4vFlDUBWze2+qjctozqMAwi1c9XOw=",
+      "md5": "004095255e78485691a66193cb83a15f",
+      "sha512": "aH57n7wQi1iYM+kDEBrlBHi8Pezr3j23rg/e2FLf7U5cBJxltKThUibuG0V3FRvRRFJrfqwJPK7h3vbc3wydCQ=="
     },
-    "size": "478.66 KB"
+    "size": "32.13 KB"
+  },
+  "/release/git-command-helper-2.1.2.tgz": {
+    "integrity": {
+      "sha1": "9f8b80e9b2706b7e60f3b08514897bd52a3d3337",
+      "sha256": "yGafMCHP4ToF5b3EMiTHfqeaz9Zu3Txhfr2qdzy0fqU=",
+      "md5": "5da43d55cde3b935a4c377e27482d789",
+      "sha512": "E6OLVFM77EfJ2Mkz8EkUgek7lsNWGLbPkaZHg11sO/9MOZEnb21Nml6KZHDrh6lPvs/A4SC9vQLzStXe2Iv+tQ=="
+    },
+    "size": "49.15 KB"
   }
 }
