@@ -70,8 +70,8 @@ function buildAndPack(force = false) {
 
   const isChecksumChanged = oldChecksum !== newChecksum || !fs.existsSync(path.join(rootDir, "dist"));
 
-  console.log(`[BUILD] Old checksum: ${oldChecksum}`);
-  console.log(`[BUILD] New checksum: ${newChecksum}`);
+  console.log(`[BUILD] Old checksum: ${oldChecksum.slice(0, 5)}`);
+  console.log(`[BUILD] New checksum: ${newChecksum.slice(0, 5)}`);
   console.log(`[BUILD] Checksum changed: ${isChecksumChanged ? "YES" : "NO"}`);
 
   if (force || isChecksumChanged) {
