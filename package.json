@@ -133,7 +133,7 @@
     "why-is-node-running": "^3.2.2"
   },
   "resolutions": {
-    "sbg-utility": "https://github.com/dimaslanjaka/static-blog-generator/raw/44e5c7b79b4e60f8c2d34857c27b8ce677d7493e/packages/sbg-utility/release/sbg-utility.tgz",
+    "sbg-utility": "https://github.com/dimaslanjaka/static-blog-generator/raw/1ca385787f7287155b547c5b97d5ffd5bcfab482/packages/sbg-utility/release/sbg-utility.tgz",
     "binary-collections": "https://github.com/dimaslanjaka/bin/raw/508f48844d990515ebd1970d5d59483ae99fbb13/releases/bin.tgz",
     "cross-spawn": "https://github.com/dimaslanjaka/node-cross-spawn/raw/e48db3235351bbcb9394b21766b2d477cc6b7dd2/release/cross-spawn.tgz",
     "@dimaslanjaka/eslint-base-config": "https://github.com/dimaslanjaka/eslint-base-config/raw/94dc3bed894d019a216b47d9bf0413f7cfdcd45c/release/dimaslanjaka-eslint-base-config.tgz",
