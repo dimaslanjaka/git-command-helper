@@ -3,6 +3,14 @@ set -e
 
 npx -y lint-staged
 
+# Generate composite run-tests action and stage it for commit
+npx -y generate-test-ci
+if [ -n "$GITHUB_ACTIONS" ] || [ -n "$CI" ]; then
+  echo "CI environment detected — skipping git add of generated action"
+else
+  git add .github/workflows/test.yml
+fi
+
 # Check tarballs under 10MB
 check_tarballs() {
   dir="$1"
