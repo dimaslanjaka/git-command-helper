@@ -1,5 +1,5 @@
-import _ from 'lodash';
-import { spawnAsync } from '../spawn';
+import _ from "lodash";
+import { spawnAsync } from "../spawn";
 
 /**
  * get current branch informations
@@ -7,7 +7,7 @@ import { spawnAsync } from '../spawn';
  */
 export async function getGithubBranches(opt: spawnAsync.SpawnOptions = {}) {
   try {
-    const result = await spawnAsync('git', ['branch'], opt);
+    const result = await spawnAsync("git", ["branch"], opt);
     return result.stdout
       .trim()
       .split(/\n/)
@@ -19,7 +19,7 @@ export async function getGithubBranches(opt: spawnAsync.SpawnOptions = {}) {
           branch: item[1]
         };
       })
-      .filter((item_1) => typeof item_1.branch === 'string');
+      .filter((item_1) => typeof item_1.branch === "string");
   } catch (err) {
     return _.noop(err);
   }

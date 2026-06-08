@@ -1,5 +1,5 @@
-import git from './git';
-import submodule from './submodule';
+import git from "./git";
+import submodule from "./submodule";
 
 const instances: Record<string, any> = {};
 
@@ -27,5 +27,5 @@ export function setInstance<T>(key: string, instance: git | submodule | T) {
  * @returns
  */
 export function hasInstance(key: string) {
-  return typeof instances[key] !== 'undefined';
+  return typeof instances[key] !== "undefined";
 }

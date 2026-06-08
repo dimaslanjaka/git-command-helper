@@ -1,5 +1,5 @@
-export * from './extract-submodule';
-export * from './index';
-export * from './safe-url';
+export * from "./extract-submodule";
+export * from "./index";
+export * from "./safe-url";
 
 //

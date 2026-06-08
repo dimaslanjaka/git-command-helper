@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 
-import * as spawn from 'cross-spawn';
-import { spawnSyncReturn } from 'cross-spawn';
+import * as spawn from "cross-spawn";
+import { spawnSyncReturn } from "cross-spawn";
 
 type ObjResult = { U: string } | { M: string } | { D: string };
 
@@ -74,12 +74,12 @@ export function gitStatus(opt: {
   raw?: boolean;
 }) {
   // set porcelain true
-  if (typeof opt.porcelain !== 'boolean') opt.porcelain = true;
+  if (typeof opt.porcelain !== "boolean") opt.porcelain = true;
   let result: spawnSyncReturn;
   if (opt.porcelain) {
-    result = spawn.sync('git', ['status', '--porcelain'], opt);
+    result = spawn.sync("git", ["status", "--porcelain"], opt);
   } else {
-    result = spawn.sync('git', ['status'], opt);
+    result = spawn.sync("git", ["status"], opt);
   }
 
   if (!opt.raw) {
@@ -89,7 +89,7 @@ export function gitStatus(opt: {
       .map((str) => {
         const exec = Array.from(/^([MD\\?]{1,2})\s(.*)/g.exec(str.trim()) || []);
         // set `??` as untracked
-        if (exec[1] === '??') exec[1] = 'U';
+        if (exec[1] === "??") exec[1] = "U";
         // convert as object
         const obj = { [exec[1]]: exec[2] };
         return obj;

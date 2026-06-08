@@ -1,6 +1,6 @@
-'use strict';
+"use strict";
 
-import { gitStatus } from './status';
+import { gitStatus } from "./status";
 
 /**
  * check any files changed

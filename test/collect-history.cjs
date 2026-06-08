@@ -1,4 +1,4 @@
-const { spawnSync } = require('child_process');
+const { spawnSync } = require("child_process");
 
 /**
  * Returns the commit history (hash and date) for a branch, from the first to the most recent commit.
@@ -13,14 +13,14 @@ function getBranchHistory(repoPath, branch, remote = null) {
   // If remote is provided, use remote/branch, else just branch
   const branchRef = remote ? `${remote}/${branch}` : branch;
   const gitArgs = [
-    'log',
-    '--reverse', // from oldest to newest
+    "log",
+    "--reverse", // from oldest to newest
     branchRef,
-    '--pretty=format:%H|%cI|%s'
+    "--pretty=format:%H|%cI|%s"
   ];
-  const result = spawnSync('git', gitArgs, {
+  const result = spawnSync("git", gitArgs, {
     cwd: repoPath,
-    encoding: 'utf-8'
+    encoding: "utf-8"
   });
 
   if (result.error) throw result.error;
@@ -28,11 +28,11 @@ function getBranchHistory(repoPath, branch, remote = null) {
 
   return result.stdout
     .trim()
-    .split('\n')
+    .split("\n")
     .filter(Boolean)
     .map((line) => {
-      const [hash, date, ...messageParts] = line.split('|');
-      const message = messageParts.join('|');
+      const [hash, date, ...messageParts] = line.split("|");
+      const message = messageParts.join("|");
       return { hash, date, message };
     });
 }
@@ -40,6 +40,6 @@ function getBranchHistory(repoPath, branch, remote = null) {
 module.exports = { getBranchHistory };
 
 if (require.main === module) {
-  const history = getBranchHistory(process.cwd(), 'python', 'private');
+  const history = getBranchHistory(process.cwd(), "python", "private");
   console.log(history);
 }

@@ -1,6 +1,6 @@
-'use strict';
+"use strict";
 
-import { Transform } from 'stream';
+import { Transform } from "stream";
 
 export type TransformCallback = (error?: Error | null, data?: any) => void;
 

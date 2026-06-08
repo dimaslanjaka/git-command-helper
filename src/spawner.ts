@@ -1,6 +1,6 @@
-import { SpawnOptions, spawn as spawnSys } from 'child_process';
-import { Readable } from 'stream';
-import promiseSpawn from './spawn';
+import { SpawnOptions, spawn as spawnSys } from "child_process";
+import { Readable } from "stream";
+import promiseSpawn from "./spawn";
 
 export class spawner {
   static spawn = promiseSpawn;
@@ -28,7 +28,7 @@ export class spawner {
         if (options === null) {
           options = {
             cwd: __dirname,
-            stdio: 'inherit'
+            stdio: "inherit"
           };
         }
         const stdouts: string[] = [];
@@ -36,16 +36,16 @@ export class spawner {
         const child = spawnSys(cmd, args, options);
         // use event hooks to provide a callback to execute when data are available:
         if (child.stdout !== null) {
-          child.stdout.on('data', function (data) {
+          child.stdout.on("data", function (data) {
             stdouts.push(data.toString().trim());
           });
         }
         if (child.stderr !== null) {
-          child.stderr.on('data', function (data) {
+          child.stderr.on("data", function (data) {
             stderrs.push(data.toString().trim());
           });
         }
-        child.on('close', function (code) {
+        child.on("close", function (code) {
           // Should probably be 'exit', not 'close'
           // *** Process completed
           return resolve({
@@ -54,7 +54,7 @@ export class spawner {
             stderr: stderrs.length > 0 ? stderrs : stdouts.length === 0 ? child.stderr : null
           });
         });
-        child.on('error', function (err) {
+        child.on("error", function (err) {
           // *** Process creation failed
           return reject({ args: args, err: err });
         });

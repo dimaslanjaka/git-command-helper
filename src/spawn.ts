@@ -1,13 +1,13 @@
-'use strict';
+"use strict";
 
-import Bluebird from 'bluebird';
-import { CommonSpawnOptions } from 'child_process';
-import * as sysSpawn from 'cross-spawn';
-export { default as spawnAsync } from '@expo/spawn-async';
-export * from 'cross-spawn';
+import Bluebird from "bluebird";
+import { CommonSpawnOptions } from "child_process";
+import * as sysSpawn from "cross-spawn";
+export { default as spawnAsync } from "@expo/spawn-async";
+export * from "cross-spawn";
 // import { spawn as sysSpawn } from 'child_process';
-import _ from 'lodash';
-import CacheStream from './cache-stream';
+import _ from "lodash";
+import CacheStream from "./cache-stream";
 
 export type SpawnOptions = Record<string, any> & CommonSpawnOptions;
 
@@ -19,9 +19,9 @@ export type SpawnOptions = Record<string, any> & CommonSpawnOptions;
  * @returns
  */
 export default function promiseSpawn(command: string, args: string[] | SpawnOptions = [], options: SpawnOptions = {}) {
-  if (!command) throw new TypeError('command is required!');
+  if (!command) throw new TypeError("command is required!");
 
-  if (typeof args === 'string') args = [args];
+  if (typeof args === "string") args = [args];
 
   if (!Array.isArray(args)) {
     options = args;
@@ -31,7 +31,7 @@ export default function promiseSpawn(command: string, args: string[] | SpawnOpti
   return new Bluebird((resolve: (str?: string) => any, reject) => {
     const task = sysSpawn.spawn(command, <string[]>args, options);
     const verbose: boolean = options.verbose || false;
-    const { encoding = 'utf8' } = options;
+    const { encoding = "utf8" } = options;
     const stdoutCache = new CacheStream();
     const stderrCache = new CacheStream();
 
@@ -45,10 +45,10 @@ export default function promiseSpawn(command: string, args: string[] | SpawnOpti
       if (verbose) stderr.pipe(process.stderr);
     }
 
-    task.on('close', (code) => {
+    task.on("close", (code) => {
       if (code) {
         const e = new Error(getCache(stderrCache, encoding).toString());
-        e['code'] = code;
+        e["code"] = code;
 
         return reject(e);
       }
@@ -56,14 +56,14 @@ export default function promiseSpawn(command: string, args: string[] | SpawnOpti
       resolve(getCache(stdoutCache, encoding).toString());
     });
 
-    task.on('error', reject);
+    task.on("error", reject);
 
     // Listen to exit events if neither stdout and stderr exist (inherit stdio)
     if (!task.stdout && !task.stderr) {
-      task.on('exit', (code) => {
+      task.on("exit", (code) => {
         if (code) {
-          const e = new Error('Spawn failed');
-          e['code'] = code;
+          const e = new Error("Spawn failed");
+          e["code"] = code;
 
           return reject(e);
         }

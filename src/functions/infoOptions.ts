@@ -1,4 +1,4 @@
-import { spawnAsync } from '../spawn';
+import { spawnAsync } from "../spawn";
 
 export interface infoOptions extends spawnAsync.SpawnOptions {
   [key: string]: any;

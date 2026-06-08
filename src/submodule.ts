@@ -1,11 +1,11 @@
-import Bluebird from 'bluebird';
-import { SpawnOptions } from 'child_process';
-import { existsSync, statSync } from 'fs-extra';
-import { rm } from 'fs/promises';
-import { join, toUnix } from 'upath';
-import git from './git';
-import { spawn } from './spawner';
-import extractSubmodule from './utils/extract-submodule';
+import Bluebird from "bluebird";
+import { SpawnOptions } from "child_process";
+import { existsSync, statSync } from "fs-extra";
+import { rm } from "fs/promises";
+import { join, toUnix } from "upath";
+import git from "./git";
+import { spawn } from "./spawner";
+import extractSubmodule from "./utils/extract-submodule";
 
 export class submodule {
   /** current working directory */
@@ -17,25 +17,25 @@ export class submodule {
 
   constructor(cwd: string) {
     this.cwd = cwd;
-    this.hasConfig = existsSync(join(this.cwd, '.gitmodules'));
+    this.hasConfig = existsSync(join(this.cwd, ".gitmodules"));
   }
 
   private spawnOpt(opt: SpawnOptions = {}) {
-    return Object.assign({ cwd: this.cwd, stdio: 'pipe' } as SpawnOptions, opt);
+    return Object.assign({ cwd: this.cwd, stdio: "pipe" } as SpawnOptions, opt);
   }
 
   /**
    * add submodule
    */
   async add(opt: { remote: string; branch?: string; dest: string }) {
-    if (!opt.remote) throw new Error('submodule remote url required');
-    if (!opt.dest) throw new Error('submodule destination required');
+    if (!opt.remote) throw new Error("submodule remote url required");
+    if (!opt.dest) throw new Error("submodule destination required");
 
-    const args = ['submodule', 'add'];
-    if (opt.branch) args.push('-b', opt.branch);
+    const args = ["submodule", "add"];
+    if (opt.branch) args.push("-b", opt.branch);
     args.push(opt.remote);
     args.push(opt.dest);
-    await spawn('git', args, { cwd: this.cwd, stdio: 'pipe' });
+    await spawn("git", args, { cwd: this.cwd, stdio: "pipe" });
   }
 
   /**
@@ -43,9 +43,9 @@ export class submodule {
    * @param path path to submodule
    */
   async remove(path: string) {
-    await spawn('git', ['submodule', 'deinit', '-f', toUnix(path)], { cwd: this.cwd, stdio: 'pipe' });
-    await rm(join(this.cwd, '.git/modules', toUnix(path)), { recursive: true, force: true });
-    await spawn('git', ['rm', '-f', toUnix(path)], { cwd: this.cwd, stdio: 'pipe' });
+    await spawn("git", ["submodule", "deinit", "-f", toUnix(path)], { cwd: this.cwd, stdio: "pipe" });
+    await rm(join(this.cwd, ".git/modules", toUnix(path)), { recursive: true, force: true });
+    await spawn("git", ["rm", "-f", toUnix(path)], { cwd: this.cwd, stdio: "pipe" });
   }
 
   /**
@@ -53,7 +53,7 @@ export class submodule {
    * @returns
    */
   hasSubmodule() {
-    const gitmodules = join(this.cwd, '.gitmodules');
+    const gitmodules = join(this.cwd, ".gitmodules");
     const exist = existsSync(gitmodules);
     // check empty .gitmodules
     if (exist) {
@@ -69,14 +69,14 @@ export class submodule {
    * @param optionSpawn
    * @returns
    */
-  update(args: string[] = [], optionSpawn: SpawnOptions = { stdio: 'inherit' }) {
-    const arg = ['submodule', 'update'];
+  update(args: string[] = [], optionSpawn: SpawnOptions = { stdio: "inherit" }) {
+    const arg = ["submodule", "update"];
     if (Array.isArray(args)) {
       args.forEach((str) => arg.push(str));
     } else {
-      arg.push('-i', '-r');
+      arg.push("-i", "-r");
     }
-    return spawn('git', arg, this.spawnOpt(optionSpawn));
+    return spawn("git", arg, this.spawnOpt(optionSpawn));
   }
 
   /**
@@ -92,10 +92,10 @@ export class submodule {
           const github = infos[0];
           const { branch, remote } = infos[0].github;
           const doReset = () => github.reset(branch);
-          const doPull = () => github.pull(['origin', branch, '--recurse-submodule']);
+          const doPull = () => github.pull(["origin", branch, "--recurse-submodule"]);
           // update from remote name origin
-          if (typeof remote === 'string') {
-            github.setremote(remote, 'origin').then(() => {
+          if (typeof remote === "string") {
+            github.setremote(remote, "origin").then(() => {
               // force checkout branch instead commit hash
               github.setbranch(branch, true).then(() => {
                 if (reset) {
@@ -136,8 +136,8 @@ export class submodule {
    * @param optionSpawn
    * @returns
    */
-  status(optionSpawn: SpawnOptions = { stdio: 'inherit' }) {
-    return spawn('git', ['submodule', 'status'], this.spawnOpt(optionSpawn));
+  status(optionSpawn: SpawnOptions = { stdio: "inherit" }) {
+    return spawn("git", ["submodule", "status"], this.spawnOpt(optionSpawn));
   }
 
   /**
@@ -146,11 +146,11 @@ export class submodule {
    * @returns
    */
   addAll(pathOrArg: string) {
-    return spawn('git', ['submodule', 'foreach', 'git', 'add', pathOrArg]);
+    return spawn("git", ["submodule", "foreach", "git", "add", pathOrArg]);
   }
 
   commitAll(msg: string) {
-    return spawn('git', ['submodule', 'foreach', 'git', 'commit', '-am', msg]);
+    return spawn("git", ["submodule", "foreach", "git", "commit", "-am", msg]);
   }
 
   /**
@@ -160,7 +160,7 @@ export class submodule {
   get() {
     if (!this.hasSubmodule()) return []; //throw new Error('This directory not have submodule installed');
 
-    const extract = extractSubmodule(join(this.cwd, '.gitmodules'));
+    const extract = extractSubmodule(join(this.cwd, ".gitmodules"));
     for (let i = 0; i < extract.length; i++) {
       const item = extract[i];
       if (!item) continue;
