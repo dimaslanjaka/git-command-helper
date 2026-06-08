@@ -13,7 +13,7 @@
     "build:exports": "node index-builder.cjs",
     "build:tsc": "tsc -b tsconfig.build.json",
     "build:rollup": "rollup --bundleConfigAsCjs -c rollup.config.js",
-    "build": "npm run build:exports && npm run build:tsc && npm run build:rollup",
+    "build": "node build.cjs --force",
     "pack": "npx -y tarball-packer",
     "update:build-release": "curl -L https://github.com/dimaslanjaka/nodejs-package-types/raw/main/.github/workflows/build-release.yml > .github/workflows/build-release.yml",
     "update:typedoc": "curl -L https://github.com/dimaslanjaka/nodejs-package-types/raw/main/typedoc.js > typedoc.config.js",

@@ -1,9 +1,6 @@
 import ansi from "ansi-colors";
 import * as cp from "cross-spawn";
-import { execSync } from "child_process";
-import { createHash } from "crypto";
 import fs from "fs-extra";
-import * as glob from "glob";
 import path from "upath";
 import { TestConfig } from "./test/config";
 import dotenv from "dotenv";
@@ -50,77 +47,13 @@ async function cloneRepo(cfg: SetupGitConfig) {
 }
 
 /**
- * Computes a SHA-256 checksum of the given file/glob patterns.
- * Preserves original file path casing (unlike sbg-utility's getChecksum which lowercases paths).
- */
-async function computeChecksum(...patterns: string[]) {
-  const fileSet = new Set<string>();
-  for (const pattern of patterns) {
-    if (fs.existsSync(pattern) && fs.statSync(pattern).isFile()) {
-      fileSet.add(path.resolve(pattern));
-    } else {
-      const matches = glob.sync(pattern, { nodir: true, absolute: true, dot: true });
-      for (const f of matches) fileSet.add(path.resolve(f));
-    }
-  }
-
-  const sortedFiles = Array.from(fileSet).sort((a, b) => a.localeCompare(b));
-  const hash = createHash("sha256");
-
-  for (const file of sortedFiles) {
-    hash.update(file); // include file path
-    const content = fs.readFileSync(file, "utf-8");
-    // normalize line endings only
-    hash.update(content.replace(/\r\n/g, "\n"));
-  }
-
-  return hash.digest("hex");
-}
-
-/**
  * Handles the build and packaging logic.
- * Checks file checksums to determine if a build is necessary,
- * executes build/pack commands, and updates the checksum file.
+ * Delegates to build.cjs which handles checksum checking internally.
  */
 async function builderAndPacker() {
-  const tmpDir = path.join(rootDir, "tmp");
-  if (!fs.existsSync(tmpDir)) fs.mkdirSync(tmpDir, { recursive: true });
-
-  const checksumFile = path.join(tmpDir, "jest/.checksum");
-  if (!fs.existsSync(checksumFile)) {
-    fs.ensureDirSync(path.dirname(checksumFile));
-    fs.writeFileSync(checksumFile, "");
-  } else if (!fs.statSync(checksumFile).isFile()) {
-    fs.rmSync(checksumFile, { force: true, recursive: true });
-    fs.ensureDirSync(path.dirname(checksumFile));
-    fs.writeFileSync(checksumFile, "");
-  }
-
-  const oldChecksum = fs.readFileSync(checksumFile, "utf-8");
-  const newChecksum = await computeChecksum(
-    path.join(rootDir, "src/**/*.{ts,js,cjs,mjs}"),
-    path.join(rootDir, "package.json"),
-    path.join(rootDir, "tsconfig*.json"),
-    path.join(rootDir, "rollup.config.js")
-  );
-
-  const isChecksumChanged = oldChecksum !== newChecksum || !fs.existsSync(path.join(rootDir, "dist"));
-
-  console.log(`[PRETEST] Old checksum: ${ansi.blue(oldChecksum)}`);
-  console.log(`[PRETEST] New checksum: ${ansi.blue(newChecksum)}`);
-  console.log(`[PRETEST] Checksum changed: ${isChecksumChanged ? ansi.red("YES") : ansi.green("NO")}`);
-
-  if (isChecksumChanged) {
-    console.log(ansi.yellow("[PRETEST] Detected changes in source or config files. Triggering build..."));
-    execSync("npm run build", { stdio: "inherit", cwd: rootDir });
-    execSync("npm run pack", { stdio: "inherit", cwd: rootDir });
-    console.log(ansi.green("[PRETEST] Build completed and checksum updated."));
-
-    // Update checksum file immediately after successful build
-    fs.writeFileSync(checksumFile, newChecksum);
-  } else {
-    console.log(ansi.green("[PRETEST] No changes detected. Skipping build."));
-  }
+  console.log(ansi.cyan("[PRETEST] Running build.cjs..."));
+  const buildScript = path.join(rootDir, "build.cjs");
+  await cp.async("node", [buildScript], { cwd: rootDir, stdio: "inherit" });
 }
 
 /**
