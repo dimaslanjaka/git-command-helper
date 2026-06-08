@@ -46,3 +46,10 @@ docs/
 # Internal / generated TS/JS
 # =========================
 _*.[tj]s
+
+# =========================
+# OpenCode
+# =========================
+.opencode/*
+!.opencode/agents/*
+!.opencode/commands/*
