@@ -1,6 +1,6 @@
 name: Setup CI Environment
-description: Setup Node.js, Python, Bun, Corepack/Yarn, cache, virtual environment, and PATH for CI workflows
-
+description: Setup Node.js, Python, Bun, Corepack/Yarn, cache, virtual
+  environment, and PATH for CI workflows
 inputs:
   node-version:
     description: Node.js version to install
@@ -12,12 +12,11 @@ inputs:
   prefix-cache-key:
     description: Prefix for cache keys
     required: false
-    default: "${{ runner.os }}-"
+    default: ${{ runner.os }}-
   token:
     description: GitHub token for accessing resources
     required: false
-    default: "${{ github.token }}"
-
+    default: ${{ github.token }}
 outputs:
   CACHE_YARN:
     description: Yarn cache folder
@@ -55,10 +54,8 @@ outputs:
   CACHE_HIT:
     description: Whether cache restore was a hit
     value: ${{ steps.cache.outputs.cache-hit }}
-
 runs:
   using: composite
-
   steps:
     - name: ⬇️ Checkout test-repo
       uses: actions/checkout@v6
@@ -67,15 +64,6 @@ runs:
         path: tmp/test-repo
         token: ${{ inputs.token }}
         ref: test
-
-    - name: ⬇️ Checkout packages/git-command-helper
-      uses: actions/checkout@v6
-      with:
-        repository: dimaslanjaka/git-command-helper
-        path: packages/git-command-helper
-        token: ${{ inputs.token }}
-        ref: pre-release
-
     - name: ⬇️ Checkout packages/cross-spawn
       uses: actions/checkout@v6
       with:
@@ -83,11 +71,38 @@ runs:
         path: packages/cross-spawn
         token: ${{ inputs.token }}
         ref: private
-
-    - name: "🔁 Pull & update submodules recursively"
+    - name: ⬇️ Checkout packages/eslint-base-config
+      uses: actions/checkout@v6
+      with:
+        repository: dimaslanjaka/eslint-base-config
+        path: packages/eslint-base-config
+        token: ${{ inputs.token }}
+        ref: master
+    - name: ⬇️ Checkout packages/ai-toolkit
+      uses: actions/checkout@v6
+      with:
+        repository: dimaslanjaka/ai-toolkit
+        path: packages/ai-toolkit
+        token: ${{ inputs.token }}
+        ref: master
+    - name: ⬇️ Checkout packages/sbg-utility
+      uses: actions/checkout@v6
+      with:
+        repository: dimaslanjaka/static-blog-generator
+        path: packages/sbg-utility
+        token: ${{ inputs.token }}
+        ref: sbg-utility
+    - name: ⬇️ Checkout packages/binary-collections
+      uses: actions/checkout@v6
+      with:
+        repository: dimaslanjaka/binary-collections
+        path: packages/binary-collections
+        token: ${{ inputs.token }}
+        ref: master
+    - name: 🔁 Pull & update submodules recursively
       continue-on-error: true
       shell: bash
-      run: |
+      run: >-
         if [ -f ".gitmodules" ] && [ -s ".gitmodules" ]; then
           git submodule update --init --recursive
           git submodule update --recursive --remote
@@ -105,64 +120,81 @@ runs:
           echo "No submodules found or .gitmodules is empty, skipping update."
           exit 0
         fi
-
     - name: 🟢 Setup Node.js
       uses: actions/setup-node@v6
       with:
         node-version: ${{ inputs.node-version }}
-
     - name: 🐍 Setup Python
       if: inputs.python-version != ''
       uses: actions/setup-python@v6
       with:
         python-version: ${{ inputs.python-version }}
-
-    - name: "⚙️ Set EOL git configs"
+    - name: ⚙️ Set EOL git configs
       continue-on-error: true
       shell: bash
-      run: |
+      run: |-
         git config core.eol lf
         git config core.autocrlf input
         git checkout-index --force --all
-
-    - name: "🧁 Setup Bun"
+    - name: 🧁 Setup Bun
       uses: oven-sh/setup-bun@v2
       with:
-        bun-version: "latest"
-        registries: |
+        bun-version: latest
+        registries: |-
           https://registry.npmjs.org/
           @dimaslanjaka:https://npm.pkg.github.com/|${{ inputs.token }}
-
-    - name: "🧰 Enable Corepack & prepare Yarn"
+    - name: 🧰 Enable Corepack & prepare Yarn
       shell: bash
-      run: |
+      run: |-
         corepack enable
         corepack prepare yarn@4.13.0 --activate
         curl -L https://raw.githubusercontent.com/dimaslanjaka/nodejs-package-types/refs/heads/main/.yarnrc-template.yml -o .yarnrc.yml
         yarn set version 4.13.0
-
-    - name: "🌎 Set environment variables"
+    - name: 🌎 Set environment variables
       id: set-env
       shell: bash
-      run: |
+      run: >-
         echo "${HOME}/.local/bin" >> $GITHUB_PATH
+
         echo "${GITHUB_WORKSPACE}/bin" >> $GITHUB_PATH
+
         echo "${GITHUB_WORKSPACE}/node_modules/.bin" >> $GITHUB_PATH
+
         echo "GITHUB_SHA_SHORT=$(echo $GITHUB_SHA | cut -c 1-6)" >> $GITHUB_ENV
-        echo "GITHUB_SHA_SHORT=$(echo $GITHUB_SHA | cut -c 1-6)" >> $GITHUB_OUTPUT
+
+        echo "GITHUB_SHA_SHORT=$(echo $GITHUB_SHA | cut -c 1-6)" >>
+        $GITHUB_OUTPUT
+
         echo "GITHUB_BRANCH=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
+
         echo "GITHUB_BRANCH=${GITHUB_REF#refs/heads/}" >> $GITHUB_OUTPUT
-        echo "GITHUB_COMMIT_URL=https://github.com/${{ github.repository }}/commit/$(echo $GITHUB_SHA)" >> $GITHUB_ENV
-        echo "GITHUB_COMMIT_URL=https://github.com/${{ github.repository }}/commit/$(echo $GITHUB_SHA)" >> $GITHUB_OUTPUT
-        echo "GITHUB_RUNNER_URL=https://github.com/${{ github.repository }}/commit/${{ github.sha }}/checks/${{ github.run_id }}" >> $GITHUB_ENV
-        echo "GITHUB_RUNNER_URL=https://github.com/${{ github.repository }}/commit/${{ github.sha }}/checks/${{ github.run_id }}" >> $GITHUB_OUTPUT
+
+        echo "GITHUB_COMMIT_URL=https://github.com/${{ github.repository
+        }}/commit/$(echo $GITHUB_SHA)" >> $GITHUB_ENV
+
+        echo "GITHUB_COMMIT_URL=https://github.com/${{ github.repository
+        }}/commit/$(echo $GITHUB_SHA)" >> $GITHUB_OUTPUT
+
+        echo "GITHUB_RUNNER_URL=https://github.com/${{ github.repository
+        }}/commit/${{ github.sha }}/checks/${{ github.run_id }}" >> $GITHUB_ENV
+
+        echo "GITHUB_RUNNER_URL=https://github.com/${{ github.repository
+        }}/commit/${{ github.sha }}/checks/${{ github.run_id }}" >>
+        $GITHUB_OUTPUT
+
         echo "CACHE_NPM=$(npm config get cache)" >> $GITHUB_ENV
+
         echo "CACHE_NPM=$(npm config get cache)" >> $GITHUB_OUTPUT
 
+
         YARN_CURRENT=$(yarn -v)
+
         YARN_VERSION_MAJOR=$(echo "$YARN_CURRENT" | cut -d. -f1)
+
         echo "CURRENT_YARN_VERSION=$YARN_CURRENT" >> "$GITHUB_ENV"
+
         echo "CURRENT_YARN_VERSION=$YARN_CURRENT" >> "$GITHUB_OUTPUT"
+
 
         if [ "$YARN_VERSION_MAJOR" -ge 2 ]; then
           CACHE_YARN=$(yarn config get cacheFolder)
@@ -170,9 +202,13 @@ runs:
           CACHE_YARN=$(yarn cache dir)
         fi
 
+
         echo "CACHE_YARN=$CACHE_YARN" >> "$GITHUB_ENV"
+
         echo "CACHE_YARN=$CACHE_YARN" >> "$GITHUB_OUTPUT"
+
         echo "architecture=$(getconf LONG_BIT)" >> $GITHUB_ENV
+
         if [ -f "package-lock.json" ]; then
             echo "PACKAGE-MANAGER=npm" >> $GITHUB_OUTPUT
             echo "PACKAGE-MANAGER=npm" >> $GITHUB_ENV
@@ -180,7 +216,9 @@ runs:
             echo "PACKAGE-MANAGER=yarn" >> $GITHUB_OUTPUT
             echo "PACKAGE-MANAGER=yarn" >> $GITHUB_ENV
         fi
+
         unameOut="$(uname -s)"
+
         case "${unameOut}" in
             Linux*)     machine=linux;;
             Darwin*)    machine=mac;;
@@ -188,22 +226,29 @@ runs:
             MINGW*)     machine=mingw;;
             *)          machine="unknown:${unameOut}"
         esac
+
         echo "machine=$machine" >> $GITHUB_OUTPUT
+
         echo "machine=$machine" >> $GITHUB_ENV
+
         if command -v pip >/dev/null 2>&1; then
           echo "PIP_CACHE_DIR=$(pip cache dir)" >> "$GITHUB_OUTPUT"
         fi
-        mkdir -p "${HOME}/.npm-global"
-        npm config set prefix "${HOME}/.npm-global"
-        echo "${HOME}/.npm-global/bin" >> $GITHUB_PATH
-        echo "CACHE_NPM_USER_GLOBAL=${HOME}/.npm-global" >> $GITHUB_ENV
-        echo "CACHE_NPM_USER_GLOBAL=${HOME}/.npm-global" >> $GITHUB_OUTPUT
 
+        mkdir -p "${HOME}/.npm-global"
+
+        npm config set prefix "${HOME}/.npm-global"
+
+        echo "${HOME}/.npm-global/bin" >> $GITHUB_PATH
+
+        echo "CACHE_NPM_USER_GLOBAL=${HOME}/.npm-global" >> $GITHUB_ENV
+
+        echo "CACHE_NPM_USER_GLOBAL=${HOME}/.npm-global" >> $GITHUB_OUTPUT
     - name: 📚 Restore Cache
       id: cache
       uses: actions/cache@v5
       with:
-        path: |
+        path: |-
           **/.yarn
           **/node_modules
           **/.venv
@@ -224,15 +269,15 @@ runs:
           ${{ steps.set-env.outputs.CACHE_NPM }}
           ${{ steps.set-env.outputs.CACHE_NPM_USER_GLOBAL }}
           ${{ steps.set-env.outputs.PIP_CACHE_DIR }}
-        key: ${{ inputs.prefix-cache-key }}${{ hashFiles('**/package.json', '**/requirements*.txt') }}
-        restore-keys: |
+        key: ${{ inputs.prefix-cache-key }}${{ hashFiles('**/package.json',
+          '**/requirements*.txt') }}
+        restore-keys: |-
           ${{ inputs.prefix-cache-key }}
           ${{ runner.os }}-
-
     - name: 🐍 Create virtual environment
       if: inputs.python-version != '' && steps.cache.outputs.cache-hit != 'true'
       shell: bash
-      run: |
+      run: |-
         python -m venv .venv
         source .venv/bin/activate
 
@@ -245,15 +290,36 @@ runs:
         if [ -f requirements-dev.txt ]; then
           pip install -r requirements-dev.txt
         fi
-
-    - name: "🌐 Install global packages"
+    - name: 🌐 Install global packages
+      continue-on-error: true
       if: steps.cache.outputs.cache-hit != 'true'
       shell: bash
       run: npm i -g typescript ts-node gulp-cli hexo-cli webpack-cli
-
-    - name: "📂 Add custom bins to PATH"
+    - name: ♻️ Clean install dependencies
+      continue-on-error: true
       shell: bash
-      run: |
+      run: >-
+        # Delete dependency directories recursively (monorepo-aware)
+
+        for dir in "node_modules" ".venv" "venv" "vendor"; do
+          find . -type d -name "$dir" -prune -exec rm -rf {} + 2>/dev/null || true
+        done
+
+
+        # Install project dependencies
+
+        if [ -f "yarn.lock" ] || [ -f ".yarnrc.yml" ]; then
+          find . -type f -name "yarn.lock" -delete 2>/dev/null || true
+          yarn install
+        elif [ -f "package-lock.json" ]; then
+          find . -type f -name "package-lock.json" -delete 2>/dev/null || true
+          npm install
+        elif [ -f "package.json" ]; then
+          npm install
+        fi
+    - name: 📂 Add custom bins to PATH
+      shell: bash
+      run: |-
         BIN_DIRS=(
           "${{ github.workspace }}/node_modules/.bin"
           "${{ github.workspace }}/vendor/bin"
@@ -269,29 +335,48 @@ runs:
             echo "$dir" >> "$GITHUB_PATH"
           fi
         done
-
-    - name: "🗑️ Remove packageManager from package.json"
+    - name: 🗑️ Remove packageManager from package.json
       shell: bash
-      run: |
+      run: >-
         if command -v jq >/dev/null 2>&1; then
           jq 'del(.packageManager)' package.json > temp.json && mv temp.json package.json
           awk 'NR==1{print $0} NR>1{print $0} END{print ""}' package.json > temp.json && mv temp.json package.json
         else
           node -e "let f='package.json';let j=require('./'+f);delete j.packageManager;require('fs').writeFileSync(f,JSON.stringify(j,null,2)+'\n');"
         fi
-
-    - name: "🔗 Export composite action outputs"
+    - name: 🔗 Export composite action outputs
       shell: bash
-      run: |
-        echo "CACHE_YARN=${{ steps.set-env.outputs.CACHE_YARN }}" >> $GITHUB_OUTPUT
-        echo "CACHE_NPM=${{ steps.set-env.outputs.CACHE_NPM }}" >> $GITHUB_OUTPUT
-        echo "CACHE_NPM_USER_GLOBAL=${{ steps.set-env.outputs.CACHE_NPM_USER_GLOBAL }}" >> $GITHUB_OUTPUT
-        echo "PIP_CACHE_DIR=${{ steps.set-env.outputs.PIP_CACHE_DIR }}" >> $GITHUB_OUTPUT
-        echo "CURRENT_YARN_VERSION=${{ steps.set-env.outputs.CURRENT_YARN_VERSION }}" >> $GITHUB_OUTPUT
-        echo "GITHUB_BRANCH=${{ steps.set-env.outputs.GITHUB_BRANCH }}" >> $GITHUB_OUTPUT
-        echo "GITHUB_SHA_SHORT=${{ steps.set-env.outputs.GITHUB_SHA_SHORT }}" >> $GITHUB_OUTPUT
-        echo "GITHUB_COMMIT_URL=${{ steps.set-env.outputs.GITHUB_COMMIT_URL }}" >> $GITHUB_OUTPUT
-        echo "GITHUB_RUNNER_URL=${{ steps.set-env.outputs.GITHUB_RUNNER_URL }}" >> $GITHUB_OUTPUT
-        echo "PACKAGE_MANAGER=${{ steps.set-env.outputs['PACKAGE-MANAGER'] }}" >> $GITHUB_OUTPUT
+      run: >-
+        echo "CACHE_YARN=${{ steps.set-env.outputs.CACHE_YARN }}" >>
+        $GITHUB_OUTPUT
+
+        echo "CACHE_NPM=${{ steps.set-env.outputs.CACHE_NPM }}" >>
+        $GITHUB_OUTPUT
+
+        echo "CACHE_NPM_USER_GLOBAL=${{
+        steps.set-env.outputs.CACHE_NPM_USER_GLOBAL }}" >> $GITHUB_OUTPUT
+
+        echo "PIP_CACHE_DIR=${{ steps.set-env.outputs.PIP_CACHE_DIR }}" >>
+        $GITHUB_OUTPUT
+
+        echo "CURRENT_YARN_VERSION=${{
+        steps.set-env.outputs.CURRENT_YARN_VERSION }}" >> $GITHUB_OUTPUT
+
+        echo "GITHUB_BRANCH=${{ steps.set-env.outputs.GITHUB_BRANCH }}" >>
+        $GITHUB_OUTPUT
+
+        echo "GITHUB_SHA_SHORT=${{ steps.set-env.outputs.GITHUB_SHA_SHORT }}" >>
+        $GITHUB_OUTPUT
+
+        echo "GITHUB_COMMIT_URL=${{ steps.set-env.outputs.GITHUB_COMMIT_URL }}"
+        >> $GITHUB_OUTPUT
+
+        echo "GITHUB_RUNNER_URL=${{ steps.set-env.outputs.GITHUB_RUNNER_URL }}"
+        >> $GITHUB_OUTPUT
+
+        echo "PACKAGE_MANAGER=${{ steps.set-env.outputs['PACKAGE-MANAGER'] }}"
+        >> $GITHUB_OUTPUT
+
         echo "MACHINE=${{ steps.set-env.outputs.machine }}" >> $GITHUB_OUTPUT
+
         echo "CACHE_HIT=${{ steps.cache.outputs.cache-hit }}" >> $GITHUB_OUTPUT
