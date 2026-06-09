@@ -7,7 +7,7 @@ const path = require("upath");
 const fs = require("fs");
 const color = require("ansi-colors");
 
-const { author, dependencies = {}, devDependencies = {}, name, version } = packageJson;
+const { author, dependencies = {}, devDependencies = {}, name: packageName, version } = packageJson;
 
 // Packages that should be bundled
 const bundledPackages = [
@@ -17,7 +17,9 @@ const bundledPackages = [
   "markdown-it",
   "node-cache",
   "chalk",
-  "@expo/spawn-async"
+  "@expo/spawn-async",
+  "cross-spawn",
+  "which"
 ];
 
 // List external dependencies, excluding specific packages that should be bundled
@@ -76,7 +78,7 @@ function externalFilter(source, importer, isResolved) {
   return false; // fallback: bundle it
 }
 
-const banner = `// ${name} ${version} by ${author.name} <${author.email}> (${author.url})`.trim();
+const banner = `// ${packageName} ${version} by ${author.name} <${author.email}> (${author.url})`.trim();
 
 const plugins = [
   nodeResolve({ extensions: [".js", ".ts", ".cjs", ".mjs", ".json", ".node"] }),
@@ -107,7 +109,7 @@ const plugins = [
  * @param {string} ext The file extension (e.g. 'js', 'cjs', 'mjs').
  * @returns {(info: { facadeModuleId: string }) => string} Function that generates the output file name for a given entry.
  */
-export function entryFileNamesWithExt(ext) {
+function entryFileNamesWithExt(ext) {
   // Ensure the extension does not start with a dot
   if (ext.startsWith(".")) {
     ext = ext.slice(1);
@@ -144,7 +146,7 @@ export function entryFileNamesWithExt(ext) {
  * @param {string} ext The file extension (e.g. 'js', 'cjs', 'mjs').
  * @returns {(info: { name: string }) => string} Function that generates the output file name for a given chunk.
  */
-export function chunkFileNamesWithExt(ext) {
+function chunkFileNamesWithExt(ext) {
   return function ({ name }) {
     // For node_modules chunks, place in dependencies folder
     if (name && name.includes("node_modules")) {
@@ -176,7 +178,7 @@ const config = {
       preserveModules: true,
       preserveModulesRoot: "tmp/dist",
       entryFileNames: entryFileNamesWithExt("js"),
-      entryChunkFileNames: chunkFileNamesWithExt("js"),
+      chunkFileNames: chunkFileNamesWithExt("js"),
       banner
     },
     {
@@ -185,7 +187,7 @@ const config = {
       preserveModules: true,
       preserveModulesRoot: "tmp/dist",
       entryFileNames: entryFileNamesWithExt("mjs"),
-      entryChunkFileNames: chunkFileNamesWithExt("mjs"),
+      chunkFileNames: chunkFileNamesWithExt("mjs"),
       banner
     }
   ],
