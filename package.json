@@ -61,7 +61,7 @@
     "@expo/spawn-async": "^1.8.0",
     "bluebird": "^3.7.2",
     "core-js": "^3.49.0",
-    "cross-spawn": "https://github.com/dimaslanjaka/node-cross-spawn/raw/78b09a1f799430fb251c1b438ec56ce7957674f4/release/cross-spawn.tgz",
+    "cross-spawn": "https://github.com/dimaslanjaka/node-cross-spawn/raw/private/release/cross-spawn.tgz",
     "deepmerge-ts": "7",
     "fs-extra": "^11.3.5",
     "glob": "^13.0.6",
@@ -69,7 +69,7 @@
     "ini": "^7.0.0",
     "lodash": "^4.18.1",
     "minimatch": "^10.2.5",
-    "sbg-utility": "https://github.com/dimaslanjaka/static-blog-generator/raw/44e5c7b79b4e60f8c2d34857c27b8ce677d7493e/packages/sbg-utility/release/sbg-utility.tgz",
+    "sbg-utility": "https://github.com/dimaslanjaka/static-blog-generator/raw/sbg-utility/packages/sbg-utility/release/sbg-utility.tgz",
     "upath": "^3.0.7"
   },
   "devDependencies": {
@@ -94,7 +94,6 @@
     "@types/bluebird": "^3",
     "@types/core-js": "^2.5.8",
     "@types/fs-extra": "^11",
-    "@types/git-command-helper": "https://github.com/dimaslanjaka/git-command-helper/raw/pre-release/release/git-command-helper.tgz",
     "@types/ini": "^4.1.1",
     "@types/jest": "^30.0.0",
     "@types/lodash": "^4",
@@ -134,8 +133,8 @@
   },
   "resolutions": {
     "sbg-utility": "https://github.com/dimaslanjaka/static-blog-generator/raw/1ca385787f7287155b547c5b97d5ffd5bcfab482/packages/sbg-utility/release/sbg-utility.tgz",
-    "binary-collections": "https://github.com/dimaslanjaka/bin/raw/62edc16286e4344292d337d620c293ea5a158183/releases/bin.tgz",
-    "cross-spawn": "https://github.com/dimaslanjaka/node-cross-spawn/raw/0c4a799c22945a8d522f5e9a39f929428b382adb/release/cross-spawn.tgz",
+    "binary-collections": "https://github.com/dimaslanjaka/bin/raw/d07e4fe78eecf6b7dad4f32f76272ba497c8822f/releases/bin.tgz",
+    "cross-spawn": "https://github.com/dimaslanjaka/node-cross-spawn/raw/dd0273f55b21f8c546ba86565b00a2f89151d15a/release/cross-spawn.tgz",
     "@dimaslanjaka/eslint-base-config": "https://github.com/dimaslanjaka/eslint-base-config/raw/c21437dd8072edf4d78531932ecd586708cd7e43/release/dimaslanjaka-eslint-base-config.tgz",
     "ansi-regex": "^4",
     "glob-parent": "^6.0.2",
