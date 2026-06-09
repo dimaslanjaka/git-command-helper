@@ -48,7 +48,7 @@ jobs:
         shell: bash
         run: >-
           if [ -f "test/check-ignores.test.ts" ]; then
-            node node_modules/jest/bin/jest.js --runInBand --forceExit --testTimeout=120000 --detectOpenHandles --testPathPatterns="check-ignores.test.ts"
+            node node_modules/jest/bin/jest.js --runInBand --forceExit --testTimeout=120000 --detectOpenHandles --bail=1 --testPathPatterns="check-ignores.test.ts"
           else
             echo "Skipping missing test file: test/check-ignores.test.ts"
           fi
@@ -57,7 +57,7 @@ jobs:
         shell: bash
         run: >-
           if [ -f "test/constructor-object.test.ts" ]; then
-            node node_modules/jest/bin/jest.js --runInBand --forceExit --testTimeout=120000 --detectOpenHandles --testPathPatterns="constructor-object.test.ts"
+            node node_modules/jest/bin/jest.js --runInBand --forceExit --testTimeout=120000 --detectOpenHandles --bail=1 --testPathPatterns="constructor-object.test.ts"
           else
             echo "Skipping missing test file: test/constructor-object.test.ts"
           fi
@@ -66,7 +66,7 @@ jobs:
         shell: bash
         run: >-
           if [ -f "test/extract-submodule.test.ts" ]; then
-            node node_modules/jest/bin/jest.js --runInBand --forceExit --testTimeout=120000 --detectOpenHandles --testPathPatterns="extract-submodule.test.ts"
+            node node_modules/jest/bin/jest.js --runInBand --forceExit --testTimeout=120000 --detectOpenHandles --bail=1 --testPathPatterns="extract-submodule.test.ts"
           else
             echo "Skipping missing test file: test/extract-submodule.test.ts"
           fi
@@ -75,7 +75,7 @@ jobs:
         shell: bash
         run: >-
           if [ -f "test/functions/applyTokenToOriginUrl.test.ts" ]; then
-            node node_modules/jest/bin/jest.js --runInBand --forceExit --testTimeout=120000 --detectOpenHandles --testPathPatterns="applyTokenToOriginUrl.test.ts"
+            node node_modules/jest/bin/jest.js --runInBand --forceExit --testTimeout=120000 --detectOpenHandles --bail=1 --testPathPatterns="functions/applyTokenToOriginUrl.test.ts"
           else
             echo "Skipping missing test file: test/functions/applyTokenToOriginUrl.test.ts"
           fi
@@ -84,7 +84,7 @@ jobs:
         shell: bash
         run: >-
           if [ -f "test/functions/applyUserToOriginUrl.test.ts" ]; then
-            node node_modules/jest/bin/jest.js --runInBand --forceExit --testTimeout=120000 --detectOpenHandles --testPathPatterns="applyUserToOriginUrl.test.ts"
+            node node_modules/jest/bin/jest.js --runInBand --forceExit --testTimeout=120000 --detectOpenHandles --bail=1 --testPathPatterns="functions/applyUserToOriginUrl.test.ts"
           else
             echo "Skipping missing test file: test/functions/applyUserToOriginUrl.test.ts"
           fi
@@ -93,7 +93,7 @@ jobs:
         shell: bash
         run: >-
           if [ -f "test/functions/canPush.test.ts" ]; then
-            node node_modules/jest/bin/jest.js --runInBand --forceExit --testTimeout=120000 --detectOpenHandles --testPathPatterns="canPush.test.ts"
+            node node_modules/jest/bin/jest.js --runInBand --forceExit --testTimeout=120000 --detectOpenHandles --bail=1 --testPathPatterns="functions/canPush.test.ts"
           else
             echo "Skipping missing test file: test/functions/canPush.test.ts"
           fi
@@ -102,7 +102,7 @@ jobs:
         shell: bash
         run: >-
           if [ -f "test/functions/get-file-url.test.ts" ]; then
-            node node_modules/jest/bin/jest.js --runInBand --forceExit --testTimeout=120000 --detectOpenHandles --testPathPatterns="get-file-url.test.ts"
+            node node_modules/jest/bin/jest.js --runInBand --forceExit --testTimeout=120000 --detectOpenHandles --bail=1 --testPathPatterns="functions/get-file-url.test.ts"
           else
             echo "Skipping missing test file: test/functions/get-file-url.test.ts"
           fi
@@ -111,7 +111,7 @@ jobs:
         shell: bash
         run: >-
           if [ -f "test/get-remote.test.ts" ]; then
-            node node_modules/jest/bin/jest.js --runInBand --forceExit --testTimeout=120000 --detectOpenHandles --testPathPatterns="get-remote.test.ts"
+            node node_modules/jest/bin/jest.js --runInBand --forceExit --testTimeout=120000 --detectOpenHandles --bail=1 --testPathPatterns="get-remote.test.ts"
           else
             echo "Skipping missing test file: test/get-remote.test.ts"
           fi
@@ -120,7 +120,7 @@ jobs:
         shell: bash
         run: >-
           if [ -f "test/git.test.ts" ]; then
-            node node_modules/jest/bin/jest.js --runInBand --forceExit --testTimeout=120000 --detectOpenHandles --testPathPatterns="git.test.ts"
+            node node_modules/jest/bin/jest.js --runInBand --forceExit --testTimeout=120000 --detectOpenHandles --bail=1 --testPathPatterns="git.test.ts"
           else
             echo "Skipping missing test file: test/git.test.ts"
           fi
@@ -129,7 +129,7 @@ jobs:
         shell: bash
         run: >-
           if [ -f "test/import/import-direct.test.mjs" ]; then
-            bash bin/test-esm --testPathPatterns="import-direct.test.mjs"
+            node node_modules/jest/bin/jest.js --runInBand --forceExit --testTimeout=120000 --detectOpenHandles --bail=1 --testPathPatterns="import/import-direct.test.mjs"
           else
             echo "Skipping missing test file: test/import/import-direct.test.mjs"
           fi
@@ -138,7 +138,7 @@ jobs:
         shell: bash
         run: >-
           if [ -f "test/latest-commit.test.ts" ]; then
-            node node_modules/jest/bin/jest.js --runInBand --forceExit --testTimeout=120000 --detectOpenHandles --testPathPatterns="latest-commit.test.ts"
+            node node_modules/jest/bin/jest.js --runInBand --forceExit --testTimeout=120000 --detectOpenHandles --bail=1 --testPathPatterns="latest-commit.test.ts"
           else
             echo "Skipping missing test file: test/latest-commit.test.ts"
           fi
@@ -147,7 +147,7 @@ jobs:
         shell: bash
         run: >-
           if [ -f "test/multiple-remotes.test.ts" ]; then
-            node node_modules/jest/bin/jest.js --runInBand --forceExit --testTimeout=120000 --detectOpenHandles --testPathPatterns="multiple-remotes.test.ts"
+            node node_modules/jest/bin/jest.js --runInBand --forceExit --testTimeout=120000 --detectOpenHandles --bail=1 --testPathPatterns="multiple-remotes.test.ts"
           else
             echo "Skipping missing test file: test/multiple-remotes.test.ts"
           fi
@@ -156,7 +156,7 @@ jobs:
         shell: bash
         run: >-
           if [ -f "test/parseGitHubUrl.test.ts" ]; then
-            node node_modules/jest/bin/jest.js --runInBand --forceExit --testTimeout=120000 --detectOpenHandles --testPathPatterns="parseGitHubUrl.test.ts"
+            node node_modules/jest/bin/jest.js --runInBand --forceExit --testTimeout=120000 --detectOpenHandles --bail=1 --testPathPatterns="parseGitHubUrl.test.ts"
           else
             echo "Skipping missing test file: test/parseGitHubUrl.test.ts"
           fi
@@ -165,7 +165,7 @@ jobs:
         shell: bash
         run: >-
           if [ -f "test/pull.test.ts" ]; then
-            node node_modules/jest/bin/jest.js --runInBand --forceExit --testTimeout=120000 --detectOpenHandles --testPathPatterns="pull.test.ts"
+            node node_modules/jest/bin/jest.js --runInBand --forceExit --testTimeout=120000 --detectOpenHandles --bail=1 --testPathPatterns="pull.test.ts"
           else
             echo "Skipping missing test file: test/pull.test.ts"
           fi
@@ -174,7 +174,7 @@ jobs:
         shell: bash
         run: >-
           if [ -f "test/safe-url.test.ts" ]; then
-            node node_modules/jest/bin/jest.js --runInBand --forceExit --testTimeout=120000 --detectOpenHandles --testPathPatterns="safe-url.test.ts"
+            node node_modules/jest/bin/jest.js --runInBand --forceExit --testTimeout=120000 --detectOpenHandles --bail=1 --testPathPatterns="safe-url.test.ts"
           else
             echo "Skipping missing test file: test/safe-url.test.ts"
           fi
@@ -183,7 +183,7 @@ jobs:
         shell: bash
         run: >-
           if [ -f "test/submodule/basic.test.ts" ]; then
-            node node_modules/jest/bin/jest.js --runInBand --forceExit --testTimeout=120000 --detectOpenHandles --testPathPatterns="basic.test.ts"
+            node node_modules/jest/bin/jest.js --runInBand --forceExit --testTimeout=120000 --detectOpenHandles --bail=1 --testPathPatterns="submodule/basic.test.ts"
           else
             echo "Skipping missing test file: test/submodule/basic.test.ts"
           fi
@@ -192,7 +192,7 @@ jobs:
         shell: bash
         run: >-
           if [ -f "test/submodule/validate.test.ts" ]; then
-            node node_modules/jest/bin/jest.js --runInBand --forceExit --testTimeout=120000 --detectOpenHandles --testPathPatterns="validate.test.ts"
+            node node_modules/jest/bin/jest.js --runInBand --forceExit --testTimeout=120000 --detectOpenHandles --bail=1 --testPathPatterns="submodule/validate.test.ts"
           else
             echo "Skipping missing test file: test/submodule/validate.test.ts"
           fi
@@ -201,7 +201,7 @@ jobs:
         shell: bash
         run: >-
           if [ -f "test/untrack.test.ts" ]; then
-            node node_modules/jest/bin/jest.js --runInBand --forceExit --testTimeout=120000 --detectOpenHandles --testPathPatterns="untrack.test.ts"
+            node node_modules/jest/bin/jest.js --runInBand --forceExit --testTimeout=120000 --detectOpenHandles --bail=1 --testPathPatterns="untrack.test.ts"
           else
             echo "Skipping missing test file: test/untrack.test.ts"
           fi
@@ -210,7 +210,7 @@ jobs:
         shell: bash
         run: >-
           if [ -f "test/utils/extract-submodule.test.ts" ]; then
-            node node_modules/jest/bin/jest.js --runInBand --forceExit --testTimeout=120000 --detectOpenHandles --testPathPatterns="extract-submodule.test.ts"
+            node node_modules/jest/bin/jest.js --runInBand --forceExit --testTimeout=120000 --detectOpenHandles --bail=1 --testPathPatterns="utils/extract-submodule.test.ts"
           else
             echo "Skipping missing test file: test/utils/extract-submodule.test.ts"
           fi
