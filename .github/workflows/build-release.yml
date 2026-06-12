@@ -1,20 +1,4 @@
-# =========================================
-# Build Release Workflow
-# -----------------------------------------
-# Automates building, packaging, and releasing
-# -----------------------------------------
-# Source repo:
-#   https://github.com/dimaslanjaka/nodejs-package-types/blob/main/.github/workflows/build-release.yml
-# Raw file:
-#   https://raw.githubusercontent.com/dimaslanjaka/nodejs-package-types/main/.github/workflows/build-release.yml
-# Download/Update workflow:
-#   curl -L https://github.com/dimaslanjaka/nodejs-package-types/raw/main/.github/workflows/build-release.yml > .github/workflows/build-release.yml
-#   or
-#   Invoke-WebRequest "https://github.com/dimaslanjaka/nodejs-package-types/raw/main/.github/workflows/build-release.yml" -OutFile ".github/workflows/build-release.yml"
-# =========================================
-
 name: Build Release
-
 on:
   push:
     paths-ignore:
@@ -28,125 +12,75 @@ on:
       - "**/.husky/**"
       - "**/garbage-collector/**"
       - "**/codeql/**"
-      - ".github/workflows/tester.yml"
+      - .github/workflows/tester.yml
       - "**/*.log"
       - "**/*.txt"
       - "**/*.zip"
       - "**/test*"
       - "**/docs/**"
       - "**/*.{spec,test}.{js,ts,cjs,mjs}"
-  workflow_dispatch:
-
-# run single job
+  workflow_dispatch: {}
 concurrency:
   group: build-release
   cancel-in-progress: false
-
 jobs:
   build-release:
     name: build release
     env:
-      # Browser automation
       PUPPETEER_SKIP_DOWNLOAD: "true"
       PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
-
-      # Node.js
-      NODE_OPTIONS: "--max_old_space_size=8192" #8192 4096 --expose-gc
+      NODE_OPTIONS: --max_old_space_size=8192
       YARN_ENABLE_IMMUTABLE_INSTALLS: false
       YARN_ENABLE_GLOBAL_CACHE: false
       YARN_CHECKSUM_BEHAVIOR: update
       YARN_CACHE_FOLDER: ${{ github.workspace }}/tmp/yarn-cache
-      CI_NODE_VERSION: "24.16.0"
-
-      # Python
+      CI_NODE_VERSION: 24.16.0
       PIP_LOCAL_CACHE_DIR: ${{ github.workspace }}/tmp/pip
       NUITKA_CACHE_DIR: ${{ github.workspace }}/tmp/nuitka-cache
-
-      # GitHub auth
       ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
       GH_TOKEN: ${{ secrets.ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
-
     runs-on: ubuntu-latest
-
     steps:
-      - name: ⬇️ Checkout
+      - name: ⬇️ Checkout workflow repository
         uses: actions/checkout@v6
         with:
-          token: ${{ secrets.ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
-
-      - name: "⚙️ Setup Environment"
+          fetch-depth: 0
+      - name: ⬇️ Setup CI Environment
+        id: setup
         uses: ./.github/actions/setup-environments
-        id: setup-env
         with:
-          node-version: ${{ env.CI_NODE_VERSION }}
-          token: ${{ secrets.ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
-          prefix-cache-key: ${{ runner.os }}-${{ env.CI_NODE_VERSION }}-
-
-      - name: "📥 Install dependencies"
+          node-version: 24.x
+          python-version: "3.11"
+          token: ${{ secrets.ACCESS_TOKEN || github.token }}
+          prefix-cache-key: ${{ runner.os }}-${{ github.event.repository.name }}-
+      - name: 📝 Dump environment info
         shell: bash
-        run: |
-          set -o pipefail
-
-          if [ -f "package-lock.json" ]; then
-            npm install --legacy-peer-deps \
-              || npm install --verbose \
-              || npm install --no-shrinkwrap --update-binary
-          else
-            if [[ "${{ steps.setup-env.outputs.CURRENT_YARN_VERSION }}" =~ ^[2-9] ]]; then
-              LOG_FILE="$(mktemp)"
-
-              corepack yarn install 2>&1 | tee "$LOG_FILE" \
-                || corepack yarn install --inline-builds 2>&1 | tee -a "$LOG_FILE" \
-                || {
-                  echo
-                  echo "===== LAST YARN LOGS ====="
-                  tail -n 100 "$LOG_FILE"
-
-                  echo
-                  echo "===== YARN VERSION ====="
-                  yarn -v
-
-                  echo
-                  echo "===== YARN CONFIG ====="
-                  yarn config -v
-
-                  exit 1
-                }
-            else
-              corepack yarn install || corepack yarn install --verbose
-            fi
-          fi
-
-      - name: "📝 Dump environment info"
-        shell: bash
-        run: |
-          echo "branch      : ${{ steps.setup-env.outputs.GITHUB_BRANCH }}"
+        run: |-
+          echo "branch      : ${{ steps.setup.outputs.GITHUB_BRANCH }}"
           echo "commit msg  : ${{ github.event.head_commit.message }}"
-          echo "commit hash : ${{ steps.setup-env.outputs.GITHUB_SHA_SHORT }}"
-          echo "commit url  : ${{ steps.setup-env.outputs.GITHUB_COMMIT_URL }}"
-          echo "runner url  : ${{ steps.setup-env.outputs.GITHUB_RUNNER_URL }}"
-          echo "cache npm   : ${{ steps.setup-env.outputs.CACHE_NPM }}"
-          echo "cache yarn  : ${{ steps.setup-env.outputs.CACHE_YARN }}"
-          echo "package mgr : "${{ steps.setup-env.outputs.PACKAGE_MANAGER }}""
-
-      - name: "📚 List the state of node modules"
-        if: ${{ steps.setup-env.outputs.CACHE_HIT != 'true' }}
+          echo "commit hash : ${{ steps.setup.outputs.GITHUB_SHA_SHORT }}"
+          echo "commit url  : ${{ steps.setup.outputs.GITHUB_COMMIT_URL }}"
+          echo "runner url  : ${{ steps.setup.outputs.GITHUB_RUNNER_URL }}"
+          echo "cache npm   : ${{ steps.setup.outputs.CACHE_NPM }}"
+          echo "cache yarn  : ${{ steps.setup.outputs.CACHE_YARN }}"
+          echo "package mgr : \"${{ steps.setup.outputs.PACKAGE_MANAGER }}\""
+      - name: 📚 List the state of node modules
+        if: ${{ steps.setup.outputs.CACHE_HIT != 'true' }}
         shell: bash
         continue-on-error: true
-        run: |
+        run: >-
           if [ -f "package-lock.json" ]; then
             npm list
           else
-            if [[ "${{ steps.setup-env.outputs.CURRENT_YARN_VERSION }}" =~ ^[2-9] ]]; then
+            if [[ "${{ steps.setup.outputs.CURRENT_YARN_VERSION }}" =~ ^[2-9] ]]; then
               corepack yarn info --all
             else
               yarn list
             fi
           fi
-
-      - name: "🧹 Clean project"
+      - name: 🧹 Clean project
         shell: bash
-        run: |
+        run: |-
           if [ -f "package-lock.json" ]; then
             npm run clean --if-present
           else
@@ -156,10 +90,9 @@ jobs:
               echo "[skip] clean not found"
             fi
           fi
-
-      - name: "🔨 Build project"
+      - name: 🔨 Build project
         shell: bash
-        run: |
+        run: |-
           if [ -f "package-lock.json" ]; then
             npm run build
           else
@@ -169,10 +102,20 @@ jobs:
               echo "[skip] build not found"
             fi
           fi
-
-      - name: "📦 Pack project"
+      - name: 📦 Upload compiled artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: compiled-output
+          path: |-
+            lib/
+            binaries/
+            dist/
+            *.lock
+            package-lock.json
+          if-no-files-found: error
+      - name: 📦 Pack project
         shell: bash
-        run: |
+        run: |-
           if [ -f "package-lock.json" ]; then
             npm run pack --if-present
           else
@@ -182,59 +125,68 @@ jobs:
               echo "[skip] pack not found"
             fi
           fi
-
-      - name: "🗑️ Remove packageManager from package.json"
+      - name: 🕵️‍♂️ Check for changes in build artifacts
+        id: changes
         shell: bash
-        run: |
-          # Remove packageManager from package.json if it exists
-          # Prefer jq if available, otherwise use Node.js (cross-platform)
-          if command -v jq >/dev/null 2>&1; then
-            jq 'del(.packageManager)' package.json > temp.json && mv temp.json package.json
-            # Ensure package.json ends with a single empty line
-            awk 'NR==1{print $0} NR>1{print $0} END{print ""}' package.json > temp.json && mv temp.json package.json
+        run: >-
+          PATHS=( ':(glob)release*/*.tgz' )
+
+
+          TRACKED=$(git diff --name-only HEAD -- "${PATHS[@]}" || true)
+
+          UNTRACKED=$(git ls-files --others --exclude-standard -- "${PATHS[@]}"
+          || true)
+
+
+          FILES=$(printf '%s\n%s\n' "$TRACKED" "$UNTRACKED" | sed '/^$/d' | sort
+          -u)
+
+
+          if [ -n "$FILES" ]; then
+            echo "Found artifact changes"
           else
-            node -e "let f='package.json';let j=require('./'+f);delete j.packageManager;require('fs').writeFileSync(f,JSON.stringify(j,null,2)+'\n');"
+            echo "No artifact changes detected"
           fi
 
-      # https://github.com/marketplace/actions/verify-changed-files
-      - name: "🕵️‍♂️ Check for changes in build artifacts"
-        id: changes
-        uses: tj-actions/verify-changed-files@v20
-        with:
-          files: |
-            release*/**/*.tgz
-            dist
-            lib
-            !node_modules
-            !tmp
 
-      - shell: bash
-        name: "📋 Show changed files"
-        run: |
-          echo "Changed files: ${{ steps.changes.outputs.changed_files }}"
+          echo "files<<EOF" >> "$GITHUB_OUTPUT"
 
-      - name: "👤 Configure git user/email"
-        if: steps.changes.outputs.files_changed == 'true'
-        continue-on-error: true
-        run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
-      - name: "➕ Add build files to git"
-        if: steps.changes.outputs.files_changed == 'true'
-        continue-on-error: true
-        run: |
-          git config set advice.addIgnoredFile false
-          git add release || true
-          git add releases || true
-          git add dist || true
-          git add lib || true
-      - name: "⬇️ Pull latest before push"
-        run: git pull -X theirs
-        if: steps.changes.outputs.files_changed == 'true'
-      - name: "🚀 Push changes to remote"
+          echo "$FILES" >> "$GITHUB_OUTPUT"
+
+          echo "EOF" >> "$GITHUB_OUTPUT"
+
+
+          if [ -z "$FILES" ]; then
+            echo "files_changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "files_changed=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: 🗑️ Detach submodules to prevent lint-staged errors
         if: steps.changes.outputs.files_changed == 'true'
         shell: bash
-        run: |
+        run: find . -maxdepth 2 -name '.git' -not -path './.git' -type f -delete
+      - shell: bash
+        name: 📋 Show changed files
+        run: 'echo "Changed files: ${{ steps.changes.outputs.files }}"'
+      - name: 👤 Configure git user/email
+        if: steps.changes.outputs.files_changed == 'true'
+        continue-on-error: true
+        run: >-
+          git config --global user.name 'github-actions[bot]'
+
+          git config --global user.email
+          '41898282+github-actions[bot]@users.noreply.github.com'
+      - name: ➕ Add build files to git
+        if: steps.changes.outputs.files_changed == 'true'
+        continue-on-error: true
+        run: git add -- release*/ || true
+      - name: ⬇️ Pull latest before push
+        run: git pull -X theirs
+        if: steps.changes.outputs.files_changed == 'true'
+      - name: 🚀 Push changes to remote
+        if: steps.changes.outputs.files_changed == 'true'
+        shell: bash
+        run: >-
           if [ $(git diff --cached --name-only | wc -l) -gt "0" ]; then
             echo "Staged files and their sizes:"
             for file in $(git diff --cached --name-only); do
@@ -253,7 +205,9 @@ jobs:
             git commit -m "chore: update build from ${{ env.GITHUB_COMMIT_URL }}" -m "commit hash: ${{ env.GITHUB_SHA_SHORT }}" -m "commit url: ${{ env.GITHUB_COMMIT_URL }}" -m "runner: ${{ env.GITHUB_RUNNER_URL }}"
             git push
           fi
-
-      - name: "🧹 Clean GitHub Actions cache (npx)"
-        run: npx clean-github-actions-cache
+      - name: 🧹 Clean GitHub Actions cache (npx)
         continue-on-error: true
+        run: npx --legacy-peer-deps -y
+          binary-collections@https://raw.githubusercontent.com/dimaslanjaka/bin/master/releases/bin.tgz
+          clean-github-actions-caches --repo "${{ github.repository }}" --sha
+          "${{ github.sha }}"

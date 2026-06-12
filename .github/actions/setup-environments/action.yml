@@ -95,7 +95,7 @@ runs:
     - name: ⬇️ Checkout packages/binary-collections
       uses: actions/checkout@v6
       with:
-        repository: dimaslanjaka/binary-collections
+        repository: dimaslanjaka/bin
         path: packages/binary-collections
         token: ${{ inputs.token }}
         ref: master
@@ -295,8 +295,45 @@ runs:
       if: steps.cache.outputs.cache-hit != 'true'
       shell: bash
       run: npm i -g typescript ts-node gulp-cli hexo-cli webpack-cli
-    - name: ♻️ Clean install dependencies
+    - name: 📥 Install dependencies
+      id: install
       continue-on-error: true
+      shell: bash
+      run: >-
+        set -o pipefail
+
+
+        if [ -f "package-lock.json" ]; then
+          npm install --legacy-peer-deps \
+            || npm install --verbose \
+            || npm install --no-shrinkwrap --update-binary
+        else
+          if [[ "${{ steps.setup.outputs.CURRENT_YARN_VERSION }}" =~ ^[2-9] ]]; then
+            LOG_FILE="$(mktemp)"
+
+            corepack yarn install 2>&1 | tee "$LOG_FILE" \
+              || corepack yarn install --inline-builds 2>&1 | tee -a "$LOG_FILE" \
+              || {
+                echo
+                echo "===== LAST YARN LOGS ====="
+                tail -n 100 "$LOG_FILE"
+
+                echo
+                echo "===== YARN VERSION ====="
+                yarn -v
+
+                echo
+                echo "===== YARN CONFIG ====="
+                yarn config -v
+
+                exit 1
+              }
+          else
+            corepack yarn install || corepack yarn install --verbose
+          fi
+        fi
+    - name: ♻️ Clean install dependencies
+      if: steps.install.conclusion == 'failure'
       shell: bash
       run: >-
         # Delete dependency directories recursively (monorepo-aware)
@@ -317,6 +354,12 @@ runs:
         elif [ -f "package.json" ]; then
           npm install
         fi
+    - name: 🏗️ Run prepare script (if present)
+      continue-on-error: true
+      shell: bash
+      run: node -e "const
+        p=require('./package.json');if(p.scripts&&p.scripts.prepare){process.exit(0)}else{process.exit(1)}"
+        && npm run prepare || echo 'No prepare script found, skipping'
     - name: 📂 Add custom bins to PATH
       shell: bash
       run: |-

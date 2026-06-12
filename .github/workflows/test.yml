@@ -27,9 +27,7 @@ jobs:
           node-version: ${{ env.CI_NODE_VERSION }}
           python-version: ${{ env.CI_PYTHON_VERSION }}
           token: ${{ secrets.ACCESS_TOKEN || secrets.GITHUB_TOKEN || github.token }}
-          prefix-cache-key: ${{ runner.os }}-test-
-      - name: 📦 Install dependencies
-        run: touch yarn.lock && corepack yarn install
+          prefix-cache-key: ${{ runner.os }}-${{ github.event.repository.name }}-
       - name: 🔨 Build project
         run: corepack yarn build
       - name: 📦 Pack project

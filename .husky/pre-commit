@@ -11,6 +11,14 @@ else
   echo "CI environment detected — skipping generate-test-ci"
 fi
 
+# Generate composite workflow and stage it for commit
+npx generate-ci
+if [ -n "$GITHUB_ACTIONS" ] || [ -n "$CI" ]; then
+  echo "CI environment detected — skipping git add of generated action"
+else
+  git add .github/workflows/test.yml .github/actions/setup-environments/action.yml .github/workflows/build-release.yml
+fi
+
 # Check tarballs under 10MB
 check_tarballs() {
   dir="$1"
