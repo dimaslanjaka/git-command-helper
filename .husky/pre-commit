@@ -22,6 +22,8 @@ fi
 # Check tarballs under 10MB
 check_tarballs() {
   dir="$1"
+  staged_files=$(git diff --cached --name-only)
+  echo "$staged_files" | grep -q "^$dir/" || return 0
   if [ -d "$dir" ]; then
     for file in "$dir"/*.tgz; do
       [ -e "$file" ] || continue
