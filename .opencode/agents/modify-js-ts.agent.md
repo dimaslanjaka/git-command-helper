@@ -84,39 +84,34 @@ Every time the agent modifies any JS/TS file:
 
 2. The sanitized filepath MUST:
 
-   * replace `/` with `__`
-   * replace `\` with `__`
+   * replace `/` with `_`
+   * replace `\` with `_`
    * preserve filename
    * example:
 
 ```text
 src/utils/parser.ts
 →
-.opencode/memory/src__utils__parser.ts.md
+.opencode/memory/src_utils_parser.ts.md
 ```
 
-3. Memory file format:
+3. Memory file format (Letta memory block YAML frontmatter):
 
 ```markdown
-# File Memory
-
-## File
-src/utils/parser.ts
-
-## Summary
+---
+description: Records modifications made to src/utils/parser.ts
+label: src_utils_parser.ts
+limit: 5000
+read_only: false
+---
 Short explanation of modifications.
-
-## Reason
 Why the change was needed.
-
-## Changes
 - added parser normalization
 - removed duplicate extension logic
 - improved fallback handling
-
-## Notes
-Optional migration or compatibility notes.
 ```
+
+`description` must accurately describe the block's purpose — this is what the agent uses to decide how to read/write to the block. See https://docs.letta.com/guides/core-concepts/memory/memory-blocks#the-importance-of-the-description-field
 
 4. Update the memory file after every modification.
 5. To disable memory logging, the user must include `memory_logging: disabled` in their request payload or explicitly reply `disable memory logging`.

@@ -15,11 +15,9 @@ tags:
 mode: all
 ---
 
-# Context-Aware Staged Commit Agent
+# AI-Assisted Context-Aware Staged Commit Agent
 
-**Purpose:** Automatically commit multiple staged files in batches by context.
-
-When multiple files are staged together, this agent analyzes their context (e.g., feature, bugfix, docs) and commits them in separate commits per context. This ensures a clean commit history with conventional commit messages.
+**Purpose:** Automatically commit multiple staged files in batches by **AI-inferred context**, always using `commit.txt` for the commit message. Ensures clean, conventional commit history.
 
 ---
 
@@ -27,99 +25,54 @@ When multiple files are staged together, this agent analyzes their context (e.g.
 
 ### Step 1 — Detect Staged Files
 
-**Bash/Zsh/sh**
-
 ```bash
 git diff --name-only --staged
 ```
 
-**PowerShell**
-
-```powershell
-git diff --name-only --staged
-```
-
-**CMD**
-
-```cmd
-git diff --name-only --staged
-```
-
-> Output is the list of currently staged files.
+> Produces the list of currently staged files.
 
 ---
 
-### Step 2 — Analyze Context
+### Step 2 — Analyze Context Using AI
 
-* Agent analyzes **file names, paths, or diff content** to assign a **context label** (e.g., `feat`, `fix`, `docs`).
-* Each file gets assigned to a **context group**.
+* For each staged file or file group, **analyze the diff content** using AI.
+* AI determines:
+
+  * **Type**: `feat`, `fix`, `docs`, `chore`, `refactor`, etc.
+  * **Scope**: module, folder, or functional area
+  * **Subject**: short descriptive summary
+* Example AI instruction:
+
+> “Analyze this git diff and generate a conventional commit message in the form `type(scope): subject`. Focus on what changed, why it changed, and ensure it’s concise.”
 
 ---
 
-### Step 3 — Unstage All Files
+### Step 3 — Group Files by AI-Inferred Context
 
-**Bash/Zsh/sh**
+* Files with similar context (type + scope) are **batched together**.
+* Each group will be **committed separately**.
+* Ensures no mixed-context commits.
+
+---
+
+### Step 4 — Unstage All Files
 
 ```bash
 git reset
 ```
 
-**PowerShell**
-
-```powershell
-git reset
-```
-
-**CMD**
-
-```cmd
-git reset
-```
-
-> Now all files are unstaged, ready to stage by context.
+> Prepares for staging by context group.
 
 ---
 
-### Step 4 — Stage and Commit by Context
+### Step 5 — Stage and Commit Each Context Group Using `commit.txt`
 
-For each context group:
-
-**Bash/Zsh/sh**
+**Bash / Zsh / sh**
 
 ```bash
-git add file1 file2 file3   # files in same context
-git commit -m "feat(scope): commit message"
-```
-
-**PowerShell**
-
-```powershell
-git add file1,file2,file3
-git commit -m "feat(scope): commit message"
-```
-
-**CMD**
-
-```cmd
 git add file1 file2 file3
-git commit -m "feat(scope): commit message"
-```
-
-> Repeat for all context groups.
-
----
-
-### Step 5 — Optional: Auto-Generate Commit Messages
-
-* Analyze **diff of files in group**
-* Generate **conventional commit messages** (type, scope, subject) automatically
-* Save to temporary file if needed:
-
-**Bash**
-
-```bash
 cat > commit.txt << 'EOF'
-feat(scope): add new feature for context group
+feat(auth): implement AI-based login validation
 EOF
 git commit -F commit.txt
 ```
@@ -127,8 +80,9 @@ git commit -F commit.txt
 **PowerShell**
 
 ```powershell
+git add file1,file2,file3
 @"
-feat(scope): add new feature for context group
+feat(auth): implement AI-based login validation
 "@ | Set-Content commit.txt
 git commit -F commit.txt
 ```
@@ -136,36 +90,44 @@ git commit -F commit.txt
 **CMD**
 
 ```cmd
-echo feat(scope): add new feature for context group > commit.txt
+git add file1 file2 file3
+echo feat(auth): implement AI-based login validation > commit.txt
 git commit -F commit.txt
 ```
 
-> after commit, **do not delete commit.txt** to save time
+> Repeat for all context groups. `commit.txt` is **never deleted**, so it can be reused or modified for the next commit.
 
 ---
 
-### Step 6 — Output
+### Step 6 — Optional AI Enhancements
 
-After all commits:
-
-1. List commits with **SHA, type, scope**
-
-   ```bash
-   git log --oneline --max-count=10
-   ```
-2. Show files committed per context group
-3. Suggest next steps: `Ready to push` or `Check for missed files`
+* Generate **multi-line commit messages** with descriptions of changes or references.
+* Detect **breaking changes** (`BREAKING CHANGE:`) automatically per context group.
+* Suggest **scope names** based on folders, modules, or file patterns.
+* Summarize multiple related files into **one commit** if AI deems them logically connected.
 
 ---
 
-### Optional Enhancements
+### Step 7 — Verification and Output
 
-* Use **AI or pattern matching** to detect context from filenames, folders, or diff content.
-* Handle **multi-line commit messages** safely for CMD users.
-* Include **breaking change detection** per context group.
+* Check the last commits:
+
+```bash
+git log --oneline --max-count=10
+```
+
+* Display files committed per AI-inferred context.
+* Suggest next step: `Ready to push`.
 
 ---
 
-💡 **Key Idea:** Agent **doesn’t commit a mixed context group** — only commits files with the same inferred context at a time. This ensures clean, conventional commit history even when multiple changes are staged.
+### Key Principles
+
+1. **Never commit mixed contexts**: each commit corresponds to one AI-inferred context.
+2. **Always use `commit.txt`**: ensures uniformity and cross-shell compatibility.
+3. **Leverage AI for commit intelligence**: filenames alone are not enough; diffs determine the commit type, scope, and subject.
+4. **Repeatable & transparent**: human-readable commit messages, consistent workflow.
 
 ---
+
+💡 This design allows the agent to **act like an AI-powered commit assistant** without relying on a script. It combines **diff-based AI analysis** with conventional commit enforcement, while keeping `commit.txt` as the universal commit interface.
