@@ -5,14 +5,14 @@ npx -y lint-staged
 
 # Generate composite run-tests action and stage it for commit (skip on CI)
 if [ -z "$GITHUB_ACTIONS" ] && [ -z "$CI" ]; then
-  npx -y generate-test-ci
+  npx -y generate-test-ci | bcc generate-test-ci
   git add .github/workflows/test.yml
 else
   echo "CI environment detected — skipping generate-test-ci"
 fi
 
 # Generate composite workflow and stage it for commit
-npx generate-ci
+npx generate-ci | bcc generate-ci
 if [ -n "$GITHUB_ACTIONS" ] || [ -n "$CI" ]; then
   echo "CI environment detected — skipping git add of generated action"
 else

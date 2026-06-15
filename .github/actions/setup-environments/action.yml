@@ -64,41 +64,6 @@ runs:
         path: tmp/test-repo
         token: ${{ inputs.token }}
         ref: test
-    - name: ⬇️ Checkout packages/cross-spawn
-      uses: actions/checkout@v6
-      with:
-        repository: dimaslanjaka/node-cross-spawn
-        path: packages/cross-spawn
-        token: ${{ inputs.token }}
-        ref: private
-    - name: ⬇️ Checkout packages/eslint-base-config
-      uses: actions/checkout@v6
-      with:
-        repository: dimaslanjaka/eslint-base-config
-        path: packages/eslint-base-config
-        token: ${{ inputs.token }}
-        ref: master
-    - name: ⬇️ Checkout packages/ai-toolkit
-      uses: actions/checkout@v6
-      with:
-        repository: dimaslanjaka/ai-toolkit
-        path: packages/ai-toolkit
-        token: ${{ inputs.token }}
-        ref: master
-    - name: ⬇️ Checkout packages/sbg-utility
-      uses: actions/checkout@v6
-      with:
-        repository: dimaslanjaka/static-blog-generator
-        path: packages/sbg-utility
-        token: ${{ inputs.token }}
-        ref: sbg-utility
-    - name: ⬇️ Checkout packages/binary-collections
-      uses: actions/checkout@v6
-      with:
-        repository: dimaslanjaka/bin
-        path: packages/binary-collections
-        token: ${{ inputs.token }}
-        ref: master
     - name: 🔁 Pull & update submodules recursively
       continue-on-error: true
       shell: bash

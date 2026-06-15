@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+# -----------------------------
+# BCC – Binary Collections CLI Runner with Remote Fallback
+# -----------------------------
+
+echo "[bcc] Attempting local binary-collections..."
+npm exec --legacy-peer-deps --yes --package=binary-collections -- binary-collections "$@"
+status=$?
+
+if [ "$status" -eq 0 ]; then
+  echo "[bcc] Local binary-collections succeeded."
+  exit 0
+fi
+
+echo "[bcc] Local binary-collections failed. Trying remote tarball..."
+npm exec --legacy-peer-deps --yes --package=https://raw.githubusercontent.com/dimaslanjaka/bin/master/releases/bin.tgz -- binary-collections "$@"
+status=$?
+
+if [ "$status" -eq 0 ]; then
+  echo "[bcc] Remote tarball binary-collections succeeded."
+  exit 0
+fi
+
+echo "[bcc] ERROR: Both local and remote binary-collections failed."
+exit "$status"
