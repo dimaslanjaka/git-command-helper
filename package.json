@@ -75,7 +75,7 @@
   "devDependencies": {
     "@babel/core": "^7.29.7",
     "@babel/plugin-syntax-import-assertions": "^7.29.7",
-    "@babel/preset-env": "^7.29.7",
+    "@babel/preset-env": "^8.0.2",
     "@babel/preset-react": "^7.29.7",
     "@babel/preset-typescript": "^7.29.7",
     "@dimaslanjaka/eslint-base-config": "^1.0.2",
