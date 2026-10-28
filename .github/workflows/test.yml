@@ -19,8 +19,15 @@ jobs:
     name: 🔨 Build, Pack & Test
     runs-on: ubuntu-latest
     steps:
+      - name: 🔑 Configure git credentials for GitLab
+        shell: bash
+        run: git config --global url."https://oauth2:${{ secrets.GITLAB_TOKEN
+          }}@gitlab.com/".insteadOf "https://gitlab.com/"
       - name: ⬇️ Checkout workflow repository
         uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          submodules: recursive
       - name: ⬇️ Setup CI Environment
         uses: ./.github/actions/setup-environments
         with:

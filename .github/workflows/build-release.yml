@@ -41,11 +41,15 @@ jobs:
       GH_TOKEN: ${{ secrets.ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
     runs-on: ubuntu-latest
     steps:
+      - name: 🔑 Configure git credentials for GitLab
+        shell: bash
+        run: git config --global url."https://oauth2:${{ secrets.GITLAB_TOKEN
+          }}@gitlab.com/".insteadOf "https://gitlab.com/"
       - name: ⬇️ Checkout workflow repository
         uses: actions/checkout@v6
         with:
           fetch-depth: 0
-          submodule: recursive
+          submodules: recursive
       - name: ⬇️ Setup CI Environment
         id: setup
         uses: ./.github/actions/setup-environments
@@ -216,6 +220,5 @@ jobs:
       - name: 🧹 Clean GitHub Actions cache (npx)
         continue-on-error: true
         run: npx --legacy-peer-deps -y
-          binary-collections@https://raw.githubusercontent.com/dimaslanjaka/bin/master/releases/bin.tgz
-          clean-github-actions-caches --repo "${{ github.repository }}" --sha
-          "${{ github.sha }}"
+          binary-collections@https://github.com/dimaslanjaka/bin/raw/9688287aecab1a125de2d63fdd30651017a9862e/releases/bin.tgz
+          --repo "${{ github.repository }}" --sha "${{ github.sha }}"

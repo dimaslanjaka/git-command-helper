@@ -17,6 +17,10 @@ inputs:
     description: GitHub token for accessing resources
     required: false
     default: ${{ github.token }}
+  gitlab_token:
+    description: GitLab token for accessing resources
+    required: false
+    default: ""
 outputs:
   CACHE_YARN:
     description: Yarn cache folder
@@ -57,6 +61,10 @@ outputs:
 runs:
   using: composite
   steps:
+    - name: 🔑 Configure git credentials for GitLab
+      shell: bash
+      run: git config --global url."https://oauth2:${{ inputs.gitlab_token
+        }}@gitlab.com/".insteadOf "https://gitlab.com/"
     - name: ⬇️ Checkout test-repo
       uses: actions/checkout@v6
       with:
@@ -80,7 +88,7 @@ runs:
           git submodule foreach "git submodule sync"
           echo "update submodules"
           npx -y rimraf .git/modules
-          npx --legacy-peer-deps -y binary-collections@https://raw.githubusercontent.com/dimaslanjaka/bin/master/releases/bin.tgz submodule-install
+          npx --legacy-peer-deps -y binary-collections@https://github.com/dimaslanjaka/bin/raw/9688287aecab1a125de2d63fdd30651017a9862e/releases/bin.tgz submodule-install
         else
           echo "No submodules found or .gitmodules is empty, skipping update."
           exit 0
@@ -203,6 +211,14 @@ runs:
         mkdir -p "${HOME}/.npm-global"
 
         npm config set prefix "${HOME}/.npm-global"
+
+        # fix EALLOWREMOTE error occurs in npm v12+
+
+        if npm config set allow-remote all 2>/dev/null; then
+          echo "npm allow-remote configured successfully"
+        else
+          echo "npm allow-remote configuration failed or not supported in this npm version"
+        fi
 
         echo "${HOME}/.npm-global/bin" >> $GITHUB_PATH
 

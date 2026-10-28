@@ -140,7 +140,8 @@
     "glob-parent": "^6.0.2",
     "node.extend": "^2.0.2",
     "socket.io-parser": "^3.4.3",
-    "unset-value": "^2.0.1"
+    "unset-value": "^2.0.1",
+    "got": "11.8.2"
   },
   "engines": {
     "node": ">=18"
