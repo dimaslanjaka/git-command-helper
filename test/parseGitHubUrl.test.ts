@@ -1,446 +1,370 @@
-import { describe, expect, it } from "@jest/globals";
-import { parseGitHubUrl } from "../src/functions/parseGitHubUrl";
+import { describe, expect, it } from '@jest/globals';
+import { parseGitHubUrl, type ParsedGitHubUrl } from '../src/functions/parseGitHubUrl';
 
-describe("parseGitHubUrl", () => {
-  it("parses https url with username and password", () => {
-    const url = "https://user:pass@github.com/owner/repo.git";
-    expect(parseGitHubUrl(url)).toEqual({
-      protocol: "https",
-      username: "user",
-      password: "pass",
-      host: "github.com",
-      owner: "owner",
-      repo: "repo",
-      path: null,
-      branch: null
+const defaults: ParsedGitHubUrl = {
+  protocol: 'https',
+  username: null,
+  password: null,
+  host: 'github.com',
+  owner: 'owner',
+  repo: 'repo',
+  path: null,
+  branch: null,
+  ref: null,
+  refType: null,
+  action: null
+};
+
+function expectParsed(url: string, expected: Partial<ParsedGitHubUrl>) {
+  expect(parseGitHubUrl(url)).toEqual({
+    ...defaults,
+    ...expected
+  });
+}
+
+describe('parseGitHubUrl', () => {
+  describe('HTTPS', () => {
+    it('parses https url with username and password', () => {
+      expectParsed('https://user:pass@github.com/owner/repo.git', {
+        username: 'user',
+        password: 'pass'
+      });
+    });
+
+    it('parses https url with authentication and tree path', () => {
+      expectParsed('https://user:pass@github.com/dimaslanjaka/git-command-helper/tree/pre-release/.yarn/releases', {
+        username: 'user',
+        password: 'pass',
+        owner: 'dimaslanjaka',
+        repo: 'git-command-helper',
+        action: 'tree',
+        ref: 'pre-release',
+        refType: 'heads',
+        branch: 'pre-release',
+        path: '.yarn/releases'
+      });
+    });
+
+    it('parses https url without authentication', () => {
+      expectParsed('https://github.com/owner/repo.git', {});
+    });
+
+    it('parses https url with extra path', () => {
+      expectParsed('https://user:pass@github.com/owner/repo.git/some/path', {
+        username: 'user',
+        password: 'pass',
+        path: 'some/path'
+      });
+    });
+
+    it('parses github url without .git suffix', () => {
+      expectParsed('https://github.com/owner/repo', {});
+    });
+
+    it('parses github url with trailing slash', () => {
+      expectParsed('https://github.com/owner/repo/', {});
+    });
+
+    it('parses github enterprise https url', () => {
+      expectParsed('https://github.company.com/owner/repo.git', {
+        host: 'github.company.com'
+      });
+    });
+
+    it('parses https url with github token auth', () => {
+      expectParsed('https://username:ghp_123456789@github.com/owner/repo.git', {
+        username: 'username',
+        password: 'ghp_123456789'
+      });
+    });
+
+    it('parses github url with commit path', () => {
+      expectParsed('https://github.com/owner/repo/commit/c3e7541', {
+        path: 'commit/c3e7541'
+      });
+    });
+
+    it('parses github url with compare path', () => {
+      expectParsed('https://github.com/owner/repo/compare/main...develop', {
+        path: 'compare/main...develop'
+      });
+    });
+
+    it('parses github pull request url', () => {
+      expectParsed('https://github.com/owner/repo/pull/123', {
+        path: 'pull/123'
+      });
+    });
+
+    it('parses github issue url', () => {
+      expectParsed('https://github.com/owner/repo/issues/123', {
+        path: 'issues/123'
+      });
     });
   });
 
-  it("parses https url with username and password and tree path", () => {
-    const treeUrl = "https://user:pass@github.com/dimaslanjaka/git-command-helper/tree/pre-release/.yarn/releases";
-    expect(parseGitHubUrl(treeUrl)).toEqual({
-      protocol: "https",
-      username: "user",
-      password: "pass",
-      host: "github.com",
-      owner: "dimaslanjaka",
-      repo: "git-command-helper",
-      path: "tree/pre-release/.yarn/releases",
-      branch: "pre-release"
+  describe('GitHub actions and references', () => {
+    it('parses tree action', () => {
+      expectParsed('https://github.com/dimaslanjaka/git-command-helper/tree/pre-release/.git', {
+        owner: 'dimaslanjaka',
+        repo: 'git-command-helper',
+        action: 'tree',
+        ref: 'pre-release',
+        refType: 'heads',
+        branch: 'pre-release',
+        path: '.git'
+      });
+    });
+
+    it('parses blob action', () => {
+      expectParsed('https://github.com/dimaslanjaka/git-command-helper/blob/pre-release/.gitignore', {
+        owner: 'dimaslanjaka',
+        repo: 'git-command-helper',
+        action: 'blob',
+        ref: 'pre-release',
+        refType: 'heads',
+        branch: 'pre-release',
+        path: '.gitignore'
+      });
+    });
+
+    it('parses raw action', () => {
+      expectParsed('https://github.com/dimaslanjaka/git-command-helper/raw/pre-release/.github/workflows/ci.yml', {
+        owner: 'dimaslanjaka',
+        repo: 'git-command-helper',
+        action: 'raw',
+        ref: 'pre-release',
+        refType: 'heads',
+        branch: 'pre-release',
+        path: '.github/workflows/ci.yml'
+      });
+    });
+
+    it('parses raw action with refs heads', () => {
+      expectParsed(
+        'https://github.com/dimaslanjaka/hexo-themes/raw/refs/heads/master/releases/hexo-theme-flowbite.tgz',
+        {
+          owner: 'dimaslanjaka',
+          repo: 'hexo-themes',
+          action: 'raw',
+          ref: 'master',
+          refType: 'heads',
+          branch: 'master',
+          path: 'releases/hexo-theme-flowbite.tgz'
+        }
+      );
+    });
+
+    it('parses raw action with refs heads and nested file path', () => {
+      expectParsed(
+        'https://github.com/dimaslanjaka/nodejs-package-types/raw/refs/heads/through2/release/types-through2.tgz',
+        {
+          owner: 'dimaslanjaka',
+          repo: 'nodejs-package-types',
+          action: 'raw',
+          ref: 'through2',
+          refType: 'heads',
+          branch: 'through2',
+          path: 'release/types-through2.tgz'
+        }
+      );
+    });
+
+    it('parses blob action with tag reference', () => {
+      expectParsed('https://github.com/owner/repo/blob/refs/tags/v1.0.0/package.json', {
+        action: 'blob',
+        ref: 'v1.0.0',
+        refType: 'tags',
+        branch: null,
+        path: 'package.json'
+      });
+    });
+
+    it('parses raw action with tag reference', () => {
+      expectParsed('https://github.com/owner/repo/raw/refs/tags/v1.0.0/package.json', {
+        action: 'raw',
+        ref: 'v1.0.0',
+        refType: 'tags',
+        branch: null,
+        path: 'package.json'
+      });
+    });
+
+    it('parses archive refs heads url', () => {
+      expectParsed('https://github.com/owner/repo/archive/refs/heads/main.zip', {
+        action: 'archive',
+        ref: 'main',
+        refType: 'heads',
+        branch: 'main',
+        path: null
+      });
+    });
+
+    it('parses archive refs tags url', () => {
+      expectParsed('https://github.com/owner/repo/archive/refs/tags/v1.0.0.zip', {
+        action: 'archive',
+        ref: 'v1.0.0',
+        refType: 'tags',
+        branch: null,
+        path: null
+      });
     });
   });
 
-  it("parses https url with blob path and branch", () => {
-    const blobUrl = "https://github.com/dimaslanjaka/git-command-helper/blob/pre-release/.gitignore";
-    expect(parseGitHubUrl(blobUrl)).toEqual({
-      protocol: "https",
-      username: null,
-      password: null,
-      host: "github.com",
-      owner: "dimaslanjaka",
-      repo: "git-command-helper",
-      path: "blob/pre-release/.gitignore",
-      branch: "pre-release"
+  describe('Raw GitHub URLs', () => {
+    it('parses raw.githubusercontent.com url', () => {
+      expectParsed(
+        'https://raw.githubusercontent.com/dimaslanjaka/git-command-helper/pre-release/.github/workflows/ci.yml',
+        {
+          host: 'raw.githubusercontent.com',
+          owner: 'dimaslanjaka',
+          repo: 'git-command-helper',
+          action: 'raw',
+          ref: 'pre-release',
+          refType: 'heads',
+          branch: 'pre-release',
+          path: '.github/workflows/ci.yml'
+        }
+      );
+    });
+
+    it('parses raw.githubusercontent.com refs heads url', () => {
+      expectParsed(
+        'https://raw.githubusercontent.com/dimaslanjaka/hexo-themes/refs/heads/master/releases/hexo-theme-flowbite.tgz',
+        {
+          host: 'raw.githubusercontent.com',
+          owner: 'dimaslanjaka',
+          repo: 'hexo-themes',
+          action: 'raw',
+          ref: 'master',
+          refType: 'heads',
+          branch: 'master',
+          path: 'releases/hexo-theme-flowbite.tgz'
+        }
+      );
+    });
+
+    it('parses raw.githubusercontent.com refs tags url', () => {
+      expectParsed('https://raw.githubusercontent.com/owner/repo/refs/tags/v1.0.0/package.json', {
+        host: 'raw.githubusercontent.com',
+        action: 'raw',
+        ref: 'v1.0.0',
+        refType: 'tags',
+        branch: null,
+        path: 'package.json'
+      });
+    });
+
+    it('parses hash as ref (raw)', () => {
+      const hash = 'c3e7541d7f92f76ff0d4744a07cc3270d39b3fd7';
+
+      expectParsed(`https://raw.githubusercontent.com/dimaslanjaka/git-command-helper/${hash}/.yarnrc.yml`, {
+        host: 'raw.githubusercontent.com',
+        owner: 'dimaslanjaka',
+        repo: 'git-command-helper',
+        action: 'raw',
+        ref: hash,
+        refType: 'heads',
+        branch: hash,
+        path: '.yarnrc.yml'
+      });
     });
   });
 
-  it("parses https url without auth", () => {
-    const url = "https://github.com/owner/repo.git";
-    expect(parseGitHubUrl(url)).toEqual({
-      protocol: "https",
-      username: null,
-      password: null,
-      host: "github.com",
-      owner: "owner",
-      repo: "repo",
-      path: null,
-      branch: null
+  describe('Commit references', () => {
+    it('parses hash as ref (blob)', () => {
+      const hash = 'c3e7541d7f92f76ff0d4744a07cc3270d39b3fd7';
+
+      expectParsed(
+        `https://github.com/dimaslanjaka/git-command-helper/blob/${hash}/release/git-command-helper-1.0.13.tgz`,
+        {
+          owner: 'dimaslanjaka',
+          repo: 'git-command-helper',
+          action: 'blob',
+          ref: hash,
+          refType: 'heads',
+          branch: hash,
+          path: 'release/git-command-helper-1.0.13.tgz'
+        }
+      );
+    });
+
+    it('parses hash as ref (tree)', () => {
+      const hash = 'c3e7541d7f92f76ff0d4744a07cc3270d39b3fd7';
+
+      expectParsed(`https://github.com/dimaslanjaka/git-command-helper/tree/${hash}/src`, {
+        owner: 'dimaslanjaka',
+        repo: 'git-command-helper',
+        action: 'tree',
+        ref: hash,
+        refType: 'heads',
+        branch: hash,
+        path: 'src'
+      });
     });
   });
 
-  it("parses ssh url", () => {
-    const url = "git@github.com:owner/repo.git";
-    expect(parseGitHubUrl(url)).toEqual({
-      protocol: "ssh",
-      username: null,
-      password: null,
-      host: "github.com",
-      owner: "owner",
-      repo: "repo",
-      path: null,
-      branch: null
+  describe('Git protocols', () => {
+    it('parses git protocol url', () => {
+      expectParsed('git://github.com/owner/repo.git', {
+        protocol: 'git'
+      });
+    });
+
+    it('parses ssh shorthand url', () => {
+      expectParsed('git@github.com:owner/repo.git', {
+        protocol: 'ssh'
+      });
+    });
+
+    it('parses ssh protocol url', () => {
+      expectParsed('ssh://git@github.com/owner/repo.git', {
+        protocol: 'ssh',
+        username: 'git'
+      });
+    });
+
+    it('parses github enterprise ssh url', () => {
+      expectParsed('git@github.company.com:owner/repo.git', {
+        protocol: 'ssh',
+        host: 'github.company.com'
+      });
+    });
+
+    it('parses git+https url with username and password', () => {
+      expectParsed('git+https://user:pass@github.com/owner/repo.git', {
+        protocol: 'git+https',
+        username: 'user',
+        password: 'pass'
+      });
+    });
+
+    it('parses git+https url with token auth', () => {
+      expectParsed('git+https://oauth2:ghp_123456789@github.com/owner/repo.git', {
+        protocol: 'git+https',
+        username: 'oauth2',
+        password: 'ghp_123456789'
+      });
+    });
+
+    it('throws for git protocol with auth', () => {
+      const url = 'git://user:token@github.com/owner/repo.git';
+
+      expect(() => parseGitHubUrl(url)).toThrow(`Invalid GitHub URL: ${url}`);
+    });
+
+    it('throws for ssh url with password auth', () => {
+      const url = 'ssh://user:token@github.com/owner/repo.git';
+
+      expect(() => parseGitHubUrl(url)).toThrow(`Invalid GitHub URL: ${url}`);
     });
   });
 
-  it("parses git+https url with username and password", () => {
-    const url = "git+https://user:pass@github.com/owner/repo.git";
-    expect(parseGitHubUrl(url)).toEqual({
-      protocol: "git+https",
-      username: "user",
-      password: "pass",
-      host: "github.com",
-      owner: "owner",
-      repo: "repo",
-      path: null,
-      branch: null
+  describe('Invalid URLs', () => {
+    it('throws for invalid url', () => {
+      const url = 'not-a-git-url';
+
+      expect(() => parseGitHubUrl(url)).toThrow(`Invalid GitHub URL: ${url}`);
     });
-  });
-
-  it("throws for invalid url", () => {
-    expect(() => parseGitHubUrl("not-a-git-url")).toThrow("Invalid GitHub URL: not-a-git-url");
-  });
-
-  it("parses https url with extra path", () => {
-    const url = "https://user:pass@github.com/owner/repo.git/some/path";
-    expect(parseGitHubUrl(url)).toEqual({
-      protocol: "https",
-      username: "user",
-      password: "pass",
-      host: "github.com",
-      owner: "owner",
-      repo: "repo",
-      path: "some/path",
-      branch: null
-    });
-  });
-
-  it("parses raw.githubusercontent.com url", () => {
-    const url =
-      "https://raw.githubusercontent.com/dimaslanjaka/git-command-helper/pre-release/.github/workflows/ci.yml";
-    expect(parseGitHubUrl(url)).toEqual({
-      protocol: "https",
-      username: null,
-      password: null,
-      host: "raw.githubusercontent.com",
-      owner: "dimaslanjaka",
-      repo: "git-command-helper",
-      path: "pre-release/.github/workflows/ci.yml",
-      branch: "pre-release"
-    });
-  });
-
-  it("parses github.com raw url with refs heads branch", () => {
-    const url = "https://github.com/dimaslanjaka/hexo-themes/raw/refs/heads/master/releases/hexo-theme-flowbite.tgz";
-    expect(parseGitHubUrl(url)).toEqual({
-      protocol: "https",
-      username: null,
-      password: null,
-      host: "github.com",
-      owner: "dimaslanjaka",
-      repo: "hexo-themes",
-      path: "raw/refs/heads/master/releases/hexo-theme-flowbite.tgz",
-      branch: "master"
-    });
-  });
-
-  it("parses github.com raw url with refs heads branch for nodejs-package-types", () => {
-    const url =
-      "https://github.com/dimaslanjaka/nodejs-package-types/raw/refs/heads/through2/release/types-through2.tgz";
-    expect(parseGitHubUrl(url)).toEqual({
-      protocol: "https",
-      username: null,
-      password: null,
-      host: "github.com",
-      owner: "dimaslanjaka",
-      repo: "nodejs-package-types",
-      path: "raw/refs/heads/through2/release/types-through2.tgz",
-      branch: "through2"
-    });
-  });
-
-  it("parses github.com raw url", () => {
-    const url = "https://github.com/dimaslanjaka/git-command-helper/raw/pre-release/.github/workflows/ci.yml";
-    expect(parseGitHubUrl(url)).toEqual({
-      protocol: "https",
-      username: null,
-      password: null,
-      host: "github.com",
-      owner: "dimaslanjaka",
-      repo: "git-command-helper",
-      path: "raw/pre-release/.github/workflows/ci.yml",
-      branch: "pre-release"
-    });
-  });
-
-  it("parses raw.githubusercontent.com refs heads url", () => {
-    const url =
-      "https://raw.githubusercontent.com/dimaslanjaka/hexo-themes/refs/heads/master/releases/hexo-theme-flowbite.tgz";
-    expect(parseGitHubUrl(url)).toEqual({
-      protocol: "https",
-      username: null,
-      password: null,
-      host: "raw.githubusercontent.com",
-      owner: "dimaslanjaka",
-      repo: "hexo-themes",
-      path: "refs/heads/master/releases/hexo-theme-flowbite.tgz",
-      branch: "master"
-    });
-  });
-
-  it("parses hash as branch (blob)", () => {
-    const url =
-      "https://github.com/dimaslanjaka/git-command-helper/blob/c3e7541d7f92f76ff0d4744a07cc3270d39b3fd7/release/git-command-helper-1.0.13.tgz";
-    const parsed = parseGitHubUrl(url);
-    expect(parsed).toEqual({
-      protocol: "https",
-      username: null,
-      password: null,
-      host: "github.com",
-      owner: "dimaslanjaka",
-      repo: "git-command-helper",
-      path: "blob/c3e7541d7f92f76ff0d4744a07cc3270d39b3fd7/release/git-command-helper-1.0.13.tgz",
-      branch: "c3e7541d7f92f76ff0d4744a07cc3270d39b3fd7"
-    });
-  });
-
-  it("parses hash as branch (raw)", () => {
-    const url =
-      "https://raw.githubusercontent.com/dimaslanjaka/git-command-helper/c3e7541d7f92f76ff0d4744a07cc3270d39b3fd7/.yarnrc.yml";
-    const parsed = parseGitHubUrl(url);
-    expect(parsed).toEqual({
-      protocol: "https",
-      username: null,
-      password: null,
-      host: "raw.githubusercontent.com",
-      owner: "dimaslanjaka",
-      repo: "git-command-helper",
-      path: "c3e7541d7f92f76ff0d4744a07cc3270d39b3fd7/.yarnrc.yml",
-      branch: "c3e7541d7f92f76ff0d4744a07cc3270d39b3fd7"
-    });
-  });
-
-  it("parses hash as branch (tree)", () => {
-    const url = "https://github.com/dimaslanjaka/git-command-helper/tree/c3e7541d7f92f76ff0d4744a07cc3270d39b3fd7/src";
-    const parsed = parseGitHubUrl(url);
-    expect(parsed).toEqual({
-      protocol: "https",
-      username: null,
-      password: null,
-      host: "github.com",
-      owner: "dimaslanjaka",
-      repo: "git-command-helper",
-      path: "tree/c3e7541d7f92f76ff0d4744a07cc3270d39b3fd7/src",
-      branch: "c3e7541d7f92f76ff0d4744a07cc3270d39b3fd7"
-    });
-  });
-
-  it("parses git protocol url", () => {
-    const url = "git://github.com/owner/repo.git";
-    expect(parseGitHubUrl(url)).toEqual({
-      protocol: "git",
-      username: null,
-      password: null,
-      host: "github.com",
-      owner: "owner",
-      repo: "repo",
-      path: null,
-      branch: null
-    });
-  });
-
-  it("parses ssh protocol url", () => {
-    const url = "ssh://git@github.com/owner/repo.git";
-    expect(parseGitHubUrl(url)).toEqual({
-      protocol: "ssh",
-      username: "git",
-      password: null,
-      host: "github.com",
-      owner: "owner",
-      repo: "repo",
-      path: null,
-      branch: null
-    });
-  });
-
-  it("parses github url without .git suffix", () => {
-    const url = "https://github.com/owner/repo";
-    expect(parseGitHubUrl(url)).toEqual({
-      protocol: "https",
-      username: null,
-      password: null,
-      host: "github.com",
-      owner: "owner",
-      repo: "repo",
-      path: null,
-      branch: null
-    });
-  });
-
-  it("parses github url with trailing slash", () => {
-    const url = "https://github.com/owner/repo/";
-    expect(parseGitHubUrl(url)).toEqual({
-      protocol: "https",
-      username: null,
-      password: null,
-      host: "github.com",
-      owner: "owner",
-      repo: "repo",
-      path: null,
-      branch: null
-    });
-  });
-
-  it("parses github enterprise https url", () => {
-    const url = "https://github.company.com/owner/repo.git";
-    expect(parseGitHubUrl(url)).toEqual({
-      protocol: "https",
-      username: null,
-      password: null,
-      host: "github.company.com",
-      owner: "owner",
-      repo: "repo",
-      path: null,
-      branch: null
-    });
-  });
-
-  it("parses github enterprise ssh url", () => {
-    const url = "git@github.company.com:owner/repo.git";
-    expect(parseGitHubUrl(url)).toEqual({
-      protocol: "ssh",
-      username: null,
-      password: null,
-      host: "github.company.com",
-      owner: "owner",
-      repo: "repo",
-      path: null,
-      branch: null
-    });
-  });
-
-  it("parses archive refs heads url", () => {
-    const url = "https://github.com/owner/repo/archive/refs/heads/main.zip";
-    expect(parseGitHubUrl(url)).toEqual({
-      protocol: "https",
-      username: null,
-      password: null,
-      host: "github.com",
-      owner: "owner",
-      repo: "repo",
-      path: "archive/refs/heads/main.zip",
-      branch: "main"
-    });
-  });
-
-  it("parses releases download url", () => {
-    const url = "https://github.com/owner/repo/releases/download/v1.0.0/app.zip";
-    expect(parseGitHubUrl(url)).toEqual({
-      protocol: "https",
-      username: null,
-      password: null,
-      host: "github.com",
-      owner: "owner",
-      repo: "repo",
-      path: "releases/download/v1.0.0/app.zip",
-      branch: null
-    });
-  });
-
-  it("parses commit url", () => {
-    const url = "https://github.com/owner/repo/commit/c3e7541";
-    expect(parseGitHubUrl(url)).toEqual({
-      protocol: "https",
-      username: null,
-      password: null,
-      host: "github.com",
-      owner: "owner",
-      repo: "repo",
-      path: "commit/c3e7541",
-      branch: null
-    });
-  });
-
-  it("parses compare url", () => {
-    const url = "https://github.com/owner/repo/compare/main...develop";
-    expect(parseGitHubUrl(url)).toEqual({
-      protocol: "https",
-      username: null,
-      password: null,
-      host: "github.com",
-      owner: "owner",
-      repo: "repo",
-      path: "compare/main...develop",
-      branch: null
-    });
-  });
-
-  it("parses pull request url", () => {
-    const url = "https://github.com/owner/repo/pull/123";
-    expect(parseGitHubUrl(url)).toEqual({
-      protocol: "https",
-      username: null,
-      password: null,
-      host: "github.com",
-      owner: "owner",
-      repo: "repo",
-      path: "pull/123",
-      branch: null
-    });
-  });
-
-  it("parses issue url", () => {
-    const url = "https://github.com/owner/repo/issues/123";
-    expect(parseGitHubUrl(url)).toEqual({
-      protocol: "https",
-      username: null,
-      password: null,
-      host: "github.com",
-      owner: "owner",
-      repo: "repo",
-      path: "issues/123",
-      branch: null
-    });
-  });
-
-  it("parses git+https url with token auth", () => {
-    const url = "git+https://oauth2:ghp_123456789@github.com/owner/repo.git";
-    expect(parseGitHubUrl(url)).toEqual({
-      protocol: "git+https",
-      username: "oauth2",
-      password: "ghp_123456789",
-      host: "github.com",
-      owner: "owner",
-      repo: "repo",
-      path: null,
-      branch: null
-    });
-  });
-
-  it("parses https url with github token auth", () => {
-    const url = "https://username:ghp_123456789@github.com/owner/repo.git";
-    expect(parseGitHubUrl(url)).toEqual({
-      protocol: "https",
-      username: "username",
-      password: "ghp_123456789",
-      host: "github.com",
-      owner: "owner",
-      repo: "repo",
-      path: null,
-      branch: null
-    });
-  });
-
-  it("parses ssh url with explicit git username", () => {
-    const url = "ssh://git@github.com/owner/repo.git";
-    expect(parseGitHubUrl(url)).toEqual({
-      protocol: "ssh",
-      username: "git",
-      password: null,
-      host: "github.com",
-      owner: "owner",
-      repo: "repo",
-      path: null,
-      branch: null
-    });
-  });
-
-  it("throws for git protocol with auth", () => {
-    const url = "git://user:token@github.com/owner/repo.git";
-    expect(() => parseGitHubUrl(url)).toThrow("Invalid GitHub URL: git://user:token@github.com/owner/repo.git");
-  });
-
-  it("throws for ssh url with password auth", () => {
-    const url = "ssh://user:token@github.com/owner/repo.git";
-    expect(() => parseGitHubUrl(url)).toThrow("Invalid GitHub URL: ssh://user:token@github.com/owner/repo.git");
   });
 });
